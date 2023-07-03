@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+        default_batch_fetch_size: 100
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+    org.apache.coyote.http11: debug
