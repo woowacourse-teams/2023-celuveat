@@ -1,0 +1,23 @@
+{
+  "exclude": ["node_modules", "./node_modules/**/*", "build", "webpack", "jest", "dist"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "~/*": ["*"]
+    },
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve",
+    "typeRoots": ["node_modules/@types", "src/@types"],
+    "sourceMap": true,
+    "removeComments": true,
+    "declaration": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "skipLibCheck": true
+  }
+}
