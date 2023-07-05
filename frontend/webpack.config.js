@@ -14,6 +14,7 @@ module.exports = {
     clean: true,
   },
   resolve: {
+    module: ['node_modules'],
     extensions: ['.tsx', '.ts', '.jsx', '.js', 'json'],
   },
   module: {
@@ -33,16 +34,10 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|gif|png|svg|ico)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              fallback: 'file-loader',
-              name: 'images/[name].[ext]',
-            },
-          },
-        ],
+        type: 'asset',
+        generator: {
+          filename: 'images/[name].[ext]',
+        },
       },
     ],
   },
