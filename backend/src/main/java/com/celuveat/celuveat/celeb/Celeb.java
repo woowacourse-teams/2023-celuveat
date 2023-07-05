@@ -1,5 +1,8 @@
 package com.celuveat.celuveat.celeb;
 
+import lombok.Builder;
+
+@Builder
 public record Celeb(
         Long id,
         String name,

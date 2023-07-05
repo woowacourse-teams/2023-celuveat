@@ -1,5 +1,8 @@
 package com.celuveat.celuveat.restaurant;
 
+import lombok.Builder;
+
+@Builder
 public record Restaurant(
         Long id,
         String imageUrl,
