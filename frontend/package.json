@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack serve --open --mode development",
-    "start:prod": "webpack serve --open --mode production",
+    "start:prod": "webpack --mode production",
     "build": "webpack --mode production",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -51,6 +51,7 @@
     "html-webpack-plugin": "^5.5.3",
     "prettier": "^2.8.8",
     "storybook": "^7.0.25",
+    "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.1",
