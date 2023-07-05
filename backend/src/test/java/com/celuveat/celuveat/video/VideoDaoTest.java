@@ -3,6 +3,7 @@ package com.celuveat.celuveat.video;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.celuveat.video.VideoExceptionType.NOT_FOUND_VIDEO;
+import static com.celuveat.celuveat.video.fixture.VideoFixture.영상;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -10,7 +11,6 @@ import com.celuveat.celuveat.celeb.CelebDao;
 import com.celuveat.celuveat.common.annotation.DaoTest;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.restaurant.RestaurantDao;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -38,14 +38,7 @@ class VideoDaoTest {
         Long 히밥_id = celebDao.save(히밥());
         Long 맛집_id = restaurantDao.save(음식점());
 
-        Video 영상 = Video.builder()
-                .celebId(히밥_id)
-                .restaurantId(맛집_id)
-                .title("맛있는 음식점 다녀옴. 말랑 잘하네")
-                .viewCount(3)
-                .videoUrl("https://naver.com")
-                .publishedDate(LocalDateTime.of(2000, 10, 4, 10, 21, 22))
-                .build();
+        Video 영상 = 영상(히밥_id, 맛집_id);
 
         // when
         Long savedId = videoDao.save(영상);
@@ -60,14 +53,7 @@ class VideoDaoTest {
         Long 히밥_id = celebDao.save(히밥());
         Long 맛집_id = restaurantDao.save(음식점());
 
-        Video 영상 = Video.builder()
-                .celebId(히밥_id)
-                .restaurantId(맛집_id)
-                .title("맛있는 음식점 다녀옴. 말랑 잘하네")
-                .viewCount(3)
-                .videoUrl("https://naver.com")
-                .publishedDate(LocalDateTime.of(2000, 10, 4, 10, 21, 22))
-                .build();
+        Video 영상 = 영상(히밥_id, 맛집_id);
         Long savedId = videoDao.save(영상);
 
         // when
@@ -77,7 +63,6 @@ class VideoDaoTest {
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(영상);
-
     }
 
     @Test
