@@ -2,10 +2,13 @@ package com.celuveat.celuveat.video;
 
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.celuveat.video.VideoExceptionType.NOT_FOUND_VIDEO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.celeb.CelebDao;
 import com.celuveat.celuveat.common.annotation.DaoTest;
+import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.restaurant.RestaurantDao;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -75,5 +78,16 @@ class VideoDaoTest {
                 .ignoringFields("id")
                 .isEqualTo(영상);
 
+    }
+
+    @Test
+    void 영상이_없는_경우_예외가_발생한다() {
+        // when
+        BaseExceptionType exceptionType = assertThrows(VideoException.class, () ->
+                videoDao.getById(1L)
+        ).exceptionType();
+
+        // then
+        assertThat(exceptionType).isEqualTo(NOT_FOUND_VIDEO);
     }
 }

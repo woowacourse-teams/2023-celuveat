@@ -1,10 +1,13 @@
 package com.celuveat.celuveat.celeb;
 
+import static com.celuveat.celuveat.celeb.CelebExceptionType.NOT_FOUND_CELEB;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 
 import com.celuveat.celuveat.common.annotation.DaoTest;
+import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
@@ -44,5 +47,16 @@ class CelebDaoTest {
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(히밥);
+    }
+
+    @Test
+    void 셀럽이_없는_경우_예외가_발생한다() {
+        // when
+        BaseExceptionType exceptionType = assertThrows(CelebException.class, () ->
+                celebDao.getById(1L)
+        ).exceptionType();
+
+        // then
+        assertThat(exceptionType).isEqualTo(NOT_FOUND_CELEB);
     }
 }

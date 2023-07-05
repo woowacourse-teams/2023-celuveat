@@ -1,6 +1,9 @@
 package com.celuveat.celuveat.celeb;
 
+import static com.celuveat.celuveat.celeb.CelebExceptionType.NOT_FOUND_CELEB;
+
 import com.celuveat.celuveat.common.annotation.Dao;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,6 +38,10 @@ public class CelebDao {
                 FROM celeb
                 WHERE id = ?
                 """;
-        return jdbcTemplate.queryForObject(sql, mapper, id);
+        try {
+            return jdbcTemplate.queryForObject(sql, mapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new CelebException(NOT_FOUND_CELEB);
+        }
     }
 }

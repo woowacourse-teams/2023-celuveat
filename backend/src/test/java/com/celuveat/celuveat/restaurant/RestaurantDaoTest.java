@@ -1,9 +1,12 @@
 package com.celuveat.celuveat.restaurant;
 
+import static com.celuveat.celuveat.restaurant.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
 import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.common.annotation.DaoTest;
+import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -44,5 +47,16 @@ class RestaurantDaoTest {
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(맛집);
+    }
+
+    @Test
+    void 음식점이_없는_경우_예외가_발생한다() {
+        // when
+        BaseExceptionType exceptionType = assertThrows(RestaurantException.class, () ->
+                restaurantDao.getById(1L)
+        ).exceptionType();
+
+        // then
+        assertThat(exceptionType).isEqualTo(NOT_FOUND_RESTAURANT);
     }
 }
