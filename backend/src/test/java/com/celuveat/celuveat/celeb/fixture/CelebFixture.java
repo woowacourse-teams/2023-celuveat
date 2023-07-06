@@ -1,5 +1,6 @@
 package com.celuveat.celuveat.celeb.fixture;
 
+import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
 import com.celuveat.celuveat.celeb.domain.Celeb;
 
 public class CelebFixture {
@@ -24,5 +25,15 @@ public class CelebFixture {
                 .backgroundImageUrl("https://sikyung.background.com")
                 .profileImageUrl("https://sikyung.image.com")
                 .build();
+    }
+
+    public static FindAllCelebResponse toFindAllCelebResponse(Celeb celeb) {
+        return new FindAllCelebResponse(
+                celeb.id(),
+                celeb.name(),
+                celeb.youtubeId(),
+                celeb.subscriberCount(),
+                celeb.profileImageUrl()
+        );
     }
 }
