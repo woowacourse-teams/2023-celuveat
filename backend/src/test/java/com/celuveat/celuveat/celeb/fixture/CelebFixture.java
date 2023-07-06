@@ -14,4 +14,15 @@ public class CelebFixture {
                 .profileImageUrl("https://image.com")
                 .build();
     }
+
+    public static Celeb 성시경() {
+        return Celeb.builder()
+                .name("성시경")
+                .youtubeId("@sikyung")
+                .subscriberCount(1_000_001)
+                .link("https://sikyung.com")
+                .backgroundImageUrl("https://sikyung.background.com")
+                .profileImageUrl("https://sikyung.image.com")
+                .build();
+    }
 }
