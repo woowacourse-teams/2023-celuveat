@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.video;
+package com.celuveat.celuveat.video.domain;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.restaurant.fixture;
 
-import com.celuveat.celuveat.restaurant.Category;
-import com.celuveat.celuveat.restaurant.Restaurant;
+import com.celuveat.celuveat.restaurant.domain.Category;
+import com.celuveat.celuveat.restaurant.domain.Restaurant;
 
 public class RestaurantFixture {
 

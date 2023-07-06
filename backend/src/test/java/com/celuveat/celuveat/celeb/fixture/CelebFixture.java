@@ -1,6 +1,7 @@
 package com.celuveat.celuveat.celeb.fixture;
 
-import com.celuveat.celuveat.celeb.Celeb;
+import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
+import com.celuveat.celuveat.celeb.domain.Celeb;
 
 public class CelebFixture {
 
@@ -13,5 +14,26 @@ public class CelebFixture {
                 .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
+    }
+
+    public static Celeb 성시경() {
+        return Celeb.builder()
+                .name("성시경")
+                .youtubeId("@sikyung")
+                .subscriberCount(1_000_001)
+                .link("https://sikyung.com")
+                .backgroundImageUrl("https://sikyung.background.com")
+                .profileImageUrl("https://sikyung.image.com")
+                .build();
+    }
+
+    public static FindAllCelebResponse toFindAllCelebResponse(Celeb celeb) {
+        return new FindAllCelebResponse(
+                celeb.id(),
+                celeb.name(),
+                celeb.youtubeId(),
+                celeb.subscriberCount(),
+                celeb.profileImageUrl()
+        );
     }
 }

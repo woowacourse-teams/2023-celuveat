@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.celeb;
+package com.celuveat.celuveat.celeb.domain;
 
 import lombok.Builder;
 

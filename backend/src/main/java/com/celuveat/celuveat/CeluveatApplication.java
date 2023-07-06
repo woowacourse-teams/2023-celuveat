@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CeluveatApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CeluveatApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CeluveatApplication.class, args);
+    }
 
 }

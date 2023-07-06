@@ -1,18 +1,18 @@
-package com.celuveat.celuveat.video;
+package com.celuveat.celuveat.celeb.exception;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
-public enum VideoExceptionType implements BaseExceptionType {
+public enum CelebExceptionType implements BaseExceptionType {
 
-    NOT_FOUND_VIDEO(300, HttpStatus.NOT_FOUND, "영상을 찾을 수 없습니다"),
+    NOT_FOUND_CELEB(100, HttpStatus.NOT_FOUND, "셀럽을 찾을 수 없습니다"),
     ;
 
     private final int errorCode;
     private final HttpStatus httpStatus;
     private final String errorMessage;
 
-    VideoExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
+    CelebExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMessage = errorMessage;
