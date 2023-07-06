@@ -1,12 +1,14 @@
-package com.celuveat.celuveat.restaurant;
+package com.celuveat.celuveat.restaurant.infra.persistence;
 
-import static com.celuveat.celuveat.restaurant.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
+import static com.celuveat.celuveat.restaurant.exception.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
 import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.common.annotation.DaoTest;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
+import com.celuveat.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.celuveat.restaurant.exception.RestaurantException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;

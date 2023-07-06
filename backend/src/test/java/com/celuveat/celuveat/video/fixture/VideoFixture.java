@@ -1,6 +1,6 @@
 package com.celuveat.celuveat.video.fixture;
 
-import com.celuveat.celuveat.video.Video;
+import com.celuveat.celuveat.video.domain.Video;
 import java.time.LocalDateTime;
 
 public class VideoFixture {

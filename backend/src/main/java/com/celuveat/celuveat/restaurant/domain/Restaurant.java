@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.restaurant;
+package com.celuveat.celuveat.restaurant.domain;
 
 import lombok.Builder;
 

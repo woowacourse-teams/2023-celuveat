@@ -1,16 +1,18 @@
-package com.celuveat.celuveat.video;
+package com.celuveat.celuveat.video.infra.persistence;
 
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
-import static com.celuveat.celuveat.video.VideoExceptionType.NOT_FOUND_VIDEO;
+import static com.celuveat.celuveat.video.exception.VideoExceptionType.NOT_FOUND_VIDEO;
 import static com.celuveat.celuveat.video.fixture.VideoFixture.영상;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.celuveat.celuveat.celeb.CelebDao;
+import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
 import com.celuveat.celuveat.common.annotation.DaoTest;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
-import com.celuveat.celuveat.restaurant.RestaurantDao;
+import com.celuveat.celuveat.restaurant.infra.persistence.RestaurantDao;
+import com.celuveat.celuveat.video.domain.Video;
+import com.celuveat.celuveat.video.exception.VideoException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;

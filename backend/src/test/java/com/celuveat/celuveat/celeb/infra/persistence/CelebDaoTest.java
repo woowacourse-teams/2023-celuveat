@@ -1,11 +1,13 @@
-package com.celuveat.celuveat.celeb;
+package com.celuveat.celuveat.celeb.infra.persistence;
 
-import static com.celuveat.celuveat.celeb.CelebExceptionType.NOT_FOUND_CELEB;
+import static com.celuveat.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 
+import com.celuveat.celuveat.celeb.domain.Celeb;
+import com.celuveat.celuveat.celeb.exception.CelebException;
 import com.celuveat.celuveat.common.annotation.DaoTest;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.DisplayName;

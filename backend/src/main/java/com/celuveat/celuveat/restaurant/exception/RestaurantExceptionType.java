@@ -1,18 +1,18 @@
-package com.celuveat.celuveat.celeb;
+package com.celuveat.celuveat.restaurant.exception;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
-public enum CelebExceptionType implements BaseExceptionType {
+public enum RestaurantExceptionType implements BaseExceptionType {
 
-    NOT_FOUND_CELEB(100, HttpStatus.NOT_FOUND, "셀럽을 찾을 수 없습니다"),
+    NOT_FOUND_RESTAURANT(200, HttpStatus.NOT_FOUND, "음식점을 찾을 수 없습니다"),
     ;
 
     private final int errorCode;
     private final HttpStatus httpStatus;
     private final String errorMessage;
 
-    CelebExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
+    RestaurantExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMessage = errorMessage;

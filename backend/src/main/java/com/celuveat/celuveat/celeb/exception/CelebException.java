@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.celeb;
+package com.celuveat.celuveat.celeb.exception;
 
 import com.celuveat.celuveat.common.exception.BaseException;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;

@@ -1,8 +1,10 @@
-package com.celuveat.celuveat.restaurant;
+package com.celuveat.celuveat.video.infra.persistence;
 
-import static com.celuveat.celuveat.restaurant.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
+import static com.celuveat.celuveat.video.exception.VideoExceptionType.NOT_FOUND_VIDEO;
 
 import com.celuveat.celuveat.common.annotation.Dao;
+import com.celuveat.celuveat.video.domain.Video;
+import com.celuveat.celuveat.video.exception.VideoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,36 +14,36 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 @Dao
-public class RestaurantDao {
+public class VideoDao {
 
-    private static final RowMapper<Restaurant> mapper = new DataClassRowMapper<>(Restaurant.class);
+    private static final RowMapper<Video> mapper = new DataClassRowMapper<>(Video.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
-    public RestaurantDao(JdbcTemplate jdbcTemplate) {
+    public VideoDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("restaurant")
+                .withTableName("video")
                 .usingGeneratedKeyColumns("id");
     }
 
-    public Long save(Restaurant restaurant) {
-        SqlParameterSource source = new BeanPropertySqlParameterSource(restaurant);
+    public Long save(Video video) {
+        SqlParameterSource source = new BeanPropertySqlParameterSource(video);
         return simpleJdbcInsert.executeAndReturnKey(source)
                 .longValue();
     }
 
-    public Restaurant getById(Long id) {
+    public Video getById(Long id) {
         String sql = """
-                SELECT *
-                FROM restaurant
+                SELECT * 
+                FROM video
                 WHERE id = ?
                 """;
         try {
             return jdbcTemplate.queryForObject(sql, mapper, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RestaurantException(NOT_FOUND_RESTAURANT);
+            throw new VideoException(NOT_FOUND_VIDEO);
         }
     }
 }
