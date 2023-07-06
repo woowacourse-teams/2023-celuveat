@@ -33,52 +33,42 @@ const baseCSS = css`
     --white: #fff;
 
     --shadow: 0 1px 16px 0 rgba(66, 66, 66, 0.1);
-
-    --padding-small: 4px;
-    --padding-medium: 8px;
-    --padding-large: 16px;
-
-    --font-x-small: 0.8rem;
-    --font-small: 1.2rem;
-    --font-medium: 1.6rem;
-    --font-large: 2rem;
   }
 
   * {
     color: #424242;
-    font-family: Roboto, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-      'Segoe UI Symbol';
+    font-family: 'SUIT-Regular', 'Roboto', system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol';
     font-weight: 400;
+  }
+
+  html {
     font-size: 62.5%;
   }
 
-  body {
-    font-size: 1.6rem;
-  }
-
   h1 {
-    font-size: 40px;
-    font-weight: bold;
+    font-family: 'SUIT-Bold';
+    font-size: 4rem;
   }
 
   h2 {
-    font-size: 32px;
-    font-weight: bold;
+    font-family: 'SUIT-Bold';
+    font-size: 3.2rem;
   }
 
   h3 {
-    font-size: 28px;
-    font-weight: bold;
+    font-family: 'SUIT-Bold';
+    font-size: 2.8rem;
   }
 
   h4 {
-    font-size: 24px;
-    font-weight: bold;
+    font-family: 'SUIT-Bold';
+    font-size: 2.4rem;
   }
 
   h5 {
-    font-size: 20px;
-    font-weight: bold;
+    font-family: 'SUIT-Bold';
+    font-size: 2rem;
   }
 `;
 
