@@ -1,7 +1,21 @@
 {
   "presets": [
-    ["@babel/preset-env", { "targets": { "browsers": ["last 2 versions", ">= 5% in KR"] } }],
-    "@babel/react",
+    [
+      "@babel/preset-env",
+      {
+        "targets": { "browsers": ["last 2 versions", ">= 5% in KR"] },
+        "useBuiltIns": "usage", // 폴리필 사용 방식 지정
+        "corejs": {
+          "version": 3 // 폴리필 버전 지정
+        }
+      }
+    ],
+    [
+      "@babel/react",
+      {
+        "runtime": "automatic"
+      }
+    ],
     "@babel/preset-typescript"
   ],
   "plugins": [
