@@ -35,6 +35,14 @@ module.exports = {
           filename: 'images/[name].[ext]',
         },
       },
+      {
+        // 폰트 로더
+        test: /\.(woff|woff2|eot|ttf|otf)?$/,
+        type: 'asset',
+        generator: {
+          filename: 'fonts/[name].[ext]',
+        },
+      },
     ],
   },
   plugins: [
