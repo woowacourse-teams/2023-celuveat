@@ -2,12 +2,12 @@ import { styled } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
 function Label() {
-  return <StyleDiv>유료광고</StyleDiv>;
+  return <StyledDiv>유료광고</StyledDiv>;
 }
 
 export default Label;
 
-const StyleDiv = styled.div`
+const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
