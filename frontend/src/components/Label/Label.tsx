@@ -1,8 +1,12 @@
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
-function Label() {
-  return <StyledDiv>유료광고</StyledDiv>;
+interface LabelProps {
+  text: string;
+}
+
+function Label({ text }: LabelProps) {
+  return <StyledDiv>{text}</StyledDiv>;
 }
 
 export default Label;
