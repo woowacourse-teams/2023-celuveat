@@ -6,3 +6,10 @@ export const FONT_SIZE = {
   md: '1.6rem',
   lg: '2.0rem',
 };
+
+export const BORDER_RADIUS = {
+  xs: '4px',
+  sm: '8px',
+  md: '12px',
+  lg: '16px',
+};

@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { FONT_SIZE } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 function Label() {
   return <StyledDiv>유료광고</StyledDiv>;
@@ -15,7 +15,7 @@ const StyledDiv = styled.div`
   width: 38px;
   height: 14px;
 
-  border-radius: 5px;
+  border-radius: ${BORDER_RADIUS.xs};
 
   color: var(--primary-6);
   font-size: ${FONT_SIZE.xs};
