@@ -2,7 +2,7 @@ package com.celuveat.celuveat.video.infra.persistence;
 
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
-import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.맥도날드;
 import static com.celuveat.celuveat.video.fixture.VideoFixture.toFindAllVideoByRestaurantIdResponse;
 import static com.celuveat.celuveat.video.fixture.VideoFixture.영상;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +45,7 @@ class VideoQueryDaoTest {
         Celeb 성시경 = 성시경();
         Long 히밥_ID = celebDao.save(히밥);
         Long 성시경_ID = celebDao.save(성시경);
-        Long 음식점_ID = restaurantDao.save(음식점());
+        Long 음식점_ID = restaurantDao.save(맥도날드());
         Video 히밥_영샹 = 영상(히밥_ID, 음식점_ID);
         Video 성시경_영상 = 영상(성시경_ID, 음식점_ID);
         videoDao.save(히밥_영샹);

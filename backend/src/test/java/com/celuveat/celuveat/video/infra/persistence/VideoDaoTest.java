@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.video.infra.persistence;
 
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
-import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.맥도날드;
 import static com.celuveat.celuveat.video.exception.VideoExceptionType.NOT_FOUND_VIDEO;
 import static com.celuveat.celuveat.video.fixture.VideoFixture.영상;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,7 +38,7 @@ class VideoDaoTest {
     void 영상을_저장한다() {
         // given
         Long 히밥_id = celebDao.save(히밥());
-        Long 맛집_id = restaurantDao.save(음식점());
+        Long 맛집_id = restaurantDao.save(맥도날드());
 
         Video 영상 = 영상(히밥_id, 맛집_id);
 
@@ -53,7 +53,7 @@ class VideoDaoTest {
     void ID로_영상을_찾는다() {
         // given
         Long 히밥_id = celebDao.save(히밥());
-        Long 맛집_id = restaurantDao.save(음식점());
+        Long 맛집_id = restaurantDao.save(맥도날드());
 
         Video 영상 = 영상(히밥_id, 맛집_id);
         Long savedId = videoDao.save(영상);
