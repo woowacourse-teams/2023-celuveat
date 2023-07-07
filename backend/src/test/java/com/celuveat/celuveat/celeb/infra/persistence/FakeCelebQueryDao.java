@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FakeCelebDao extends CelebQueryDao {
+public class FakeCelebQueryDao extends CelebQueryDao {
 
     private final Map<Long, Celeb> store = new HashMap<>();
     private long id = 1L;
 
-    public FakeCelebDao() {
+    public FakeCelebQueryDao() {
         super(null);
     }
 

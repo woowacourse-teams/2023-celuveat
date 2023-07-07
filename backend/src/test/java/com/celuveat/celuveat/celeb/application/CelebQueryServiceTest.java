@@ -6,7 +6,7 @@ import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
-import com.celuveat.celuveat.celeb.infra.persistence.FakeCelebDao;
+import com.celuveat.celuveat.celeb.infra.persistence.FakeCelebQueryDao;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +19,13 @@ import org.junit.jupiter.api.Test;
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class CelebQueryServiceTest {
 
-    private final FakeCelebDao fakeCelebDao = new FakeCelebDao();
-    private final CelebQueryService celebQueryService = new CelebQueryService(fakeCelebDao);
+    private final FakeCelebQueryDao fakeCelebQueryDao = new FakeCelebQueryDao();
+    private final CelebQueryService celebQueryService = new CelebQueryService(fakeCelebQueryDao);
 
     @BeforeEach
     void setUp() {
-        fakeCelebDao.save(히밥());
-        fakeCelebDao.save(성시경());
+        fakeCelebQueryDao.save(히밥());
+        fakeCelebQueryDao.save(성시경());
     }
 
     @Test
