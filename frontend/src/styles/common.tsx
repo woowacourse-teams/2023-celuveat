@@ -13,3 +13,12 @@ export const BORDER_RADIUS = {
   md: '12px',
   lg: '16px',
 };
+
+export const truncateText = (numberOfLine: number) =>
+  `
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${numberOfLine};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  `;
