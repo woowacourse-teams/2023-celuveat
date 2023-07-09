@@ -61,7 +61,7 @@ const StyledImage = styled.img`
 const StyledInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 8px 0;
 
   width: 100%;
   flex: 1;
@@ -90,18 +90,16 @@ const StyledRestaurantName = styled.span`
 
 const StyledRightSide = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 0 4px;
 `;
 
 const StyledRating = styled.span`
   font-size: ${FONT_SIZE.md};
-  font-weight: normal;
 `;
 
 const StyledReviewCount = styled.span`
   color: var(--gray-3);
   font-size: ${FONT_SIZE.md};
-  font-weight: normal;
 `;
 
 const StyledAddress = styled.span`
