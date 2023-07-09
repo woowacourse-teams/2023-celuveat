@@ -10,8 +10,12 @@ interface RestaurantCardProps {
   category: string;
   rating: string;
   reviewCount: number;
-  isAds: boolean;
+  isAds?: boolean;
 }
+
+RestaurantCard.defaultProps = {
+  isAds: false,
+};
 
 function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount, isAds }: RestaurantCardProps) {
   return (
