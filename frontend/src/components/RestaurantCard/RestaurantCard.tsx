@@ -21,28 +21,28 @@ function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount
   const filteredReviewCount = reviewCount > 999 ? '999+' : String(reviewCount);
 
   return (
-    <StyledDiv>
+    <StyledContainer>
       <StyledImage src={imageUrl} />
       <StyledInfo>
-        {isAds && <Label text="유료광고" />}
+        <StyledLabelSection>{isAds && <Label text="유료광고" />}</StyledLabelSection>
         <StyledRestaurantNameSection>
           <StyledRestaurantName>{name}</StyledRestaurantName>
-          <StyledRestaurantName>
+          <StyledRightSide>
             <Star />
             <StyledRating>{rating}</StyledRating>
             <StyledReviewCount>({filteredReviewCount})</StyledReviewCount>
-          </StyledRestaurantName>
+          </StyledRightSide>
         </StyledRestaurantNameSection>
         <StyledAddress>{address}</StyledAddress>
         <StyledCategory>{category}</StyledCategory>
       </StyledInfo>
-    </StyledDiv>
+    </StyledContainer>
   );
 }
 
 export default RestaurantCard;
 
-const StyledDiv = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
@@ -71,6 +71,10 @@ const StyledInfo = styled.div`
   box-sizing: border-box;
 `;
 
+const StyledLabelSection = styled.div`
+  height: 14px;
+`;
+
 const StyledRestaurantNameSection = styled.div`
   display: flex;
   justify-content: space-between;
@@ -84,9 +88,12 @@ const StyledRestaurantName = styled.span`
   font-weight: bold;
 `;
 
-const StyledRating = styled.span`
-  margin: 0 4px;
+const StyledRightSide = styled.div`
+  display: flex;
+  gap: 4px;
+`;
 
+const StyledRating = styled.span`
   font-size: ${FONT_SIZE.md};
   font-weight: normal;
 `;
