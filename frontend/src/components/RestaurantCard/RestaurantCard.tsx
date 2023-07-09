@@ -22,7 +22,7 @@ function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount
 
   return (
     <StyledContainer>
-      <StyledImage src={imageUrl} />
+      <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
       <StyledInfo>
         <StyledLabelSection>{isAds && <Label text="유료광고" />}</StyledLabelSection>
         <StyledRestaurantNameSection>
