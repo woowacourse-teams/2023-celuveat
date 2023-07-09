@@ -18,6 +18,8 @@ RestaurantCard.defaultProps = {
 };
 
 function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount, isAds }: RestaurantCardProps) {
+  const filteredReviewCount = reviewCount > 999 ? '999+' : String(reviewCount);
+
   return (
     <StyledDiv>
       <StyledImage src={imageUrl} />
@@ -28,7 +30,7 @@ function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount
           <StyledRestaurantName>
             <Star />
             <StyledRating>{rating}</StyledRating>
-            <StyledReviewCount>({reviewCount})</StyledReviewCount>
+            <StyledReviewCount>({filteredReviewCount})</StyledReviewCount>
           </StyledRestaurantName>
         </StyledRestaurantNameSection>
         <StyledAddress>{address}</StyledAddress>
