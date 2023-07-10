@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import { styled } from 'styled-components';
 import Label from '~/components/@common/Label';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
@@ -12,10 +13,6 @@ interface RestaurantCardProps {
   reviewCount: number;
   isAds?: boolean;
 }
-
-RestaurantCard.defaultProps = {
-  isAds: false,
-};
 
 function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount, isAds }: RestaurantCardProps) {
   const filteredReviewCount = reviewCount > 999 ? '999+' : String(reviewCount);
