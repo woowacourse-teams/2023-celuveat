@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
 
-public class MockYouTubeDataApiImpl implements YouTubeDataApi {
+public class MockYouTubeDataApi extends YouTubeDataApi {
 
     private static final String FILE_PATH = "youtube/search/tzuyang/tzuyang%s.json";
     private static final Map<String, String> TOKEN_BY_FILENAME = Map.of(
@@ -27,7 +27,8 @@ public class MockYouTubeDataApiImpl implements YouTubeDataApi {
 
     private final Map<String, SearchListResponse> responses = new HashMap<>();
 
-    public MockYouTubeDataApiImpl() {
+    public MockYouTubeDataApi() {
+        super(null, null);
         loadData();
     }
 

@@ -10,16 +10,16 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-@DisplayName("YouTubeDataApiImpl 은(는)")
+@DisplayName("YouTubeDataApi 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class YouTubeDataApiImplTest {
+class YouTubeDataApiTest {
 
     @Test
     @Disabled
     void 실제_서버에서_데이터를_가져올수있다() {
         // given
-        YouTubeDataApiImpl youTubeDataApi = new YouTubeDataApiImpl("secret_key", new RestTemplate());
+        YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
 
         // when
         SearchListResponse result = youTubeDataApi.searchList("UCfpaSruWW3S4dibonKXENjA");
@@ -32,7 +32,7 @@ class YouTubeDataApiImplTest {
     @Disabled
     void 실제_서버에서_페이지_토큰으로_다음_응답을_가져올수있다() {
         // given
-        YouTubeDataApiImpl youTubeDataApi = new YouTubeDataApiImpl("secret_key", new RestTemplate());
+        YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
         SearchListResponse response = youTubeDataApi.searchList("UCfpaSruWW3S4dibonKXENjA");
         String nextPageToken = response.nextPageToken();
 
