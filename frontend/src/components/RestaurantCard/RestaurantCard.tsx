@@ -47,13 +47,13 @@ const StyledContainer = styled.div`
   justify-content: start;
   flex-direction: column;
 
-  width: 30.1rem;
-  height: 28.7rem;
+  width: 301px;
+  height: 287px;
 `;
 
 const StyledImage = styled.img`
   width: 100%;
-  height: 19.2rem;
+  height: 192px;
 
   border-radius: ${BORDER_RADIUS.sm};
 `;
@@ -61,7 +61,7 @@ const StyledImage = styled.img`
 const StyledInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem 0;
+  gap: 8px 0;
 
   width: 100%;
   flex: 1;
@@ -70,7 +70,7 @@ const StyledInfo = styled.div`
 `;
 
 const StyledLabelSection = styled.div`
-  height: 1.4rem;
+  height: 14px;
 `;
 
 const StyledRestaurantNameSection = styled.div`
@@ -88,7 +88,7 @@ const StyledRestaurantName = styled.span`
 
 const StyledRightSide = styled.div`
   display: flex;
-  gap: 0 0.4rem;
+  gap: 0 4px;
 `;
 
 const StyledRating = styled.span`

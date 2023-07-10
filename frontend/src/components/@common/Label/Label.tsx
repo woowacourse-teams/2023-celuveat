@@ -16,8 +16,8 @@ const StyledDiv = styled.div`
   justify-content: center;
   align-items: center;
 
-  width: 3.8rem;
-  height: 1.4rem;
+  width: 38px;
+  height: 14px;
 
   border-radius: ${BORDER_RADIUS.xs};
 
