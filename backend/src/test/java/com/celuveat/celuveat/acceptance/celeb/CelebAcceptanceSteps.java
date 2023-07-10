@@ -1,26 +1,24 @@
 package com.celuveat.celuveat.acceptance.celeb;
 
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
-import static com.celuveat.celuveat.celeb.fixture.CelebFixture.toFindAllCelebResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
 import com.celuveat.celuveat.celeb.domain.Celeb;
+import com.celuveat.celuveat.celeb.fixture.CelebFixture;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class CelebAcceptanceSteps {
 
     public static List<FindAllCelebResponse> 예상되는_전체_셀럽_조회_응답(Celeb... 셀럽들) {
-        List<FindAllCelebResponse> celebs = new ArrayList<>();
-        for (Celeb celeb : 셀럽들) {
-            celebs.add(toFindAllCelebResponse(celeb));
-        }
-        return celebs;
+        return Arrays.stream(셀럽들)
+                .map(CelebFixture::toFindAllCelebResponse)
+                .toList();
     }
 
     public static ExtractableResponse<Response> 전체_셀럽_조회_요청() {
