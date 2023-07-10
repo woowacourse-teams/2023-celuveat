@@ -10,12 +10,13 @@ import org.springframework.web.client.RestTemplate;
 public class YouTubeDataApiImpl implements YouTubeDataApi {
 
     private final String apiKey;
+    private final RestTemplate restTemplate;
 
     @Override
     public SearchListResponse searchList(String channelId) {
         URI uri = SearchURI.builder(apiKey, channelId)
                 .build();
-        return new RestTemplate().getForObject(uri, SearchListResponse.class);
+        return restTemplate.getForObject(uri, SearchListResponse.class);
     }
 
     @Override
@@ -23,6 +24,6 @@ public class YouTubeDataApiImpl implements YouTubeDataApi {
         URI uri = SearchURI.builder(apiKey, channelId)
                 .pageToken(pageToken)
                 .build();
-        return new RestTemplate().getForObject(uri, SearchListResponse.class);
+        return restTemplate.getForObject(uri, SearchListResponse.class);
     }
 }
