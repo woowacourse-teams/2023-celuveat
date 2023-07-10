@@ -2,6 +2,7 @@ package com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube;
 
 import com.celuveat.celuveat.restaurantlinkfetcher.domain.RestaurantLinkFetcher;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.api.YouTubeDataApi;
+import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.Item;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.SearchListResponse;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -51,15 +52,16 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
 
     private List<String> getAfterVideoIds(SearchListResponse response, LocalDateTime startDateTime) {
         return response.items().stream()
-                .filter(item -> parse(item.snippet().publishedAt()).isAfter(startDateTime))
+                .filter(item -> getPublishedAt(item).isAfter(startDateTime))
                 .map(item -> item.id().videoId())
                 .toList();
     }
 
-    private LocalDateTime parse(String isoDate) {
+    private LocalDateTime getPublishedAt(Item item) {
+        String publishedAt = item.snippet().publishedAt();
         return LocalDateTime.from(
                 Instant.from(
-                        DateTimeFormatter.ISO_DATE_TIME.parse(isoDate)
+                        DateTimeFormatter.ISO_DATE_TIME.parse(publishedAt)
                 ).atZone(ZoneId.of("Asia/Seoul"))
         );
     }
