@@ -30,6 +30,7 @@
     "@storybook/react": "^7.0.25",
     "@storybook/react-webpack5": "^7.0.25",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "@svgr/webpack": "^8.0.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/styled-components": "^5.1.26",
