@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
-import { Option } from '~/@types/utils.types';
+import type { Option } from '~/@types/utils.types';
 import useSearchBarRef from '~/components/@common/Searchbar/hooks/useSearchbarRef';
 import SearchbarSelectBox from '~/components/@common/Searchbar/SearchbarSelectBox';
 import SearchbarInput from '~/components/@common/Searchbar/SearchbarInput';

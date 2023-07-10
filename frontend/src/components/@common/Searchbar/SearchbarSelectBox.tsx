@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import styled from 'styled-components';
-import { Option } from '~/@types/utils.types';
+import type { Option } from '~/@types/utils.types';
 
 interface SearchbarSelectBoxProps {
   options: Option[];

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Option } from '~/@types/utils.types';
+import type { Option } from '~/@types/utils.types';
 import SearchbarDropDown from './SearchbarDropDown';
 
 const defaultOptions: Option[] = [
