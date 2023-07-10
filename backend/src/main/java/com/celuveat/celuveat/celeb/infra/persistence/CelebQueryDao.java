@@ -19,8 +19,13 @@ public class CelebQueryDao {
 
     public List<FindAllCelebResponse> findAll() {
         String sql = """
-                SELECT * 
-                FROM celeb
+                SELECT 
+                  c.id as id,
+                  c.name as name,
+                  c.youtube_channel_name as youtubeId,
+                  c.subscriber_count as subscriberCount,
+                  c.profile_image_url as profileImageUrl
+                FROM celeb as c
                 """;
         return jdbcTemplate.query(sql, findAllCelebResponseRowMapper);
     }

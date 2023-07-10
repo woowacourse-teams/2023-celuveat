@@ -54,7 +54,7 @@ class CelebQueryDaoTest {
         return new FindAllCelebResponse(
                 celeb.id(),
                 celeb.name(),
-                celeb.youtubeId(),
+                celeb.youtubeChannelName(),
                 celeb.subscriberCount(),
                 celeb.profileImageUrl()
         );
