@@ -21,8 +21,8 @@ class YouTubeRestaurantLinkFetcherTest {
     @Test
     void 한_채널의_모든_영상들의_링크를_반환한다() {
         // given
-        RestaurantLinkFetcher restaurantLinkFetcher = new YouTubeRestaurantLinkFetcher(
-                new MockYouTubeDataApiImpl());
+        RestaurantLinkFetcher restaurantLinkFetcher =
+                new YouTubeRestaurantLinkFetcher(new MockYouTubeDataApiImpl());
 
         // when
         List<String> videoIds = restaurantLinkFetcher.fetchAllByChannelId("a");
@@ -35,8 +35,8 @@ class YouTubeRestaurantLinkFetcherTest {
     @CsvSource({"2, 21, 60", "3, 19, 50", "4, 10, 40", "5, 7, 30"})
     void 지정한_시간_이후의_모든_영상들의_링크를_반환한다(int month, int day, int expected) {
         // given
-        RestaurantLinkFetcher restaurantLinkFetcher = new YouTubeRestaurantLinkFetcher(
-                new MockYouTubeDataApiImpl());
+        RestaurantLinkFetcher restaurantLinkFetcher =
+                new YouTubeRestaurantLinkFetcher(new MockYouTubeDataApiImpl());
         LocalDateTime startDateTime = LocalDateTime.of(2023, month, day, 21, 0, 0);
         
         // when
@@ -49,8 +49,8 @@ class YouTubeRestaurantLinkFetcherTest {
     @Test
     void 지정한_시간이_아주_작으면_모든_영상들의_링크를_반환한다() {
         // given
-        RestaurantLinkFetcher restaurantLinkFetcher = new YouTubeRestaurantLinkFetcher(
-                new MockYouTubeDataApiImpl());
+        RestaurantLinkFetcher restaurantLinkFetcher =
+                new YouTubeRestaurantLinkFetcher(new MockYouTubeDataApiImpl());
 
         // when
         List<String> result = restaurantLinkFetcher.fetchNewByChannelId("a", LocalDateTime.MIN);
@@ -62,8 +62,8 @@ class YouTubeRestaurantLinkFetcherTest {
     @Test
     void 지정한_시간이_아주_크면_아무_영상도_반환하지_않는다() {
         // given
-        RestaurantLinkFetcher restaurantLinkFetcher = new YouTubeRestaurantLinkFetcher(
-                new MockYouTubeDataApiImpl());
+        RestaurantLinkFetcher restaurantLinkFetcher =
+                new YouTubeRestaurantLinkFetcher(new MockYouTubeDataApiImpl());
 
         // when
         List<String> result = restaurantLinkFetcher.fetchNewByChannelId("a", LocalDateTime.MAX);
