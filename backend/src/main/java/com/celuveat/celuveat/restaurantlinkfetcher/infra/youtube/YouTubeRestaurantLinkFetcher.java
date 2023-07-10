@@ -21,7 +21,7 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     public List<String> fetchAllByChannelId(String channelId) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
         List<String> videoIds = new ArrayList<>(getVideoIds(response));
-        return fetchAllByChannelId(channelId, response.nextPageToken(), videoIds);
+        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
     }
 
     private List<String> getVideoIds(SearchListResponse response) {
@@ -30,13 +30,13 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
                 .toList();
     }
 
-    private List<String> fetchAllByChannelId(String channelId, String nextPageToken, List<String> videoIds) {
+    private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> videoIds) {
         if (nextPageToken == null) {
             return videoIds;
         }
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
         videoIds.addAll(getVideoIds(response));
-        return fetchAllByChannelId(channelId, response.nextPageToken(), videoIds);
+        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
             return videoIds;
         }
         List<String> result = new ArrayList<>(videoIds);
-        return fetchNewByChannelId(channelId, startDateTime, response.nextPageToken(), result);
+        return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
     }
 
     private List<String> getAfterVideoIds(SearchListResponse response, LocalDateTime startDateTime) {
@@ -70,7 +70,7 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
         return response.items().size() > videoIds.size();
     }
 
-    private List<String> fetchNewByChannelId(
+    private List<String> fetchMoreNewVideoIdsIfExist(
             String channelId,
             LocalDateTime startDateTime,
             String nextPageToken,
@@ -85,6 +85,6 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
         if (hasBeforeItem(response, videoIds)) {
             return result;
         }
-        return fetchNewByChannelId(channelId, startDateTime, response.nextPageToken(), result);
+        return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
     }
 }
