@@ -13,14 +13,17 @@ CREATE TABLE celeb
 
 CREATE TABLE restaurant
 (
-    id           BIGINT PRIMARY KEY AUTO_INCREMENT,
-    image_url    VARCHAR(511) NOT NULL,
-    name         VARCHAR(255) NOT NULL,
-    address      VARCHAR(255) NOT NULL,
-    category     VARCHAR(255) NOT NULL,
-    rating       VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(255) NOT NULL,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
+    image_url          VARCHAR(511) NOT NULL,
+    name               VARCHAR(255) NOT NULL,
+    category           VARCHAR(255) NOT NULL,
+    road_address       VARCHAR(255) NOT NULL,
+    address_lot_number VARCHAR(255) NOT NULL,
+    zipCode            VARCHAR(15)  NOT NULL,
+    latitude           VARCHAR(255) NOT NULL,
+    longitude          VARCHAR(255) NOT NULL,
+    phone_number       VARCHAR(255) NOT NULL,
+    created_date       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE video
