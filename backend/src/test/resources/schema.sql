@@ -35,10 +35,21 @@ CREATE TABLE video
     url           VARCHAR(511) NOT NULL,
     thumbnail_url VARCHAR(511) NOT NULL,
     view_count    INT          NOT NULL,
-    url           VARCHAR(511) NOT NULL,
-    thumbnail_url VARCHAR(511) NOT NULL,
     upload_date   TIMESTAMP    NOT NULL,
     created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
+);
+
+CREATE TABLE video_history
+(
+    id            BIGINT PRIMARY KEY AUTO_INCREMENT,
+    celeb_id      BIGINT       NOT NULL,
+    title         VARCHAR(255) NOT NULL,
+    url           VARCHAR(511) NOT NULL,
+    thumbnail_url VARCHAR(511) NOT NULL,
+    view_count    INT          NOT NULL,
+    upload_date   TIMESTAMP    NOT NULL,
+    created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );
