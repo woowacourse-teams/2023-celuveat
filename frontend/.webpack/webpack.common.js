@@ -3,6 +3,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+
 module.exports = {
   entry: ['./src/index.tsx'],
   output: {
@@ -54,5 +60,9 @@ module.exports = {
       filename: 'index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
+    new InterpolateHtmlPlugin({ KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY }),
   ],
 };
