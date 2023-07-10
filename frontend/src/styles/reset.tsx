@@ -103,6 +103,7 @@ const resetCSS = css`
     display: block;
   }
   body {
+    margin: 0;
     line-height: 1;
   }
   ol,
