@@ -9,8 +9,9 @@ public record Video(
         Long celebId,
         Long restaurantId,
         String title,
+        String url,
+        String thumbnailUrl,
         int viewCount,
-        String videoUrl,
-        LocalDateTime publishedDate
+        LocalDateTime uploadDate
 ) {
 }
