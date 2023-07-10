@@ -8,18 +8,18 @@ interface SearchbarSelectBoxProps {
 }
 
 const SearchbarSelectBox = forwardRef<HTMLUListElement, SearchbarSelectBoxProps>(({ options, onClickEvent }, ref) => (
-  <SearchbarTags ref={ref}>
+  <StyledSearchbarTags ref={ref}>
     {options.map(option => (
-      <SearchBarTag key={option.key} value={option.value} onClick={onClickEvent(option)}>
+      <StyledSearchBarTag key={option.key} value={option.value} onClick={onClickEvent(option)}>
         {option.value}
-      </SearchBarTag>
+      </StyledSearchBarTag>
     ))}
-  </SearchbarTags>
+  </StyledSearchbarTags>
 ));
 
 export default SearchbarSelectBox;
 
-const SearchbarTags = styled.ul`
+const StyledSearchbarTags = styled.ul`
   border-radius: 16px;
 
   width: 741px;
@@ -31,7 +31,7 @@ const SearchbarTags = styled.ul`
   box-shadow: var(--shadow);
 `;
 
-const SearchBarTag = styled.li`
+const StyledSearchBarTag = styled.li`
   display: block;
 
   padding: 1.1rem 1.1rem;
