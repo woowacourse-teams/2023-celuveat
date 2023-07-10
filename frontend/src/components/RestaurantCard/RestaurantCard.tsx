@@ -67,8 +67,6 @@ const StyledInfo = styled.div`
   flex: 1;
 
   padding: 4px;
-
-  box-sizing: border-box;
 `;
 
 const StyledLabelSection = styled.div`
