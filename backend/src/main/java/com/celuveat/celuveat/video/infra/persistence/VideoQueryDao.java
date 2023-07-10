@@ -24,6 +24,7 @@ public class VideoQueryDao {
                     v.title, 
                     v.view_count, 
                     v.url as video_url, 
+                    v.thumbnail_url as thumbnail_url, 
                     v.upload_date as published_date, 
                     c.profile_image_url, 
                     c.id as celeb_id, 

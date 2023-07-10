@@ -28,6 +28,7 @@ public class VideoFixture {
                 celeb.name(),
                 video.viewCount(),
                 video.url(),
+                video.thumbnailUrl(),
                 video.uploadDate(),
                 celeb.profileImageUrl()
         );
