@@ -1,30 +1,33 @@
 package com.celuveat.celuveat.celeb.infra.persistence;
 
-import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
-import com.celuveat.celuveat.celeb.domain.Celeb;
-import com.celuveat.celuveat.celeb.fixture.CelebFixture;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static com.celuveat.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
+import static org.mockito.Mockito.mock;
 
-public class FakeCelebDao extends CelebQueryDao {
+import com.celuveat.celuveat.celeb.domain.Celeb;
+import com.celuveat.celuveat.celeb.exception.CelebException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class FakeCelebDao extends CelebDao {
 
     private final Map<Long, Celeb> store = new HashMap<>();
     private long id = 1L;
 
     public FakeCelebDao() {
-        super(null);
+        super(mock(JdbcTemplate.class));
     }
 
+    @Override
     public Long save(Celeb celeb) {
         store.put(id, celeb);
         return id++;
     }
 
     @Override
-    public List<FindAllCelebResponse> findAll() {
-        return store.values().stream()
-                .map(CelebFixture::toFindAllCelebResponse)
-                .toList();
+    public Celeb getById(Long id) {
+        return Optional.ofNullable(store.get(id))
+                .orElseThrow(() -> new CelebException(NOT_FOUND_CELEB));
     }
 }

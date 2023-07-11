@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.restaurant.infra.persistence;
 
 import static com.celuveat.celuveat.restaurant.exception.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
-import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.celuveat.restaurant.fixture.RestaurantFixture.맥도날드;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -27,7 +27,7 @@ class RestaurantDaoTest {
     @Test
     void 음식점을_저장한다() {
         // given
-        Restaurant 맛집 = 음식점();
+        Restaurant 맛집 = 맥도날드();
 
         // when
         Long savedId = restaurantDao.save(맛집);
@@ -39,7 +39,7 @@ class RestaurantDaoTest {
     @Test
     void ID로_음식점을_찾는다() {
         // given
-        Restaurant 맛집 = 음식점();
+        Restaurant 맛집 = 맥도날드();
         Long savedId = restaurantDao.save(맛집);
 
         // when

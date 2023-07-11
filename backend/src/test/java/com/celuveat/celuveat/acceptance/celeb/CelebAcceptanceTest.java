@@ -1,66 +1,35 @@
 package com.celuveat.celuveat.acceptance.celeb;
 
+import static com.celuveat.celuveat.acceptance.celeb.CelebAcceptanceSteps.예상되는_전체_셀럽_조회_응답;
+import static com.celuveat.celuveat.acceptance.celeb.CelebAcceptanceSteps.전체_셀럽_조회_결과를_검증한다;
+import static com.celuveat.celuveat.acceptance.celeb.CelebAcceptanceSteps.전체_셀럽_조회_요청;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.응답_상태를_검증한다;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.정상_처리됨;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
-import com.celuveat.celuveat.celeb.fixture.CelebFixture;
-import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
-import io.restassured.RestAssured;
-import io.restassured.common.mapper.TypeRef;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import com.celuveat.celuveat.acceptance.common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 @DisplayName("Celeb 인수테스트")
 @SuppressWarnings("NonAsciiCharacters")
-@DisplayNameGeneration(ReplaceUnderscores.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class CelebAcceptanceTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private CelebDao celebDao;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
+class CelebAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 모든_셀럽을_조회한다() {
         // given
-        List<FindAllCelebResponse> expected = List.of(
-                CelebFixture.toFindAllCelebResponse(성시경()),
-                CelebFixture.toFindAllCelebResponse(히밥())
-        );
-        celebDao.save(성시경());
-        celebDao.save(히밥());
+        var 성시경 = 성시경();
+        var 히밥 = 히밥();
+        셀럽을_저장한다(성시경);
+        셀럽을_저장한다(히밥);
+        var 예상_셀럽_조회_응답 = 예상되는_전체_셀럽_조회_응답(성시경, 히밥);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when().get("/celebs")
-                .then().log().all()
-                .extract();
+        var 응답 = 전체_셀럽_조회_요청();
 
         // then
-        List<FindAllCelebResponse> responseBody = response.body().as(new TypeRef<>() {
-        });
-        assertThat(responseBody).usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(expected);
+        응답_상태를_검증한다(응답, 정상_처리됨);
+        전체_셀럽_조회_결과를_검증한다(예상_셀럽_조회_응답, 응답);
     }
 }

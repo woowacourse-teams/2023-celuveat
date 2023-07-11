@@ -3,6 +3,7 @@ package com.celuveat.celuveat.celeb.fixture;
 import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
 import com.celuveat.celuveat.celeb.domain.Celeb;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class CelebFixture {
 
     public static Celeb 히밥() {
