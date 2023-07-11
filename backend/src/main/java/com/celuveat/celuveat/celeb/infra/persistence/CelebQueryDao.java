@@ -20,7 +20,7 @@ public class CelebQueryDao {
     public List<FindAllCelebResponse> findAll() {
         String sql = """
                 SELECT *
-                FROM celeb as c
+                FROM celeb
                 """;
         return jdbcTemplate.query(sql, findAllCelebResponseRowMapper);
     }
