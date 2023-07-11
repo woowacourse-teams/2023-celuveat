@@ -11,7 +11,7 @@ module.exports = {
     clean: true,
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', 'json'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', 'json', 'svg'],
   },
   module: {
     rules: [
@@ -36,12 +36,15 @@ module.exports = {
         },
       },
       {
-        // 폰트 로더
         test: /\.(woff|woff2|eot|ttf|otf)?$/,
         type: 'asset',
         generator: {
           filename: 'fonts/[name].[ext]',
         },
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
