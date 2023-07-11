@@ -20,17 +20,17 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     @Override
     public List<String> fetchAllByChannelId(String channelId) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
-        List<String> videoIds = response.videoIds();
-        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
+        List<String> result = response.videoIds();
+        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
     }
 
-    private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> videoIds) {
+    private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> result) {
         if (nextPageToken == null) {
-            return videoIds;
+            return result;
         }
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
-        videoIds.addAll(response.videoIds());
-        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
+        result.addAll(response.videoIds());
+        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
     }
 
     @Override
