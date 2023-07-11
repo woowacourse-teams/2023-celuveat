@@ -20,14 +20,14 @@ public class VideoQueryDao {
     public List<FindAllVideoByRestaurantIdResponse> findAllByRestaurantId(Long restaurantId) {
         String sql = """
                 SELECT 
-                    v.id, 
-                    v.title, 
-                    v.view_count, 
-                    v.url as video_url, 
-                    v.thumbnail_url as thumbnail_url, 
-                    v.upload_date as published_date, 
-                    c.profile_image_url, 
-                    c.id as celeb_id, 
+                    v.id,
+                    v.title,
+                    v.view_count,
+                    v.url as video_url,
+                    v.thumbnail_url,
+                    v.upload_date,
+                    c.profile_image_url,
+                    c.id as celeb_id,
                     c.name as celeb_name
                 FROM video as v
                 JOIN celeb as c
