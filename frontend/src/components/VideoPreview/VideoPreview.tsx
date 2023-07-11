@@ -2,27 +2,45 @@ import { styled } from 'styled-components';
 import ProfileImage from '../@common/ProfileImage';
 import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
 import formatDateToKorean from '~/utils/formatDateToKorean';
+import useBooleanState from '~/hooks/useBooleanState';
 
 interface VideoPreviewProps {
   title: string;
   celebName: string;
   videoUrl: string;
+  thumbnailUrl: string;
   profileImageUrl: string;
-  publishedDate: string;
+  uploadDate: string;
   viewCount: number;
 }
 
-function VideoPreview({ title, celebName, videoUrl, viewCount, publishedDate, profileImageUrl }: VideoPreviewProps) {
+function VideoPreview({
+  title,
+  celebName,
+  videoUrl,
+  thumbnailUrl,
+  viewCount,
+  uploadDate,
+  profileImageUrl,
+}: VideoPreviewProps) {
+  const { value: isClicked, setTrue: setClickTrue } = useBooleanState(false);
+
   return (
     <StyledContainer>
-      <iframe
-        title={title}
-        width="352"
-        height="196"
-        src={videoUrl}
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
+      {isClicked ? (
+        <iframe
+          title={title}
+          width="352"
+          height="196"
+          src={videoUrl}
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <StyledVideoCover type="button" onClick={setClickTrue}>
+          <img alt={`영상 시작 ${title}`} src={thumbnailUrl} />
+        </StyledVideoCover>
+      )}
       <StyledVideoInfo>
         <ProfileImage name={celebName} imageUrl={profileImageUrl} size={38} />
         <StyledTitle>{title}</StyledTitle>
@@ -30,7 +48,7 @@ function VideoPreview({ title, celebName, videoUrl, viewCount, publishedDate, pr
           <div>{celebName}</div>
           <div>
             조회수 {viewCount > 10_000 ? `${viewCount / 10_000}만회` : `${viewCount}회`} ∙ 게시일{' '}
-            {formatDateToKorean(publishedDate)}
+            {formatDateToKorean(uploadDate)}
           </div>
         </StyledViewAndDate>
       </StyledVideoInfo>
@@ -49,6 +67,23 @@ const StyledContainer = styled.div`
 
   & > iframe {
     border-radius: ${BORDER_RADIUS.md};
+  }
+`;
+
+const StyledVideoCover = styled.button`
+  width: 352px;
+  height: 196px;
+
+  border: none;
+  border-radius: ${BORDER_RADIUS.md};
+
+  padding: 0;
+
+  overflow: hidden;
+
+  & > img {
+    width: 100%;
+    object-fit: cover;
   }
 `;
 
