@@ -6,6 +6,20 @@ import com.celuveat.celuveat.restaurant.domain.Restaurant;
 @SuppressWarnings("NonAsciiCharacters")
 public class RestaurantFixture {
 
+    public static Restaurant 음식점(String name) {
+        return Restaurant.builder()
+                .imageUrl("https://" + name + ".com")
+                .name(name)
+                .category(Category.ETC)
+                .roadAddress("서울특별시 도봉구 도봉로 123길 45")
+                .addressLotNumber("서울특별시 도봉구 방학동 12 - 1")
+                .zipCode("14653")
+                .phoneNumber("010-1234-5678")
+                .latitude("126.9103408")
+                .longitude("37.6055959")
+                .build();
+    }
+
     public static Restaurant 교촌치킨() {
         return Restaurant.builder()
                 .imageUrl("https://교촌치킨.com")
