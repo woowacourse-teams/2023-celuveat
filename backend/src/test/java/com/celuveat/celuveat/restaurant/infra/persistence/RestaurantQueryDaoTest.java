@@ -54,17 +54,20 @@ class RestaurantQueryDaoTest {
         히밥_ID = celebDao.save(히밥());
         성시경_ID = celebDao.save(성시경());
         for (int i = 0; i < 히밥이_방문한_음식점_수; i++) {
-            Restaurant 음식점 = 음식점("음식점 " + i);
-            Long id = restaurantDao.save(음식점);
-            videoDao.save(영상(히밥_ID, id));
+            Restaurant 음식점 = 음식점과_영상을_저장하고_음식점을_반환한다(i, 히밥_ID);
             히밥_음식점들.add(음식점);
         }
-        for (int i = 히밥이_방문한_음식점_수; i < 70; i++) {
-            Restaurant 음식점 = 음식점("음식점 " + i);
-            Long id = restaurantDao.save(음식점);
-            videoDao.save(영상(성시경_ID, id));
+        for (int i = 히밥이_방문한_음식점_수; i < 히밥이_방문한_음식점_수 + 5; i++) {
+            Restaurant 음식점 = 음식점과_영상을_저장하고_음식점을_반환한다(i, 성시경_ID);
             성시경_음식점들.add(음식점);
         }
+    }
+
+    private Restaurant 음식점과_영상을_저장하고_음식점을_반환한다(int index, Long 셀럽_ID) {
+        Restaurant 음식점 = 음식점("음식점 " + index);
+        Long id = restaurantDao.save(음식점);
+        videoDao.save(영상(셀럽_ID, id));
+        return 음식점;
     }
 
     @Test
