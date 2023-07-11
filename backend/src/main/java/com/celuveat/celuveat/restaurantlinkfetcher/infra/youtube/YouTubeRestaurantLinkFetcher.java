@@ -33,15 +33,11 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     public List<String> fetchNewByChannelId(String channelId, LocalDateTime startDateTime) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
         List<String> videoIds = response.afterVideoIds(startDateTime);
-        if (hasBeforeItem(response, videoIds)) {
+        if (response.hasBeforeItem(videoIds)) {
             return videoIds;
         }
         List<String> result = new ArrayList<>(videoIds);
         return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
-    }
-
-    private boolean hasBeforeItem(SearchListResponse response, List<String> videoIds) {
-        return response.items().size() > videoIds.size();
     }
 
     private List<String> fetchMoreNewVideoIdsIfExist(
@@ -56,7 +52,7 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
         List<String> videoIds = response.afterVideoIds(startDateTime);
         result.addAll(videoIds);
-        if (hasBeforeItem(response, videoIds)) {
+        if (response.hasBeforeItem(videoIds)) {
             return result;
         }
         return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);

@@ -26,4 +26,8 @@ public record SearchListResponse(
                 .map(item -> item.id().videoId())
                 .collect(Collectors.toList());
     }
+
+    public boolean hasBeforeItem(List<String> videoIds) {
+        return items.size() > videoIds.size();
+    }
 }
