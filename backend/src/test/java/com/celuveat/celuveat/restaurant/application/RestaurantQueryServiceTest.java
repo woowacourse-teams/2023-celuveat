@@ -31,10 +31,10 @@ class RestaurantQueryServiceTest {
         void 음식점을_조회한다() {
             // given
             Restaurant 교촌치킨 = 교촌치킨();
-            Long id = restaurantDao.save(교촌치킨);
+            Long 교촌치킨_ID = restaurantDao.save(교촌치킨);
 
             // when
-            Restaurant result = restaurantQueryService.findById(id);
+            Restaurant result = restaurantQueryService.findById(교촌치킨_ID);
 
             // then
             assertThat(result).isEqualTo(교촌치킨);

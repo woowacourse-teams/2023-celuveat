@@ -10,10 +10,10 @@ import io.restassured.response.Response;
 @SuppressWarnings("NonAsciiCharacters")
 public class RestaurantAcceptanceSteps {
 
-    public static ExtractableResponse<Response> 단일_음식점_조회_요청(Long 미스터피자_ID) {
+    public static ExtractableResponse<Response> 단일_음식점_조회_요청(Long 음식점_ID) {
         return given()
                 .when()
-                .get("/restaurants/{id}", 미스터피자_ID)
+                .get("/restaurants/{id}", 음식점_ID)
                 .then().log().all()
                 .extract();
     }
