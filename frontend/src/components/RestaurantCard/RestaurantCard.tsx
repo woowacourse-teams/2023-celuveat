@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { styled } from 'styled-components';
 import Label from '~/components/@common/Label';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';

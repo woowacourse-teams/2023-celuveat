@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { styled } from 'styled-components';
 
 interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {

@@ -1,6 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/jsx-props-no-spreading */
-
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
