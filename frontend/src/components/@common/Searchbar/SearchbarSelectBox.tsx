@@ -1,33 +1,36 @@
-import { forwardRef } from 'react';
+import { ComponentPropsWithRef, forwardRef } from 'react';
 import styled from 'styled-components';
 import type { Option } from '~/@types/celebs.types';
 import ProfileImage from '~/components/@common/ProfileImage';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
-interface SearchbarSelectBoxProps {
+interface SearchbarSelectBoxProps extends ComponentPropsWithRef<'ul'> {
+  width: number;
   options: Option[];
   onClickEvent: (option: Option) => () => void;
 }
 
-const SearchbarSelectBox = forwardRef<HTMLUListElement, SearchbarSelectBoxProps>(({ options, onClickEvent }, ref) => (
-  <StyledSearchbarTags ref={ref}>
-    {options.map(option => (
-      <StyledSearchBarTag key={option.id} value={option.youtubeChannelName} onClick={onClickEvent(option)}>
-        <ProfileImage name={option.name} imageUrl={option.profileImageUrl} size={36} />
-        <StyledYoutuberName>{option.youtubeChannelName}</StyledYoutuberName>
-      </StyledSearchBarTag>
-    ))}
-  </StyledSearchbarTags>
-));
+const SearchbarSelectBox = forwardRef<HTMLUListElement, SearchbarSelectBoxProps>(
+  ({ options, width, onClickEvent }, ref) => (
+    <StyledSearchbarTags width={width} ref={ref}>
+      {options.map(option => (
+        <StyledSearchBarTag key={option.id} value={option.youtubeChannelName} onClick={onClickEvent(option)}>
+          <ProfileImage name={option.name} imageUrl={option.profileImageUrl} size={36} />
+          <StyledYoutuberName>{option.youtubeChannelName}</StyledYoutuberName>
+        </StyledSearchBarTag>
+      ))}
+    </StyledSearchbarTags>
+  ),
+);
 
 export default SearchbarSelectBox;
 
-const StyledSearchbarTags = styled.ul`
+const StyledSearchbarTags = styled.ul<{ width: number }>`
   border-radius: ${BORDER_RADIUS.lg};
 
-  width: 741px;
+  width: ${props => `${props.width}px`}
 
-  padding: 0 2.1rem 0 2.1rem;
+  padding: 0 2.1rem;
 
   font-size: ${FONT_SIZE.sm};
 

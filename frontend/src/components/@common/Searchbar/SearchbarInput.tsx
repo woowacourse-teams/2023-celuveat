@@ -1,22 +1,26 @@
 import { ComponentPropsWithRef, forwardRef } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '~/assets/icons/search.svg';
+import { FONT_SIZE } from '~/styles/common';
 
-const SearchbarInput = forwardRef<HTMLInputElement, ComponentPropsWithRef<'input'>>(({ onChange }, ref) => (
-  <StyledSearchbarInputContainer>
+interface SearchbarInputProps extends ComponentPropsWithRef<'input'> {
+  width: number;
+}
+
+const SearchbarInput = forwardRef<HTMLInputElement, SearchbarInputProps>(({ width, onChange }, ref) => (
+  <StyledSearchbarInputContainer width={width}>
     <SearchIcon />
-
     <StyledSearchbarInput type="text" ref={ref} onChange={onChange} />
   </StyledSearchbarInputContainer>
 ));
 
 export default SearchbarInput;
 
-const StyledSearchbarInputContainer = styled.div`
+const StyledSearchbarInputContainer = styled.div<{ width: number }>`
   display: flex;
 
-  width: 761px;
-  padding: 1rem 1rem;
+  width: ${props => `${props.width}px`};
+  padding: 1rem 2.6rem;
 
   border: 1px solid var(--primary-6);
   border-radius: 48px;
@@ -25,11 +29,13 @@ const StyledSearchbarInputContainer = styled.div`
 `;
 
 const StyledSearchbarInput = styled.input`
-  width: 80%;
+  width: 100%;
 
   border: none;
   outline: none;
   background-color: transparent;
 
-  font-size: 1.6rem;
+  font-size: ${FONT_SIZE.lg};
+
+  margin-left: 1rem;
 `;
