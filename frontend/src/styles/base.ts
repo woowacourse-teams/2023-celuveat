@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-const baseCSS = css`
+const base = css`
   :root {
     --primary-1: #fff2ee;
     --primary-2: #ffe5dd;
@@ -29,22 +29,22 @@ const baseCSS = css`
 
     --orange: #ffb26b;
     --yellow: #ffd56f;
-    --black: #000;
+    --black: #424242;
     --white: #fff;
 
     --shadow: 0 1px 16px 0 rgba(66, 66, 66, 0.1);
   }
 
   * {
-    color: #424242;
-    font-family: 'SUIT-Regular', 'Roboto', system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-      'Segoe UI Emoji', 'Segoe UI Symbol';
+    color: var(--black);
     font-weight: 400;
 
     box-sizing: border-box;
   }
 
   html {
+    font-family: 'SUIT-Regular', 'Roboto', system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol';
     font-size: 62.5%;
   }
 
@@ -72,6 +72,10 @@ const baseCSS = css`
     font-family: 'SUIT-Bold';
     font-size: 2rem;
   }
+
+  button {
+    cursor: pointer;
+  }
 `;
 
-export default baseCSS;
+export default base;

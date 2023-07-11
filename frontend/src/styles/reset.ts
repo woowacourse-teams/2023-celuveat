@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-const resetCSS = css`
+const reset = css`
   html,
   body,
   div,
@@ -84,8 +84,11 @@ const resetCSS = css`
   video {
     margin: 0;
     padding: 0;
-    border: 0;
+
     font: inherit;
+    border: 0;
+
+    box-sizing: border-box;
     vertical-align: baseline;
   }
   /* HTML5 display-role reset for older browsers */
@@ -128,4 +131,4 @@ const resetCSS = css`
   }
 `;
 
-export default resetCSS;
+export default reset;
