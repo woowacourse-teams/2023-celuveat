@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 public class VideoAcceptanceTest extends AcceptanceTest {
 
     @Test
-    @SuppressWarnings("unchecked")
     void 음식점_ID로_영상을_조회한다() {
         // given
         var 히밥 = 히밥();
