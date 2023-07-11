@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class RestaurantQueryDaoTest {
 
+    private static final int 히밥이_방문한_음식점_수 = 60;
+
     @Autowired
     private RestaurantQueryDao restaurantQueryDao;
 
@@ -51,13 +53,13 @@ class RestaurantQueryDaoTest {
     void setUp() {
         히밥_ID = celebDao.save(히밥());
         성시경_ID = celebDao.save(성시경());
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 히밥이_방문한_음식점_수; i++) {
             Restaurant 음식점 = 음식점("음식점 " + i);
             Long id = restaurantDao.save(음식점);
             videoDao.save(영상(히밥_ID, id));
             히밥_음식점들.add(음식점);
         }
-        for (int i = 60; i < 70; i++) {
+        for (int i = 히밥이_방문한_음식점_수; i < 70; i++) {
             Restaurant 음식점 = 음식점("음식점 " + i);
             Long id = restaurantDao.save(음식점);
             videoDao.save(영상(성시경_ID, id));
@@ -103,5 +105,26 @@ class RestaurantQueryDaoTest {
         assertThat(result.contents()).usingRecursiveComparison()
                 .ignoringFields("id", "isAds")
                 .isEqualTo(expected);
+    }
+
+    @Test
+    void 사이즈_초과_시_가져올_수_있는_수만_가져온다() {
+        // given
+        int page = 1;
+        int size = 100;
+        PageCond pageCond = new PageCond(page, size);
+        List<Restaurant> expected = 히밥_음식점들;
+        Collections.reverse(expected);
+
+        // when
+        PageResponse<RestaurantSearchResponse> result =
+                restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
+
+        // then
+        assertThat(result.hasNextPage()).isFalse();
+        assertThat(result.contents()).usingRecursiveComparison()
+                .ignoringFields("id", "isAds")
+                .isEqualTo(expected);
+        assertThat(result.contents()).hasSize(히밥이_방문한_음식점_수);
     }
 }

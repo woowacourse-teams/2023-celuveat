@@ -46,11 +46,18 @@ public class RestaurantQueryDao {
                 cond.offset());
         return new PageResponse<>(
                 hasNextPage(cond, response),
-                response.subList(0, cond.size())
+                pagedList(cond, response)
         );
     }
 
-    private static boolean hasNextPage(PageCond cond, List<RestaurantSearchResponse> response) {
+    private boolean hasNextPage(PageCond cond, List<RestaurantSearchResponse> response) {
         return response.size() == cond.limit() + 1;
+    }
+
+    private List<RestaurantSearchResponse> pagedList(
+            PageCond cond,
+            List<RestaurantSearchResponse> response
+    ) {
+        return response.subList(0, Math.min(cond.size(), response.size()));
     }
 }
