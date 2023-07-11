@@ -7,12 +7,12 @@ public record Restaurant(
         Long id,
         String imageUrl,
         String name,
+        Category category,
         String roadAddress,
         String addressLotNumber,
-        Category category,
-        String phoneNumber,
+        String zipCode,
         String latitude,
         String longitude,
-        String zipCode
+        String phoneNumber
 ) {
 }
