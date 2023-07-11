@@ -16,7 +16,8 @@ public class VideoFixture {
                 .viewCount(3)
                 .url("https://naver.com")
                 .thumbnailUrl("https://썸네일_url.com")
-                .uploadDate(LocalDateTime.of(2000, 10, 4, 10, 21, 22))
+                .uploadDate(LocalDateTime.now())
+                .ads(false)
                 .build();
     }
 
