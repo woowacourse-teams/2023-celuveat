@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
+import { css } from 'styled-components';
+
 export const FONT_SIZE = {
   xs: '0.8rem',
   sm: '1.2rem',
@@ -15,10 +17,10 @@ export const BORDER_RADIUS = {
 };
 
 export const truncateText = (numberOfLine: number) =>
-  `
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${numberOfLine};
-  overflow: hidden;
-  text-overflow: ellipsis;
+  css`
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: ${numberOfLine};
+    overflow: hidden;
+    text-overflow: ellipsis;
   `;
