@@ -11,7 +11,7 @@ function Map({ width, height, address }: MapProps) {
     const container = document.getElementById('map'); // 지도를 담을 영역의 DOM 레퍼런스
     const options = {
       // 지도를 생성할 때 필요한 기본 옵션
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표. 디폴트 카카오회사
+      center: new window.kakao.maps.LatLng(127.050727, 37.5057482), // 지도의 중심좌표. 디폴트 선릉캠퍼스
       level: 3, // 지도의 레벨(확대, 축소 정도)
     };
 
