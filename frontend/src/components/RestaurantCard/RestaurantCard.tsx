@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import Label from '~/components/@common/Label';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import Star from '~/assets/icons/star.svg';
+import getFilteredReviewCount from '~/utils/getFilteredReviewCount';
 
 interface RestaurantCardProps {
   imageUrl: string;
@@ -14,8 +15,6 @@ interface RestaurantCardProps {
 }
 
 function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount, isAds }: RestaurantCardProps) {
-  const filteredReviewCount = reviewCount > 999 ? '999+' : String(reviewCount);
-
   return (
     <StyledContainer>
       <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
@@ -24,9 +23,9 @@ function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount
         <StyledRestaurantNameSection>
           <StyledRestaurantName>{name}</StyledRestaurantName>
           <StyledRightSide>
-            <Star />
+            <Star width="14px" height="14px" />
             <StyledRating>{rating}</StyledRating>
-            <StyledReviewCount>({filteredReviewCount})</StyledReviewCount>
+            <StyledReviewCount>({getFilteredReviewCount(reviewCount)})</StyledReviewCount>
           </StyledRightSide>
         </StyledRestaurantNameSection>
         <StyledAddress>{address}</StyledAddress>
