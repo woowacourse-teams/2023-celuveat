@@ -57,7 +57,7 @@ public class CelebFixture {
                 .build();
     }
 
-    public static FindCelebByIdResponse toFindCelebByIdResponse(Celeb celeb, int 영상_수) {
+    public static FindCelebByIdResponse toFindCelebByIdResponse(Celeb celeb, int restaurantCount) {
         return new FindCelebByIdResponse(
                 celeb.id(),
                 celeb.name(),
@@ -66,7 +66,7 @@ public class CelebFixture {
                 celeb.youtubeChannelUrl(),
                 celeb.backgroundImageUrl(),
                 celeb.profileImageUrl(),
-                영상_수
+                restaurantCount
         );
     }
 
