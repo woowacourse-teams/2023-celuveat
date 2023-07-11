@@ -1,4 +1,3 @@
-import { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import type { Option } from '~/@types/utils.types';
 import useSearchBarRef from '~/components/@common/Searchbar/hooks/useSearchbarRef';
@@ -7,7 +6,7 @@ import SearchbarInput from '~/components/@common/Searchbar/SearchbarInput';
 
 interface SeachbarDropDownProps {
   options: Option[];
-  setOptions: ChangeEventHandler<HTMLInputElement>;
+  setOptions: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 function SearchbarDropDown({ options, setOptions }: SeachbarDropDownProps) {
