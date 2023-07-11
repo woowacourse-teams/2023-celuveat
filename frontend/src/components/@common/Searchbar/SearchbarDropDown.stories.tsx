@@ -1,23 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Option } from '~/@types/utils.types';
+import type { Option } from '~/@types/celebs.types';
 import SearchbarDropDown from './SearchbarDropDown';
 
 const defaultOptions: Option[] = [
   {
-    key: 1,
-    value: '성시경의 먹을텐데',
+    id: 1,
+    name: '성시경',
+    profileImageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
+    youtubeChannelName: '성시경의 먹을텐데',
   },
   {
-    key: 2,
-    value: '뚱시경의 또먹을텐데',
+    id: 2,
+    name: '뚱시경',
+    profileImageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
+    youtubeChannelName: '뚱시경의 또 먹을텐데',
   },
   {
-    key: 3,
-    value: '찌디',
+    id: 3,
+    name: '쯔양',
+    profileImageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
+    youtubeChannelName: '쯔양의 먹을텐데',
   },
   {
-    key: 4,
-    value: '푸만능의 먹고 싶다',
+    id: 4,
+    name: '히밥',
+    profileImageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
+    youtubeChannelName: '히밥의 먹을텐데',
   },
 ];
 
