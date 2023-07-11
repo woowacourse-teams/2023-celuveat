@@ -20,14 +20,8 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     @Override
     public List<String> fetchAllByChannelId(String channelId) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
-        List<String> videoIds = new ArrayList<>(getVideoIds(response));
+        List<String> videoIds = response.videoIds();
         return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
-    }
-
-    private List<String> getVideoIds(SearchListResponse response) {
-        return response.items().stream()
-                .map(item -> item.id().videoId())
-                .toList();
     }
 
     private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> videoIds) {
@@ -35,7 +29,7 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
             return videoIds;
         }
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
-        videoIds.addAll(getVideoIds(response));
+        videoIds.addAll(response.videoIds());
         return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
     }
 
