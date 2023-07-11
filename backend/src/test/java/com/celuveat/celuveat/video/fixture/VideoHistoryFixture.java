@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings("NonAsciiCharacters")
 public class VideoHistoryFixture {
 
-    public static VideoHistory 영상이력(Long 셀럽_ID) {
+    public static VideoHistory 영상_이력(Long 셀럽_ID) {
         return VideoHistory.builder()
                 .celebId(셀럽_ID)
                 .title("맛있는 음식점 다녀옴. 말랑 잘하네")

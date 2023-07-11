@@ -2,7 +2,7 @@ package com.celuveat.celuveat.video.infra.persistence;
 
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
 import static com.celuveat.celuveat.video.exception.VideoHistoryExceptionType.NOT_FOUND_VIDEO_HISTORY;
-import static com.celuveat.celuveat.video.fixture.VideoHistoryFixture.영상이력;
+import static com.celuveat.celuveat.video.fixture.VideoHistoryFixture.영상_이력;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -30,25 +30,25 @@ class VideoHistoryDaoTest {
     private CelebDao celebDao;
 
     @Test
-    void 영상이력을_저장한다() {
+    void 영상_이력을_저장한다() {
         // given
         Long 히밥_id = celebDao.save(히밥());
 
-        VideoHistory 영상이력 = 영상이력(히밥_id);
+        VideoHistory 영상_이력 = 영상_이력(히밥_id);
 
         // when
-        Long savedId = videoHistoryDao.save(영상이력);
+        Long savedId = videoHistoryDao.save(영상_이력);
 
         // then
         assertThat(savedId).isNotNull();
     }
 
     @Test
-    void ID로_영상이력을_찾는다() {
+    void ID로_영상_이력을_찾는다() {
         // given
         Long 히밥_id = celebDao.save(히밥());
-        VideoHistory 영상이력 = 영상이력(히밥_id);
-        Long savedId = videoHistoryDao.save(영상이력);
+        VideoHistory 영상_이력 = 영상_이력(히밥_id);
+        Long savedId = videoHistoryDao.save(영상_이력);
 
         // when
         VideoHistory result = videoHistoryDao.getById(savedId);
@@ -56,11 +56,11 @@ class VideoHistoryDaoTest {
         // then
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(영상이력);
+                .isEqualTo(영상_이력);
     }
 
     @Test
-    void 영상이력이_없는_경우_예외가_발생한다() {
+    void 영상_이력이_없는_경우_예외가_발생한다() {
         // when
         BaseExceptionType exceptionType = assertThrows(VideoHistoryException.class, () ->
                 videoHistoryDao.getById(1L)
