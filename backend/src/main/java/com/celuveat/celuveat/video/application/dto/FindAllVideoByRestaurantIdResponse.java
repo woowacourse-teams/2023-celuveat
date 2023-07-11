@@ -10,7 +10,7 @@ public record FindAllVideoByRestaurantIdResponse(
         int viewCount,
         String videoUrl,
         String thumbnailUrl,
-        LocalDateTime publishedDate,
+        LocalDateTime uploadDate,
         String profileImageUrl
 ) {
 }
