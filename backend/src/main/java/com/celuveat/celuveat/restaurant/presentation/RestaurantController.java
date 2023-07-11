@@ -17,9 +17,7 @@ public class RestaurantController {
     private final RestaurantQueryService restaurantQueryService;
 
     @GetMapping("/{id}")
-    ResponseEntity<Restaurant> findById(
-            @PathVariable Long id
-    ) {
+    ResponseEntity<Restaurant> findById(@PathVariable Long id) {
         Restaurant result = restaurantQueryService.findById(id);
         return ResponseEntity.ok(result);
     }
