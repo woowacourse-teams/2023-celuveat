@@ -1,4 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable react/button-has-type */
 import { styled } from 'styled-components';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import Star from '~/assets/icons/star.svg';
 import getFilteredReviewCount from '~/utils/getFilteredReviewCount';
@@ -41,11 +44,21 @@ function RestaurantDetailInfo({
             </TableRow>
             <TableRow>
               <TableHeader>전화번호</TableHeader>
-              <TableCell>{phoneNumber}</TableCell>
+              <TableCell>
+                {phoneNumber}
+                <CopyToClipboard text={phoneNumber}>
+                  <StyledCopyButton>복사</StyledCopyButton>
+                </CopyToClipboard>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHeader>주소</TableHeader>
-              <TableCell>{address}</TableCell>
+              <TableCell>
+                {address}
+                <CopyToClipboard text={address}>
+                  <StyledCopyButton>복사</StyledCopyButton>
+                </CopyToClipboard>
+              </TableCell>
             </TableRow>
           </tbody>
         </Table>
@@ -123,6 +136,15 @@ const TableHeader = styled.th`
 
 const TableCell = styled.td`
   padding: 10px;
+`;
+
+const StyledCopyButton = styled.button`
+  background-color: transparent;
+  border: none;
+
+  color: var(--gray-3);
+
+  cursor: pointer;
 `;
 
 export default RestaurantDetailInfo;
