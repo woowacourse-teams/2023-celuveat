@@ -37,7 +37,7 @@ export default meta;
 
 type Story = StoryObj<typeof TextButtons>;
 
-export const DarkButton: Story = {};
+export const Buttons: Story = {};
 
 const StyledTextButtons = styled.div`
   display: flex;

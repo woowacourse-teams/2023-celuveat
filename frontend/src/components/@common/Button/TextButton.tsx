@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
@@ -39,7 +38,3 @@ const StyledButton = styled.button<{ colorType: 'dark' | 'light' }>`
     background-color: ${({ colorType }) => (colorType === 'dark' ? 'var(--primary-6);' : 'var(--primary-2)')};
   }
 `;
-
-TextButton.defaultProps = {
-  disabled: false,
-};

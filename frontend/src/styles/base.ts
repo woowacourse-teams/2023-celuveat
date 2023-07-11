@@ -40,6 +40,8 @@ const baseCSS = css`
     font-family: 'SUIT-Regular', 'Roboto', system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
       'Segoe UI Emoji', 'Segoe UI Symbol';
     font-weight: 400;
+
+    box-sizing: border-box;
   }
 
   html {
