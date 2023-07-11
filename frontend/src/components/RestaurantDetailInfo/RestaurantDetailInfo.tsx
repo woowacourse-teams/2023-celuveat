@@ -143,8 +143,6 @@ const StyledCopyButton = styled.button`
   border: none;
 
   color: var(--gray-3);
-
-  cursor: pointer;
 `;
 
 export default RestaurantDetailInfo;
