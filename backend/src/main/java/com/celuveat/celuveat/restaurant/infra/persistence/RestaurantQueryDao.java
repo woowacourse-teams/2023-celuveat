@@ -32,7 +32,7 @@ public class RestaurantQueryDao {
                     r.latitude,
                     r.longitude,
                     r.phone_number,
-                    video.ads AS is_ads,
+                    video.ads AS is_ads
                 FROM restaurant AS r
                 JOIN video ON video.restaurant_id = r.id
                 WHERE video.celeb_id = ?
