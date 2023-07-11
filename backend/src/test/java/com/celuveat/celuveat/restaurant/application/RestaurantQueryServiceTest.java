@@ -16,8 +16,8 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("RestaurantQueryService 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
+@DisplayName("RestaurantQueryService 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class RestaurantQueryServiceTest {
 
