@@ -5,10 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.common.exception.ExceptionResponse;
+import com.celuveat.celuveat.common.page.PageResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -20,6 +22,13 @@ public class CommonAcceptanceSteps {
     public static HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
     public static HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static HttpStatus 중복됨 = HttpStatus.CONFLICT;
+
+    public static boolean 다음_페이지_없음 = false;
+    public static boolean 다음_페이지_있음 = true;
+
+    public static <T> PageResponse<T> 페이지_결과(boolean 다음_페이지_존재여부, T... contents) {
+        return new PageResponse<>(다음_페이지_존재여부, Arrays.asList(contents));
+    }
 
     public static RequestSpecification given() {
         return RestAssured
