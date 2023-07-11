@@ -1,9 +1,9 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { ComponentPropsWithRef, forwardRef } from 'react';
 import styled from 'styled-components';
 
 import SearchIcon from '~/assets/icons/search.svg';
 
-const SearchbarInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ onChange }, ref) => (
+const SearchbarInput = forwardRef<HTMLInputElement, ComponentPropsWithRef<'input'>>(({ onChange }, ref) => (
   <StyledSearchbarInputContainer>
     <StyledSeachbarIcon src={SearchIcon} alt="search-icon" />
     <StyledSearchbarInput type="text" ref={ref} onChange={onChange} />
