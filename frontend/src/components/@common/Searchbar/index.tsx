@@ -1,3 +1,3 @@
-import Seachbar from '~/components/@common/Searchbar/SearchbarDropDown';
+import SearchbarDropDown from '~/components/@common/Searchbar/SearchbarDropDown';
 
-export default Seachbar;
+export default SearchbarDropDown;
