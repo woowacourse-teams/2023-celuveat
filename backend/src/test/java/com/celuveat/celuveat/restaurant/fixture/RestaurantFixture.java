@@ -33,4 +33,18 @@ public class RestaurantFixture {
                 .longitude("451215.406399929")
                 .build();
     }
+
+    public static Restaurant 미스터피자() {
+        return Restaurant.builder()
+                .imageUrl("https://미스터피자.com")
+                .name("미스터피자")
+                .category(Category.ETC)
+                .roadAddress("서울특별시 피자구 피자로 123길 45")
+                .addressLotNumber("서울특별시 피자구 피자동 12 - 1")
+                .zipCode("12353")
+                .phoneNumber("010-1134-5678")
+                .latitude("26.9103408")
+                .longitude("357.6055959")
+                .build();
+    }
 }
