@@ -6,9 +6,10 @@ import lombok.Builder;
 public record Celeb(
         Long id,
         String name,
-        String youtubeId,
+        String youtubeChannelId,
+        String youtubeChannelName,
         int subscriberCount,
-        String link,
+        String youtubeChannelUrl,
         String backgroundImageUrl,
         String profileImageUrl
 ) {

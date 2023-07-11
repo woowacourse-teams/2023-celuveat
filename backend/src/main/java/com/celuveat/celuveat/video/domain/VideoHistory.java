@@ -4,10 +4,9 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 
 @Builder
-public record Video(
+public record VideoHistory(
         Long id,
         Long celebId,
-        Long restaurantId,
         String title,
         String url,
         String thumbnailUrl,

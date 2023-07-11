@@ -9,9 +9,10 @@ public class CelebFixture {
     public static Celeb 히밥() {
         return Celeb.builder()
                 .name("히밥")
-                .youtubeId("@heebab")
+                .youtubeChannelName("@heebab")
+                .youtubeChannelId("YOUTUBE_CHANNEL_ID")
                 .subscriberCount(1_000_000)
-                .link("https://naver.com")
+                .youtubeChannelUrl("https://naver.com")
                 .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
@@ -20,9 +21,10 @@ public class CelebFixture {
     public static Celeb 성시경() {
         return Celeb.builder()
                 .name("성시경")
-                .youtubeId("@sikyung")
+                .youtubeChannelName("@sikyung")
+                .youtubeChannelId("YOUTUBE_CHANNEL_ID")
                 .subscriberCount(1_000_001)
-                .link("https://sikyung.com")
+                .youtubeChannelUrl("https://sikyung.com")
                 .backgroundImageUrl("https://sikyung.background.com")
                 .profileImageUrl("https://sikyung.image.com")
                 .build();
@@ -32,7 +34,7 @@ public class CelebFixture {
         return new FindAllCelebResponse(
                 celeb.id(),
                 celeb.name(),
-                celeb.youtubeId(),
+                celeb.youtubeChannelName(),
                 celeb.subscriberCount(),
                 celeb.profileImageUrl()
         );
