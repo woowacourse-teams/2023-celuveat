@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.restaurantlinkfetcher.exception.RestaurantLinkFetcherException;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.SearchListResponse;
+import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.Snippet;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -51,12 +52,13 @@ class MockYouTubeDataApiTest {
 
         // when
         SearchListResponse response = youTubeDataApi.searchList(channelId);
+        Snippet snippet = response.items().get(0).snippet();
 
         // then
         assertAll(
                 () -> assertThat(response.items()).hasSize(50),
-                () -> assertThat(response.items().get(0).snippet().channelId()).isEqualTo(channelId),
-                () -> assertThat(response.items().get(0).snippet().channelTitle()).isEqualTo(name)
+                () -> assertThat(snippet.channelId()).isEqualTo(channelId),
+                () -> assertThat(snippet.channelTitle()).isEqualTo(name)
         );
     }
 
@@ -71,13 +73,14 @@ class MockYouTubeDataApiTest {
 
         // when
         SearchListResponse result = youTubeDataApi.searchList(channelId, nextPageToken);
+        Snippet snippet = result.items().get(0).snippet();
         LocalDateTime pageTwoPublishedAt = result.items().get(0).publishedAt();
 
         // then
         assertAll(
                 () -> assertThat(result.items()).hasSize(50),
-                () -> assertThat(result.items().get(0).snippet().channelId()).isEqualTo(channelId),
-                () -> assertThat(result.items().get(0).snippet().channelTitle()).isEqualTo(name),
+                () -> assertThat(snippet.channelId()).isEqualTo(channelId),
+                () -> assertThat(snippet.channelTitle()).isEqualTo(name),
                 () -> assertThat(pageTwoPublishedAt.isBefore(pageOnePublishedAt)).isTrue()
         );
     }
