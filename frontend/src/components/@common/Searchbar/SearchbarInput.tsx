@@ -4,15 +4,15 @@ import styled from 'styled-components';
 import SearchIcon from '~/assets/icons/search.svg';
 
 const SearchbarInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ onChange }, ref) => (
-  <StyledInputContainer>
-    <StyledSeachIcon src={SearchIcon} alt="search-icon" />
-    <StyledInput type="text" ref={ref} onChange={onChange} />
-  </StyledInputContainer>
+  <StyledSearchbarInputContainer>
+    <StyledSeachbarIcon src={SearchIcon} alt="search-icon" />
+    <StyledSearchbarInput type="text" ref={ref} onChange={onChange} />
+  </StyledSearchbarInputContainer>
 ));
 
 export default SearchbarInput;
 
-const StyledInputContainer = styled.div`
+const StyledSearchbarInputContainer = styled.div`
   display: flex;
 
   width: 761px;
@@ -24,7 +24,7 @@ const StyledInputContainer = styled.div`
   box-shadow: var(--shadow);
 `;
 
-const StyledInput = styled.input`
+const StyledSearchbarInput = styled.input`
   width: 80%;
 
   border: none;
@@ -34,7 +34,7 @@ const StyledInput = styled.input`
   font-size: 1.6rem;
 `;
 
-const StyledSeachIcon = styled.img`
+const StyledSeachbarIcon = styled.img`
   width: 2.5rem;
   height: 2.5rem;
 
