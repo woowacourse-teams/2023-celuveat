@@ -72,6 +72,10 @@ const base = css`
     font-family: 'SUIT-Bold';
     font-size: 2rem;
   }
+
+  button {
+    cursor: pointer;
+  }
 `;
 
 export default base;
