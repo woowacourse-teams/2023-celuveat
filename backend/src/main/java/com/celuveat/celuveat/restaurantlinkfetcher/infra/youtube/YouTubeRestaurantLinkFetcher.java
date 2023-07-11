@@ -4,7 +4,6 @@ import com.celuveat.celuveat.restaurantlinkfetcher.domain.RestaurantLinkFetcher;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.api.YouTubeDataApi;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.SearchListResponse;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -32,11 +31,10 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     @Override
     public List<String> fetchNewByChannelId(String channelId, LocalDateTime startDateTime) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
-        List<String> videoIds = response.afterVideoIds(startDateTime);
-        if (response.hasBeforeItem(videoIds)) {
-            return videoIds;
+        List<String> result = response.afterVideoIds(startDateTime);
+        if (response.hasBeforeItem(result)) {
+            return result;
         }
-        List<String> result = new ArrayList<>(videoIds);
         return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
     }
 
