@@ -28,7 +28,9 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
     private void loadData(Channel channel) {
         String filepath = channel.filepath();
         Map<String, SearchListResponse> responses = new HashMap<>();
-        channel.tokenByFilename().forEach((filename, token) -> responses.put(token, loadData(filepath, filename)));
+        channel.tokenByFilename().forEach((filename, token) ->
+                responses.put(token, loadData(filepath, filename))
+        );
         responsesByChannelId.put(channel.channelId(), responses);
     }
 
