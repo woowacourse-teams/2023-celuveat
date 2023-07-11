@@ -1,5 +1,6 @@
 package com.celuveat.celuveat.restaurant.fixture;
 
+import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Category;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 
@@ -60,5 +61,21 @@ public class RestaurantFixture {
                 .latitude("26.9103408")
                 .longitude("357.6055959")
                 .build();
+    }
+
+    public static RestaurantSearchResponse toRestaurantSearchResponse(Restaurant restaurant) {
+        return new RestaurantSearchResponse(
+                restaurant.id(),
+                restaurant.imageUrl(),
+                restaurant.name(),
+                restaurant.category(),
+                restaurant.roadAddress(),
+                restaurant.addressLotNumber(),
+                restaurant.zipCode(),
+                restaurant.latitude(),
+                restaurant.longitude(),
+                restaurant.phoneNumber(),
+                false
+        );
     }
 }
