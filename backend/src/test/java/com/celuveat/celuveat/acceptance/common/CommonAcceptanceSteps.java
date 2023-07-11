@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.acceptance.common;
 
+import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.common.exception.ExceptionResponse;
@@ -24,7 +24,7 @@ public class CommonAcceptanceSteps {
     public static RequestSpecification given() {
         return RestAssured
                 .given().log().all()
-                .contentType(APPLICATION_JSON_VALUE);
+                .contentType(JSON);
     }
 
     public static void 응답_상태를_검증한다(ExtractableResponse<Response> 응답, HttpStatus 상태) {
