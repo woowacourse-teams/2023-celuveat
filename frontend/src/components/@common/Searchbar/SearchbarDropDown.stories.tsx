@@ -5,19 +5,19 @@ import SearchbarDropDown from './SearchbarDropDown';
 const defaultOptions: Option[] = [
   {
     key: 1,
-    value: '나는 푸만능이다.',
+    value: '성시경의 먹을텐데',
   },
   {
     key: 2,
-    value: '나는 푸만능이다.',
+    value: '뚱시경의 또먹을텐데',
   },
   {
     key: 3,
-    value: '나는 푸만능이다.',
+    value: '찌디',
   },
   {
     key: 4,
-    value: '나는 푸만능이다.',
+    value: '푸만능의 먹고 싶다',
   },
 ];
 
