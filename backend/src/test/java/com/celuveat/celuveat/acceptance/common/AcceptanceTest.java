@@ -7,7 +7,9 @@ import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.celuveat.restaurant.infra.persistence.RestaurantDao;
 import com.celuveat.celuveat.video.domain.Video;
+import com.celuveat.celuveat.video.domain.VideoHistory;
 import com.celuveat.celuveat.video.infra.persistence.VideoDao;
+import com.celuveat.celuveat.video.infra.persistence.VideoHistoryDao;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -39,6 +41,9 @@ public abstract class AcceptanceTest {
     @Autowired
     protected AdminDao adminDao;
 
+    @Autowired
+    protected VideoHistoryDao videoHistoryDao;
+
     @BeforeEach
     void setup() {
         RestAssured.port = port;
@@ -59,5 +64,9 @@ public abstract class AcceptanceTest {
     protected Long 관리자를_저장한다(Admin 관리자) {
 
         return adminDao.save(관리자);
+    }
+
+    protected Long 영상_이력을_저장한다(VideoHistory 영상_이력) {
+        return videoHistoryDao.save(영상_이력);
     }
 }
