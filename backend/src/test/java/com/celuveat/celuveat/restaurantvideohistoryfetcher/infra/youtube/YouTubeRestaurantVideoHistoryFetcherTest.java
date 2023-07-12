@@ -30,9 +30,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-@DisplayName("YouTubeRestaurantVideoHistoryFetcher 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@DisplayName("YouTubeRestaurantVideoHistoryFetcher 은(는)")
 class YouTubeRestaurantVideoHistoryFetcherTest {
 
     private final RestaurantVideoHistoryFetcher restaurantVideoHistoryFetcher =
