@@ -6,3 +6,6 @@ spring:
       mode: embedded
       schema-locations:
         - classpath:sql/schema.sql
+
+cors:
+  allowedOrigins: test
