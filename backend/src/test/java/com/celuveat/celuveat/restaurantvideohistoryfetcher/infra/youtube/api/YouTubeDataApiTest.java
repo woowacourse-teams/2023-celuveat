@@ -16,13 +16,13 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
+@Disabled
 @DisplayName("YouTubeDataApi 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class YouTubeDataApiTest {
 
     @Test
-    @Disabled
     void 실제_서버에서_데이터를_가져올수있다() {
         // given
         YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
@@ -35,7 +35,6 @@ class YouTubeDataApiTest {
     }
 
     @Test
-    @Disabled
     void 실제_서버에서_페이지_토큰으로_다음_응답을_가져올수있다() {
         // given
         YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
@@ -50,7 +49,6 @@ class YouTubeDataApiTest {
     }
 
     @Test
-    @Disabled
     void 실제_서버에서_비디오_정보를_조회할수있다() {
         // given
         YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
