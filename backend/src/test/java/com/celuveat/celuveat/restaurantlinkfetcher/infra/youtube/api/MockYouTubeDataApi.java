@@ -16,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 
 public class MockYouTubeDataApi extends YouTubeDataApi {
 
+    private static final String DEFAULT_VIDEO_ID = "8RdkFuFK1DY";
     private static final String VIDEO_FILEPATH = "youtube/videos/tzuyang/tzuyang%s.json";
     private static final List<String> VIDEO_FILENAMES =
             List.of("001", "002", "003", "004", "005", "006", "007", "008", "009", "010");
@@ -83,6 +84,6 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
         if (responseByVideoId.containsKey(videoId)) {
             return responseByVideoId.get(videoId);
         }
-        throw new RestaurantLinkFetcherException(NOT_FOUND_RESTAURANT_LINK);
+        return responseByVideoId.get(DEFAULT_VIDEO_ID);
     }
 }

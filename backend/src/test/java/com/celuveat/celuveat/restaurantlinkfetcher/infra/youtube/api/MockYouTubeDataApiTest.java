@@ -89,20 +89,29 @@ class MockYouTubeDataApiTest {
     }
 
     @Test
-    void 존재하지_않는_비디오_아이디로_조회시_예외가_발생한다() {
+    void 존재하지_않는_비디오_아이디로_조회시_기본값을_반환한다() {
         // when
-        BaseExceptionType exceptionType = assertThrows(RestaurantLinkFetcherException.class, () ->
-                youTubeDataApi.searchVideoById("a")
-        ).exceptionType();
+        VideoListResponse response = youTubeDataApi.searchVideoById("a");
+        Item item = response.items().get(0);
+        String title = item.snippet().title();
+        String thumbnailUrl = item.snippet().thumbnails().standardThumbnail().url();
+        Statistics statistics = item.statistics();
 
         // then
-        assertThat(exceptionType).isEqualTo(NOT_FOUND_RESTAURANT_LINK);
+        assertAll(
+                () -> assertThat(response.items()).hasSize(1),
+                () -> assertThat(title).isEqualTo("이만큼 시켰더니 단체손님인줄 아셨대요🤣 방이동 미친비주얼 간장게장 먹방"),
+                () -> assertThat(item.id()).isEqualTo("8RdkFuFK1DY"),
+                () -> assertThat(thumbnailUrl).isEqualTo("https://i.ytimg.com/vi/8RdkFuFK1DY/sddefault.jpg"),
+                () -> assertThat(statistics.viewCount()).isEqualTo("1505107"),
+                () -> assertThat(item.snippet().publishedAt()).isEqualTo("2023-07-08T12:00:06Z")
+        );
     }
 
     @Test
     void 비디오_아이디로_조회시_미리_설정된_데이터를_반환한다() {
         // given
-        String videoId = "8RdkFuFK1DY";
+        String videoId = "NrLPC4raEh4";
 
         // when
         VideoListResponse response = youTubeDataApi.searchVideoById(videoId);
@@ -114,11 +123,11 @@ class MockYouTubeDataApiTest {
         // then
         assertAll(
                 () -> assertThat(response.items()).hasSize(1),
-                () -> assertThat(title).isEqualTo("이만큼 시켰더니 단체손님인줄 아셨대요🤣 방이동 미친비주얼 간장게장 먹방"),
+                () -> assertThat(title).isEqualTo("200만원으로 시장 털었습니다?😳 순천재래시장 먹방"),
                 () -> assertThat(item.id()).isEqualTo(videoId),
-                () -> assertThat(thumbnailUrl).isEqualTo("https://i.ytimg.com/vi/8RdkFuFK1DY/sddefault.jpg"),
-                () -> assertThat(statistics.viewCount()).isEqualTo("1505107"),
-                () -> assertThat(item.snippet().publishedAt()).isEqualTo("2023-07-08T12:00:06Z")
+                () -> assertThat(thumbnailUrl).isEqualTo("https://i.ytimg.com/vi/NrLPC4raEh4/sddefault.jpg"),
+                () -> assertThat(statistics.viewCount()).isEqualTo("1528713"),
+                () -> assertThat(item.snippet().publishedAt()).isEqualTo("2023-07-06T12:00:31Z")
         );
     }
 }
