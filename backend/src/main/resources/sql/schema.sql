@@ -1,4 +1,4 @@
-CREATE TABLE celeb
+CREATE TABLE IF NOT EXISTS celeb
 (
     id                   BIGINT PRIMARY KEY AUTO_INCREMENT,
     name                 VARCHAR(255) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE celeb
     created_date         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE restaurant
+CREATE TABLE IF NOT EXISTS  restaurant
 (
     id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
     image_url          VARCHAR(511) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE restaurant
     created_date       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE video
+CREATE TABLE IF NOT EXISTS  video
 (
     id            BIGINT PRIMARY KEY AUTO_INCREMENT,
     celeb_id      BIGINT       NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE video
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE video_history
+CREATE TABLE IF NOT EXISTS  video_history
 (
     id            BIGINT PRIMARY KEY AUTO_INCREMENT,
     celeb_id      BIGINT       NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE video_history
     FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );
 
-CREATE TABLE admin
+CREATE TABLE IF NOT EXISTS  admin
 (
     id           BIGINT PRIMARY KEY AUTO_INCREMENT,
     name         VARCHAR(255) NOT NULL,

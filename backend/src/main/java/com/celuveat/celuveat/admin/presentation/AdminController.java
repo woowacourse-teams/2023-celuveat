@@ -27,7 +27,7 @@ public class AdminController {
             @RequestBody @Valid AdminLoginRequest request,
             HttpServletRequest httpRequest
     ) {
-        Long adminId = adminService.login(request.name(), request.password());
+        Long adminId = adminService.login(request.username(), request.password());
         String sessionId = setAuthSession(httpRequest, adminId);
         AdminLoginResponse response = new AdminLoginResponse(sessionId);
         return ResponseEntity.ok(response);
