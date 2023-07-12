@@ -11,7 +11,7 @@ module.exports = {
     clean: true,
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', 'json', 'svg'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
   },
   module: {
     rules: [
@@ -29,7 +29,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(jpg|jpeg|gif|png|svg|ico)?$/,
+        test: /\.(jpg|jpeg|gif|png|ico)?$/,
         type: 'asset',
         generator: {
           filename: 'images/[name].[ext]',
