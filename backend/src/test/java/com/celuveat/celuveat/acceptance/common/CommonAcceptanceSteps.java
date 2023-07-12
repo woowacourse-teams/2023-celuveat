@@ -10,8 +10,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import java.util.Arrays;
 import org.springframework.http.HttpStatus;
+import java.util.Arrays;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class CommonAcceptanceSteps {
@@ -25,6 +25,8 @@ public class CommonAcceptanceSteps {
 
     public static boolean 다음_페이지_없음 = false;
     public static boolean 다음_페이지_있음 = true;
+
+    public static final String SESSION_ID_IN_COOKIE = "JSESSIONID";
 
     public static <T> SliceResponse<T> 페이지_결과(boolean 다음_페이지_존재여부, T... contents) {
         return new SliceResponse<>(다음_페이지_존재여부, Arrays.asList(contents));

@@ -12,3 +12,9 @@ spring:
 logging:
   level:
     org.apache.coyote.http11: debug
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+      timeout: 1800

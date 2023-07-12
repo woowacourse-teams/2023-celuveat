@@ -8,7 +8,7 @@ public class AdminFixture {
         return Admin.builder()
                 .name("도기")
                 .username("도기")
-                .password("도기1234")
+                .password("$2a$10$BqX8xbXUFGXyxHRzrUCVvOZBrPD4XY1QiajgA9IYrMpeumfxUmme.")
                 .build();
     }
 
@@ -16,7 +16,7 @@ public class AdminFixture {
         return Admin.builder()
                 .name("오도")
                 .username("오도")
-                .password("오도1234")
+                .password("$2a$10$BqX8xbXUFGXyxHRzrUCVvOZBrPD4XY1QiajgA9IYrMpeumfxUmme.")
                 .build();
     }
 }

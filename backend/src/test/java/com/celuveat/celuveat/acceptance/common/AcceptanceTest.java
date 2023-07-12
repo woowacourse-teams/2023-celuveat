@@ -1,5 +1,7 @@
 package com.celuveat.celuveat.acceptance.common;
 
+import com.celuveat.celuveat.admin.domain.Admin;
+import com.celuveat.celuveat.admin.infra.persistence.AdminDao;
 import com.celuveat.celuveat.celeb.domain.Celeb;
 import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
@@ -34,6 +36,9 @@ public abstract class AcceptanceTest {
     @Autowired
     protected VideoDao videoDao;
 
+    @Autowired
+    protected AdminDao adminDao;
+
     @BeforeEach
     void setup() {
         RestAssured.port = port;
@@ -49,5 +54,10 @@ public abstract class AcceptanceTest {
 
     protected Long 영상을_저장한다(Video 영상) {
         return videoDao.save(영상);
+    }
+
+    protected Long 관리자를_저장한다(Admin 관리자) {
+
+        return adminDao.save(관리자);
     }
 }
