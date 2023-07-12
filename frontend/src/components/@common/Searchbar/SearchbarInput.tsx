@@ -19,7 +19,7 @@ export default SearchbarInput;
 const StyledSearchbarInputContainer = styled.div<{ width: number }>`
   display: flex;
 
-  width: ${props => `${props.width}px`};
+  width: ${({ width }) => `${width}px`};
   padding: 1rem 2.6rem;
 
   border: 1px solid var(--primary-6);
