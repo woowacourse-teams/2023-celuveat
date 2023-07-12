@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.acceptance.admin;
+package com.celuveat.celuveat.acceptance.admin.auth;
 
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
 
@@ -7,7 +7,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class AdminAcceptanceSteps {
+public class AdminAuthAcceptanceSteps {
 
     public static ExtractableResponse<Response> 관리자_로그인_요청(String 아이디, String 비밀번호) {
         var adminLoginRequest = new AdminLoginRequest(아이디, 비밀번호);
