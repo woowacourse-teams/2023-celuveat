@@ -28,9 +28,9 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    public static ExtractableResponse<Response> 셀럽_ID로_음식점_검색_요청(Long 히밥_ID, int 페이지, int 한_페이지에_보여줄_음식점_수) {
+    public static ExtractableResponse<Response> 셀럽_ID로_음식점_검색_요청(Long 셀럽_ID, int 페이지, int 한_페이지에_보여줄_음식점_수) {
         return given()
-                .queryParam("celebId", 히밥_ID)
+                .queryParam("celebId", 셀럽_ID)
                 .queryParam("page", 페이지)
                 .queryParam("size", 한_페이지에_보여줄_음식점_수)
                 .when().get("/restaurants")
@@ -38,9 +38,9 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 셀럽_ID로_음식점_검색_요청(Long 히밥_ID) {
+    public static ExtractableResponse<Response> 셀럽_ID로_음식점_검색_요청(Long 셀럽_ID) {
         return given()
-                .queryParam("celebId", 히밥_ID)
+                .queryParam("celebId", 셀럽_ID)
                 .when().get("/restaurants")
                 .then().log().all()
                 .extract();
