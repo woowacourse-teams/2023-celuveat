@@ -9,6 +9,9 @@ import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.restaurantlinkfetcher.exception.RestaurantLinkFetcherException;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.SearchListResponse;
 import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.search.Snippet;
+import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.video.Item;
+import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.video.Statistics;
+import com.celuveat.celuveat.restaurantlinkfetcher.infra.youtube.dto.video.VideoListResponse;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +85,40 @@ class MockYouTubeDataApiTest {
                 () -> assertThat(snippet.channelId()).isEqualTo(channelId),
                 () -> assertThat(snippet.channelTitle()).isEqualTo(name),
                 () -> assertThat(pageTwoPublishedAt.isBefore(pageOnePublishedAt)).isTrue()
+        );
+    }
+
+    @Test
+    void 존재하지_않는_비디오_아이디로_조회시_예외가_발생한다() {
+        // when
+        BaseExceptionType exceptionType = assertThrows(RestaurantLinkFetcherException.class, () ->
+                youTubeDataApi.searchVideoById("a")
+        ).exceptionType();
+
+        // then
+        assertThat(exceptionType).isEqualTo(NOT_FOUND_RESTAURANT_LINK);
+    }
+
+    @Test
+    void 비디오_아이디로_조회시_미리_설정된_데이터를_반환한다() {
+        // given
+        String videoId = "8RdkFuFK1DY";
+
+        // when
+        VideoListResponse response = youTubeDataApi.searchVideoById(videoId);
+        Item item = response.items().get(0);
+        String title = item.snippet().title();
+        String thumbnailUrl = item.snippet().thumbnails().standardThumbnail().url();
+        Statistics statistics = item.statistics();
+
+        // then
+        assertAll(
+                () -> assertThat(response.items()).hasSize(1),
+                () -> assertThat(title).isEqualTo("이만큼 시켰더니 단체손님인줄 아셨대요🤣 방이동 미친비주얼 간장게장 먹방"),
+                () -> assertThat(item.id()).isEqualTo(videoId),
+                () -> assertThat(thumbnailUrl).isEqualTo("https://i.ytimg.com/vi/8RdkFuFK1DY/sddefault.jpg"),
+                () -> assertThat(statistics.viewCount()).isEqualTo("1505107"),
+                () -> assertThat(item.snippet().publishedAt()).isEqualTo("2023-07-08T12:00:06Z")
         );
     }
 }
