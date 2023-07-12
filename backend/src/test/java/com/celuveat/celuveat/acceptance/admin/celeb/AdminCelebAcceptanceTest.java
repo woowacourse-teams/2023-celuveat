@@ -10,7 +10,6 @@ import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.인�
 import static com.celuveat.celuveat.admin.fixture.AdminFixture.관리자_도기;
 
 import com.celuveat.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.celuveat.admin.domain.Admin;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -24,8 +23,7 @@ public class AdminCelebAcceptanceTest extends AcceptanceTest {
     @Test
     void 셀럽을_등록한다() {
         // given
-        Admin 도기 = 관리자_도기();
-        관리자를_저장한다(도기);
+        관리자를_저장한다(관리자_도기());
         var 로그인_응답 = 관리자_로그인_요청("도기", "1234");
         var 세션_ID = 세션_ID를_추출한다(로그인_응답);
 
