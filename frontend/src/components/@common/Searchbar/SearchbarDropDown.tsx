@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import type { Option } from '~/@types/celebs.types';
+import type { CelebsSearchbarOption } from '~/@types/celebs.types';
 import useSearchBarRef from '~/components/@common/Searchbar/hooks/useSearchbarRef';
 import SearchbarSelectBox from '~/components/@common/Searchbar/SearchbarSelectBox';
 import SearchbarInput from '~/components/@common/Searchbar/SearchbarInput';
 
 interface SeachbarDropDownProps {
-  options: Option[];
+  options: CelebsSearchbarOption[];
   setOptions: React.ChangeEventHandler<HTMLInputElement>;
   width: number;
   placeholder: string;
@@ -14,7 +14,7 @@ interface SeachbarDropDownProps {
 function SearchbarDropDown({ options, setOptions, width, placeholder }: SeachbarDropDownProps) {
   const { inputRef, inputDom, selectorRef } = useSearchBarRef();
 
-  const equalOptionValueEvent = (option: Option) => () => {
+  const equalOptionValueEvent = (option: CelebsSearchbarOption) => () => {
     inputDom.value = option.youtubeChannelName;
   };
 

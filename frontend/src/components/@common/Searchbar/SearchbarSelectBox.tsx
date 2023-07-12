@@ -1,13 +1,13 @@
 import { ComponentPropsWithRef, forwardRef } from 'react';
 import styled from 'styled-components';
-import type { Option } from '~/@types/celebs.types';
+import type { CelebsSearchbarOption } from '~/@types/celebs.types';
 import ProfileImage from '~/components/@common/ProfileImage';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 interface SearchbarSelectBoxProps extends ComponentPropsWithRef<'ul'> {
   width: number;
-  options: Option[];
-  onClickEvent: (option: Option) => () => void;
+  options: CelebsSearchbarOption[];
+  onClickEvent: (option: CelebsSearchbarOption) => () => void;
 }
 
 const SearchbarSelectBox = forwardRef<HTMLUListElement, SearchbarSelectBoxProps>(
