@@ -3,7 +3,7 @@ package com.celuveat.celuveat.restaurant.infra.persistence;
 import static org.mockito.Mockito.mock;
 
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.celuveat.restaurant.fixture.RestaurantFixture;
@@ -32,12 +32,12 @@ public class FakeRestaurantQueryDao extends RestaurantQueryDao {
     }
 
     @Override
-    public PageResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
         List<Video> videos = videoDao.findAllByCelebId(celebId);
         List<Long> restaurantIds = getAllRestaurantIdByCelebId(celebId, videos);
         List<RestaurantSearchResponse> list = getAllRestaurantByIdIn(restaurantIds);
         List<RestaurantSearchResponse> paging = slicing(cond, list);
-        return new PageResponse<>(
+        return new SliceResponse<>(
                 hasNextPage(cond, paging),
                 pagedList(cond, paging)
         );

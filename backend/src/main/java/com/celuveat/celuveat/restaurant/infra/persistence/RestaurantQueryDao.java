@@ -2,7 +2,7 @@ package com.celuveat.celuveat.restaurant.infra.persistence;
 
 import com.celuveat.celuveat.common.annotation.Dao;
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RestaurantQueryDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PageResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
         String sql = """
                 SELECT 
                     r.id,
@@ -44,9 +44,9 @@ public class RestaurantQueryDao {
                 celebId,
                 cond.limit() + 1,
                 cond.offset());
-        return new PageResponse<>(
+        return new SliceResponse<>(
                 hasNextPage(cond, response),
-                pagedList(cond, response)
+                slicing(cond, response)
         );
     }
 
@@ -54,7 +54,7 @@ public class RestaurantQueryDao {
         return response.size() == cond.limit() + 1;
     }
 
-    private List<RestaurantSearchResponse> pagedList(
+    private List<RestaurantSearchResponse> slicing(
             PageCond cond,
             List<RestaurantSearchResponse> response
     ) {

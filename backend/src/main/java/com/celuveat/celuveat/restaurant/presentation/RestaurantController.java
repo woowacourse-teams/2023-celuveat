@@ -2,7 +2,7 @@ package com.celuveat.celuveat.restaurant.presentation;
 
 import com.celuveat.celuveat.common.page.Page;
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
@@ -28,11 +28,11 @@ public class RestaurantController {
     }
 
     @GetMapping
-    ResponseEntity<PageResponse<RestaurantSearchResponse>> findById(
+    ResponseEntity<SliceResponse<RestaurantSearchResponse>> findById(
             @RequestParam(name = "celebId", required = true) Long celebId,
             @Page PageCond pageCond
     ) {
-        PageResponse<RestaurantSearchResponse> result =
+        SliceResponse<RestaurantSearchResponse> result =
                 restaurantQueryService.findAllByCelebId(celebId, pageCond);
         return ResponseEntity.ok(result);
     }

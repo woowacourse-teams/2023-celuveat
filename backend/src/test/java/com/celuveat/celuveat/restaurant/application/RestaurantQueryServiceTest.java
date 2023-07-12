@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.celuveat.restaurant.exception.RestaurantException;
@@ -72,7 +72,7 @@ class RestaurantQueryServiceTest {
         영상을_N개_저장하고_영상의_음식점들을_반환한다(10, 2L);
 
         // when
-        PageResponse<RestaurantSearchResponse> result =
+        SliceResponse<RestaurantSearchResponse> result =
                 restaurantQueryService.findAllByCelebId(셀럽_ID, new PageCond(1, 20));
 
         // then

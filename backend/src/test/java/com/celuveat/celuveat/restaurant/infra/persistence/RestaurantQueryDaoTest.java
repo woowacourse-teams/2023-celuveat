@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
 import com.celuveat.celuveat.common.annotation.DaoTest;
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.celuveat.video.infra.persistence.VideoDao;
@@ -80,7 +80,7 @@ class RestaurantQueryDaoTest {
         Collections.reverse(expected);
 
         // when
-        PageResponse<RestaurantSearchResponse> result =
+        SliceResponse<RestaurantSearchResponse> result =
                 restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
 
         // then
@@ -100,7 +100,7 @@ class RestaurantQueryDaoTest {
         Collections.reverse(expected);
 
         // when
-        PageResponse<RestaurantSearchResponse> result =
+        SliceResponse<RestaurantSearchResponse> result =
                 restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
 
         // then
@@ -120,7 +120,7 @@ class RestaurantQueryDaoTest {
         Collections.reverse(expected);
 
         // when
-        PageResponse<RestaurantSearchResponse> result =
+        SliceResponse<RestaurantSearchResponse> result =
                 restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
 
         // then

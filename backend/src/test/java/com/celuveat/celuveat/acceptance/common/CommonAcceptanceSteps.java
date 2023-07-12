@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.celuveat.common.exception.ExceptionResponse;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -26,8 +26,8 @@ public class CommonAcceptanceSteps {
     public static boolean 다음_페이지_없음 = false;
     public static boolean 다음_페이지_있음 = true;
 
-    public static <T> PageResponse<T> 페이지_결과(boolean 다음_페이지_존재여부, T... contents) {
-        return new PageResponse<>(다음_페이지_존재여부, Arrays.asList(contents));
+    public static <T> SliceResponse<T> 페이지_결과(boolean 다음_페이지_존재여부, T... contents) {
+        return new SliceResponse<>(다음_페이지_존재여부, Arrays.asList(contents));
     }
 
     public static RequestSpecification given() {

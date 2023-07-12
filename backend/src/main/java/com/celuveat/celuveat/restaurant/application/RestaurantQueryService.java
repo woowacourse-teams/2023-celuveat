@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.restaurant.application;
 
 import com.celuveat.celuveat.common.page.PageCond;
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.celuveat.restaurant.infra.persistence.RestaurantDao;
@@ -20,7 +20,7 @@ public class RestaurantQueryService {
         return restaurantDao.getById(id);
     }
 
-    public PageResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
         return restaurantQueryDao.findAllByCelebId(celebId, cond);
     }
 }

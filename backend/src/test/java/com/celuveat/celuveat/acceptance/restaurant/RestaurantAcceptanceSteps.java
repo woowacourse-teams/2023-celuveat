@@ -3,7 +3,7 @@ package com.celuveat.celuveat.acceptance.restaurant;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.celuveat.common.page.PageResponse;
+import com.celuveat.celuveat.common.page.SliceResponse;
 import com.celuveat.celuveat.restaurant.application.dto.RestaurantSearchResponse;
 import com.celuveat.celuveat.restaurant.domain.Restaurant;
 import io.restassured.common.mapper.TypeRef;
@@ -62,10 +62,10 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static void 음식점_검색_결과_검증(
-            PageResponse<RestaurantSearchResponse> 예상,
+            SliceResponse<RestaurantSearchResponse> 예상,
             ExtractableResponse<Response> 응답
     ) {
-        PageResponse<RestaurantSearchResponse> result = 응답.as(new TypeRef<>() {
+        SliceResponse<RestaurantSearchResponse> result = 응답.as(new TypeRef<>() {
         });
         assertThat(result).usingRecursiveComparison()
                 .ignoringExpectedNullFields()
