@@ -14,8 +14,7 @@ public class VideoFixture {
                 .restaurantId(음식점_ID)
                 .title("맛있는 음식점 다녀옴. 말랑 잘하네")
                 .viewCount(3)
-                .url("https://naver.com")
-                .thumbnailUrl("https://썸네일_url.com")
+                .videoId("8RdkFuFK1DY")
                 .uploadDate(LocalDateTime.now())
                 .ads(false)
                 .build();
@@ -28,8 +27,7 @@ public class VideoFixture {
                 video.celebId(),
                 celeb.name(),
                 video.viewCount(),
-                video.url(),
-                video.thumbnailUrl(),
+                video.videoId(),
                 video.uploadDate(),
                 celeb.profileImageUrl()
         );
