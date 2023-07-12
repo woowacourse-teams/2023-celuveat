@@ -3,20 +3,20 @@ import styled from 'styled-components';
 import SearchIcon from '~/assets/icons/search.svg';
 import { FONT_SIZE } from '~/styles/common';
 
-interface SearchbarInputProps extends ComponentPropsWithRef<'input'> {
+interface SearchBarInputProps extends ComponentPropsWithRef<'input'> {
   width: number;
 }
 
-const SearchbarInput = forwardRef<HTMLInputElement, SearchbarInputProps>(({ width, onChange }, ref) => (
-  <StyledSearchbarInputContainer width={width}>
+const SearchBarInput = forwardRef<HTMLInputElement, SearchBarInputProps>(({ width, onChange }, ref) => (
+  <StyledSearchBarInputContainer width={width}>
     <SearchIcon />
-    <StyledSearchbarInput type="text" ref={ref} onChange={onChange} />
-  </StyledSearchbarInputContainer>
+    <StyledSearchBarInput type="text" ref={ref} onChange={onChange} />
+  </StyledSearchBarInputContainer>
 ));
 
-export default SearchbarInput;
+export default SearchBarInput;
 
-const StyledSearchbarInputContainer = styled.div<{ width: number }>`
+const StyledSearchBarInputContainer = styled.div<{ width: number }>`
   display: flex;
 
   width: ${({ width }) => `${width}px`};
@@ -28,7 +28,7 @@ const StyledSearchbarInputContainer = styled.div<{ width: number }>`
   box-shadow: var(--shadow);
 `;
 
-const StyledSearchbarInput = styled.input`
+const StyledSearchBarInput = styled.input`
   width: 100%;
 
   border: none;

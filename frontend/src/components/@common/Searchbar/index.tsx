@@ -1,3 +1,3 @@
-import SearchbarDropDown from '~/components/@common/Searchbar/SearchbarDropDown';
+import SearchBarDropDown from '~/components/@common/SearchBar/SearchBarDropDown';
 
-export default SearchbarDropDown;
+export default SearchBarDropDown;

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Option } from '~/@types/celebs.types';
-import SearchbarDropDown from './SearchbarDropDown';
+import type { CelebsSearchBarOptionType } from '~/@types/celebs.types';
+import SearchBarDropDown from './SearchBarDropDown';
 
-const defaultOptions: Option[] = [
+const defaultOptions: CelebsSearchBarOptionType[] = [
   {
     id: 1,
     name: '성시경',
@@ -29,14 +29,14 @@ const defaultOptions: Option[] = [
   },
 ];
 
-const meta: Meta<typeof SearchbarDropDown> = {
-  title: 'SearchbarDropDown',
-  component: SearchbarDropDown,
+const meta: Meta<typeof SearchBarDropDown> = {
+  title: 'SearchBarDropDown',
+  component: SearchBarDropDown,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof SearchbarDropDown>;
+type Story = StoryObj<typeof SearchBarDropDown>;
 
 export const Default: Story = {
   args: {
