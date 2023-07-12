@@ -15,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Video 인수테스트")
-@SuppressWarnings("NonAsciiCharacters")
 public class VideoAcceptanceTest extends AcceptanceTest {
 
     @Test

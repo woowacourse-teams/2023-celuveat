@@ -62,7 +62,6 @@ public abstract class AcceptanceTest {
     }
 
     protected Long 관리자를_저장한다(Admin 관리자) {
-
         return adminDao.save(관리자);
     }
 

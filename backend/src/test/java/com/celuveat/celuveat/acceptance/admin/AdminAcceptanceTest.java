@@ -1,7 +1,11 @@
 package com.celuveat.celuveat.acceptance.admin;
 
 import static com.celuveat.celuveat.acceptance.admin.AdminAcceptanceSteps.관리자_로그인_요청;
-import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.*;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.SESSION_ID_IN_COOKIE;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.값이_존재한다;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.발생한_예외를_검증한다;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.응답_상태를_검증한다;
+import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.정상_처리됨;
 import static com.celuveat.celuveat.admin.exception.AdminExceptionType.NOT_FOUND_ADMIN;
 import static com.celuveat.celuveat.admin.exception.AdminExceptionType.NOT_MATCH_PASSWORD;
 import static com.celuveat.celuveat.admin.fixture.AdminFixture.관리자_도기;
@@ -11,13 +15,9 @@ import com.celuveat.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.celuveat.admin.domain.Admin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Admin 인수테스트")
-@SuppressWarnings("NonAsciiCharacters")
-@DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach

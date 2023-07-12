@@ -20,7 +20,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Celeb 인수테스트")
-@SuppressWarnings("NonAsciiCharacters")
 class CelebAcceptanceTest extends AcceptanceTest {
 
     @Test
