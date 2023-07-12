@@ -16,14 +16,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class PageCondArgumentResolverTest {
 
+    private final MethodParameter methodParameter = mock(MethodParameter.class);
+    private final NativeWebRequest webRequest = mock(NativeWebRequest.class);
+    private final Page pageAnno = mock(Page.class);
     private final PageCondArgumentResolver resolver = new PageCondArgumentResolver();
 
     @Test
     void 페이지는_1페이지가_처음이며_이보다_작은_페이지는_1페이지로_설정된다() {
         // given
-        MethodParameter methodParameter = mock(MethodParameter.class);
-        NativeWebRequest webRequest = mock(NativeWebRequest.class);
-        Page pageAnno = mock(Page.class);
         given(webRequest.getParameter("page")).willReturn("0");
         given(webRequest.getParameter("size")).willReturn("20");
         given(methodParameter.getParameterAnnotation(Page.class))
@@ -42,9 +42,6 @@ class PageCondArgumentResolverTest {
     @Test
     void 사이즈는_50보다_크면_어노테이션에_설정된_값으로_설정된다_최대이다() {
         // when
-        MethodParameter methodParameter = mock(MethodParameter.class);
-        NativeWebRequest webRequest = mock(NativeWebRequest.class);
-        Page pageAnno = mock(Page.class);
         given(webRequest.getParameter("page")).willReturn("0");
         given(webRequest.getParameter("size")).willReturn("100");
         given(methodParameter.getParameterAnnotation(Page.class))
@@ -63,9 +60,6 @@ class PageCondArgumentResolverTest {
     @Test
     void 사이즈가_1보다_작으면_어노테이션에_설정된_값으로_설정된다() {
         // when
-        MethodParameter methodParameter = mock(MethodParameter.class);
-        NativeWebRequest webRequest = mock(NativeWebRequest.class);
-        Page pageAnno = mock(Page.class);
         given(webRequest.getParameter("page")).willReturn("0");
         given(webRequest.getParameter("size")).willReturn("0");
         given(methodParameter.getParameterAnnotation(Page.class))
