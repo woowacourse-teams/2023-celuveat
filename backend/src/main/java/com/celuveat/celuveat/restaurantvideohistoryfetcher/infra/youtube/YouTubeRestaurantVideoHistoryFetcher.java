@@ -6,6 +6,7 @@ import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.api.You
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.search.SearchListResponse;
 import com.celuveat.celuveat.video.domain.VideoHistory;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -19,17 +20,20 @@ public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHist
         String channelId = celeb.youtubeChannelId();
         SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         List<String> videoIds = response.videoIds();
-        fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), videoIds);
+        List<String> more = fetchMoreVideoIdsIfExist(channelId, response.nextPageToken());
+        videoIds.addAll(more);
         return fetchAllVideoHistories(videoIds, celeb);
     }
 
-    private void fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> result) {
+    private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken) {
         if (nextPageToken == null) {
-            return;
+            return Collections.emptyList();
         }
         SearchListResponse response = youTubeDataApi.searchVideosByChannelIdAndPageToken(channelId, nextPageToken);
-        result.addAll(response.videoIds());
-        fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
+        List<String> videoIds = response.videoIds();
+        List<String> more = fetchMoreVideoIdsIfExist(channelId, response.nextPageToken());
+        videoIds.addAll(more);
+        return videoIds;
     }
 
     private List<VideoHistory> fetchAllVideoHistories(List<String> videoIds, Celeb celeb) {
@@ -48,26 +52,27 @@ public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHist
         SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         List<String> videoIds = response.afterVideoIds(startDateTime);
         if (response.isAllAfterVideo(videoIds)) {
-            fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), videoIds);
+            List<String> more = fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
+            videoIds.addAll(more);
         }
         return fetchAllVideoHistories(videoIds, celeb);
     }
 
-    private void fetchMoreNewVideoIdsIfExist(
+    private List<String> fetchMoreNewVideoIdsIfExist(
             String channelId,
             LocalDateTime startDateTime,
-            String nextPageToken,
-            List<String> result
+            String nextPageToken
     ) {
         if (nextPageToken == null) {
-            return;
+            return Collections.emptyList();
         }
         SearchListResponse response = youTubeDataApi.searchVideosByChannelIdAndPageToken(channelId, nextPageToken);
         List<String> videoIds = response.afterVideoIds(startDateTime);
-        result.addAll(videoIds);
         if (response.hasBeforeVideo(videoIds)) {
-            return;
+            return videoIds;
         }
-        fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
+        List<String> more = fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
+        videoIds.addAll(more);
+        return videoIds;
     }
 }
