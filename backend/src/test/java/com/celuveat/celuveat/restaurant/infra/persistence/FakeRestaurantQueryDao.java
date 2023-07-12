@@ -34,24 +34,39 @@ public class FakeRestaurantQueryDao extends RestaurantQueryDao {
     @Override
     public PageResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
         List<Video> videos = videoDao.findAllByCelebId(celebId);
-        List<Long> restaurantIds = videos.stream()
+        List<Long> restaurantIds = getAllRestaurantIdByCelebId(celebId, videos);
+        List<RestaurantSearchResponse> list = getAllRestaurantByIdIn(restaurantIds);
+        List<RestaurantSearchResponse> paging = slicing(cond, list);
+        return new PageResponse<>(
+                hasNextPage(cond, paging),
+                pagedList(cond, paging)
+        );
+    }
+
+    private List<Long> getAllRestaurantIdByCelebId(Long celebId, List<Video> videos) {
+        return videos.stream()
                 .filter(it -> it.celebId().equals(celebId))
                 .map(Video::restaurantId)
                 .toList();
-        List<RestaurantSearchResponse> list = store.keySet().stream()
+    }
+
+    private List<RestaurantSearchResponse> getAllRestaurantByIdIn(List<Long> restaurantIds) {
+        return store.keySet().stream()
                 .filter(restaurantIds::contains)
                 .map(store::get)
                 .map(RestaurantFixture::toRestaurantSearchResponse)
                 .collect(Collectors.toList());
-        List<RestaurantSearchResponse> paging =
-                list.subList(cond.offset(), Math.min(cond.offset() + cond.limit() + 1, list.size()));
-        return new PageResponse<>(
-                hasNextPage(cond, paging),
-                paging.subList(0, Math.min(cond.size(), paging.size()))
-        );
+    }
+
+    private List<RestaurantSearchResponse> slicing(PageCond cond, List<RestaurantSearchResponse> list) {
+        return list.subList(cond.offset(), Math.min(cond.offset() + cond.limit() + 1, list.size()));
     }
 
     private boolean hasNextPage(PageCond cond, List<RestaurantSearchResponse> response) {
         return response.size() == cond.limit() + 1;
+    }
+
+    private List<RestaurantSearchResponse> pagedList(PageCond cond, List<RestaurantSearchResponse> paging) {
+        return paging.subList(0, Math.min(cond.size(), paging.size()));
     }
 }
