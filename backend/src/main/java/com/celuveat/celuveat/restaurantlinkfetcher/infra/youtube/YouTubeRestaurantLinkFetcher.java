@@ -16,43 +16,44 @@ public class YouTubeRestaurantLinkFetcher implements RestaurantLinkFetcher {
     public List<String> fetchAllByChannelId(String channelId) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
         List<String> result = response.videoIds();
-        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
+        fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
+        return result;
     }
 
-    private List<String> fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> result) {
+    private void fetchMoreVideoIdsIfExist(String channelId, String nextPageToken, List<String> result) {
         if (nextPageToken == null) {
-            return result;
+            return;
         }
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
         result.addAll(response.videoIds());
-        return fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
+        fetchMoreVideoIdsIfExist(channelId, response.nextPageToken(), result);
     }
 
     @Override
     public List<String> fetchNewByChannelId(String channelId, LocalDateTime startDateTime) {
         SearchListResponse response = youTubeDataApi.searchList(channelId);
         List<String> result = response.afterVideoIds(startDateTime);
-        if (response.hasBeforeItem(result)) {
-            return result;
+        if (response.isAllAfterVideo(result)) {
+            fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
         }
-        return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
+        return result;
     }
 
-    private List<String> fetchMoreNewVideoIdsIfExist(
+    private void fetchMoreNewVideoIdsIfExist(
             String channelId,
             LocalDateTime startDateTime,
             String nextPageToken,
             List<String> result
     ) {
         if (nextPageToken == null) {
-            return result;
+            return;
         }
         SearchListResponse response = youTubeDataApi.searchList(channelId, nextPageToken);
         List<String> videoIds = response.afterVideoIds(startDateTime);
         result.addAll(videoIds);
-        if (response.hasBeforeItem(videoIds)) {
-            return result;
+        if (response.hasBeforeVideo(videoIds)) {
+            return;
         }
-        return fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
+        fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken(), result);
     }
 }

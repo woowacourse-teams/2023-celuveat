@@ -27,7 +27,11 @@ public record SearchListResponse(
                 .collect(Collectors.toList());
     }
 
-    public boolean hasBeforeItem(List<String> videoIds) {
+    public boolean isAllAfterVideo(List<String> videoIds) {
+        return items.size() == videoIds.size();
+    }
+
+    public boolean hasBeforeVideo(List<String> videoIds) {
         return items.size() > videoIds.size();
     }
 }
