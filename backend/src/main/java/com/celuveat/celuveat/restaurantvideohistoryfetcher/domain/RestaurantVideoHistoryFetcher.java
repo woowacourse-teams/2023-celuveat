@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RestaurantVideoHistoryFetcher {
 
-    List<VideoHistory> fetchAllByCeleb(Celeb celeb);
+    List<VideoHistory> fetchAllVideoHistoriesByCeleb(Celeb celeb);
 
-    List<VideoHistory> fetchNewByCeleb(Celeb celeb, LocalDateTime startDateTime);
+    List<VideoHistory> fetchVideoHistoriesByCelebAfterDateTime(Celeb celeb, LocalDateTime startDateTime);
 }

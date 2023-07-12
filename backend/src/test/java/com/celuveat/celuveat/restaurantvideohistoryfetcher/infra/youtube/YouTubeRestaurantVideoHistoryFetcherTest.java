@@ -49,7 +49,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     @MethodSource("getCelebs")
     void 한_채널의_모든_영상_이력을_반환한다(Celeb celeb, int videoCount) {
         // when
-        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllByCeleb(celeb);
+        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllVideoHistoriesByCeleb(celeb);
 
         // then
         assertThat(videoHistories).hasSize(videoCount);
@@ -66,7 +66,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
         );
 
         // when
-        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllByCeleb(쯔양);
+        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllVideoHistoriesByCeleb(쯔양);
         List<VideoHistory> result = videoHistories.subList(0, 10);
 
         // then
@@ -81,7 +81,8 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
         LocalDateTime startDateTime = LocalDateTime.of(2023, month, day, 21, 0, 0);
 
         // when
-        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchNewByCeleb(쯔양, startDateTime);
+        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(쯔양,
+                startDateTime);
 
         // then
         assertThat(result).hasSize(expected);
@@ -91,7 +92,8 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     @MethodSource("getCelebs")
     void 지정한_시간이_아주_작으면_모든_영상_이력을_반환한다(Celeb celeb, int videoCount) {
         // when
-        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchNewByCeleb(celeb, LocalDateTime.MIN);
+        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb,
+                LocalDateTime.MIN);
 
         // then
         assertThat(result).hasSize(videoCount);
@@ -101,7 +103,8 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     @MethodSource("getCelebs")
     void 지정한_시간이_아주_크면_아무_영상_이력도_반환하지_않는다(Celeb celeb) {
         // when
-        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchNewByCeleb(celeb, LocalDateTime.MAX);
+        List<VideoHistory> result = restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb,
+                LocalDateTime.MAX);
 
         // then
         assertThat(result).isEmpty();

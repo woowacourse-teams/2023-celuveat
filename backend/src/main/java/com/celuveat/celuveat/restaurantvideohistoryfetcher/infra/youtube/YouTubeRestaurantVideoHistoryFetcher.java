@@ -16,7 +16,7 @@ public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHist
     private final YouTubeDataApi youTubeDataApi;
 
     @Override
-    public List<VideoHistory> fetchAllByCeleb(Celeb celeb) {
+    public List<VideoHistory> fetchAllVideoHistoriesByCeleb(Celeb celeb) {
         String channelId = celeb.youtubeChannelId();
         SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         List<String> videoIds = response.videoIds();
@@ -47,18 +47,18 @@ public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHist
     }
 
     @Override
-    public List<VideoHistory> fetchNewByCeleb(Celeb celeb, LocalDateTime startDateTime) {
+    public List<VideoHistory> fetchVideoHistoriesByCelebAfterDateTime(Celeb celeb, LocalDateTime startDateTime) {
         String channelId = celeb.youtubeChannelId();
         SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         List<String> videoIds = response.afterVideoIds(startDateTime);
         if (response.isAllAfterVideo(videoIds)) {
-            List<String> more = fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
+            List<String> more = fetchMoreAfterVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
             videoIds.addAll(more);
         }
         return fetchAllVideoHistories(videoIds, celeb);
     }
 
-    private List<String> fetchMoreNewVideoIdsIfExist(
+    private List<String> fetchMoreAfterVideoIdsIfExist(
             String channelId,
             LocalDateTime startDateTime,
             String nextPageToken
@@ -71,7 +71,7 @@ public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHist
         if (response.hasBeforeVideo(videoIds)) {
             return videoIds;
         }
-        List<String> more = fetchMoreNewVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
+        List<String> more = fetchMoreAfterVideoIdsIfExist(channelId, startDateTime, response.nextPageToken());
         videoIds.addAll(more);
         return videoIds;
     }
