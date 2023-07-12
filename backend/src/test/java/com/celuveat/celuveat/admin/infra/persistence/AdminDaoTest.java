@@ -28,8 +28,8 @@ class AdminDaoTest {
     void 존재하지_않는_이름으로_조회시_예외가_발생한다() {
         // when
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminDao.getByUsername("존재하지 않는 이름"))
-                .exceptionType();
+                adminDao.getByUsername("존재하지 않는 이름")
+        ).exceptionType();
 
         // then
         assertThat(exceptionType).isEqualTo(NOT_FOUND_ADMIN);

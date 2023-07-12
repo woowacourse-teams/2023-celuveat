@@ -8,8 +8,8 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
-@DisplayName("BcryptPasswordEncoder 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
+@DisplayName("BcryptPasswordEncoder 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class BcryptPasswordMatcherTest {
 
