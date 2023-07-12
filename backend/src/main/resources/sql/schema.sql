@@ -44,15 +44,14 @@ CREATE TABLE IF NOT EXISTS  video
 
 CREATE TABLE IF NOT EXISTS  video_history
 (
-    id            BIGINT PRIMARY KEY AUTO_INCREMENT,
-    celeb_id      BIGINT       NOT NULL,
-    title         VARCHAR(255) NOT NULL,
-    url           VARCHAR(511) NOT NULL,
-    thumbnail_url VARCHAR(511) NOT NULL,
-    view_count    INT          NOT NULL,
-    upload_date   TIMESTAMP    NOT NULL,
-    ads           BOOLEAN,
-    created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id           BIGINT PRIMARY KEY AUTO_INCREMENT,
+    celeb_id     BIGINT       NOT NULL,
+    title        VARCHAR(255) NOT NULL,
+    video_id     VARCHAR(255) NOT NULL,
+    view_count   INT          NOT NULL,
+    upload_date  TIMESTAMP    NOT NULL,
+    ads          BOOLEAN,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );
 

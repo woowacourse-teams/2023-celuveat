@@ -11,8 +11,7 @@ public class VideoHistoryFixture {
                 .celebId(셀럽_ID)
                 .title("맛있는 음식점 다녀옴. 말랑 잘하네")
                 .viewCount(3)
-                .url("https://naver.com")
-                .thumbnailUrl("https://썸네일_url.com")
+                .videoId("8RdkFuFK1DY")
                 .uploadDate(LocalDateTime.of(2000, 10, 4, 10, 21, 22))
                 .build();
     }
