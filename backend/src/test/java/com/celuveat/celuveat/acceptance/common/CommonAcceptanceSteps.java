@@ -10,8 +10,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.http.HttpStatus;
 import java.util.Arrays;
+import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class CommonAcceptanceSteps {

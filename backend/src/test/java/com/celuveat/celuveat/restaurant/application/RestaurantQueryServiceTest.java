@@ -36,34 +36,6 @@ class RestaurantQueryServiceTest {
     private final RestaurantQueryService restaurantQueryService =
             new RestaurantQueryService(restaurantDao, restaurantQueryDao);
 
-    @Nested
-    class ID로_음식점_조회_시 {
-
-        @Test
-        void 음식점을_조회한다() {
-            // given
-            Restaurant 교촌치킨 = 교촌치킨();
-            Long 교촌치킨_ID = restaurantDao.save(교촌치킨);
-
-            // when
-            Restaurant result = restaurantQueryService.findById(교촌치킨_ID);
-
-            // then
-            assertThat(result).isEqualTo(교촌치킨);
-        }
-
-        @Test
-        void 음식점이_존재하지_않으면_오류이다() {
-            // when
-            BaseExceptionType baseExceptionType = assertThrows(RestaurantException.class, () ->
-                    restaurantQueryService.findById(22L)
-            ).exceptionType();
-
-            // then
-            assertThat(baseExceptionType).isEqualTo(NOT_FOUND_RESTAURANT);
-        }
-    }
-
     @Test
     void 셀럽_ID로_음식점들을_조회한다() {
         // given
@@ -91,5 +63,33 @@ class RestaurantQueryServiceTest {
             result.add(음식점);
         }
         return result;
+    }
+
+    @Nested
+    class ID로_음식점_조회_시 {
+
+        @Test
+        void 음식점을_조회한다() {
+            // given
+            Restaurant 교촌치킨 = 교촌치킨();
+            Long 교촌치킨_ID = restaurantDao.save(교촌치킨);
+
+            // when
+            Restaurant result = restaurantQueryService.findById(교촌치킨_ID);
+
+            // then
+            assertThat(result).isEqualTo(교촌치킨);
+        }
+
+        @Test
+        void 음식점이_존재하지_않으면_오류이다() {
+            // when
+            BaseExceptionType baseExceptionType = assertThrows(RestaurantException.class, () ->
+                    restaurantQueryService.findById(22L)
+            ).exceptionType();
+
+            // then
+            assertThat(baseExceptionType).isEqualTo(NOT_FOUND_RESTAURANT);
+        }
     }
 }

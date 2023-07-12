@@ -1,6 +1,7 @@
 package com.celuveat.celuveat.celeb.infra.persistence;
 
 import static com.celuveat.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
+import static com.celuveat.celuveat.celeb.fixture.CelebFixture.toFindAllCelebResponse;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.toFindCelebByIdResponse;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;
@@ -57,6 +58,23 @@ class CelebQueryDaoTest {
         성시경 = 성시경(성시경_ID);
     }
 
+    @Test
+    void 모든_셀럽들을_조회한다() {
+        // given
+        List<FindAllCelebResponse> expected = List.of(
+                toFindAllCelebResponse(히밥),
+                toFindAllCelebResponse(성시경)
+        );
+
+        // when
+        List<FindAllCelebResponse> result = celebQueryDao.findAll();
+
+        // then
+        assertThat(result).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expected);
+    }
+
     @Nested
     class ID_로_셀럽_조회_시 {
 
@@ -88,32 +106,5 @@ class CelebQueryDaoTest {
             // then
             assertThat(baseExceptionType).isEqualTo(NOT_FOUND_CELEB);
         }
-    }
-
-    @Test
-    void 모든_셀럽들을_조회한다() {
-        // given
-        List<FindAllCelebResponse> expected = List.of(
-                findAllCelebResponse(히밥),
-                findAllCelebResponse(성시경)
-        );
-
-        // when
-        List<FindAllCelebResponse> result = celebQueryDao.findAll();
-
-        // then
-        assertThat(result).usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(expected);
-    }
-
-    private static FindAllCelebResponse findAllCelebResponse(Celeb celeb) {
-        return new FindAllCelebResponse(
-                celeb.id(),
-                celeb.name(),
-                celeb.youtubeChannelName(),
-                celeb.subscriberCount(),
-                celeb.profileImageUrl()
-        );
     }
 }

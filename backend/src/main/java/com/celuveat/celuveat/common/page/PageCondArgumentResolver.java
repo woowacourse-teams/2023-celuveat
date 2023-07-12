@@ -30,6 +30,15 @@ public class PageCondArgumentResolver implements HandlerMethodArgumentResolver {
         return new PageCond(getPage(page, pageAnno), getSize(size, pageAnno));
     }
 
+    private int parseInt(NativeWebRequest webRequest, String paramName) {
+        try {
+            String param = Objects.requireNonNull(webRequest.getParameter(paramName));
+            return Integer.parseInt(param);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     private int getPage(int page, Page pageAnno) {
         if (page < MIN_PAGE) {
             return pageAnno.page();
@@ -42,14 +51,5 @@ public class PageCondArgumentResolver implements HandlerMethodArgumentResolver {
             return pageAnno.size();
         }
         return size;
-    }
-
-    private static int parseInt(NativeWebRequest webRequest, String paramName) {
-        try {
-            String param = Objects.requireNonNull(webRequest.getParameter(paramName));
-            return Integer.parseInt(param);
-        } catch (Exception e) {
-            return 0;
-        }
     }
 }

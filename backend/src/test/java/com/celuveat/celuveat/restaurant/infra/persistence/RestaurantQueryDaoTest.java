@@ -31,6 +31,9 @@ class RestaurantQueryDaoTest {
 
     private static final int 히밥이_방문한_음식점_수 = 60;
 
+    private final List<Restaurant> 히밥_음식점들 = new ArrayList<>();
+    private final List<Restaurant> 성시경_음식점들 = new ArrayList<>();
+
     @Autowired
     private RestaurantQueryDao restaurantQueryDao;
 
@@ -42,9 +45,6 @@ class RestaurantQueryDaoTest {
 
     @Autowired
     private VideoDao videoDao;
-
-    private final List<Restaurant> 히밥_음식점들 = new ArrayList<>();
-    private final List<Restaurant> 성시경_음식점들 = new ArrayList<>();
 
     private Long 히밥_ID;
     private Long 성시경_ID;

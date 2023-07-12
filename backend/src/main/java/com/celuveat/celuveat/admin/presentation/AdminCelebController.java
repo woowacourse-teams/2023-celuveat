@@ -6,7 +6,6 @@ import com.celuveat.celuveat.admin.presentation.dto.RegisterCelebRequest;
 import com.celuveat.celuveat.celeb.application.CelebService;
 import com.celuveat.celuveat.celeb.application.dto.RegisterCelebCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
