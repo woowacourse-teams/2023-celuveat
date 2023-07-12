@@ -8,9 +8,10 @@ interface SeachbarDropDownProps {
   options: Option[];
   setOptions: React.ChangeEventHandler<HTMLInputElement>;
   width: number;
+  placeholder: string;
 }
 
-function SearchbarDropDown({ options, setOptions, width }: SeachbarDropDownProps) {
+function SearchbarDropDown({ options, setOptions, width, placeholder }: SeachbarDropDownProps) {
   const { inputRef, inputDom, selectorRef } = useSearchBarRef();
 
   const equalOptionValueEvent = (option: Option) => () => {
@@ -19,7 +20,7 @@ function SearchbarDropDown({ options, setOptions, width }: SeachbarDropDownProps
 
   return (
     <StyledSearchbarDropDown>
-      <SearchbarInput ref={inputRef} width={width} onChange={setOptions} />
+      <SearchbarInput ref={inputRef} placeholder={placeholder} width={width} onChange={setOptions} />
       <SearchbarSelectBox ref={selectorRef} width={width} options={options} onClickEvent={equalOptionValueEvent} />
     </StyledSearchbarDropDown>
   );
