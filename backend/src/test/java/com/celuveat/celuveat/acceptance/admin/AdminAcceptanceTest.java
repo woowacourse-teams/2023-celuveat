@@ -31,7 +31,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
     @Test
     void 존재하지_않는_아이디면_로그인에_실패한다() {
         // given
-        String 존재하지_않는_아이디 = 관리자_도기().username() + "1234";
+        var 존재하지_않는_아이디 = 관리자_도기().username() + "1234";
 
         // when
         var 응답 = 관리자_로그인_요청(존재하지_않는_아이디, 관리자_도기().password());
@@ -43,7 +43,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
     @Test
     void 아이디는_존재하지만_비밀번호가_틀리면_예외가_발생한다() {
         // given
-        String 존재하지_않는_비밀번호 = 관리자_도기().password() + "1234";
+        var 존재하지_않는_비밀번호 = 관리자_도기().password() + "1234";
 
         // when
         var 응답 = 관리자_로그인_요청(관리자_도기().username(), 존재하지_않는_비밀번호);
@@ -58,7 +58,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
         var 응답 = 관리자_로그인_요청(관리자_도기().username(), "1234");
 
         // then
-        String 세션 = 응답.cookie(SESSION_ID_IN_COOKIE);
+        var 세션 = 응답.cookie(SESSION_ID_IN_COOKIE);
         응답_상태를_검증한다(응답, 정상_처리됨);
         값이_존재한다(세션);
     }
