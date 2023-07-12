@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import com.celuveat.celuveat.video.domain.Video;
 import com.celuveat.celuveat.video.exception.VideoException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,5 +37,11 @@ public class FakeVideoDao extends VideoDao {
                 .stream()
                 .filter(it -> it.celebId().equals(id))
                 .count();
+    }
+
+    public List<Video> findAllByCelebId(Long celebId) {
+        return store.values().stream()
+                .filter(it -> it.celebId().equals(celebId))
+                .toList();
     }
 }

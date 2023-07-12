@@ -12,6 +12,7 @@ public record Video(
         String url,
         String thumbnailUrl,
         int viewCount,
-        LocalDateTime uploadDate
+        LocalDateTime uploadDate,
+        boolean ads
 ) {
 }

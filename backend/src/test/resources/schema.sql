@@ -19,7 +19,7 @@ CREATE TABLE restaurant
     category           VARCHAR(255) NOT NULL,
     road_address       VARCHAR(255) NOT NULL,
     address_lot_number VARCHAR(255) NOT NULL,
-    zipCode            VARCHAR(15)  NOT NULL,
+    zip_code           VARCHAR(15)  NOT NULL,
     latitude           VARCHAR(255) NOT NULL,
     longitude          VARCHAR(255) NOT NULL,
     phone_number       VARCHAR(255) NOT NULL,
@@ -36,6 +36,7 @@ CREATE TABLE video
     thumbnail_url VARCHAR(511) NOT NULL,
     view_count    INT          NOT NULL,
     upload_date   TIMESTAMP    NOT NULL,
+    ads           BOOLEAN,
     created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
@@ -50,6 +51,7 @@ CREATE TABLE video_history
     thumbnail_url VARCHAR(511) NOT NULL,
     view_count    INT          NOT NULL,
     upload_date   TIMESTAMP    NOT NULL,
+    ads           BOOLEAN,
     created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );

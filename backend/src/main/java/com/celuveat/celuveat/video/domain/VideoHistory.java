@@ -11,6 +11,7 @@ public record VideoHistory(
         String url,
         String thumbnailUrl,
         int viewCount,
-        LocalDateTime uploadDate
+        LocalDateTime uploadDate,
+        boolean ads
 ) {
 }
