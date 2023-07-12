@@ -13,7 +13,7 @@ public record Admin(
         String password
 ) {
     public void login(PasswordEncoder encoder, String rawPassword) {
-        boolean isMatch = encoder.checkPassword(this.password, rawPassword);
+        boolean isMatch = encoder.checkPassword(rawPassword, this.password);
         if (!isMatch) {
             throw new AdminException(NOT_MATCH_PASSWORD);
         }
