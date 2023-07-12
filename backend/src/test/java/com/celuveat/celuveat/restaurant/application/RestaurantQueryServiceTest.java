@@ -85,7 +85,7 @@ class RestaurantQueryServiceTest {
     private List<Restaurant> 영상을_N개_저장하고_영상의_음식점들을_반환한다(int count, Long 셀럽_ID) {
         List<Restaurant> result = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            Restaurant 음식점 = 음식점("맛집" + i);
+            Restaurant 음식점 = 음식점("음식점" + i);
             Long 맛집_ID = restaurantQueryDao.save(음식점);
             videoDao.save(영상(셀럽_ID, 맛집_ID));
             result.add(음식점);
