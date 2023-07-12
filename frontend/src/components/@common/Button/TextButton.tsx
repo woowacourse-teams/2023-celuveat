@@ -27,7 +27,6 @@ const StyledButton = styled.button<{ colorType: 'dark' | 'light' }>`
   border-radius: ${BORDER_RADIUS.sm};
   background-color: ${({ colorType }) => (colorType === 'dark' ? 'var(--primary-5)' : 'var(--primary-1)')};
   color: ${({ colorType }) => (colorType === 'dark' ? 'var(--white)' : 'var(--primary-5)')};
-  cursor: pointer;
 
   &:disabled {
     background-color: ${({ colorType }) => (colorType === 'dark' ? 'var(--primary-3)' : 'var(--gray-1)')};
