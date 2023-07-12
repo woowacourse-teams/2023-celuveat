@@ -34,32 +34,32 @@ function RestaurantDetailInfo({
             <StyledReviewCount>({getFilteredReviewCount(reviewCount)})</StyledReviewCount>
           </StyledRightSide>
         </RestaurantNameSection>
-        <Table>
+        <StyledTable>
           <tbody>
-            <TableRow>
-              <TableHeader>카테고리</TableHeader>
-              <TableCell>{category}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>전화번호</TableHeader>
-              <TableCell>
+            <StyledTableRow>
+              <StyledTableHeader>카테고리</StyledTableHeader>
+              <StyledTableCell>{category}</StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableHeader>전화번호</StyledTableHeader>
+              <StyledTableCell>
                 {phoneNumber}
                 <CopyToClipboard text={phoneNumber}>
                   <StyledCopyButton type="button">복사</StyledCopyButton>
                 </CopyToClipboard>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHeader>주소</TableHeader>
-              <TableCell>
+              </StyledTableCell>
+            </StyledTableRow>
+            <StyledTableRow>
+              <StyledTableHeader>주소</StyledTableHeader>
+              <StyledTableCell>
                 {address}
                 <CopyToClipboard text={address}>
                   <StyledCopyButton type="button">복사</StyledCopyButton>
                 </CopyToClipboard>
-              </TableCell>
-            </TableRow>
+              </StyledTableCell>
+            </StyledTableRow>
           </tbody>
-        </Table>
+        </StyledTable>
       </StyledTextInfo>
       <StyledImage src={imageUrl} />
     </StyledContainer>
@@ -70,8 +70,8 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: 1458px;
-  height: 487px;
+  width: 100%;
+  height: fit-content;
 `;
 
 const StyledTextInfo = styled.div`
@@ -109,30 +109,30 @@ const StyledReviewCount = styled.span`
 `;
 
 const StyledImage = styled.img`
-  height: 100%;
   flex: 1;
+  height: 487px;
 
   border-radius: ${BORDER_RADIUS.sm};
 `;
 
-const Table = styled.table`
+const StyledTable = styled.table`
   width: 100%;
 
   border-collapse: collapse;
 `;
 
-const TableRow = styled.tr`
+const StyledTableRow = styled.tr`
   font-size: ${FONT_SIZE.md};
 `;
 
-const TableHeader = styled.th`
+const StyledTableHeader = styled.th`
   padding: 12px;
 
   color: var(--gray-3);
   text-align: left;
 `;
 
-const TableCell = styled.td`
+const StyledTableCell = styled.td`
   padding: 10px;
 `;
 
