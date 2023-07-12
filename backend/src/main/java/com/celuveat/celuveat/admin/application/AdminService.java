@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.admin.application;
 
 import com.celuveat.celuveat.admin.domain.Admin;
-import com.celuveat.celuveat.admin.domain.PasswordEncoder;
+import com.celuveat.celuveat.admin.domain.PasswordMatcher;
 import com.celuveat.celuveat.admin.infra.persistence.AdminDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final AdminDao adminDao;
-    private final PasswordEncoder encoder;
+    private final PasswordMatcher encoder;
 
     public Long login(String username, String rawPassword) {
         Admin admin = adminDao.getByUsername(username);

@@ -12,8 +12,8 @@ public record Admin(
         String username,
         String password
 ) {
-    public void login(PasswordEncoder encoder, String rawPassword) {
-        boolean isMatch = encoder.checkPassword(rawPassword, this.password);
+    public void login(PasswordMatcher matcher, String rawPassword) {
+        boolean isMatch = matcher.isMatch(rawPassword, this.password);
         if (!isMatch) {
             throw new AdminException(NOT_MATCH_PASSWORD);
         }

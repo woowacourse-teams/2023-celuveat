@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.admin.exception.AdminException;
-import com.celuveat.celuveat.admin.infra.encoder.BcryptPasswordEncoder;
+import com.celuveat.celuveat.admin.infra.encoder.BcryptPasswordMatcher;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -19,7 +19,7 @@ import org.mindrot.jbcrypt.BCrypt;
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminTest {
 
-    private final BcryptPasswordEncoder bcryptPasswordEncoder = new BcryptPasswordEncoder();
+    private final BcryptPasswordMatcher matcher = new BcryptPasswordMatcher();
 
     @Test
     void 입력받은_비밀번호가_일치하지_않으면_예외를_발생한다() {
@@ -29,7 +29,7 @@ class AdminTest {
 
         // when
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                도기.login(bcryptPasswordEncoder, expected + "extra Password")
+                도기.login(matcher, expected + "extra Password")
         ).exceptionType();
 
         // then

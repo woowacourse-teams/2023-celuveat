@@ -11,9 +11,9 @@ import org.mindrot.jbcrypt.BCrypt;
 @DisplayName("BcryptPasswordEncoder 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class BcryptPasswordEncoderTest {
+class BcryptPasswordMatcherTest {
 
-    private final BcryptPasswordEncoder encoder = new BcryptPasswordEncoder();
+    private final BcryptPasswordMatcher matcher = new BcryptPasswordMatcher();
 
     @Test
     void 암호화된_비밀번호와_입력된_비밀번호가_같은지_확인한다() {
@@ -22,8 +22,8 @@ class BcryptPasswordEncoderTest {
         String rawPassword = "1234";
 
         // when
-        boolean correctResult = encoder.checkPassword(rawPassword, encryptedPassword);
-        boolean wrongResult = encoder.checkPassword(rawPassword + "4321", encryptedPassword);
+        boolean correctResult = matcher.isMatch(rawPassword, encryptedPassword);
+        boolean wrongResult = matcher.isMatch(rawPassword + "4321", encryptedPassword);
 
         // then
         assertThat(correctResult).isTrue();

@@ -9,9 +9,9 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.admin.domain.Admin;
-import com.celuveat.celuveat.admin.domain.PasswordEncoder;
+import com.celuveat.celuveat.admin.domain.PasswordMatcher;
 import com.celuveat.celuveat.admin.exception.AdminException;
-import com.celuveat.celuveat.admin.infra.encoder.FakePasswordEncoder;
+import com.celuveat.celuveat.admin.infra.encoder.FakePasswordMatcher;
 import com.celuveat.celuveat.admin.infra.persistence.FakeAdminDao;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +26,8 @@ import org.junit.jupiter.api.Test;
 class AdminServiceTest {
 
     private final FakeAdminDao fakeAdminDao = new FakeAdminDao();
-    private final PasswordEncoder encoder = new FakePasswordEncoder();
-    private final AdminService adminService = new AdminService(fakeAdminDao, encoder);
+    private final PasswordMatcher matcher = new FakePasswordMatcher();
+    private final AdminService adminService = new AdminService(fakeAdminDao, matcher);
 
     @BeforeEach
     void setUp() {
