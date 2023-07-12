@@ -3,12 +3,13 @@ import { FONT_SIZE } from '~/styles/common';
 
 interface TagProps {
   text: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function Tag({ text, onClick }: TagProps) {
+function Tag({ text }: TagProps) {
+  const clickTagEvent = () => {};
+
   return (
-    <StyledTag type="button" onClick={onClick}>
+    <StyledTag type="button" onClick={clickTagEvent}>
       # {text}
     </StyledTag>
   );

@@ -11,5 +11,5 @@ export default meta;
 type Story = StoryObj<typeof Tag>;
 
 export const Default: Story = {
-  args: { text: '해시태그', onClick: () => {} },
+  args: { text: '해시태그' },
 };
