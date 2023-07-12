@@ -28,8 +28,9 @@ public class AdminCelebAcceptanceSteps {
                 프로필사진_URL);
     }
 
-    public static ExtractableResponse<Response> 셀럽_등록_요청(RegisterCelebRequest 등록할_셀럽_정보) {
+    public static ExtractableResponse<Response> 셀럽_등록_요청(String 세션_ID, RegisterCelebRequest 등록할_셀럽_정보) {
         return given()
+                .cookie("JSESSIONID", 세션_ID)
                 .body(등록할_셀럽_정보)
                 .when().post("/admin/celebs")
                 .then().log().all()
