@@ -41,7 +41,7 @@ const StyledSearchBarTag = styled.li`
   display: flex;
   align-items: center;
 
-  padding: 1.1rem 1.1rem;
+  padding: 1.1rem;
 
   border: none;
   background: none;
