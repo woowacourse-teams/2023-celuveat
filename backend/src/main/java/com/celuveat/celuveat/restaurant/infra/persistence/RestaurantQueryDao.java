@@ -19,7 +19,7 @@ public class RestaurantQueryDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebIdUploadDateDesc(Long celebId, PageCond cond) {
         String sql = """
                 SELECT 
                     r.id,

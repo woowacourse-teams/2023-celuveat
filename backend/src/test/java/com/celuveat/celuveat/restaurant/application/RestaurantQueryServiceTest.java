@@ -73,7 +73,7 @@ class RestaurantQueryServiceTest {
 
         // when
         SliceResponse<RestaurantSearchResponse> result =
-                restaurantQueryService.findAllByCelebId(셀럽_ID, new PageCond(1, 20));
+                restaurantQueryService.findAllByCelebIdUploadDateDesc(셀럽_ID, new PageCond(1, 20));
 
         // then
         assertThat(result.hasNextPage()).isFalse();

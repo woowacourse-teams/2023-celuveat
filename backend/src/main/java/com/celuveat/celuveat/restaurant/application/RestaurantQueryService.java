@@ -20,7 +20,7 @@ public class RestaurantQueryService {
         return restaurantDao.getById(id);
     }
 
-    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
-        return restaurantQueryDao.findAllByCelebId(celebId, cond);
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebIdUploadDateDesc(Long celebId, PageCond cond) {
+        return restaurantQueryDao.findAllByCelebIdUploadDateDesc(celebId, cond);
     }
 }

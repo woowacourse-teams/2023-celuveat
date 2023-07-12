@@ -32,7 +32,7 @@ public class FakeRestaurantQueryDao extends RestaurantQueryDao {
     }
 
     @Override
-    public SliceResponse<RestaurantSearchResponse> findAllByCelebId(Long celebId, PageCond cond) {
+    public SliceResponse<RestaurantSearchResponse> findAllByCelebIdUploadDateDesc(Long celebId, PageCond cond) {
         List<Video> videos = videoDao.findAllByCelebId(celebId);
         List<Long> restaurantIds = getAllRestaurantIdByCelebId(celebId, videos);
         List<RestaurantSearchResponse> list = getAllRestaurantByIdIn(restaurantIds);

@@ -81,7 +81,7 @@ class RestaurantQueryDaoTest {
 
         // when
         SliceResponse<RestaurantSearchResponse> result =
-                restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
+                restaurantQueryDao.findAllByCelebIdUploadDateDesc(히밥_ID, pageCond);
 
         // then
         assertThat(result.hasNextPage()).isTrue();
@@ -101,7 +101,7 @@ class RestaurantQueryDaoTest {
 
         // when
         SliceResponse<RestaurantSearchResponse> result =
-                restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
+                restaurantQueryDao.findAllByCelebIdUploadDateDesc(히밥_ID, pageCond);
 
         // then
         assertThat(result.hasNextPage()).isFalse();
@@ -121,7 +121,7 @@ class RestaurantQueryDaoTest {
 
         // when
         SliceResponse<RestaurantSearchResponse> result =
-                restaurantQueryDao.findAllByCelebId(히밥_ID, pageCond);
+                restaurantQueryDao.findAllByCelebIdUploadDateDesc(히밥_ID, pageCond);
 
         // then
         assertThat(result.hasNextPage()).isFalse();

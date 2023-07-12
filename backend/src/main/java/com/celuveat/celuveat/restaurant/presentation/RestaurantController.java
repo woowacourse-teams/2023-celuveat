@@ -33,7 +33,7 @@ public class RestaurantController {
             @Page PageCond pageCond
     ) {
         SliceResponse<RestaurantSearchResponse> result =
-                restaurantQueryService.findAllByCelebId(celebId, pageCond);
+                restaurantQueryService.findAllByCelebIdUploadDateDesc(celebId, pageCond);
         return ResponseEntity.ok(result);
     }
 }
