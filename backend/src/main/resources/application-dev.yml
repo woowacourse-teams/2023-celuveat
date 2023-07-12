@@ -8,6 +8,13 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  sql:
+    init:
+      mode: embedded
+      schema-locations:
+        - classpath:sql/schema.sql
+      data-locations:
+        - classpath:sql/data.sql
 
 logging:
   level:
