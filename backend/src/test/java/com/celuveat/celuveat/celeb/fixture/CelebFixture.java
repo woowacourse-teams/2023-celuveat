@@ -2,6 +2,7 @@ package com.celuveat.celuveat.celeb.fixture;
 
 import com.celuveat.celuveat.celeb.application.dto.FindAllCelebResponse;
 import com.celuveat.celuveat.celeb.application.dto.FindCelebByIdResponse;
+import com.celuveat.celuveat.celeb.application.dto.RegisterCelebCommand;
 import com.celuveat.celuveat.celeb.domain.Celeb;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -79,6 +80,18 @@ public class CelebFixture {
                 .youtubeChannelUrl("https://sikyung.com")
                 .backgroundImageUrl("https://sikyung.background.com")
                 .profileImageUrl("https://sikyung.image.com")
+                .build();
+    }
+
+    public static RegisterCelebCommand 히밥_저장_요청() {
+        return RegisterCelebCommand.builder()
+                .name("히밥")
+                .youtubeChannelName("@heebab")
+                .youtubeChannelId("YOUTUBE_CHANNEL_ID")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
                 .build();
     }
 
