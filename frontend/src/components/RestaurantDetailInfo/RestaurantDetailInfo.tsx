@@ -61,7 +61,7 @@ function RestaurantDetailInfo({
           </tbody>
         </StyledTable>
       </StyledTextInfo>
-      <StyledImage src={imageUrl} />
+      <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
     </StyledContainer>
   );
 }
