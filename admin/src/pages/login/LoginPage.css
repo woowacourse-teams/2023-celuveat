@@ -1,0 +1,16 @@
+/* LoginForm.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    background-color: #fff; /* Set the background color to white */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

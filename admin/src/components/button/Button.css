@@ -1,0 +1,11 @@
+button {
+    padding: 0;
+    background-color: #FF7B54; /* Set the background color to FF7B54 */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 616px;
+    height: 46px;
+    font-size: 22px;
+    font-weight: bold;
+}
