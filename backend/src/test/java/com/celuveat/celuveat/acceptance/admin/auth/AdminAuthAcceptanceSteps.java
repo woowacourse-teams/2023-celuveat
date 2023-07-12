@@ -2,6 +2,7 @@ package com.celuveat.celuveat.acceptance.admin.auth;
 
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
 
+import com.celuveat.celuveat.admin.application.dto.AdminLoginResponse;
 import com.celuveat.celuveat.admin.presentation.dto.AdminLoginRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -16,5 +17,12 @@ public class AdminAuthAcceptanceSteps {
                 .when().post("/admin/login")
                 .then().log().all()
                 .extract();
+    }
+
+    public static String 세션_ID를_추출한다(
+            ExtractableResponse<Response> 로그인_응답
+    ) {
+        AdminLoginResponse response = 로그인_응답.as(AdminLoginResponse.class);
+        return response.sessionId();
     }
 }

@@ -1,6 +1,7 @@
 package com.celuveat.celuveat.acceptance.admin.auth;
 
 import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.관리자_로그인_요청;
+import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.SESSION_ID_IN_COOKIE;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.값이_존재한다;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.발생한_예외를_검증한다;
@@ -62,8 +63,7 @@ class AdminAuthAcceptanceTest extends AcceptanceTest {
         var 응답 = 관리자_로그인_요청(관리자_도기().username(), "1234");
 
         // then
-        var 세션 = 응답.cookie(SESSION_ID_IN_COOKIE);
         응답_상태를_검증한다(응답, 정상_처리됨);
-        값이_존재한다(세션);
+        값이_존재한다(세션_ID를_추출한다(응답));
     }
 }
