@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/button-has-type */
 import { styled } from 'styled-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
@@ -47,7 +45,7 @@ function RestaurantDetailInfo({
               <TableCell>
                 {phoneNumber}
                 <CopyToClipboard text={phoneNumber}>
-                  <StyledCopyButton>복사</StyledCopyButton>
+                  <StyledCopyButton type="button">복사</StyledCopyButton>
                 </CopyToClipboard>
               </TableCell>
             </TableRow>
@@ -56,7 +54,7 @@ function RestaurantDetailInfo({
               <TableCell>
                 {address}
                 <CopyToClipboard text={address}>
-                  <StyledCopyButton>복사</StyledCopyButton>
+                  <StyledCopyButton type="button">복사</StyledCopyButton>
                 </CopyToClipboard>
               </TableCell>
             </TableRow>

@@ -15,7 +15,9 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.0.2"
+    "styled-components": "^6.0.2",
+    "react-copy-to-clipboard": "^5.1.0"
+
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
@@ -54,7 +56,6 @@
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.3",
     "prettier": "^2.8.8",
-    "react-copy-to-clipboard": "^5.1.0",
     "storybook": "^7.0.25",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
