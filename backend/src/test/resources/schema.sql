@@ -55,3 +55,12 @@ CREATE TABLE video_history
     created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );
+
+CREATE TABLE admin
+(
+    id           BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name         VARCHAR(255) NOT NULL,
+    username     VARCHAR(255) NOT NULL UNIQUE,
+    password     VARCHAR(255) NOT NULL,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
