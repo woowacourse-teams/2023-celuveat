@@ -25,10 +25,10 @@ function SearchbarDropDown({ options, setOptions, width }: SeachbarDropDownProps
   );
 }
 
+export default SearchbarDropDown;
+
 const StyledSearchbarDropDown = styled.div`
   div + ul {
     margin-top: 0.7rem;
   }
 `;
-
-export default SearchbarDropDown;
