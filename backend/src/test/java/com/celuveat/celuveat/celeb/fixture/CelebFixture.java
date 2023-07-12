@@ -7,11 +7,36 @@ import com.celuveat.celuveat.celeb.domain.Celeb;
 @SuppressWarnings("NonAsciiCharacters")
 public class CelebFixture {
 
+    public static Celeb 쯔양() {
+        return Celeb.builder()
+                .name("쯔양")
+                .youtubeChannelName("@tzuyang")
+                .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
+                .build();
+    }
+
+    public static Celeb 쯔양(Long id) {
+        return Celeb.builder()
+                .id(id)
+                .name("쯔양")
+                .youtubeChannelName("@tzuyang")
+                .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
+                .build();
+    }
+
     public static Celeb 히밥() {
         return Celeb.builder()
                 .name("히밥")
                 .youtubeChannelName("@heebab")
-                .youtubeChannelId("YOUTUBE_CHANNEL_ID")
+                .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
                 .backgroundImageUrl("https://google.com")
@@ -24,7 +49,7 @@ public class CelebFixture {
                 .id(id)
                 .name("히밥")
                 .youtubeChannelName("@heebab")
-                .youtubeChannelId("YOUTUBE_CHANNEL_ID")
+                .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
                 .backgroundImageUrl("https://google.com")
