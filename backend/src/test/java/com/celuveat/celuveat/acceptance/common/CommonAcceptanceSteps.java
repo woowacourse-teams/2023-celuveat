@@ -16,15 +16,15 @@ import java.util.Arrays;
 @SuppressWarnings("NonAsciiCharacters")
 public class CommonAcceptanceSteps {
 
-    public static HttpStatus 정상_처리됨 = HttpStatus.OK;
-    public static HttpStatus 생성됨 = HttpStatus.CREATED;
-    public static HttpStatus 잘못된_요청 = HttpStatus.BAD_REQUEST;
-    public static HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
-    public static HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
-    public static HttpStatus 중복됨 = HttpStatus.CONFLICT;
+    public static final HttpStatus 정상_처리됨 = HttpStatus.OK;
+    public static final HttpStatus 생성됨 = HttpStatus.CREATED;
+    public static final HttpStatus 잘못된_요청 = HttpStatus.BAD_REQUEST;
+    public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
+    public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
+    public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;
 
-    public static boolean 다음_페이지_없음 = false;
-    public static boolean 다음_페이지_있음 = true;
+    public static final boolean 다음_페이지_없음 = false;
+    public static final boolean 다음_페이지_있음 = true;
 
     public static final String SESSION_ID_IN_COOKIE = "JSESSIONID";
 
