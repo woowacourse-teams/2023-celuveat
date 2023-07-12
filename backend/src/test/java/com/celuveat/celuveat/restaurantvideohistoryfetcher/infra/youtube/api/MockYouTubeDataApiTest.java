@@ -40,7 +40,7 @@ class MockYouTubeDataApiTest {
     void 존재하지_않는_채널_아이디로_조회시_예외가_발생한다() {
         // when
         BaseExceptionType exceptionType = assertThrows(RestaurantVideoHistoryFetcherException.class, () ->
-                youTubeDataApi.searchList("a")
+                youTubeDataApi.searchVideosByChannelId("a")
         ).exceptionType();
 
         // then
@@ -54,7 +54,7 @@ class MockYouTubeDataApiTest {
         String channelId = channel.channelId();
 
         // when
-        SearchListResponse response = youTubeDataApi.searchList(channelId);
+        SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         Snippet snippet = response.items().get(0).snippet();
 
         // then
@@ -70,12 +70,12 @@ class MockYouTubeDataApiTest {
     void 채널_아이디와_페이지_토큰으로_조회시_다음_응답을_반환한다(Channel channel, String name) {
         // given
         String channelId = channel.channelId();
-        SearchListResponse response = youTubeDataApi.searchList(channelId);
+        SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
         String nextPageToken = response.nextPageToken();
         LocalDateTime pageOnePublishedAt = response.items().get(0).publishedAt();
 
         // when
-        SearchListResponse result = youTubeDataApi.searchList(channelId, nextPageToken);
+        SearchListResponse result = youTubeDataApi.searchVideosByChannelIdAndPageToken(channelId, nextPageToken);
         Snippet snippet = result.items().get(0).snippet();
         LocalDateTime pageTwoPublishedAt = result.items().get(0).publishedAt();
 

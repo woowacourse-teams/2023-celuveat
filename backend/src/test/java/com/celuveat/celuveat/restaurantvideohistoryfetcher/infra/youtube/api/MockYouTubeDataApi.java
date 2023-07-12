@@ -64,7 +64,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
     }
 
     @Override
-    public SearchListResponse searchList(String channelId) {
+    public SearchListResponse searchVideosByChannelId(String channelId) {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get("CDIQAQ");
         }
@@ -72,7 +72,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
     }
 
     @Override
-    public SearchListResponse searchList(String channelId, String pageToken) {
+    public SearchListResponse searchVideosByChannelIdAndPageToken(String channelId, String pageToken) {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get(pageToken);
         }

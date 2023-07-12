@@ -14,13 +14,13 @@ public class YouTubeDataApi {
     private final String apiKey;
     private final RestTemplate restTemplate;
 
-    public SearchListResponse searchList(String channelId) {
+    public SearchListResponse searchVideosByChannelId(String channelId) {
         URI uri = SearchURI.builder(apiKey, channelId)
                 .build();
         return restTemplate.getForObject(uri, SearchListResponse.class);
     }
 
-    public SearchListResponse searchList(String channelId, String pageToken) {
+    public SearchListResponse searchVideosByChannelIdAndPageToken(String channelId, String pageToken) {
         URI uri = SearchURI.builder(apiKey, channelId)
                 .pageToken(pageToken)
                 .build();

@@ -28,7 +28,7 @@ class YouTubeDataApiTest {
         YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
 
         // when
-        SearchListResponse result = youTubeDataApi.searchList("UCfpaSruWW3S4dibonKXENjA");
+        SearchListResponse result = youTubeDataApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
 
         // then
         assertThat(result.items()).hasSize(50);
@@ -38,11 +38,12 @@ class YouTubeDataApiTest {
     void 실제_서버에서_페이지_토큰으로_다음_응답을_가져올수있다() {
         // given
         YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
-        SearchListResponse response = youTubeDataApi.searchList("UCfpaSruWW3S4dibonKXENjA");
+        SearchListResponse response = youTubeDataApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
         String nextPageToken = response.nextPageToken();
 
         // when
-        SearchListResponse result = youTubeDataApi.searchList("UCfpaSruWW3S4dibonKXENjA", nextPageToken);
+        SearchListResponse result =
+                youTubeDataApi.searchVideosByChannelIdAndPageToken("UCfpaSruWW3S4dibonKXENjA", nextPageToken);
 
         // then
         assertThat(result.items()).hasSize(50);
