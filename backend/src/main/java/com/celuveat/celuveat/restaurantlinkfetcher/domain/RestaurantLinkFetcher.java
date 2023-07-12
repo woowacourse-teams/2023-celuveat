@@ -1,11 +1,13 @@
 package com.celuveat.celuveat.restaurantlinkfetcher.domain;
 
+import com.celuveat.celuveat.celeb.domain.Celeb;
+import com.celuveat.celuveat.video.domain.VideoHistory;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RestaurantLinkFetcher {
 
-    List<String> fetchAllByChannelId(String channelId);
+    List<VideoHistory> fetchAllByCeleb(Celeb celeb);
 
-    List<String> fetchNewByChannelId(String channelId, LocalDateTime startDateTime);
+    List<VideoHistory> fetchNewByCeleb(Celeb celeb, LocalDateTime startDateTime);
 }
