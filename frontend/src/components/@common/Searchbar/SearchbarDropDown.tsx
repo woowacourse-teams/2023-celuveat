@@ -1,34 +1,34 @@
 import styled from 'styled-components';
-import type { CelebsSearchbarOption } from '~/@types/celebs.types';
-import useSearchBarRef from '~/components/@common/Searchbar/hooks/useSearchbarRef';
-import SearchbarSelectBox from '~/components/@common/Searchbar/SearchbarSelectBox';
-import SearchbarInput from '~/components/@common/Searchbar/SearchbarInput';
+import type { CelebsSearchBarOptionType } from '~/@types/celebs.types';
+import useSearchBarRef from '~/components/@common/SearchBar/hooks/useSearchBarRef';
+import SearchBarSelectBox from '~/components/@common/SearchBar/SearchBarSelectBox';
+import SearchBarInput from '~/components/@common/SearchBar/SearchBarInput';
 
-interface SeachbarDropDownProps {
-  options: CelebsSearchbarOption[];
+interface SearchBarDropDownProps {
+  options: CelebsSearchBarOptionType[];
   setOptions: React.ChangeEventHandler<HTMLInputElement>;
   width: number;
   placeholder: string;
 }
 
-function SearchbarDropDown({ options, setOptions, width, placeholder }: SeachbarDropDownProps) {
+function SearchBarDropDown({ options, setOptions, width, placeholder }: SearchBarDropDownProps) {
   const { inputRef, inputDom, selectorRef } = useSearchBarRef();
 
-  const equalOptionValueEvent = (option: CelebsSearchbarOption) => () => {
+  const equalOptionValueEvent = (option: CelebsSearchBarOptionType) => () => {
     inputDom.value = option.youtubeChannelName;
   };
 
   return (
-    <StyledSearchbarDropDown>
-      <SearchbarInput ref={inputRef} placeholder={placeholder} width={width} onChange={setOptions} />
-      <SearchbarSelectBox ref={selectorRef} width={width} options={options} onClickEvent={equalOptionValueEvent} />
-    </StyledSearchbarDropDown>
+    <StyledSearchBarDropDown>
+      <SearchBarInput ref={inputRef} placeholder={placeholder} width={width} onChange={setOptions} />
+      <SearchBarSelectBox ref={selectorRef} width={width} options={options} onClickEvent={equalOptionValueEvent} />
+    </StyledSearchBarDropDown>
   );
 }
 
-export default SearchbarDropDown;
+export default SearchBarDropDown;
 
-const StyledSearchbarDropDown = styled.div`
+const StyledSearchBarDropDown = styled.div`
   div + ul {
     margin-top: 0.7rem;
   }
