@@ -9,55 +9,51 @@ public class CelebFixture {
 
     public static Celeb 쯔양() {
         return Celeb.builder()
-                .name("tzuyang쯔양")
-                .youtubeChannelName("@tzuyang6145")
+                .name("쯔양")
+                .youtubeChannelName("@tzuyang")
                 .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
-                .subscriberCount(8_410_000)
-                .youtubeChannelUrl("https://www.youtube.com/@tzuyang6145")
-                .backgroundImageUrl("xxxxxxxxxx")
-                .profileImageUrl("https://yt3.ggpht.com/_s3C7XpwVKVr_5gDrmYJh9AOkU3wFlY9FWyZBVGVP"
-                        + "_v7B09P5O4bbEZaWGpiuyT78Dk-aElE=s800-c-k-c0x00ffffff-no-rj")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
                 .build();
     }
 
     public static Celeb 쯔양(Long id) {
         return Celeb.builder()
                 .id(id)
-                .name("tzuyang쯔양")
-                .youtubeChannelName("@tzuyang6145")
+                .name("쯔양")
+                .youtubeChannelName("@tzuyang")
                 .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
-                .subscriberCount(8_410_000)
-                .youtubeChannelUrl("https://www.youtube.com/@tzuyang6145")
-                .backgroundImageUrl("xxxxxxxxxx")
-                .profileImageUrl("https://yt3.ggpht.com/_s3C7XpwVKVr_5gDrmYJh9AOkU3wFlY9FWyZBVGVP"
-                        + "_v7B09P5O4bbEZaWGpiuyT78Dk-aElE=s800-c-k-c0x00ffffff-no-rj")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
                 .build();
     }
 
     public static Celeb 히밥() {
         return Celeb.builder()
-                .name("히밥heebab")
+                .name("히밥")
                 .youtubeChannelName("@heebab")
                 .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
-                .subscriberCount(1_500_000)
-                .youtubeChannelUrl("https://www.youtube.com/@heebab")
-                .backgroundImageUrl("xxxxxxxxxx")
-                .profileImageUrl("https://yt3.ggpht.com/sL5ugPfl9vvwRwhf6l5APY_"
-                        + "_BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s800-c-k-c0x00ffffff-no-rj")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
                 .build();
     }
 
     public static Celeb 히밥(Long id) {
         return Celeb.builder()
                 .id(id)
-                .name("히밥heebab")
+                .name("히밥")
                 .youtubeChannelName("@heebab")
                 .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
-                .subscriberCount(1_500_000)
-                .youtubeChannelUrl("https://www.youtube.com/@heebab")
-                .backgroundImageUrl("xxxxxxxxxx")
-                .profileImageUrl("https://yt3.ggpht.com/sL5ugPfl9vvwRwhf6l5APY_"
-                        + "_BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s800-c-k-c0x00ffffff-no-rj")
+                .subscriberCount(1_000_000)
+                .youtubeChannelUrl("https://naver.com")
+                .backgroundImageUrl("https://google.com")
+                .profileImageUrl("https://image.com")
                 .build();
     }
 
