@@ -1,7 +1,6 @@
 package com.celuveat.celuveat.acceptance.admin;
 
-import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.관리자_로그인_요청;
-import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
+import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.관리자로_로그인하고_세션_ID를_받아온다;
 import static com.celuveat.celuveat.acceptance.admin.AdminVideoHistoryAcceptanceSteps.모든_영상_이력_조회;
 import static com.celuveat.celuveat.acceptance.admin.AdminVideoHistoryAcceptanceSteps.조회한_모든_영상_이력을_검증한다;
 import static com.celuveat.celuveat.admin.fixture.AdminFixture.관리자_도기;
@@ -30,7 +29,7 @@ public class AdminVideoHistoryAcceptanceTest extends AcceptanceTest {
         var 히밥_영상_이력_ID = 영상_이력을_저장한다(영상_이력(히밥_ID));
         var 성시경_영상_이력_ID = 영상_이력을_저장한다(영상_이력(성시경_ID));
         관리자를_저장한다(관리자_도기());
-        var 세션_ID = 세션_ID를_추출한다(관리자_로그인_요청("도기", "1234"));
+        var 세션_ID = 관리자로_로그인하고_세션_ID를_받아온다("도기", "1234");
 
         var 예상 = List.of(
                 toFindAllVideoHistoryResponse(히밥_영상_이력_ID, 히밥_ID),
