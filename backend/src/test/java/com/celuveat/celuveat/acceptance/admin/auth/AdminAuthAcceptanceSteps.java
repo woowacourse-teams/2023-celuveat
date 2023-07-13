@@ -19,9 +19,7 @@ public class AdminAuthAcceptanceSteps {
                 .extract();
     }
 
-    public static String 세션_ID를_추출한다(
-            ExtractableResponse<Response> 로그인_응답
-    ) {
+    public static String 세션_ID를_추출한다(ExtractableResponse<Response> 로그인_응답) {
         AdminLoginResponse response = 로그인_응답.as(AdminLoginResponse.class);
         return response.sessionId();
     }

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Admin 인수테스트")
+@DisplayName("AdminAuth 인수테스트")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminAuthAcceptanceTest extends AcceptanceTest {
