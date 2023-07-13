@@ -8,7 +8,6 @@ public record RegisterCelebRequest(
         String youtubeChannelName,
         int subscriberCount,
         String youtubeChannelUrl,
-        String backgroundImageUrl,
         String profileImageUrl
 ) {
 
@@ -19,7 +18,6 @@ public record RegisterCelebRequest(
                 .youtubeChannelName(youtubeChannelName)
                 .subscriberCount(subscriberCount)
                 .youtubeChannelUrl(youtubeChannelUrl)
-                .backgroundImageUrl(backgroundImageUrl)
                 .profileImageUrl(profileImageUrl)
                 .build();
     }

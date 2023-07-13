@@ -31,7 +31,6 @@ public class AdminCelebAcceptanceTest extends AcceptanceTest {
                 "@heebab",
                 "YOUTUBE_CHANNEL_ID",
                 1_000_000,
-                "https://naver.com",
                 "https://google.com",
                 "https://image.com");
 
@@ -49,7 +48,6 @@ public class AdminCelebAcceptanceTest extends AcceptanceTest {
                 "@heebab",
                 "YOUTUBE_CHANNEL_ID",
                 1_000_000,
-                "https://naver.com",
                 "https://google.com",
                 "https://image.com");
 

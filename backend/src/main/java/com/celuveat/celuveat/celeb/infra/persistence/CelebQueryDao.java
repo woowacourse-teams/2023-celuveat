@@ -33,7 +33,6 @@ public class CelebQueryDao {
                     youtube_channel_name,
                     subscriber_count,
                     youtube_channel_url,
-                    background_image_url,
                     profile_image_url,
                     (SELECT count(*) 
                      FROM video

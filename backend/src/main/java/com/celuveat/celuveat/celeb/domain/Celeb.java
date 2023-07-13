@@ -10,7 +10,6 @@ public record Celeb(
         String youtubeChannelName,
         int subscriberCount,
         String youtubeChannelUrl,
-        String backgroundImageUrl,
         String profileImageUrl
 ) {
 }

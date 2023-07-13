@@ -15,7 +15,6 @@ public class CelebFixture {
                 .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
-                .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
     }
@@ -28,7 +27,6 @@ public class CelebFixture {
                 .youtubeChannelId("UCfpaSruWW3S4dibonKXENjA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
-                .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
     }
@@ -40,7 +38,6 @@ public class CelebFixture {
                 .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
-                .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
     }
@@ -53,7 +50,6 @@ public class CelebFixture {
                 .youtubeChannelId("UCA6KBBX8cLwYZNepxlE_7SA")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
-                .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
     }
@@ -65,7 +61,6 @@ public class CelebFixture {
                 .youtubeChannelId("YOUTUBE_CHANNEL_ID")
                 .subscriberCount(1_000_001)
                 .youtubeChannelUrl("https://sikyung.com")
-                .backgroundImageUrl("https://sikyung.background.com")
                 .profileImageUrl("https://sikyung.image.com")
                 .build();
     }
@@ -78,7 +73,6 @@ public class CelebFixture {
                 .youtubeChannelId("YOUTUBE_CHANNEL_ID")
                 .subscriberCount(1_000_001)
                 .youtubeChannelUrl("https://sikyung.com")
-                .backgroundImageUrl("https://sikyung.background.com")
                 .profileImageUrl("https://sikyung.image.com")
                 .build();
     }
@@ -90,7 +84,6 @@ public class CelebFixture {
                 .youtubeChannelId("YOUTUBE_CHANNEL_ID")
                 .subscriberCount(1_000_000)
                 .youtubeChannelUrl("https://naver.com")
-                .backgroundImageUrl("https://google.com")
                 .profileImageUrl("https://image.com")
                 .build();
     }
@@ -102,7 +95,6 @@ public class CelebFixture {
                 celeb.youtubeChannelName(),
                 celeb.subscriberCount(),
                 celeb.youtubeChannelUrl(),
-                celeb.backgroundImageUrl(),
                 celeb.profileImageUrl(),
                 restaurantCount
         );

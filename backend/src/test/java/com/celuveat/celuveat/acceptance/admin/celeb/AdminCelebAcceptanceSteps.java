@@ -15,7 +15,6 @@ public class AdminCelebAcceptanceSteps {
             String 유튜브_채널_이름,
             int 구독자_수,
             String 유튜브_채널_URL,
-            String 배경사진_URL,
             String 프로필사진_URL
     ) {
         return new RegisterCelebRequest(
@@ -24,7 +23,6 @@ public class AdminCelebAcceptanceSteps {
                 유튜브_채널_이름,
                 구독자_수,
                 유튜브_채널_URL,
-                배경사진_URL,
                 프로필사진_URL);
     }
 
