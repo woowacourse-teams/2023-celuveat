@@ -1,0 +1,50 @@
+{
+  "kind": "youtube#channelListResponse",
+  "etag": "_mLA_gfpUvbwq66FEc4FBQAYCWM",
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 5
+  },
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "etag": "TxO43ln-BiK9rHN2sqCYAChX5Aw",
+      "id": "UCA6KBBX8cLwYZNepxlE_7SA",
+      "snippet": {
+        "title": "히밥heebab",
+        "description": "안녕하세요 먹방 크리에이터 히밥 입니다😘\n\n",
+        "customUrl": "@heebab",
+        "publishedAt": "2019-12-15T19:08:52.492933Z",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s88-c-k-c0x00ffffff-no-rj",
+            "width": 88,
+            "height": 88
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s240-c-k-c0x00ffffff-no-rj",
+            "width": 240,
+            "height": 240
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s800-c-k-c0x00ffffff-no-rj",
+            "width": 800,
+            "height": 800
+          }
+        },
+        "defaultLanguage": "ko",
+        "localized": {
+          "title": "히밥heebab",
+          "description": "안녕하세요 먹방 크리에이터 히밥 입니다😘\n\n"
+        },
+        "country": "KR"
+      },
+      "statistics": {
+        "viewCount": "572422542",
+        "subscriberCount": "1500000",
+        "hiddenSubscriberCount": false,
+        "videoCount": "721"
+      }
+    }
+  ]
+}
