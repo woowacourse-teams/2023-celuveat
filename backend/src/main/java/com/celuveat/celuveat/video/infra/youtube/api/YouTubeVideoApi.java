@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
-public class YouTubeDataApi {
+public class YouTubeVideoApi {
 
     private final String apiKey;
     private final RestTemplate restTemplate;

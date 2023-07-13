@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.celuveat.celeb.domain.Celeb;
 import com.celuveat.celuveat.video.domain.VideoHistory;
 import com.celuveat.celuveat.video.domain.VideoHistoryFetcher;
-import com.celuveat.celuveat.video.infra.youtube.api.MockYouTubeDataApi;
+import com.celuveat.celuveat.video.infra.youtube.api.MockYouTubeVideoApi;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class YouTubeVideoHistoryFetcherTest {
 
-    private final VideoHistoryFetcher videoHistoryFetcher = new YouTubeVideoHistoryFetcher(new MockYouTubeDataApi());
+    private final VideoHistoryFetcher videoHistoryFetcher = new YouTubeVideoHistoryFetcher(new MockYouTubeVideoApi());
 
     private static Stream<Arguments> getCelebs() {
         return Stream.of(

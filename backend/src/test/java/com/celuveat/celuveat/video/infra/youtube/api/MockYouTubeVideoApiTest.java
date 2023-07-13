@@ -23,11 +23,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 @SuppressWarnings("NonAsciiCharacters")
-@DisplayName("MockYouTubeDataApi 은(는)")
+@DisplayName("MockYouTubeVideoApi 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class MockYouTubeDataApiTest {
+class MockYouTubeVideoApiTest {
 
-    private final YouTubeDataApi youTubeDataApi = new MockYouTubeDataApi();
+    private final YouTubeVideoApi youTubeVideoApi = new MockYouTubeVideoApi();
 
     private static Stream<Arguments> getChannels() {
         return Stream.of(
@@ -40,7 +40,7 @@ class MockYouTubeDataApiTest {
     void 존재하지_않는_채널_아이디로_조회시_예외가_발생한다() {
         // when
         BaseExceptionType exceptionType = assertThrows(VideoHistoryFetcherException.class, () ->
-                youTubeDataApi.searchVideosByChannelId("a")
+                youTubeVideoApi.searchVideosByChannelId("a")
         ).exceptionType();
 
         // then
@@ -54,7 +54,7 @@ class MockYouTubeDataApiTest {
         String channelId = channel.channelId();
 
         // when
-        SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
+        SearchListResponse response = youTubeVideoApi.searchVideosByChannelId(channelId);
         Snippet snippet = response.items().get(0).snippet();
 
         // then
@@ -70,12 +70,12 @@ class MockYouTubeDataApiTest {
     void 채널_아이디와_페이지_토큰으로_조회시_다음_응답을_반환한다(Channel channel, String name) {
         // given
         String channelId = channel.channelId();
-        SearchListResponse response = youTubeDataApi.searchVideosByChannelId(channelId);
+        SearchListResponse response = youTubeVideoApi.searchVideosByChannelId(channelId);
         String nextPageToken = response.nextPageToken();
         LocalDateTime pageOnePublishedAt = response.items().get(0).publishedAt();
 
         // when
-        SearchListResponse result = youTubeDataApi.searchVideosByChannelIdAndPageToken(channelId, nextPageToken);
+        SearchListResponse result = youTubeVideoApi.searchVideosByChannelIdAndPageToken(channelId, nextPageToken);
         Snippet snippet = result.items().get(0).snippet();
         LocalDateTime pageTwoPublishedAt = result.items().get(0).publishedAt();
 
@@ -91,7 +91,7 @@ class MockYouTubeDataApiTest {
     @Test
     void 존재하지_않는_비디오_아이디로_조회시_기본값을_반환한다() {
         // when
-        VideoListResponse response = youTubeDataApi.searchVideoById("a");
+        VideoListResponse response = youTubeVideoApi.searchVideoById("a");
         Item item = response.items().get(0);
         String title = item.snippet().title();
         String thumbnailUrl = item.snippet().thumbnails().standardThumbnail().url();
@@ -114,7 +114,7 @@ class MockYouTubeDataApiTest {
         String videoId = "NrLPC4raEh4";
 
         // when
-        VideoListResponse response = youTubeDataApi.searchVideoById(videoId);
+        VideoListResponse response = youTubeVideoApi.searchVideoById(videoId);
         Item item = response.items().get(0);
         String title = item.snippet().title();
         String thumbnailUrl = item.snippet().thumbnails().standardThumbnail().url();

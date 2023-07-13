@@ -17,18 +17,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
 @Disabled
-@DisplayName("YouTubeDataApi 은(는)")
+@DisplayName("YouTubeVideoApi 은(는)")
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class YouTubeDataApiTest {
+class YouTubeVideoApiTest {
 
     @Test
     void 실제_서버에서_데이터를_가져올수있다() {
         // given
-        YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
+        YouTubeVideoApi youTubeVideoApi = new YouTubeVideoApi("secret_key", new RestTemplate());
 
         // when
-        SearchListResponse result = youTubeDataApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
+        SearchListResponse result = youTubeVideoApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
 
         // then
         assertThat(result.items()).hasSize(50);
@@ -37,13 +37,13 @@ class YouTubeDataApiTest {
     @Test
     void 실제_서버에서_페이지_토큰으로_다음_응답을_가져올수있다() {
         // given
-        YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
-        SearchListResponse response = youTubeDataApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
+        YouTubeVideoApi youTubeVideoApi = new YouTubeVideoApi("secret_key", new RestTemplate());
+        SearchListResponse response = youTubeVideoApi.searchVideosByChannelId("UCfpaSruWW3S4dibonKXENjA");
         String nextPageToken = response.nextPageToken();
 
         // when
         SearchListResponse result =
-                youTubeDataApi.searchVideosByChannelIdAndPageToken("UCfpaSruWW3S4dibonKXENjA", nextPageToken);
+                youTubeVideoApi.searchVideosByChannelIdAndPageToken("UCfpaSruWW3S4dibonKXENjA", nextPageToken);
 
         // then
         assertThat(result.items()).hasSize(50);
@@ -52,10 +52,10 @@ class YouTubeDataApiTest {
     @Test
     void 실제_서버에서_비디오_정보를_조회할수있다() {
         // given
-        YouTubeDataApi youTubeDataApi = new YouTubeDataApi("secret_key", new RestTemplate());
+        YouTubeVideoApi youTubeVideoApi = new YouTubeVideoApi("secret_key", new RestTemplate());
 
         // when
-        VideoListResponse response = youTubeDataApi.searchVideoById("8RdkFuFK1DY");
+        VideoListResponse response = youTubeVideoApi.searchVideoById("8RdkFuFK1DY");
         Item item = response.items().get(0);
         Snippet snippet = item.snippet();
         Thumbnail thumbnail = snippet.thumbnails().standardThumbnail();

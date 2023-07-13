@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
 
-public class MockYouTubeDataApi extends YouTubeDataApi {
+public class MockYouTubeVideoApi extends YouTubeVideoApi {
 
     private static final String DEFAULT_VIDEO_ID = "8RdkFuFK1DY";
     private static final String VIDEO_FILEPATH = "youtube/videos/tzuyang/tzuyang%s.json";
@@ -24,7 +24,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
     private final Map<String, Map<String, SearchListResponse>> responsesByChannelId = new HashMap<>();
     private final Map<String, VideoListResponse> responseByVideoId = new HashMap<>();
 
-    public MockYouTubeDataApi() {
+    public MockYouTubeVideoApi() {
         super(null, null);
         loadSearchResponse();
         loadVideoResponse();
