@@ -13,6 +13,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "msw": "^1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.0.2"
@@ -40,6 +41,7 @@
     "babel-plugin-root-import": "^6.6.0",
     "babel-plugin-styled-components": "^2.1.4",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "core-js": "3",
     "dotenv": "^16.3.1",
     "eslint": "^8.44.0",
@@ -68,5 +70,8 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
