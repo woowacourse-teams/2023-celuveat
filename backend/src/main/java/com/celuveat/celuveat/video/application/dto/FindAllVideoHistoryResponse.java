@@ -1,5 +1,6 @@
 package com.celuveat.celuveat.video.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public record FindAllVideoHistoryResponse(
@@ -10,6 +11,7 @@ public record FindAllVideoHistoryResponse(
         String thumbnailUrl,
         int viewCount,
         LocalDateTime uploadDate,
+        @JsonProperty("isAds")
         boolean ads
 ) {
 }
