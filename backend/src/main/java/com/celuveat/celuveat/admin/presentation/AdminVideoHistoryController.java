@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/videohistories")
-public class VideoHistoryController {
+public class AdminVideoHistoryController {
 
     private final VideoHistoryQueryService videoHistoryQueryService;
 
