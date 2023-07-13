@@ -7,7 +7,7 @@ public record FindAllVideoHistoryResponse(
         Long id,
         Long celebId,
         String title,
-        String videoId,
+        String youtubeVideoId,
         int viewCount,
         LocalDateTime uploadDate,
         @JsonProperty("isAds")
