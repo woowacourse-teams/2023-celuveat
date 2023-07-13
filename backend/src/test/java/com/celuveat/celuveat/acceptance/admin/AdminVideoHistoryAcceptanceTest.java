@@ -1,9 +1,9 @@
-package com.celuveat.celuveat.acceptance.admin.auth;
+package com.celuveat.celuveat.acceptance.admin;
 
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.관리자_로그인_요청;
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminVideoHistoryAcceptanceSteps.모든_영상_이력_조회;
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminVideoHistoryAcceptanceSteps.조회한_모든_영상_이력을_검증한다;
+import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.관리자_로그인_요청;
+import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
+import static com.celuveat.celuveat.acceptance.admin.AdminVideoHistoryAcceptanceSteps.모든_영상_이력_조회;
+import static com.celuveat.celuveat.acceptance.admin.AdminVideoHistoryAcceptanceSteps.조회한_모든_영상_이력을_검증한다;
 import static com.celuveat.celuveat.admin.fixture.AdminFixture.관리자_도기;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celuveat.celeb.fixture.CelebFixture.히밥;

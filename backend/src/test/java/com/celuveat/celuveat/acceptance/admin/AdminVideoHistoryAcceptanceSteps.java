@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.acceptance.admin.auth;
+package com.celuveat.celuveat.acceptance.admin;
 
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;

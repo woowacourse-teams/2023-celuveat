@@ -1,7 +1,7 @@
-package com.celuveat.celuveat.acceptance.admin.auth;
+package com.celuveat.celuveat.acceptance.admin;
 
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.관리자_로그인_요청;
-import static com.celuveat.celuveat.acceptance.admin.auth.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
+import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.관리자_로그인_요청;
+import static com.celuveat.celuveat.acceptance.admin.AdminAuthAcceptanceSteps.세션_ID를_추출한다;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.값이_존재한다;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.발생한_예외를_검증한다;
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.응답_상태를_검증한다;
