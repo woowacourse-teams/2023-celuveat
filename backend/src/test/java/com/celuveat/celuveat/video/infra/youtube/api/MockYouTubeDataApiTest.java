@@ -1,6 +1,6 @@
 package com.celuveat.celuveat.video.infra.youtube.api;
 
-import static com.celuveat.celuveat.video.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
+import static com.celuveat.celuveat.video.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_VIDEO_HISTORY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,7 +44,7 @@ class MockYouTubeDataApiTest {
         ).exceptionType();
 
         // then
-        assertThat(exceptionType).isEqualTo(NOT_FOUND_RESTAURANT_LINK);
+        assertThat(exceptionType).isEqualTo(NOT_FOUND_VIDEO_HISTORY);
     }
 
     @ParameterizedTest

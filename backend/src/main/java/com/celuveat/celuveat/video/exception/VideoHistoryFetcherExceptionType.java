@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum VideoHistoryFetcherExceptionType implements BaseExceptionType {
 
-    NOT_FOUND_RESTAURANT_LINK(400, HttpStatus.NOT_FOUND, "링크를 찾을 수 없습니다"),
+    NOT_FOUND_VIDEO_HISTORY(600, HttpStatus.NOT_FOUND, "영상 이력을 찾을 수 없습니다"),
     ;
 
     private final int errorCode;

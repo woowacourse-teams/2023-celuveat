@@ -1,6 +1,6 @@
 package com.celuveat.celuveat.video.infra.youtube.api;
 
-import static com.celuveat.celuveat.video.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
+import static com.celuveat.celuveat.video.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_VIDEO_HISTORY;
 
 import com.celuveat.celuveat.video.exception.VideoHistoryFetcherException;
 import com.celuveat.celuveat.video.infra.youtube.dto.search.SearchListResponse;
@@ -49,7 +49,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
             return new ObjectMapper().readValue(file, responseType);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+            throw new VideoHistoryFetcherException(NOT_FOUND_VIDEO_HISTORY);
         }
     }
 
@@ -68,7 +68,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get("CDIQAQ");
         }
-        throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+        throw new VideoHistoryFetcherException(NOT_FOUND_VIDEO_HISTORY);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get(pageToken);
         }
-        throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+        throw new VideoHistoryFetcherException(NOT_FOUND_VIDEO_HISTORY);
     }
 
     @Override
