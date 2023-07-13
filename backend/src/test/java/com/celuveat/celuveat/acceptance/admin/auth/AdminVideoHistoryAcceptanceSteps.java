@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.acceptance.video;
+package com.celuveat.celuveat.acceptance.admin.auth;
 
 import static com.celuveat.celuveat.acceptance.common.CommonAcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,10 +10,11 @@ import io.restassured.response.Response;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class VideoHistoryAcceptanceSteps {
+public class AdminVideoHistoryAcceptanceSteps {
 
-    public static ExtractableResponse<Response> 모든_영상_이력_조회() {
+    public static ExtractableResponse<Response> 모든_영상_이력_조회(String sessionId) {
         return given()
+                .cookie("JSESSIONID", sessionId)
                 .when().get("/admin/videohistories")
                 .then().log().all()
                 .extract();
