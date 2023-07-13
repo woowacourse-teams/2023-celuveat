@@ -12,8 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VideoHistoryQueryDao {
 
-    private static final RowMapper<FindAllVideoHistoryResponse> findAllVideoHistoryResponseRowMapper
-            = new DataClassRowMapper<>(FindAllVideoHistoryResponse.class);
+    private static final RowMapper<FindAllVideoHistoryResponse> findAllVideoHistoryResponseRowMapper =
+            new DataClassRowMapper<>(FindAllVideoHistoryResponse.class);
 
     private final JdbcTemplate jdbcTemplate;
 
