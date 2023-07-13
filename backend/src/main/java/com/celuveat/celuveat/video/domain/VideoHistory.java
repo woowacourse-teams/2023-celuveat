@@ -8,7 +8,7 @@ public record VideoHistory(
         Long id,
         Long celebId,
         String title,
-        String videoId,
+        String youtubeVideoId,
         int viewCount,
         LocalDateTime uploadDate,
         boolean ads

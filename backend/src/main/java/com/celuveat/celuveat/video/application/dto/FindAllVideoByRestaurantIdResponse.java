@@ -8,7 +8,7 @@ public record FindAllVideoByRestaurantIdResponse(
         Long celebId,
         String celebName,
         int viewCount,
-        String videoId,
+        String youtubeVideoId,
         LocalDateTime uploadDate,
         String profileImageUrl
 ) {

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS celeb
     created_date         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS  restaurant
+CREATE TABLE IF NOT EXISTS restaurant
 (
     id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
     image_url          VARCHAR(511) NOT NULL,
@@ -25,35 +25,35 @@ CREATE TABLE IF NOT EXISTS  restaurant
     created_date       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS  video
+CREATE TABLE IF NOT EXISTS video
 (
-    id            BIGINT PRIMARY KEY AUTO_INCREMENT,
-    celeb_id      BIGINT       NOT NULL,
-    restaurant_id BIGINT       NOT NULL,
-    title         VARCHAR(255) NOT NULL,
-    video_id      VARCHAR(255) NOT NULL,
-    view_count    INT          NOT NULL,
-    upload_date   TIMESTAMP    NOT NULL,
-    ads           BOOLEAN,
-    created_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id               BIGINT PRIMARY KEY AUTO_INCREMENT,
+    celeb_id         BIGINT       NOT NULL,
+    restaurant_id    BIGINT       NOT NULL,
+    title            VARCHAR(255) NOT NULL,
+    youtube_video_id VARCHAR(255) NOT NULL,
+    view_count       INT          NOT NULL,
+    upload_date      TIMESTAMP    NOT NULL,
+    ads              BOOLEAN,
+    created_date     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE IF NOT EXISTS  video_history
+CREATE TABLE IF NOT EXISTS video_history
 (
-    id           BIGINT PRIMARY KEY AUTO_INCREMENT,
-    celeb_id     BIGINT       NOT NULL,
-    title        VARCHAR(255) NOT NULL,
-    video_id     VARCHAR(255) NOT NULL,
-    view_count   INT          NOT NULL,
-    upload_date  TIMESTAMP    NOT NULL,
-    ads          BOOLEAN,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id               BIGINT PRIMARY KEY AUTO_INCREMENT,
+    celeb_id         BIGINT       NOT NULL,
+    title            VARCHAR(255) NOT NULL,
+    youtube_video_id VARCHAR(255) NOT NULL,
+    view_count       INT          NOT NULL,
+    upload_date      TIMESTAMP    NOT NULL,
+    ads              BOOLEAN,
+    created_date     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (celeb_id) REFERENCES celeb (id)
 );
 
-CREATE TABLE IF NOT EXISTS  admin
+CREATE TABLE IF NOT EXISTS admin
 (
     id           BIGINT PRIMARY KEY AUTO_INCREMENT,
     name         VARCHAR(255) NOT NULL,

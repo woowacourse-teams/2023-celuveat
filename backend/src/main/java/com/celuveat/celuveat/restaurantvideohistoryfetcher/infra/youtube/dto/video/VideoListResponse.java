@@ -16,7 +16,7 @@ public record VideoListResponse(
         return VideoHistory.builder()
                 .celebId(celeb.id())
                 .title(item.snippet().title())
-                .videoId(item.id())
+                .youtubeVideoId(item.id())
                 .viewCount(item.viewCount())
                 .uploadDate(item.publishedAt())
                 .ads(false)

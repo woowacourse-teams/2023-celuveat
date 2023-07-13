@@ -9,7 +9,7 @@ public record Video(
         Long celebId,
         Long restaurantId,
         String title,
-        String videoId,
+        String youtubeVideoId,
         int viewCount,
         LocalDateTime uploadDate,
         boolean ads
