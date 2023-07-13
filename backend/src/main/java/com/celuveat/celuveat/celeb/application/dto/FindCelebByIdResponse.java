@@ -6,7 +6,6 @@ public record FindCelebByIdResponse(
         String youtubeChannelName,
         int subscriberCount,
         String youtubeChannelUrl,
-        String backgroundImageUrl,
         String profileImageUrl,
         int restaurantCount
 ) {

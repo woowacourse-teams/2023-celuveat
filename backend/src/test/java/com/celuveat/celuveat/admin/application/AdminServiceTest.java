@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("AdminService 은(는)")
@@ -35,36 +36,40 @@ class AdminServiceTest {
         fakeAdminDao.save(관리자_도기());
     }
 
-    @Test
-    void 입력된_아이디가_존재하지_않으면_예외를_발생한다() {
-        // when
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.login("Empty User Name", "Empty Password")
-        ).exceptionType();
+    @Nested
+    class 로그인_시 {
 
-        // then
-        assertThat(exceptionType).isEqualTo(NOT_FOUND_ADMIN);
-    }
+        @Test
+        void 입력된_아이디가_존재하지_않으면_예외를_발생한다() {
+            // when
+            BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
+                    adminService.login("Empty User Name", "Empty Password")
+            ).exceptionType();
 
-    @Test
-    void 입력된_비밀번호가_일치하지_않으면_예외를_발생한다() {
-        // when
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.login(관리자_도기().username(), "Wrong Password")
-        ).exceptionType();
+            // then
+            assertThat(exceptionType).isEqualTo(NOT_FOUND_ADMIN);
+        }
 
-        // then
-        assertThat(exceptionType).isEqualTo(NOT_MATCH_PASSWORD);
-    }
+        @Test
+        void 입력된_비밀번호가_일치하지_않으면_예외를_발생한다() {
+            // when
+            BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
+                    adminService.login(관리자_도기().username(), "Wrong Password")
+            ).exceptionType();
 
-    @Test
-    void 로그인_성공() {
-        // given
-        Admin 도기 = 관리자_도기();
+            // then
+            assertThat(exceptionType).isEqualTo(NOT_MATCH_PASSWORD);
+        }
 
-        // then
-        assertThatNoException().isThrownBy(
-                () -> adminService.login(도기.username(), 도기.password())
-        );
+        @Test
+        void 로그인_성공() {
+            // given
+            Admin 도기 = 관리자_도기();
+
+            // then
+            assertThatNoException().isThrownBy(
+                    () -> adminService.login(도기.username(), 도기.password())
+            );
+        }
     }
 }

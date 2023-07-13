@@ -10,8 +10,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.http.HttpStatus;
 import java.util.Arrays;
+import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class CommonAcceptanceSteps {
@@ -19,6 +19,7 @@ public class CommonAcceptanceSteps {
     public static final HttpStatus 정상_처리됨 = HttpStatus.OK;
     public static final HttpStatus 생성됨 = HttpStatus.CREATED;
     public static final HttpStatus 잘못된_요청 = HttpStatus.BAD_REQUEST;
+    public static final HttpStatus 인증되지_않음 = HttpStatus.UNAUTHORIZED;
     public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
     public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;

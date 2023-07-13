@@ -7,6 +7,7 @@ public enum AdminExceptionType implements BaseExceptionType {
 
     NOT_FOUND_ADMIN(400, HttpStatus.NOT_FOUND, "관리자를 찾을 수 없습니다"),
     NOT_MATCH_PASSWORD(401, HttpStatus.UNAUTHORIZED, "비밀번호가 틀렸습니다"),
+    UNAUTHORIZED_ADMIN(402, HttpStatus.UNAUTHORIZED, "인증정보가 없습니다"),
     ;
 
     private final int errorCode;

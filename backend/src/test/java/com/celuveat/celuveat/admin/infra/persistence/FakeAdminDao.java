@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 
 import com.celuveat.celuveat.admin.domain.Admin;
 import com.celuveat.celuveat.admin.exception.AdminException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class FakeAdminDao extends AdminDao {
 
