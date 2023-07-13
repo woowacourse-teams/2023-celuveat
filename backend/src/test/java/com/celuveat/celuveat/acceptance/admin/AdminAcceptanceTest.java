@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Admin 인수테스트")
+@SuppressWarnings("NonAsciiCharacters")
 class AdminAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach

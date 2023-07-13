@@ -2,6 +2,7 @@ package com.celuveat.celuveat.admin.fixture;
 
 import com.celuveat.celuveat.admin.domain.Admin;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class AdminFixture {
 
     public static Admin 관리자_도기() {

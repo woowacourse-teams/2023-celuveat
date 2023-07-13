@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Restaurant 인수테스트")
+@SuppressWarnings("NonAsciiCharacters")
 public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Test

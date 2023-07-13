@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 @DisplayName("VideoHistory 인수테스트")
+@SuppressWarnings("NonAsciiCharacters")
 public class VideoHistoryAcceptanceTest extends AcceptanceTest {
 
     @Test
