@@ -8,4 +8,4 @@ export interface Celeb {
 
 export type Celebs = Celeb[];
 
-export type CelebsSearchbarOption = Omit<Celeb, 'subscriberCount'>;
+export type CelebsSearchBarOptionType = Omit<Celeb, 'subscriberCount'>;
