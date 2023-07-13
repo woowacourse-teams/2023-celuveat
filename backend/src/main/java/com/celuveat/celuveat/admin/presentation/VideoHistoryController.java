@@ -1,4 +1,4 @@
-package com.celuveat.celuveat.video.presentation;
+package com.celuveat.celuveat.admin.presentation;
 
 import com.celuveat.celuveat.video.application.VideoHistoryQueryService;
 import com.celuveat.celuveat.video.application.dto.FindAllVideoHistoryResponse;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/videos/history")
+@RequestMapping("/admin/videohistories")
 public class VideoHistoryController {
 
     private final VideoHistoryQueryService videoHistoryQueryService;
