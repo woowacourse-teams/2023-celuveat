@@ -14,7 +14,7 @@ public class VideoHistoryAcceptanceSteps {
 
     public static ExtractableResponse<Response> 모든_영상_이력_조회() {
         return given()
-                .when().get("/videos/history")
+                .when().get("/admin/videohistories")
                 .then().log().all()
                 .extract();
     }

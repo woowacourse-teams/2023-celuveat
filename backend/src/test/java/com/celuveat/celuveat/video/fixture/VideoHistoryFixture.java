@@ -1,5 +1,6 @@
 package com.celuveat.celuveat.video.fixture;
 
+import com.celuveat.celuveat.video.application.dto.FindAllVideoHistoryResponse;
 import com.celuveat.celuveat.video.domain.VideoHistory;
 import java.time.LocalDateTime;
 

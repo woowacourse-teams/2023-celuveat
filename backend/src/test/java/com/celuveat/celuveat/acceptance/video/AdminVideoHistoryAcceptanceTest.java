@@ -12,9 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
-@DisplayName("VideoHistory 인수테스트")
+@DisplayName("AdminVideoHistory 인수테스트")
 @SuppressWarnings("NonAsciiCharacters")
-public class VideoHistoryAcceptanceTest extends AcceptanceTest {
+public class AdminVideoHistoryAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 셀럽의_새로운_유튜브_영상_데이터_조회() {
