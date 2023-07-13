@@ -3,7 +3,7 @@ package com.celuveat.celuveat.restaurantvideohistoryfetcher.exception;
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
-public enum RestaurantVideoHistoryFetcherExceptionType implements BaseExceptionType {
+public enum VideoHistoryFetcherExceptionType implements BaseExceptionType {
 
     NOT_FOUND_RESTAURANT_LINK(400, HttpStatus.NOT_FOUND, "링크를 찾을 수 없습니다"),
     ;
@@ -12,7 +12,7 @@ public enum RestaurantVideoHistoryFetcherExceptionType implements BaseExceptionT
     private final HttpStatus httpStatus;
     private final String errorMessage;
 
-    RestaurantVideoHistoryFetcherExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
+    VideoHistoryFetcherExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMessage = errorMessage;

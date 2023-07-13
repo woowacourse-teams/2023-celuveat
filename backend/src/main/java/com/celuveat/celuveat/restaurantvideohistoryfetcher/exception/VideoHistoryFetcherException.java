@@ -5,9 +5,9 @@ import com.celuveat.celuveat.common.exception.BaseExceptionType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class RestaurantVideoHistoryFetcherException extends BaseException {
+public class VideoHistoryFetcherException extends BaseException {
 
-    private final RestaurantVideoHistoryFetcherExceptionType exceptionType;
+    private final VideoHistoryFetcherExceptionType exceptionType;
 
     @Override
     public BaseExceptionType exceptionType() {

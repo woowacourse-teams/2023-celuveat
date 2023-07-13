@@ -1,8 +1,8 @@
 package com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.api;
 
-import static com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.RestaurantVideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
+import static com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
 
-import com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.RestaurantVideoHistoryFetcherException;
+import com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.VideoHistoryFetcherException;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.search.SearchListResponse;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.video.VideoListResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +49,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
             return new ObjectMapper().readValue(file, responseType);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RestaurantVideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+            throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
         }
     }
 
@@ -68,7 +68,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get("CDIQAQ");
         }
-        throw new RestaurantVideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+        throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MockYouTubeDataApi extends YouTubeDataApi {
         if (responsesByChannelId.containsKey(channelId)) {
             return responsesByChannelId.get(channelId).get(pageToken);
         }
-        throw new RestaurantVideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
+        throw new VideoHistoryFetcherException(NOT_FOUND_RESTAURANT_LINK);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.api;
 
-import static com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.RestaurantVideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
+import static com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.VideoHistoryFetcherExceptionType.NOT_FOUND_RESTAURANT_LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.celuveat.common.exception.BaseExceptionType;
-import com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.RestaurantVideoHistoryFetcherException;
+import com.celuveat.celuveat.restaurantvideohistoryfetcher.exception.VideoHistoryFetcherException;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.search.SearchListResponse;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.search.Snippet;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.video.Item;
@@ -39,7 +39,7 @@ class MockYouTubeDataApiTest {
     @Test
     void 존재하지_않는_채널_아이디로_조회시_예외가_발생한다() {
         // when
-        BaseExceptionType exceptionType = assertThrows(RestaurantVideoHistoryFetcherException.class, () ->
+        BaseExceptionType exceptionType = assertThrows(VideoHistoryFetcherException.class, () ->
                 youTubeDataApi.searchVideosByChannelId("a")
         ).exceptionType();
 
