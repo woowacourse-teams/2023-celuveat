@@ -32,7 +32,8 @@ public class AdminCelebAcceptanceTest extends AcceptanceTest {
                 "YOUTUBE_CHANNEL_ID",
                 1_000_000,
                 "https://google.com",
-                "https://image.com");
+                "https://image.com"
+        );
 
         // when
         var 응답 = 셀럽_등록_요청(세션_ID, 등록할_셀럽_정보);
@@ -49,7 +50,8 @@ public class AdminCelebAcceptanceTest extends AcceptanceTest {
                 "YOUTUBE_CHANNEL_ID",
                 1_000_000,
                 "https://google.com",
-                "https://image.com");
+                "https://image.com"
+        );
 
         // when
         var 응답 = 셀럽_등록_요청("잘못된 세션_ID", 등록할_셀럽_정보);
