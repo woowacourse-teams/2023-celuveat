@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import Tag from '~/components/@common/Tag/Tag';
 
-interface TagsStyleProps {
-  width: number;
-}
-
-interface TagsProps extends TagsStyleProps {
+interface TagsProps {
   texts: string[];
 }
 
-function Tags({ width, texts }: TagsProps) {
+function Tags({ texts }: TagsProps) {
   return (
-    <StyledTagsContainer width={width}>
+    <StyledTagsContainer>
       {texts.map(text => (
         <Tag text={text} />
       ))}
@@ -21,10 +17,8 @@ function Tags({ width, texts }: TagsProps) {
 
 export default Tags;
 
-const StyledTagsContainer = styled.div<TagsStyleProps>`
+const StyledTagsContainer = styled.div`
   display: flex;
-
-  width: ${({ width }) => `${width}px`};
 
   flex-wrap: nowrap;
 
