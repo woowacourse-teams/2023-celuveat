@@ -6,8 +6,11 @@ import static com.celuveat.celuveat.video.fixture.VideoHistoryFixture.toFindAllV
 import static com.celuveat.celuveat.video.fixture.VideoHistoryFixture.영상_이력;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.celuveat.celeb.domain.Celeb;
 import com.celuveat.celuveat.celeb.infra.persistence.CelebDao;
 import com.celuveat.celuveat.celeb.infra.persistence.FakeCelebDao;
+import com.celuveat.celuveat.video.application.dto.FindAllVideoHistoryResponse;
+import com.celuveat.celuveat.video.domain.VideoHistory;
 import com.celuveat.celuveat.video.infra.persistence.FakeVideoHistoryQueryDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -22,28 +25,29 @@ class VideoHistoryQueryServiceTest {
 
     private final CelebDao celebDao = new FakeCelebDao();
     private final FakeVideoHistoryQueryDao videoHistoryQueryDao = new FakeVideoHistoryQueryDao();
-    private final VideoHistoryQueryService videoHistoryQueryService = new VideoHistoryQueryService(videoHistoryQueryDao);
+    private final VideoHistoryQueryService videoHistoryQueryService =
+            new VideoHistoryQueryService(videoHistoryQueryDao);
 
     @Test
     void 저장된_모든_영상_기록을_조회한다() {
         // given
-        var 히밥 = 히밥();
-        var 성시경 = 성시경();
-        var 히밥_ID = celebDao.save(히밥);
-        var 성시경_ID = celebDao.save(성시경);
+        Celeb 히밥 = 히밥();
+        Celeb 성시경 = 성시경();
+        Long 히밥_ID = celebDao.save(히밥);
+        Long 성시경_ID = celebDao.save(성시경);
 
-        var 히밥_영상_이력 = 영상_이력(히밥_ID);
-        var 성시경_영상_이력 = 영상_이력(성시경_ID);
-        var 히밥_영상_이력_ID = videoHistoryQueryDao.save(히밥_영상_이력);
-        var 성시경_영상_이력_ID = videoHistoryQueryDao.save(성시경_영상_이력);
+        VideoHistory 히밥_영상_이력 = 영상_이력(히밥_ID);
+        VideoHistory 성시경_영상_이력 = 영상_이력(성시경_ID);
+        Long 히밥_영상_이력_ID = videoHistoryQueryDao.save(히밥_영상_이력);
+        Long 성시경_영상_이력_ID = videoHistoryQueryDao.save(성시경_영상_이력);
 
-        var expected = List.of(
+        List<FindAllVideoHistoryResponse> expected = List.of(
                 toFindAllVideoHistoryResponse(히밥_영상_이력_ID, 히밥_ID),
                 toFindAllVideoHistoryResponse(성시경_영상_이력_ID, 성시경_ID)
         );
 
         // when
-        var result = videoHistoryQueryService.findAllVideoHistoryResponses();
+        List<FindAllVideoHistoryResponse> result = videoHistoryQueryService.findAllVideoHistoryResponses();
 
         // then
         assertThat(result).usingRecursiveComparison()
