@@ -28,7 +28,7 @@ export default SearchBarSelectBox;
 const StyledSearchBarTags = styled.ul<{ width: number }>`
   border-radius: ${BORDER_RADIUS.lg};
 
-  width: ${props => `${props.width}px`}
+  width: ${props => `${props.width}px`};
 
   padding: 0 2.1rem;
 
