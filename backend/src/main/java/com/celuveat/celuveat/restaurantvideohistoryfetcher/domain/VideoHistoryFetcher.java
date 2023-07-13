@@ -5,7 +5,7 @@ import com.celuveat.celuveat.video.domain.VideoHistory;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface RestaurantVideoHistoryFetcher {
+public interface VideoHistoryFetcher {
 
     List<VideoHistory> fetchAllVideoHistoriesByCeleb(Celeb celeb);
 

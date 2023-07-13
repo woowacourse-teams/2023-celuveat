@@ -15,7 +15,7 @@ import static com.celuveat.celuveat.video.fixture.VideoHistoryFixture.쯔양_010
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celuveat.celeb.domain.Celeb;
-import com.celuveat.celuveat.restaurantvideohistoryfetcher.domain.RestaurantVideoHistoryFetcher;
+import com.celuveat.celuveat.restaurantvideohistoryfetcher.domain.VideoHistoryFetcher;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.api.MockYouTubeDataApi;
 import com.celuveat.celuveat.video.domain.VideoHistory;
 import java.time.LocalDateTime;
@@ -31,12 +31,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 @SuppressWarnings("NonAsciiCharacters")
+@DisplayName("YouTubeVideoHistoryFetcher 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("YouTubeRestaurantVideoHistoryFetcher 은(는)")
-class YouTubeRestaurantVideoHistoryFetcherTest {
+class YouTubeVideoHistoryFetcherTest {
 
-    private final RestaurantVideoHistoryFetcher restaurantVideoHistoryFetcher =
-            new YouTubeRestaurantVideoHistoryFetcher(new MockYouTubeDataApi());
+    private final VideoHistoryFetcher videoHistoryFetcher = new YouTubeVideoHistoryFetcher(new MockYouTubeDataApi());
 
     private static Stream<Arguments> getCelebs() {
         return Stream.of(
@@ -49,7 +48,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     @MethodSource("getCelebs")
     void 한_채널의_모든_영상_이력을_반환한다(Celeb celeb, int videoCount) {
         // when
-        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllVideoHistoriesByCeleb(celeb);
+        List<VideoHistory> videoHistories = videoHistoryFetcher.fetchAllVideoHistoriesByCeleb(celeb);
 
         // then
         assertThat(videoHistories).hasSize(videoCount);
@@ -66,7 +65,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
         );
 
         // when
-        List<VideoHistory> videoHistories = restaurantVideoHistoryFetcher.fetchAllVideoHistoriesByCeleb(쯔양);
+        List<VideoHistory> videoHistories = videoHistoryFetcher.fetchAllVideoHistoriesByCeleb(쯔양);
         List<VideoHistory> result = videoHistories.subList(0, 10);
 
         // then
@@ -81,8 +80,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
         LocalDateTime startDateTime = LocalDateTime.of(2023, month, day, 21, 0, 0);
 
         // when
-        List<VideoHistory> result =
-                restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(쯔양, startDateTime);
+        List<VideoHistory> result = videoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(쯔양, startDateTime);
 
         // then
         assertThat(result).hasSize(expected);
@@ -93,7 +91,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     void 지정한_시간이_아주_작으면_모든_영상_이력을_반환한다(Celeb celeb, int videoCount) {
         // when
         List<VideoHistory> result =
-                restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb, LocalDateTime.MIN);
+                videoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb, LocalDateTime.MIN);
 
         // then
         assertThat(result).hasSize(videoCount);
@@ -104,7 +102,7 @@ class YouTubeRestaurantVideoHistoryFetcherTest {
     void 지정한_시간이_아주_크면_아무_영상_이력도_반환하지_않는다(Celeb celeb) {
         // when
         List<VideoHistory> result =
-                restaurantVideoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb, LocalDateTime.MAX);
+                videoHistoryFetcher.fetchVideoHistoriesByCelebAfterDateTime(celeb, LocalDateTime.MAX);
 
         // then
         assertThat(result).isEmpty();

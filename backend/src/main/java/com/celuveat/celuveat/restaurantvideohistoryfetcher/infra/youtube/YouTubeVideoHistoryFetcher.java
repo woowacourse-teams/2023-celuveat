@@ -1,7 +1,7 @@
 package com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube;
 
 import com.celuveat.celuveat.celeb.domain.Celeb;
-import com.celuveat.celuveat.restaurantvideohistoryfetcher.domain.RestaurantVideoHistoryFetcher;
+import com.celuveat.celuveat.restaurantvideohistoryfetcher.domain.VideoHistoryFetcher;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.api.YouTubeDataApi;
 import com.celuveat.celuveat.restaurantvideohistoryfetcher.infra.youtube.dto.search.SearchListResponse;
 import com.celuveat.celuveat.video.domain.VideoHistory;
@@ -11,7 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class YouTubeRestaurantVideoHistoryFetcher implements RestaurantVideoHistoryFetcher {
+public class YouTubeVideoHistoryFetcher implements VideoHistoryFetcher {
 
     private final YouTubeDataApi youTubeDataApi;
 
