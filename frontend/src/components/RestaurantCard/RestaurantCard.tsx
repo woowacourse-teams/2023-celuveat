@@ -1,36 +1,30 @@
 import { styled } from 'styled-components';
-import Label from '~/components/@common/Label';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
-import Star from '~/assets/icons/star.svg';
+import ProfileImage from '../@common/ProfileImage';
+import { ProfileImageProps } from '../@common/ProfileImage/ProfileImage';
 
 interface RestaurantCardProps {
   imageUrl: string;
   name: string;
   address: string;
   category: string;
-  rating: string;
-  reviewCount: number;
-  isAds?: boolean;
+  celeb: ProfileImageProps;
 }
 
-function RestaurantCard({ imageUrl, name, address, category, rating, reviewCount, isAds }: RestaurantCardProps) {
-  const filteredReviewCount = reviewCount > 999 ? '999+' : String(reviewCount);
-
+function RestaurantCard({ imageUrl, name, address, category, celeb }: RestaurantCardProps) {
   return (
     <StyledContainer>
       <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
       <StyledInfo>
-        <StyledLabelSection>{isAds && <Label text="유료광고" />}</StyledLabelSection>
         <StyledRestaurantNameSection>
           <StyledRestaurantName>{name}</StyledRestaurantName>
-          <StyledRightSide>
-            <Star />
-            <StyledRating>{rating}</StyledRating>
-            <StyledReviewCount>({filteredReviewCount})</StyledReviewCount>
-          </StyledRightSide>
+          <StyledCategory>{category}</StyledCategory>
         </StyledRestaurantNameSection>
         <StyledAddress>{address}</StyledAddress>
-        <StyledCategory>{category}</StyledCategory>
+        <StyledAddress>02-1234-5678</StyledAddress>
+        <StyledProfileImageSection>
+          <ProfileImage name={celeb.name} imageUrl={celeb.imageUrl} size={celeb.size} />
+        </StyledProfileImageSection>
       </StyledInfo>
     </StyledContainer>
   );
@@ -42,31 +36,32 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
+  gap: 8px;
 
-  width: 301px;
-  height: 287px;
+  width: 320px;
+  height: 360px;
 `;
 
 const StyledImage = styled.img`
   width: 100%;
-  height: 192px;
+  height: 320px;
 
-  border-radius: ${BORDER_RADIUS.sm};
+  object-fit: cover;
+
+  border-radius: ${BORDER_RADIUS.md};
 `;
 
 const StyledInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px 0;
+  gap: 4px;
+
+  position: relative;
 
   width: 100%;
   flex: 1;
 
   padding: 4px;
-`;
-
-const StyledLabelSection = styled.div`
-  height: 14px;
 `;
 
 const StyledRestaurantNameSection = styled.div`
@@ -78,22 +73,8 @@ const StyledRestaurantNameSection = styled.div`
 `;
 
 const StyledRestaurantName = styled.span`
-  font-size: ${FONT_SIZE.lg};
+  font-size: ${FONT_SIZE.md};
   font-weight: bold;
-`;
-
-const StyledRightSide = styled.div`
-  display: flex;
-  gap: 0 4px;
-`;
-
-const StyledRating = styled.span`
-  font-size: ${FONT_SIZE.md};
-`;
-
-const StyledReviewCount = styled.span`
-  color: var(--gray-3);
-  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledAddress = styled.span`
@@ -104,4 +85,11 @@ const StyledAddress = styled.span`
 const StyledCategory = styled.span`
   color: var(--gray-3);
   font-size: ${FONT_SIZE.sm};
+`;
+
+const StyledProfileImageSection = styled.div`
+  position: absolute;
+
+  bottom: 4px;
+  right: 4px;
 `;

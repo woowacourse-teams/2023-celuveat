@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
+export interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
   name: string;
   imageUrl: string;
   size: number;
