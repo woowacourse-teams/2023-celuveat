@@ -1,6 +1,74 @@
 {
-  "extends": [
-    "stylelint-config-standard"
-  ],
-  "customSyntax": "postcss-styled-syntax"
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-order"],
+  "customSyntax": "postcss-styled-syntax",
+  "rules": {
+    "declaration-empty-line-before": [
+      "always",
+      {
+        "ignore": ["after-comment", "after-declaration", "inside-single-line-block"]
+      }
+    ],
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-order": [
+      {
+        "groupName": "Layout",
+        "emptyLineBefore": "always",
+        "properties": ["display", "visibility", "overflow", "float", "clear"]
+      },
+      {
+        "groupName": "Position",
+        "emptyLineBefore": "always",
+        "properties": ["position", "top", "right", "bottom", "left", "z-index"]
+      },
+      {
+        "groupName": "Box",
+        "emptyLineBefore": "always",
+        "properties": ["width", "height"]
+      },
+      {
+        "groupName": "Space",
+        "emptyLineBefore": "always",
+        "properties": [
+          "margin",
+          "margin-top",
+          "margin-right",
+          "margin-bottom",
+          "margin-left",
+          "padding",
+          "padding-top",
+          "padding-right",
+          "padding-bottom",
+          "padding-left",
+          "border"
+        ]
+      },
+      {
+        "groupName": "Background",
+        "emptyLineBefore": "always",
+        "properties": ["background", "background-color"]
+      },
+      {
+        "groupName": "Font",
+        "emptyLineBefore": "always",
+        "properties": [
+          "color",
+          "font-style",
+          "font-weight",
+          "font-size",
+          "line-height",
+          "letter-spacing",
+          "text-align",
+          "text-indent",
+          "vertical-align",
+          "white-space"
+        ]
+      },
+      {
+        "groupName": "Animation",
+        "emptyLineBefore": "always",
+        "properties": ["animation"]
+      }
+    ]
+  }
 }

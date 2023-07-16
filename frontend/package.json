@@ -9,6 +9,7 @@
     "build": "webpack --mode production",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:css": "stylelint './src/**/*.{tsx,ts,jsx,js}'",
+    "lint:css:fix": "stylelint './src/**/*.{tsx,ts,jsx,js}' --fix",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -62,6 +63,7 @@
     "storybook": "^7.0.25",
     "stylelint": "^15.10.1",
     "stylelint-config-standard": "^34.0.0",
+    "stylelint-order": "^6.0.3",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
