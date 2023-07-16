@@ -33,7 +33,6 @@ const StyledSearchBarTags = styled.ul<{ width: number }>`
   padding: 0 2.1rem;
 
   font-size: ${FONT_SIZE.sm};
-
   box-shadow: var(--shadow);
 `;
 
@@ -42,8 +41,8 @@ const StyledSearchBarTag = styled.li`
   align-items: center;
 
   padding: 1.1rem;
-
   border: none;
+
   background: none;
   outline: none;
 

@@ -50,7 +50,6 @@ const StyledContainer = styled.div`
 const StyledImage = styled.img`
   width: 100%;
   height: 192px;
-
   border-radius: ${BORDER_RADIUS.sm};
 `;
 
@@ -78,8 +77,8 @@ const StyledRestaurantNameSection = styled.div`
 `;
 
 const StyledRestaurantName = styled.span`
-  font-size: ${FONT_SIZE.lg};
   font-weight: bold;
+  font-size: ${FONT_SIZE.lg};
 `;
 
 const StyledRightSide = styled.div`

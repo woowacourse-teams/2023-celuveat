@@ -5,24 +5,24 @@ import SUITBold from '~/assets/fonts/SUIT-Bold.woff2';
 
 const fonts = css`
   @font-face {
-    font-family: 'SUIT-Regular';
+    font-style: normal;
+    font-weight: normal;
+    font-family: SUIT-Regular;
     src: url(${SUITRegular}) format('woff2');
-    font-weight: normal;
-    font-style: normal;
   }
 
   @font-face {
-    font-family: 'SUIT-Medium';
+    font-style: normal;
+    font-weight: normal;
+    font-family: SUIT-Medium;
     src: url(${SUITMedium}) format('woff2');
-    font-weight: normal;
-    font-style: normal;
   }
 
   @font-face {
-    font-family: 'SUIT-Bold';
-    src: url(${SUITBold}) format('woff2');
-    font-weight: normal;
     font-style: normal;
+    font-weight: normal;
+    font-family: SUIT-Bold;
+    src: url(${SUITBold}) format('woff2');
   }
 `;
 

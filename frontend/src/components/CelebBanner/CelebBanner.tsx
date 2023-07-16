@@ -46,6 +46,7 @@ const StyledContainer = styled.section<{ background: string }>`
   align-items: center;
 
   width: 100%;
+
   padding: 64px 0;
 
   ${({ background }) =>

@@ -84,13 +84,14 @@ const reset = css`
   video {
     margin: 0;
     padding: 0;
-
     font: inherit;
-    border: 0;
 
+    border: 0;
     box-sizing: border-box;
+
     vertical-align: baseline;
   }
+
   /* HTML5 display-role reset for older browsers */
   article,
   aside,
@@ -105,26 +106,32 @@ const reset = css`
   section {
     display: block;
   }
+
   body {
     margin: 0;
+
     line-height: 1;
   }
+
   ol,
   li,
   ul {
     list-style: none;
   }
+
   blockquote,
   q {
     quotes: none;
   }
-  blockquote:before,
-  blockquote:after,
-  q:before,
-  q:after {
+
+  blockquote::before,
+  blockquote::after,
+  q::before,
+  q::after {
     content: '';
     content: none;
   }
+
   table {
     border-collapse: collapse;
     border-spacing: 0;
