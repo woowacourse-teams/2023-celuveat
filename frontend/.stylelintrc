@@ -1,73 +1,90 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
   "plugins": ["stylelint-order"],
   "customSyntax": "postcss-styled-syntax",
   "rules": {
     "declaration-empty-line-before": [
       "always",
       {
-        "ignore": ["after-comment", "after-declaration", "inside-single-line-block"]
+        "ignore": ["first-nested", "after-comment", "after-declaration", "inside-single-line-block"]
       }
     ],
     "order/order": ["custom-properties", "declarations"],
+    "declaration-property-unit-allowed-list": {
+      "/^border/": ["px", "%"],
+      "/^width|^height/": ["px", "%"],
+      "/^margin|^padding|^gap/": ["rem"]
+    },
     "order/properties-order": [
       {
-        "groupName": "Layout",
-        "emptyLineBefore": "always",
-        "properties": ["display", "visibility", "overflow", "float", "clear"]
+        "groupName": "display",
+        "noEmptyLineBetween": true,
+        "properties": [
+          "display",
+          "flex",
+          "flex-grow",
+          "flex-shrink",
+          "flex-basis",
+          "flex-flow",
+          "justify-content",
+          "align-items",
+          "align-content"
+        ]
       },
+
       {
-        "groupName": "Position",
-        "emptyLineBefore": "always",
+        "groupName": "positioning",
+        "noEmptyLineBetween": true,
         "properties": ["position", "top", "right", "bottom", "left", "z-index"]
       },
       {
-        "groupName": "Box",
-        "emptyLineBefore": "always",
-        "properties": ["width", "height"]
+        "groupName": "float",
+        "noEmptyLineBetween": true,
+        "properties": ["float"]
       },
       {
-        "groupName": "Space",
-        "emptyLineBefore": "always",
+        "groupName": "width / height",
+        "noEmptyLineBetween": true,
+        "properties": ["width", "min-width", "max-width", "height", "min-height", "max-height"]
+      },
+      {
+        "groupName": "padding / margin",
+        "noEmptyLineBetween": true,
+        "properties": ["padding", "margin"]
+      },
+      {
+        "groupName": "border / background",
+        "noEmptyLineBetween": true,
         "properties": [
-          "margin",
-          "margin-top",
-          "margin-right",
-          "margin-bottom",
-          "margin-left",
-          "padding",
-          "padding-top",
-          "padding-right",
-          "padding-bottom",
-          "padding-left",
-          "border"
+          "border",
+          "border-radius",
+          "background",
+          "background-color",
+          "background-image",
+          "background-repeat",
+          "background-position",
+          "background-size"
         ]
       },
       {
-        "groupName": "Background",
-        "emptyLineBefore": "always",
-        "properties": ["background", "background-color"]
-      },
-      {
-        "groupName": "Font",
-        "emptyLineBefore": "always",
+        "groupName": "colors and typography",
+        "noEmptyLineBetween": true,
         "properties": [
           "color",
-          "font-style",
-          "font-weight",
+          "font",
+          "font-family",
           "font-size",
+          "font-weight",
           "line-height",
-          "letter-spacing",
           "text-align",
-          "text-indent",
-          "vertical-align",
-          "white-space"
+          "text-transform",
+          "text-decoration"
         ]
       },
       {
-        "groupName": "Animation",
-        "emptyLineBefore": "always",
-        "properties": ["animation"]
+        "groupName": "other",
+        "noEmptyLineBetween": true,
+        "properties": ["cursor", "opacity", "transition", "transform"]
       }
     ]
   }
