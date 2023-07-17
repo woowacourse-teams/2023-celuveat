@@ -32,7 +32,6 @@ const StyledSearchBarInput = styled.input`
 
   margin-left: 1rem;
   border: none;
-
   background-color: transparent;
 
   font-size: ${FONT_SIZE.lg};

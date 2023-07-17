@@ -40,37 +40,31 @@ const base = css`
   html {
     font-family: SUIT-Regular, Roboto, system-ui, 'Segoe UI', Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji',
       'Segoe UI Symbol', sans-serif;
-
     font-size: 62.5%;
   }
 
   h1 {
     font-family: SUIT-Bold, sans-serif;
-
     font-size: 4rem;
   }
 
   h2 {
     font-family: SUIT-Bold, sans-serif;
-
     font-size: 3.2rem;
   }
 
   h3 {
     font-family: SUIT-Bold, sans-serif;
-
     font-size: 2.8rem;
   }
 
   h4 {
     font-family: SUIT-Bold, sans-serif;
-
     font-size: 2.4rem;
   }
 
   h5 {
     font-family: SUIT-Bold, sans-serif;
-
     font-size: 2rem;
   }
 

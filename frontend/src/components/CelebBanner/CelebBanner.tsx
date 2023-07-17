@@ -47,7 +47,7 @@ const StyledContainer = styled.section<{ background: string }>`
 
   width: 100%;
 
-  padding: 64px 0;
+  padding: 6.4rem 0;
 
   ${({ background }) =>
     background
@@ -66,7 +66,7 @@ const StyledContainer = styled.section<{ background: string }>`
 const StyledCelebInfo = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 24px;
+  gap: 2.4rem;
 
   & > *:first-child {
     grid-area: 1 / 1 / span 2 / span 1;

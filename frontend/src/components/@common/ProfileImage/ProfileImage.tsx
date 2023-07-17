@@ -15,7 +15,6 @@ export default ProfileImage;
 const StyledProfile = styled.img<{ size: number }>`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
-
-  background: var(--red-5);
   border-radius: 50%;
+  background: var(--red-5);
 `;

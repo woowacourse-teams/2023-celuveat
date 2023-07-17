@@ -50,10 +50,10 @@ const StyledTextButtons = styled.div`
 
     & > * {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
 
-      margin: 8px;
+      margin: 0.8rem;
     }
   }
 `;

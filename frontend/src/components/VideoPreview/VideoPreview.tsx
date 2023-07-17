@@ -62,7 +62,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  row-gap: 12px;
+  row-gap: 1.2rem;
 
   width: 352px;
 
@@ -90,7 +90,7 @@ const StyledVideoCover = styled.button`
 const StyledVideoInfo = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 12px;
+  gap: 1.2rem;
 
   width: 100%;
 

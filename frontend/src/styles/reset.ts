@@ -82,11 +82,11 @@ const reset = css`
   mark,
   audio,
   video {
-    margin: 0;
     padding: 0;
-    font: inherit;
+    margin: 0;
 
     border: 0;
+    font: inherit;
     box-sizing: border-box;
 
     vertical-align: baseline;
