@@ -20,7 +20,7 @@ export const Default: Story = {
     celeb: {
       name: '도담',
       imageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
-      size: 24,
+      size: 42,
     },
   },
 };

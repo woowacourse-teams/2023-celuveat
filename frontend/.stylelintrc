@@ -1,5 +1,5 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-order"],
   "customSyntax": "postcss-styled-syntax",
   "rules": {
@@ -18,42 +18,50 @@
     "order/properties-order": [
       {
         "groupName": "display",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": [
           "display",
           "flex",
+          "flex-direction",
           "flex-grow",
           "flex-shrink",
           "flex-basis",
           "flex-flow",
           "justify-content",
           "align-items",
-          "align-content"
+          "align-content",
+          "gap"
         ]
       },
 
       {
         "groupName": "positioning",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": ["position", "top", "right", "bottom", "left", "z-index"]
       },
       {
         "groupName": "float",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": ["float"]
       },
       {
         "groupName": "width / height",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": ["width", "min-width", "max-width", "height", "min-height", "max-height"]
       },
       {
         "groupName": "padding / margin",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": ["padding", "margin"]
       },
       {
         "groupName": "border / background",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": [
           "border",
@@ -68,6 +76,7 @@
       },
       {
         "groupName": "colors and typography",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": [
           "color",
@@ -83,6 +92,7 @@
       },
       {
         "groupName": "other",
+        "emptyLineBefore": "always",
         "noEmptyLineBetween": true,
         "properties": ["cursor", "opacity", "transition", "transform"]
       }

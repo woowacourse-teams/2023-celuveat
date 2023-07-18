@@ -18,6 +18,7 @@ const StyledDiv = styled.div`
 
   width: 38px;
   height: 14px;
+
   border-radius: ${BORDER_RADIUS.xs};
   background-color: var(--primary-3-transparent-25);
 

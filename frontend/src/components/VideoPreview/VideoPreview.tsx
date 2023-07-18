@@ -61,8 +61,7 @@ export default VideoPreview;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  row-gap: 1.2rem;
+  gap: 1.2rem 0;
 
   width: 352px;
 
@@ -78,6 +77,7 @@ const StyledVideoCover = styled.button`
   height: 196px;
 
   padding: 0;
+
   border: none;
   border-radius: ${BORDER_RADIUS.md};
 
@@ -90,6 +90,7 @@ const StyledVideoCover = styled.button`
 const StyledVideoInfo = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
+
   gap: 1.2rem;
 
   width: 100%;
@@ -110,7 +111,7 @@ const StyledTitle = styled.div`
 const StyledViewAndDate = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 2px;
+  gap: 0.2rem 0;
   grid-area: 2 / 2 / span 1 / span 1;
 
   font-size: ${FONT_SIZE.sm};

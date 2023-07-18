@@ -22,6 +22,7 @@ const StyledSearchBarInputContainer = styled.div<{ width: number }>`
   width: ${({ width }) => `${width}px`};
 
   padding: 1rem 2.6rem;
+
   border: 1px solid var(--primary-6);
   border-radius: 48px;
   box-shadow: var(--shadow);
@@ -31,6 +32,7 @@ const StyledSearchBarInput = styled.input`
   width: 100%;
 
   margin-left: 1rem;
+
   border: none;
   background-color: transparent;
 

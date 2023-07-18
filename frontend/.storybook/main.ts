@@ -29,10 +29,10 @@ const config: StorybookConfig = {
   },
   previewHead: head => `
     ${head}
-    '<script
+    <script
         type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_API_KEY}&libraries=services"
-      ></script>'
+      ></script>
   `,
 };
 export default config;
