@@ -41,7 +41,7 @@ export const Buttons: Story = {};
 
 const StyledTextButtons = styled.div`
   display: flex;
-  column-gap: 124px;
+  gap: 0 12.4rem;
 
   & > section > div {
     display: grid;

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
+export interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
   name: string;
   imageUrl: string;
   size: number;
@@ -15,6 +15,7 @@ export default ProfileImage;
 const StyledProfile = styled.img<{ size: number }>`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
+
   border-radius: 50%;
   background: var(--red-5);
 `;
