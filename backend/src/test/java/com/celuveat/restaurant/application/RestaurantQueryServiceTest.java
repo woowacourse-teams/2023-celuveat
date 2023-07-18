@@ -1,5 +1,9 @@
 package com.celuveat.restaurant.application;
 
+import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
+import static com.celuveat.video.fixture.VideoFixture.영상;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.domain.Celeb;
@@ -9,9 +13,8 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
-import com.celuveat.restaurant.domain.SocialMedia;
-import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -19,9 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Transactional
 @SpringBootTest
@@ -43,44 +43,6 @@ class RestaurantQueryServiceTest {
 
     @Autowired
     private RestaurantQueryService restaurantQueryService;
-
-    private Celeb 셀럽(String name) {
-        return Celeb.builder()
-                .name(name)
-                .profileImageUrl(name)
-                .youtubeChannelName(name)
-                .build();
-    }
-
-    private Restaurant 음식점(String name) {
-        return Restaurant.builder()
-                .name(name)
-                .roadAddress(name)
-                .naverMapUrl(name)
-                .phoneNumber(name)
-                .category(name)
-                .latitude(name)
-                .longitude(name)
-                .build();
-    }
-
-    private RestaurantImage 음식점사진(String name, Restaurant 음식점) {
-        return RestaurantImage.builder()
-                .name(name)
-                .socialMedia(SocialMedia.INSTAGRAM)
-                .author(name)
-                .restaurant(음식점)
-                .build();
-    }
-
-    private Video 영상(String name, Restaurant 음식점, Celeb 셀럽) {
-        return Video.builder()
-                .celeb(셀럽)
-                .restaurant(음식점)
-                .uploadDate(LocalDate.now())
-                .youtubeUrl(name)
-                .build();
-    }
 
     @Test
     void 전체_음식점_조회_테스트() {
