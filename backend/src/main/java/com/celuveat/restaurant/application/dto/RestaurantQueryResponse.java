@@ -3,7 +3,6 @@ package com.celuveat.restaurant.application.dto;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
-
 import java.util.List;
 
 public record RestaurantQueryResponse(
