@@ -26,14 +26,12 @@ const SearchBarSelectBox = forwardRef<HTMLUListElement, CelebsSearchBarOption>(
 export default SearchBarSelectBox;
 
 const StyledSearchBarTags = styled.ul<{ width: number }>`
-  border-radius: ${BORDER_RADIUS.lg};
-
   width: ${props => `${props.width}px`};
 
   padding: 0 2.1rem;
+  border-radius: ${BORDER_RADIUS.lg};
 
   font-size: ${FONT_SIZE.sm};
-
   box-shadow: var(--shadow);
 `;
 
@@ -42,7 +40,6 @@ const StyledSearchBarTag = styled.li`
   align-items: center;
 
   padding: 1.1rem;
-
   border: none;
   background: none;
   outline: none;

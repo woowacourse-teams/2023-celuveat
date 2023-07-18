@@ -44,24 +44,36 @@ const StyledContainer = styled.div`
 
 const StyledImage = styled.img`
   width: 100%;
+<<<<<<< HEAD
   height: 320px;
 
   object-fit: cover;
 
   border-radius: ${BORDER_RADIUS.md};
+=======
+  height: 192px;
+  border-radius: ${BORDER_RADIUS.sm};
+>>>>>>> 30c425ad4e51b1a4f8ffafcca60ad1ad853d9bf1
 `;
 
 const StyledInfo = styled.div`
   display: flex;
+<<<<<<< HEAD
   flex-direction: column;
   gap: 4px;
 
   position: relative;
 
   width: 100%;
+=======
+>>>>>>> 30c425ad4e51b1a4f8ffafcca60ad1ad853d9bf1
   flex: 1;
 
-  padding: 4px;
+  width: 100%;
+
+  padding: 0.4rem;
+  flex-direction: column;
+  gap: 0.8rem 0;
 `;
 
 const StyledRestaurantNameSection = styled.div`
@@ -77,6 +89,23 @@ const StyledRestaurantName = styled.span`
   font-weight: bold;
 `;
 
+<<<<<<< HEAD
+=======
+const StyledRightSide = styled.div`
+  display: flex;
+  gap: 0 0.4rem;
+`;
+
+const StyledRating = styled.span`
+  font-size: ${FONT_SIZE.md};
+`;
+
+const StyledReviewCount = styled.span`
+  color: var(--gray-3);
+  font-size: ${FONT_SIZE.md};
+`;
+
+>>>>>>> 30c425ad4e51b1a4f8ffafcca60ad1ad853d9bf1
 const StyledAddress = styled.span`
   color: var(--gray-4);
   font-size: ${FONT_SIZE.sm};

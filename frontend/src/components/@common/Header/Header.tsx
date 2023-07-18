@@ -13,7 +13,8 @@ export default Header;
 
 const StyledHeader = styled.header`
   width: 100%;
-  padding: 12px 24px;
+
+  padding: 1.2rem 2.4rem;
   border-bottom: 1px solid var(--gray-1);
 `;
 
