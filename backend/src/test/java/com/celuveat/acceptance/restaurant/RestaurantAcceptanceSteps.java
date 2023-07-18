@@ -1,9 +1,9 @@
 package com.celuveat.acceptance.restaurant;
 
+import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -12,7 +12,7 @@ import java.util.List;
 public class RestaurantAcceptanceSteps {
 
     public static ExtractableResponse<Response> 음식점_전체_조회_요청() {
-        return RestAssured.given().log().all()
+        return given()
                 .when().get("/restaurants")
                 .then().log().all()
                 .extract();
