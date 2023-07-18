@@ -21,6 +21,7 @@ export default TextButton;
 
 const StyledButton = styled.button<{ colorType: 'dark' | 'light' }>`
   padding: 1.2rem 2.4rem;
+
   border: none;
   border-radius: ${BORDER_RADIUS.sm};
   background-color: ${({ colorType }) => (colorType === 'dark' ? 'var(--primary-5)' : 'var(--primary-1)')};
