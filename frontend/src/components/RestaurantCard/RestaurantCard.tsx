@@ -17,7 +17,7 @@ function RestaurantCard({ imageUrl, name, address, category, celeb }: Restaurant
       <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
       <StyledInfo>
         <StyledCategory>{category}</StyledCategory>
-        <StyledRestaurantName>{name}</StyledRestaurantName>
+        <h5>{name}</h5>
         <StyledAddress>{address}</StyledAddress>
         <StyledAddress>02-1234-5678</StyledAddress>
         <StyledProfileImageSection>
@@ -59,11 +59,6 @@ const StyledInfo = styled.div`
   width: 100%;
 
   padding: 0.4rem;
-`;
-
-const StyledRestaurantName = styled.span`
-  font-size: ${FONT_SIZE.md};
-  font-weight: bold;
 `;
 
 const StyledAddress = styled.span`
