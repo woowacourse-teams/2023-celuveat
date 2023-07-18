@@ -1,5 +1,7 @@
 package com.celuveat.restaurant.domain;
 
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.celuveat.common.domain.BaseEntity;
@@ -27,10 +29,10 @@ public class RestaurantImage extends BaseEntity {
     private String author;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private SocialMedia socialMedia;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
