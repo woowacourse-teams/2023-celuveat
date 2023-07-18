@@ -50,19 +50,18 @@ const StyledContainer = styled.div`
 const StyledImage = styled.img`
   width: 100%;
   height: 192px;
-
   border-radius: ${BORDER_RADIUS.sm};
 `;
 
 const StyledInfo = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px 0;
-
-  width: 100%;
   flex: 1;
 
-  padding: 4px;
+  width: 100%;
+
+  padding: 0.4rem;
+  flex-direction: column;
+  gap: 0.8rem 0;
 `;
 
 const StyledLabelSection = styled.div`
@@ -84,7 +83,7 @@ const StyledRestaurantName = styled.span`
 
 const StyledRightSide = styled.div`
   display: flex;
-  gap: 0 4px;
+  gap: 0 0.4rem;
 `;
 
 const StyledRating = styled.span`
