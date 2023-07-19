@@ -1,0 +1,49 @@
+name: ✨Celuveat Backend CI✨
+
+on:
+  push:
+    branches: [ "develop-backend" ]
+  pull_request:
+    branches: [ "develop-backend" ]
+
+permissions:
+  contents: read
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: ✨ JDK 17 설정
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: ✨ Gradle 캐싱
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: ✨ Graldew 권한 설정
+      run: chmod +x gradlew
+
+    - name: ✨ 테스트 진행
+      run: ./gradlew --info test
+      
+    - name: ✨ 테스트 결과 Report
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
+      with:
+         files: build/test-results/**/*.xml
+
+    - name: ✨ Gradle 캐시 제거
+      if: ${{ always() }}
+      run: |
+        rm -f ~/.gradle/caches/modules-2/modules-2.lock
+        rm -f ~/.gradle/caches/modules-2/gc.properties
