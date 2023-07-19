@@ -38,7 +38,7 @@ function MainPage() {
 
       <StyledLayout>
         <StyledLeftSide>
-          <StyledCardListHeader>음식점 수 20 개</StyledCardListHeader>
+          <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data.map(({ celebs, ...restaurant }: RestaurantData) => (
               <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => clickCard(restaurant)} />
@@ -92,7 +92,7 @@ const StyledRestaurantCardList = styled.div`
 
   height: 100%;
 
-  margin: 3.2rem 2.4rem;
+  margin: 0 2.4rem;
   grid-template-columns: 1fr 1fr 1fr;
 `;
 
