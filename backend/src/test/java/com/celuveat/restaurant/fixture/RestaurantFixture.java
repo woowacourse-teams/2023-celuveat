@@ -11,8 +11,8 @@ public class RestaurantFixture {
                 .naverMapUrl(name)
                 .phoneNumber(name)
                 .category(name)
-                .latitude(name)
-                .longitude(name)
+                .latitude("37.5206993")
+                .longitude("127.019975")
                 .build();
     }
 }
