@@ -30,10 +30,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
     - name: ✨ Gradlew 권한 설정
-      run: chmod +x backend/gradlew
+      run: chmod +x ./backend/gradlew
 
     - name: ✨ 테스트 진행
-      run: backend/gradlew --info test
+      run: ./backend/gradlew --info test
 
     - name: ✨ 테스트 결과 Report
       uses: EnricoMi/publish-unit-test-result-action@v1
