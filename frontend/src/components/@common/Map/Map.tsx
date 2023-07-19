@@ -1,11 +1,7 @@
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from 'react';
-
-interface Coordinate {
-  longitude: number;
-  latitude: number;
-}
+import { Coordinate } from '~/@types/map.types';
 
 interface MapProps {
   width: string;

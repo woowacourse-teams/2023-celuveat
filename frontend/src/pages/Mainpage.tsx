@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
+import { Coordinate } from '~/@types/map.types';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCard from '~/components/RestaurantCard';
@@ -15,6 +17,12 @@ const mapArgs = {
 };
 
 function MainPage() {
+  const [mainPosition, setMainPosition] = useState(mapArgs.mainPosition);
+
+  const switchMainPosition = (position: Coordinate) => {
+    setMainPosition({ ...position });
+  };
+
   return (
     <>
       <Header />
@@ -22,13 +30,22 @@ function MainPage() {
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 20 개</StyledCardListHeader>
           <StyledRestaurantCardList>
-            {data.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} />
-            ))}
+            {data.map(({ celebs, ...restaurant }: RestaurantData) => {
+              const { latitude, longitude } = restaurant;
+
+              return (
+                <RestaurantCard
+                  restaurant={restaurant}
+                  celebs={celebs}
+                  size={42}
+                  onClick={() => switchMainPosition({ latitude, longitude })}
+                />
+              );
+            })}
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} />
+          <Map {...mapArgs} mainPosition={mainPosition} />
         </StyledRightSide>
       </StyledLayout>
     </>

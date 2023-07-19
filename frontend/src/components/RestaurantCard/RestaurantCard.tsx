@@ -8,13 +8,14 @@ interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs: Celebs;
   size: number;
+  onClick: React.MouseEventHandler;
 }
 
-function RestaurantCard({ restaurant, celebs, size }: RestaurantCardProps) {
+function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
   return (
-    <StyledContainer>
+    <StyledContainer onClick={onClick}>
       <StyledImage alt={`${name} 대표 이미지`} src={images[0].name} />
       <StyledInfo>
         <StyledCategory>{category}</StyledCategory>
