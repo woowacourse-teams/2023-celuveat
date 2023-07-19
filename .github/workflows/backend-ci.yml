@@ -29,8 +29,8 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-    - name: ✨ Graldew 권한 설정
-      run: chmod +x gradlew
+    - name: ✨ Gradlew 권한 설정
+      run: chmod +x backend/gradlew
 
     - name: ✨ 테스트 진행
       run: ./gradlew --info test
