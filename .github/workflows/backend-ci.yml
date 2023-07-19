@@ -24,8 +24,8 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ~/backend/.gradle/caches
-          ~/backend/.gradle/wrapper
+          ~/.gradle/caches
+          ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
@@ -39,10 +39,10 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
       with:
-         files: ./backend/build/test-results/**/*.xml
+         files: ./build/test-results/**/*.xml
 
     - name: ✨ Gradle 캐시 제거
       if: ${{ always() }}
       run: |
-        rm -f ~/backend/.gradle/caches/modules-2/modules-2.lock
-        rm -f ~/backend/.gradle/caches/modules-2/gc.properties
+        rm -f ~/.gradle/caches/modules-2/modules-2.lock
+        rm -f ~/.gradle/caches/modules-2/gc.properties
