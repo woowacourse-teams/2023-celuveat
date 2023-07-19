@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
-import { Coordinate } from '~/@types/map.types';
+import { Restaurant } from '~/@types/restaurant.types';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
-import MapModal from '~/components/MapModal';
+import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
 import useMapModal from '~/hooks/useMapModal';
 import { data } from '~/mocks/data';
@@ -21,11 +21,17 @@ const mapArgs = {
 
 function MainPage() {
   const [mainPosition, setMainPosition] = useState(mapArgs.mainPosition);
+  const [currentRestaurant, setCurrentRestaurant] = useState<
+    Pick<Restaurant, 'name' | 'roadAddress' | 'phoneNumber' | 'naverMapUrl'>
+  >({ name: '', roadAddress: '', phoneNumber: '', naverMapUrl: '' });
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(false);
 
-  const switchMainPosition = (position: Coordinate) => {
+  const clickCard = (restaurant: Restaurant) => {
+    const { name, roadAddress, phoneNumber, naverMapUrl, latitude, longitude } = restaurant;
+
     openModal();
-    setMainPosition({ ...position });
+    setMainPosition({ latitude, longitude });
+    setCurrentRestaurant({ name, roadAddress, phoneNumber, naverMapUrl });
   };
 
   return (
@@ -36,24 +42,15 @@ function MainPage() {
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 20 개</StyledCardListHeader>
           <StyledRestaurantCardList>
-            {data.map(({ celebs, ...restaurant }: RestaurantData) => {
-              const { latitude, longitude } = restaurant;
-
-              return (
-                <RestaurantCard
-                  restaurant={restaurant}
-                  celebs={celebs}
-                  size={42}
-                  onClick={() => switchMainPosition({ latitude, longitude })}
-                />
-              );
-            })}
+            {data.map(({ celebs, ...restaurant }: RestaurantData) => (
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => clickCard(restaurant)} />
+            ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
           <Map {...mapArgs} mainPosition={mainPosition} />
           <MapModal modalOpen={modalOpen} isVisible={isVisible} onClickExit={closeModal}>
-            <div>음식점 정보</div>
+            <div>{currentRestaurant.name}</div>
           </MapModal>
         </StyledRightSide>
       </StyledLayout>
@@ -102,15 +99,4 @@ const StyledRightSide = styled.div`
 
   width: 100%;
   height: calc(100vh - 60px);
-`;
-
-const StyledMapModalContainer = styled.div<{ modalOpen: boolean; isVisible: boolean }>`
-  display: flex;
-  justify-content: center;
-
-  position: relative;
-
-  width: 100%;
-
-  visibility: ${({ modalOpen, isVisible }) => (modalOpen || isVisible ? 'visible' : 'hidden')};
 `;
