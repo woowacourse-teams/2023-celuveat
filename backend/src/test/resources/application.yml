@@ -3,7 +3,6 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
 
-
 spring:
   profiles:
     active: test
