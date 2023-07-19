@@ -37,17 +37,10 @@ jobs:
 
     - name: ✨ 테스트 진행
       working-directory: ./backend
-      run: ./gradlew --info test
+      run: ./gradlew test
 
     - name: ✨ 테스트 결과 Report
       uses: EnricoMi/publish-unit-test-result-action@v2
-      if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
+      if: ${{ always() }}
       with:
          files: ./backend/build/test-results/**/*.xml
-
-    - name: ✨ Gradle 캐시 제거
-      working-directory: ./backend
-      if: ${{ always() }}
-      run: |
-        rm -f ~/.gradle/caches/modules-2/modules-2.lock
-        rm -f ~/.gradle/caches/modules-2/gc.properties
