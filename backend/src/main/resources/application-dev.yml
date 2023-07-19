@@ -5,14 +5,10 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=MySQL
-    username: sa
-    password:
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: { DB_URL }
+    username: { DB_USERNAME }
+    password: { DB_PASSWORD }
+    driver-class-name: { DB_DRIVER_CLASS_NAME }
 
   jpa:
     show-sql: true
