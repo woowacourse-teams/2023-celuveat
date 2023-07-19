@@ -21,16 +21,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: ✨ Gradle 캐싱
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/backend/.gradle/caches
-          ~/backend/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
     - name: ✨ Gradlew 권한 설정
       working-directory: ./backend
       run: chmod +x ./gradlew
