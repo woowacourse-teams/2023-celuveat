@@ -7,7 +7,8 @@ on:
     branches: [ "develop-backend" ]
 
 permissions:
-  contents: read
+  checks: write
+  pull-requests: write
 
 jobs:
   backend-test:
@@ -39,7 +40,7 @@ jobs:
       run: ./gradlew --info test
 
     - name: ✨ 테스트 결과 Report
-      uses: EnricoMi/publish-unit-test-result-action@v1
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
       with:
          files: ./backend/build/test-results/**/*.xml
