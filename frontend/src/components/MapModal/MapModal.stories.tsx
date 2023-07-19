@@ -12,12 +12,26 @@ type Story = StoryObj<typeof MapModal>;
 
 export const Default: Story = {
   args: {
-    name: '도담',
-    youtubeChannelName: '@d0dam',
-    subscriberCount: 650_000,
-    restaurantCount: 123,
-    youtubeChannelUrl: 'https://www.youtube.com/watch?v=D3lU6KokgVs',
-    profileImageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
-    backgroundImageUrl: null,
+    modalOpen: true,
+    isVisible: false,
+    onClickExit: () => {},
+    modalRestaurantInfo: {
+      id: 1,
+      name: '김천재의육회반한연어 신논현본점',
+      category: '요리주점',
+      roadAddress: '서울 강남구 강남대로118길 47 2층',
+      phoneNumber: '0507-1415-1113',
+      naverMapUrl:
+        'https://map.naver.com/v5/entry/place/38252334?lng=127.02682069999999&lat=37.50750299999999&placePath=%2Fhome&entry=plt',
+
+      images: [
+        {
+          id: 1,
+          name: 'RawFishEater_김천재의육회반한연어_신논현본점.png',
+          author: '@RawFishEater',
+          sns: '@RawFishEater',
+        },
+      ],
+    },
   },
 };

@@ -1,22 +1,24 @@
 import { keyframes, styled } from 'styled-components';
 import { BORDER_RADIUS } from '~/styles/common';
 import ExitButton from '../../assets/icons/exit.svg';
+import type { RestaurantModalInfo } from '~/@types/restaurant.types';
+import MapModalContent from '../MapModalContent';
 
 type ModalProps = {
-  children: React.ReactNode;
   modalOpen: boolean;
   isVisible: boolean;
   onClickExit: () => void;
+  modalRestaurantInfo: RestaurantModalInfo;
 };
 
-function MapModal({ children, modalOpen, onClickExit, isVisible }: ModalProps) {
+function MapModal({ modalOpen, onClickExit, isVisible, modalRestaurantInfo }: ModalProps) {
   return (
     <StyledMapModalContainer modalOpen={modalOpen} isVisible={isVisible}>
       <StyledModalContent modalOpen={modalOpen}>
         <StyledExitButton type="button" onClick={onClickExit}>
           <ExitButton />
         </StyledExitButton>
-        {children}
+        <MapModalContent content={modalRestaurantInfo} />
       </StyledModalContent>
     </StyledMapModalContainer>
   );
@@ -41,8 +43,8 @@ const StyledModalContent = styled.div<{ modalOpen: boolean }>`
 
 const StyledExitButton = styled.button`
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: -28px;
+  right: 0;
 
   border: none;
   background-color: transparent;

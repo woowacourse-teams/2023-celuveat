@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
-import { Restaurant } from '~/@types/restaurant.types';
+import { Restaurant, RestaurantModalInfo } from '~/@types/restaurant.types';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
@@ -21,17 +21,15 @@ const mapArgs = {
 
 function MainPage() {
   const [mainPosition, setMainPosition] = useState(mapArgs.mainPosition);
-  const [currentRestaurant, setCurrentRestaurant] = useState<
-    Pick<Restaurant, 'name' | 'roadAddress' | 'phoneNumber' | 'naverMapUrl'>
-  >({ name: '', roadAddress: '', phoneNumber: '', naverMapUrl: '' });
-  const { modalOpen, isVisible, closeModal, openModal } = useMapModal(false);
+  const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
+  const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
 
   const clickCard = (restaurant: Restaurant) => {
-    const { name, roadAddress, phoneNumber, naverMapUrl, latitude, longitude } = restaurant;
+    const { latitude, longitude, ...restaurantModalInfo } = restaurant;
 
     openModal();
     setMainPosition({ latitude, longitude });
-    setCurrentRestaurant({ name, roadAddress, phoneNumber, naverMapUrl });
+    setCurrentRestaurant(restaurantModalInfo);
   };
 
   return (
@@ -49,9 +47,14 @@ function MainPage() {
         </StyledLeftSide>
         <StyledRightSide>
           <Map {...mapArgs} mainPosition={mainPosition} />
-          <MapModal modalOpen={modalOpen} isVisible={isVisible} onClickExit={closeModal}>
-            <div>{currentRestaurant.name}</div>
-          </MapModal>
+          {currentRestaurant && (
+            <MapModal
+              modalOpen={modalOpen}
+              isVisible={isVisible}
+              onClickExit={closeModal}
+              modalRestaurantInfo={currentRestaurant}
+            />
+          )}
         </StyledRightSide>
       </StyledLayout>
       <Footer />
