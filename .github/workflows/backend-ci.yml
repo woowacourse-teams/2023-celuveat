@@ -24,13 +24,15 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
+          ~/backend/.gradle/caches
+          ~/backend/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
+
     - name: ✨ Gradlew 권한 설정
-      run: chmod +x ./backend/gradlew
+      working-directory: ./backend
+      run: chmod +x ./gradlew
 
     - name: ✨ 테스트 진행
       working-directory: ./backend
@@ -40,9 +42,10 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
       with:
-         files: ./build/test-results/**/*.xml
+         files: ./backend/build/test-results/**/*.xml
 
     - name: ✨ Gradle 캐시 제거
+      working-directory: ./backend
       if: ${{ always() }}
       run: |
         rm -f ~/.gradle/caches/modules-2/modules-2.lock
