@@ -22,8 +22,24 @@ function Map({ width, height, level, mainPosition, markers }: MapProps) {
 
     markers.forEach(marker => {
       const position = new window.kakao.maps.LatLng(marker.latitude, marker.longitude);
+      const imageSize = new window.kakao.maps.Size(24, 35);
+      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+      const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-      new window.kakao.maps.Marker({ map, position });
+      if (JSON.stringify(mainPosition) === JSON.stringify(marker)) return;
+
+      new window.kakao.maps.Marker({
+        map,
+        position,
+        image: markerImage,
+      });
+    });
+
+    const position = new window.kakao.maps.LatLng(mainPosition.latitude, mainPosition.longitude);
+
+    new window.kakao.maps.Marker({
+      map,
+      position,
     });
   }, [level, mainPosition, markers]);
 
