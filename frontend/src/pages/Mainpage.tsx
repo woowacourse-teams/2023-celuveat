@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Coordinate } from '~/@types/map.types';
+import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCard from '~/components/RestaurantCard';
@@ -26,6 +27,7 @@ function MainPage() {
   return (
     <>
       <Header />
+
       <StyledLayout>
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 20 개</StyledCardListHeader>
@@ -48,6 +50,7 @@ function MainPage() {
           <Map {...mapArgs} mainPosition={mainPosition} />
         </StyledRightSide>
       </StyledLayout>
+      <Footer />
     </>
   );
 }
@@ -56,10 +59,10 @@ export default MainPage;
 
 const StyledLayout = styled.div`
   display: grid;
-  grid-template-columns: 3fr 2fr;
 
   width: 100%;
   height: 100%;
+  grid-template-columns: 3fr 2fr;
 `;
 
 const StyledLeftSide = styled.div`
@@ -67,12 +70,12 @@ const StyledLeftSide = styled.div`
   flex-direction: column;
   gap: 2.4rem;
 
-  height: calc(100vh - 128px);
-
-  margin: 3.2rem 2.4rem;
+  height: 100%;
 `;
 
 const StyledCardListHeader = styled.p`
+  margin: 3.2rem 2.4rem;
+
   font-size: ${FONT_SIZE.md};
 `;
 
@@ -81,14 +84,15 @@ const StyledRestaurantCardList = styled.div`
   gap: 4rem 2.4rem;
 
   height: 100%;
-  grid-template-columns: 1fr 1fr 1fr;
 
-  overflow-y: auto;
-  grid-auto-flow: row;
-  grid-auto-rows: 360px;
+  margin: 3.2rem 2.4rem;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 
 const StyledRightSide = styled.div`
+  position: sticky;
+  top: 60px;
+
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 60px);
 `;

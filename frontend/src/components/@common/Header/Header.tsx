@@ -12,9 +12,18 @@ function Header() {
 export default Header;
 
 const StyledHeader = styled.header`
+  display: flex;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
   width: 100%;
+  height: 60px;
 
   padding: 1.2rem 2.4rem;
+
+  background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
 `;
 
