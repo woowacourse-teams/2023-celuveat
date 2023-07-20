@@ -1,0 +1,29 @@
+name: 🍔 Celuveat Frontend CI 🍔
+
+on:
+  push:
+    branches: [ "develop-frontend" ]
+  pull_request:
+    branches: [ "develop-frontend" ]
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./frontend
+
+    name: 🍔테스트 딱 대라 💢👊
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.16.1'
+
+      - name: 🍔 yarn install
+        run: yarn install —immutable —immutable-cache —check-cache
+        working-directory: ${{ env.working-directory }}
+
+      - name: 🍔 eslint 테스트
+        run: yarn lint
+        working-directory: ${{ env.working-directory }}
