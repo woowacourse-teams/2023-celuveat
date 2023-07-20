@@ -15,4 +15,4 @@ jobs:
       - name: ✨ Run Backend Deploy Script 
         run: |
           cd ~
-          sudo sh deploy-backend.sh
+          sh deploy-backend.sh
