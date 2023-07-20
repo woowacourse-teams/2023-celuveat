@@ -21,7 +21,7 @@ jobs:
           node-version: '18.16.1'
 
       - name: 🍔 yarn install
-        run: yarn install —immutable —immutable-cache —check-cache
+        run: yarn add —immutable —immutable-cache —check-cache
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 eslint 테스트
