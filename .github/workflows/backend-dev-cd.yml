@@ -1,11 +1,11 @@
-name: ✨ Celuveat backend CD
+name: ✨ Celuveat backend DEV CD ✨
 
 on:
   push:
-#     branches:
-#       - develop-backend
-#     paths:
-#       - 'backend/**'
+     branches:
+       - develop-backend
+     paths:
+       - 'backend/**'
     
 jobs:
   deploy-backend:
@@ -15,4 +15,4 @@ jobs:
       - name: ✨ Run Backend Deploy Script 
         run: |
           cd ~
-          sudo sh deploy.sh
+          sudo sh deploy-backend.sh

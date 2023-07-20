@@ -1,4 +1,4 @@
-name: ✨Celuveat Backend CI✨
+name: ✨ Celuveat Backend CI ✨
 
 on:
   push:
