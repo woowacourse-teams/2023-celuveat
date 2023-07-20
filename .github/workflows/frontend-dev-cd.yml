@@ -1,0 +1,18 @@
+name: ✨ Celuveat frontend DEV CD ✨
+
+on:
+  push:
+    branches:
+      - develop-fronted
+    paths:
+      - 'frontend/**'
+    
+jobs:
+  deploy-backend:
+    runs-on: self-hosted
+        
+    steps:
+      - name: ✨ Run Frontend Deploy Script 
+        run: |
+          cd ~
+          sudo sh deploy-frontend.sh
