@@ -26,9 +26,11 @@ jobs:
 
     - name: ✨ Gradlew 권한 설정
       run: chmod +x ./gradlew
+      working-directory: ${{ env.working-directory }}
 
     - name: ✨ 테스트 진행
       run: ./gradlew test
+      working-directory: ${{ env.working-directory }}
 
     - name: ✨ 테스트 결과 Report
       uses: EnricoMi/publish-unit-test-result-action@v2
