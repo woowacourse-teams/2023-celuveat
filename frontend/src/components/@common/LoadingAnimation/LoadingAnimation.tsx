@@ -25,7 +25,7 @@ function LoadingAnimation({ size }: LoadingAnimationProps) {
 
 const StyledLoadingAnimation = styled.div`
   display: flex;
-  gap: 1.2rem;
+  gap: 0.6rem;
 
   & > div:nth-child(2) {
     animation-delay: 0.2s;
