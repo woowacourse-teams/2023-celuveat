@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
+import { Coordinate } from '~/@types/map.types';
 import { Restaurant, RestaurantModalInfo } from '~/@types/restaurant.types';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -32,6 +33,18 @@ function MainPage() {
     setCurrentRestaurant(restaurantModalInfo);
   };
 
+  const clickMarker = ({ latitude, longitude }: Coordinate) => {
+    const filteredRestaurant = data.find(
+      restaurantData => latitude === restaurantData.latitude && longitude === restaurantData.longitude,
+    );
+
+    const { id, name, category, roadAddress, phoneNumber, naverMapUrl, images }: RestaurantModalInfo =
+      filteredRestaurant;
+
+    setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
+    setMainPosition({ latitude, longitude });
+  };
+
   return (
     <>
       <Header />
@@ -46,7 +59,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} mainPosition={mainPosition} />
+          <Map {...mapArgs} mainPosition={mainPosition} markerClickEvent={clickMarker} />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}

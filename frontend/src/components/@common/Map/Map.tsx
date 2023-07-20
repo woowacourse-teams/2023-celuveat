@@ -10,27 +10,42 @@ interface MapProps {
   level: number;
   mainPosition: Coordinate;
   markers: Coordinate[];
+  markerClickEvent: (position: Coordinate) => void;
 }
 
-function Map({ width, height, level, mainPosition, markers }: MapProps) {
+function Map({ width, height, level, mainPosition, markers, markerClickEvent }: MapProps) {
   const container = useRef();
   const { kakaoMap } = useCreateMap({ mainPosition, level, container });
   const { latitude, longitude } = mainPosition;
   const [currentMarker, setCurrentMarker] = useState(null);
 
+  const kakaoMakers = markers.map(marker => {
+    const position = new window.kakao.maps.LatLng(marker.latitude, marker.longitude);
+    const imageSize = new window.kakao.maps.Size(24, 35);
+    const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    return new window.kakao.maps.Marker({
+      map: kakaoMap,
+      position,
+      image: markerImage,
+    });
+  });
+
   useEffect(() => {
     if (!kakaoMap) return;
 
-    markers.forEach(marker => {
-      const position = new window.kakao.maps.LatLng(marker.latitude, marker.longitude);
-      const imageSize = new window.kakao.maps.Size(24, 35);
-      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-      const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+    kakaoMakers.forEach(marker => {
+      const markerLatitude = Number(marker.getPosition().getLat().toFixed(7));
+      const markerLongitude = Number(marker.getPosition().getLng().toFixed(7));
 
-      new window.kakao.maps.Marker({
-        map: kakaoMap,
-        position,
-        image: markerImage,
+      marker.setMap(kakaoMap);
+      marker.setZIndex(1);
+
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        markerClickEvent({ latitude: markerLatitude, longitude: markerLongitude });
+        const position = new window.kakao.maps.LatLng(markerLatitude, markerLongitude);
+        kakaoMap.setCenter(position);
       });
     });
   }, [kakaoMap]);
@@ -39,12 +54,10 @@ function Map({ width, height, level, mainPosition, markers }: MapProps) {
     if (!kakaoMap) return;
     if (currentMarker) currentMarker.setMap(null);
     // 이동할 위도 경도 위치를 생성합니다
-    const moveLatLon = new window.kakao.maps.LatLng(latitude, longitude);
+    const position = new window.kakao.maps.LatLng(latitude, longitude);
 
     // 지도 중심을 이동 시킵니다
-    kakaoMap.setCenter(moveLatLon);
-
-    const position = new window.kakao.maps.LatLng(latitude, longitude);
+    kakaoMap.setCenter(position);
 
     // 마커를 생성합니다
     const newMarker = new window.kakao.maps.Marker({
@@ -53,6 +66,7 @@ function Map({ width, height, level, mainPosition, markers }: MapProps) {
     });
 
     newMarker.setMap(kakaoMap);
+    newMarker.setZIndex(2);
 
     setCurrentMarker(newMarker);
   }, [mainPosition]);
