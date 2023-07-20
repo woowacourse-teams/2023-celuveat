@@ -2,10 +2,10 @@ name: ✨ Celuveat backend CD
 
 on:
   push:
-    branches:
-      - develop-backend
-    paths:
-      - 'backend/**'
+#     branches:
+#       - develop-backend
+#     paths:
+#       - 'backend/**'
     
 jobs:
   deploy-backend:
