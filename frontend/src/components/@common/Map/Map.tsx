@@ -44,8 +44,6 @@ function Map({ width, height, level, mainPosition, markers, markerClickEvent }: 
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
         markerClickEvent({ latitude: markerLatitude, longitude: markerLongitude });
-        const position = new window.kakao.maps.LatLng(markerLatitude, markerLongitude);
-        kakaoMap.setCenter(position);
       });
     });
   }, [kakaoMap]);
