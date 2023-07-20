@@ -13,7 +13,7 @@ public class RestaurantAcceptanceSteps {
 
     public static ExtractableResponse<Response> 음식점_전체_조회_요청() {
         return given()
-                .when().get("/restaurants")
+                .when().get("/restaurants-fail")
                 .then().log().all()
                 .extract();
     }
