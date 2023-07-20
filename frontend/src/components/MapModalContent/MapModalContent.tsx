@@ -13,7 +13,7 @@ function MapModalContent({ content }: MapModalContentProps) {
     <StyledMapModalContent>
       <StyledRestaurantInfo>
         <div>
-          <h4>{name}</h4>
+          <h5>{name}</h5>
           <div>{roadAddress}</div>
           <div>{phoneNumber}</div>
         </div>
@@ -52,7 +52,7 @@ const StyledRestaurantInfo = styled.div`
     flex-direction: column;
     gap: 0.8rem;
 
-    font-size: ${FONT_SIZE.md};
+    font-size: ${FONT_SIZE.sm};
   }
 `;
 
