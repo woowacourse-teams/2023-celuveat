@@ -20,4 +20,4 @@ jobs:
       - name: ✨ Run Frontend Deploy Script 
         run: |
           cd ~
-          sudo sh deploy-frontend.sh
+          sh deploy-frontend.sh
