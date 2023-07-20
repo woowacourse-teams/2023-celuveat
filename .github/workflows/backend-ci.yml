@@ -13,6 +13,9 @@ permissions:
 jobs:
   backend-test:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend
+      
     steps:
     - uses: actions/checkout@v3
     - name: ✨ JDK 17 설정
@@ -22,15 +25,19 @@ jobs:
         distribution: 'temurin'
 
     - name: ✨ Gradlew 권한 설정
-      working-directory: ./backend
       run: chmod +x ./gradlew
 
     - name: ✨ 테스트 진행
-      working-directory: ./backend
       run: ./gradlew test
 
     - name: ✨ 테스트 결과 Report
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: ${{ always() }}
       with:
-         files: ./backend/build/test-results/**/*.xml
+         files: '**/build/test-results/**/*.xml'
+
+    - name: ✨ 테스트 실패 Comment
+      uses: mikepenz/action-junit-report@v3
+      if: always()
+      with:
+        report_paths: '**/build/test-results/test/TEST-*.xml'
