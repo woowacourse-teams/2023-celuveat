@@ -21,3 +21,7 @@ spring:
 
     hibernate:
       ddl-auto: create
+
+server:
+  servlet:
+    contextPath: /api
