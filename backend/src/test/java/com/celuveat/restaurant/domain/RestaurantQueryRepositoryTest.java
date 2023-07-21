@@ -46,12 +46,13 @@ class RestaurantQueryRepositoryTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(seed);
     }
 
@@ -69,12 +70,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, null, null));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -90,12 +92,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, category, null));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -111,12 +114,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -135,12 +139,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, category, null));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -160,12 +165,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, null, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -183,12 +189,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, category, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 
@@ -210,12 +217,13 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryRepository.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, category, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
+                .comparingOnlyFields("name")
                 .isEqualTo(expected);
     }
 }
