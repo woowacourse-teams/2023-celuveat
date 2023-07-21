@@ -12,7 +12,7 @@
     "order/order": ["custom-properties", "declarations"],
     "declaration-property-unit-allowed-list": {
       "/^border/": ["px", "%"],
-      "/^width|^height/": ["px", "%"],
+      "/^width|^height/": ["px", "%", "vh", "vw"],
       "/^margin|^padding|^gap/": ["rem"]
     },
     "order/properties-order": [

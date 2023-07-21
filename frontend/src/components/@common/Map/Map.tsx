@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-new */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useRef, useState } from 'react';
 import { Coordinate } from '~/@types/map.types';
 import useCreateMap from './hooks/useCreateMap';
