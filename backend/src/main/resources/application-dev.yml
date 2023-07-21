@@ -20,3 +20,6 @@ spring:
 
     hibernate:
       ddl-auto: validate
+
+cors:
+  allowedOrigins: ${CORS_ALLOW_ORIGINS}
