@@ -25,3 +25,6 @@ spring:
 server:
   servlet:
     contextPath: /api
+
+cors:
+  allowedOrigins: "CORS_ALLOW_ORIGINS"
