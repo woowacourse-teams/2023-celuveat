@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.domain;
 
-import static com.celuveat.common.util.DynamicJpqlUtil.appendQueryIfTrue;
-import static com.celuveat.common.util.DynamicJpqlUtil.notNull;
+import static com.celuveat.common.util.DynamicQueryUtil.appendQueryIfTrue;
+import static com.celuveat.common.util.DynamicQueryUtil.notNull;
 import static com.celuveat.common.util.StringUtil.replaceAllBlank;
 import static org.springframework.util.StringUtils.hasText;
 

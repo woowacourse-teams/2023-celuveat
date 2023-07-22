@@ -2,7 +2,7 @@ package com.celuveat.common.util;
 
 import java.util.List;
 
-public class DynamicJpqlUtil {
+public class DynamicQueryUtil {
 
     public static void appendQueryIfTrue(
             List<String> appendedQuery,
