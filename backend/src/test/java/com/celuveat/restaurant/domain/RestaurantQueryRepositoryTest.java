@@ -34,7 +34,7 @@ class RestaurantQueryRepositoryTest {
 
     @Autowired
     private EntityManager em;
-    
+
     @Autowired
     private RestaurantQueryRepository restaurantQueryRepository;
 
@@ -54,6 +54,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(seed.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(seed);
@@ -78,6 +79,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -100,6 +102,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -122,6 +125,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -147,6 +151,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -173,6 +178,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -197,6 +203,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
@@ -225,6 +233,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(expected.size());
         assertThat(result).usingRecursiveComparison()
                 .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
