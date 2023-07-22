@@ -52,7 +52,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(seed);
     }
 
@@ -76,7 +76,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -98,7 +98,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -120,7 +120,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -145,7 +145,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -171,7 +171,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -195,7 +195,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 
@@ -223,7 +223,7 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFields("name")
+                .comparingOnlyFieldsOfTypes(Restaurant.class)
                 .isEqualTo(expected);
     }
 }
