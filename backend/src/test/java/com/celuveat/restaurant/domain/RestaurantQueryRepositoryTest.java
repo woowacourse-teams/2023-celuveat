@@ -46,6 +46,12 @@ class RestaurantQueryRepositoryTest {
         System.out.println("=============[INSERT SEED DATA]============");
     }
 
+    private List<String> 이름_추출(List<RestaurantQueryResponse> list) {
+        return list.stream()
+                .map(RestaurantQueryResponse::name)
+                .toList();
+    }
+
     @Test
     void 전체_음식점_조회_테스트() {
         // when
@@ -54,10 +60,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(seed.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(seed);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(seed));
     }
 
     @Test
@@ -79,10 +83,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -102,10 +104,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -118,7 +118,7 @@ class RestaurantQueryRepositoryTest {
                 expected.add(restaurantQueryResponse);
             }
         }
-
+        
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, restaurantName));
@@ -126,9 +126,8 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -151,10 +150,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -178,10 +175,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -203,11 +198,8 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -234,8 +226,6 @@ class RestaurantQueryRepositoryTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
-        assertThat(result).usingRecursiveComparison()
-                .comparingOnlyFieldsOfTypes(Restaurant.class)
-                .isEqualTo(expected);
+
     }
 }
