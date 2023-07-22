@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantQueryRepository {
 
     private static final String WHERE = "WHERE ";
-    private static final String AND = "AND ";
+    private static final String AND = " AND ";
 
     private static final String CELEB_ID_EQ = "c.id = %d";
     private static final String RESTAURANT_CATEGORY_EQ = "r.category = '%s'";
