@@ -30,15 +30,15 @@ public class RestaurantQueryService {
 
     public List<RestaurantQueryResponse> findAll(RestaurantSearchCond cond) {
         List<Restaurant> restaurants = restaurantQueryRepository.getRestaurants(cond);
-        List<Video> videos = findVideoByRestaurantIdsIn(restaurants);
+        List<Video> videos = findVideoByRestaurantIn(restaurants);
         Map<Restaurant, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
-        List<RestaurantImage> images = findImageByRestaurantIdsIn(restaurants);
+        List<RestaurantImage> images = findImageByRestaurantIn(restaurants);
         Map<Restaurant, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
         return toResponseList(celebs, restaurantListMap);
     }
 
-    private List<Video> findVideoByRestaurantIdsIn(List<Restaurant> restaurantIds) {
-        return videoRepository.findAllByRestaurantIn(restaurantIds);
+    private List<Video> findVideoByRestaurantIn(List<Restaurant> restaurants) {
+        return videoRepository.findAllByRestaurantIn(restaurants);
     }
 
     private Map<Restaurant, List<Video>> groupingVideoByRestaurant(List<Video> videos) {
@@ -57,8 +57,8 @@ public class RestaurantQueryService {
         return celebs;
     }
 
-    private List<RestaurantImage> findImageByRestaurantIdsIn(List<Restaurant> restaurantIds) {
-        return restaurantImageRepository.findAllByRestaurantIn(restaurantIds);
+    private List<RestaurantImage> findImageByRestaurantIn(List<Restaurant> restaurants) {
+        return restaurantImageRepository.findAllByRestaurantIn(restaurants);
     }
 
     private Map<Restaurant, List<RestaurantImage>> groupingImageByRestaurant(List<RestaurantImage> images) {
