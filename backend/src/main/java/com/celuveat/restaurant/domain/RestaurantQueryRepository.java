@@ -54,15 +54,12 @@ public class RestaurantQueryRepository {
     }
 
     private String createQuery(List<String> appendedQuery) {
-        StringBuilder query = new StringBuilder(SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB);
-        if (!appendedQuery.isEmpty()) {
-            query.append(WHERE);
-            for (String appended : appendedQuery) {
-                query.append(appended).append(AND);
-            }
-            query.replace(query.length() - AND.length(), query.length(), "");
+        if (appendedQuery.isEmpty()) {
+            return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB;
         }
-        return query.toString();
+        return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB
+               + WHERE
+               + String.join(AND, appendedQuery);
     }
 
     public record RestaurantSearchCond(

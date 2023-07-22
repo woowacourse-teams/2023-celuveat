@@ -28,10 +28,13 @@ import org.springframework.transaction.annotation.Transactional;
 class RestaurantQueryServiceTest {
 
     private final List<RestaurantQueryResponse> seed = new ArrayList<>();
+
     @Autowired
     private SeedData seedData;
+
     @Autowired
     private EntityManager em;
+
     @Autowired
     private RestaurantQueryService restaurantQueryService;
 
