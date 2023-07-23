@@ -8,6 +8,7 @@ import static org.springframework.util.StringUtils.hasText;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,11 @@ public class RestaurantQueryRepository {
     private static final String RESTAURANT_CATEGORY_EQUAL = "r.category = '%s'";
     private static final String RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK = """
             Function('replace', lower(r.name), ' ', '') like lower('%%%s%%')
+            """;
+    private static final String RESTAURANT_DISTANCE_LTE = """
+            (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
+                * cos(radians(longitude) - radians(%s))
+                + sin(radians(%s)) * sin(radians(latitude)))) <= %s
             """;
 
     private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
@@ -51,6 +57,10 @@ public class RestaurantQueryRepository {
                 hasText(cond.restaurantName()),
                 RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK,
                 removeAllBlank(cond.restaurantName()));
+        appendQueryIfTrue(appendedQuery,
+                Objects.nonNull(cond.zoomScale),
+                RESTAURANT_DISTANCE_LTE,
+                cond.latitude, cond.longitude, cond.latitude, 3);
         String query = createQuery(appendedQuery);
         return em.createQuery(query, Restaurant.class).getResultList();
     }
