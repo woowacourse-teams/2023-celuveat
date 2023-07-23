@@ -60,14 +60,17 @@ public class RestaurantQueryRepository {
             return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB;
         }
         return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB
-               + WHERE
-               + String.join(AND, appendedQuery);
+                + WHERE
+                + String.join(AND, appendedQuery);
     }
 
     public record RestaurantSearchCond(
             Long celebId,
             String category,
-            String restaurantName
+            String restaurantName,
+            String latitude,
+            String longitude,
+            Integer zoomScale
     ) {
     }
 }

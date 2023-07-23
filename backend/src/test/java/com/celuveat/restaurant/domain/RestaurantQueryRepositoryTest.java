@@ -79,7 +79,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, null, null));
+                new RestaurantSearchCond(celebId, null, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -100,7 +100,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, category, null));
+                new RestaurantSearchCond(null, category, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -121,7 +121,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, null, restaurantName));
+                new RestaurantSearchCond(null, null, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -146,7 +146,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, category, null));
+                new RestaurantSearchCond(celebId, category, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -171,7 +171,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, null, restaurantName));
+                new RestaurantSearchCond(celebId, null, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -194,7 +194,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, category, restaurantName));
+                new RestaurantSearchCond(null, category, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -221,7 +221,7 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, category, restaurantName));
+                new RestaurantSearchCond(celebId, category, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();

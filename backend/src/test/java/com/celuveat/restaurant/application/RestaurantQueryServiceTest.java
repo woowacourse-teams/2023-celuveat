@@ -50,7 +50,7 @@ class RestaurantQueryServiceTest {
     void 전체_음식점_조회_테스트() {
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, null));
+                new RestaurantSearchCond(null, null, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -73,7 +73,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, null));
+                new RestaurantSearchCond(celebId, null, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -94,7 +94,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, null));
+                new RestaurantSearchCond(null, category, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -115,7 +115,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, restaurantName));
+                new RestaurantSearchCond(null, null, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -139,7 +139,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, null));
+                new RestaurantSearchCond(celebId, category, null, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -164,7 +164,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, restaurantName));
+                new RestaurantSearchCond(celebId, null, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -187,7 +187,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, restaurantName));
+                new RestaurantSearchCond(null, category, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
@@ -214,7 +214,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, restaurantName));
+                new RestaurantSearchCond(celebId, category, restaurantName, null, null, null));
 
         // then
         assertThat(result).isNotEmpty();

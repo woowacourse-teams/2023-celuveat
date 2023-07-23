@@ -31,7 +31,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = seedData.insertSeedData();
 
             // when
-            var 응답 = 음식점_검색_요청(검색_조건(없음, 없음, 없음));
+            var 응답 = 음식점_검색_요청(검색_조건(없음, 없음, 없음, 없음, 없음, 없음));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
@@ -46,7 +46,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 예상_응답(전체_음식점, 말랑.id(), 없음, "말 랑 ");
 
             // when
-            var 응답 = 음식점_검색_요청(검색_조건(말랑.id(), 없음, "말 랑 "));
+            var 응답 = 음식점_검색_요청(검색_조건(말랑.id(), 없음, "말 랑 ", 없음, 없음, 없음));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);

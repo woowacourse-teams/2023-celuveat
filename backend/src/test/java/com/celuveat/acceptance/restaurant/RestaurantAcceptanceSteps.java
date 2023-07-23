@@ -34,9 +34,19 @@ public class RestaurantAcceptanceSteps {
     public static RestaurantSearchCond 검색_조건(
             Object 셀럽_ID,
             Object 카테고리,
-            Object 음식점_이름
+            Object 음식점_이름,
+            Object 위도,
+            Object 경도,
+            Object 스케일
     ) {
-        return new RestaurantSearchCond((Long) 셀럽_ID, (String) 카테고리, (String) 음식점_이름);
+        return new RestaurantSearchCond(
+                (Long) 셀럽_ID,
+                (String) 카테고리,
+                (String) 음식점_이름,
+                (String) 위도,
+                (String) 경도,
+                (Integer) 스케일
+        );
     }
 
     public static void 조회_결과를_검증한다(List<RestaurantQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
@@ -63,8 +73,8 @@ public class RestaurantAcceptanceSteps {
                     .toList();
 
             if (음식점_이름_조건(restaurantName, restaurantQueryResponse)
-                && 카테고리_조건(category, restaurantQueryResponse)
-                && 셀럽_조건(celebId, list)) {
+                    && 카테고리_조건(category, restaurantQueryResponse)
+                    && 셀럽_조건(celebId, list)) {
                 예상_응답.add(restaurantQueryResponse);
             }
         }
