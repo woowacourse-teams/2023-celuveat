@@ -15,4 +15,16 @@ public class RestaurantFixture {
                 .longitude(127.019975d)
                 .build();
     }
+
+    public static Restaurant 음식점(String name, Double latitude, Double longitude) {
+        return Restaurant.builder()
+                .name(name)
+                .roadAddress(name)
+                .naverMapUrl(name)
+                .phoneNumber(name)
+                .category("category:" + name)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+    }
 }

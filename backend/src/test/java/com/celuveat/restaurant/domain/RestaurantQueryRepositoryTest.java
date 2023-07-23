@@ -41,7 +41,7 @@ class RestaurantQueryRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        seed.addAll(seedData.insertSeedData());
+        seed.addAll(seedData.insertSeedDataWithLocation());
         em.flush();
         em.clear();
         System.out.println("=============[INSERT SEED DATA]============");
@@ -234,7 +234,7 @@ class RestaurantQueryRepositoryTest {
     }
 
     @Nested
-    class 위치_기반_음식점_조회_테스트 {
+    class 위치_정보_조회_테스트 {
         @Test
         void 내_위치_기준으로_조회_테스트() {
             // when
