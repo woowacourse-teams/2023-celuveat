@@ -56,7 +56,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} center={center} />
+          <Map {...mapArgs} center={center} clickMarker={clickMarker} />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}
