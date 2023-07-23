@@ -3,7 +3,7 @@ import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY}>
+    <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko">
       <MainPage />
     </Wrapper>
   );
