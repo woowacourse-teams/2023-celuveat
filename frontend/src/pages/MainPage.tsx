@@ -13,15 +13,13 @@ import { data } from '~/mocks/data';
 import { FONT_SIZE } from '~/styles/common';
 
 const mapArgs = {
-  width: '100%',
-  height: '100%',
-  level: 6,
-  mainPosition: { latitude: 37.5057482, longitude: 127.050727 },
-  markers: data.map(({ latitude, longitude }) => ({ latitude, longitude })),
+  center: { lat: 37.5057482, lng: 127.050727 },
+  zoom: 16,
+  size: { width: '100%', height: '100%' },
 };
 
 function MainPage() {
-  const [mainPosition, setMainPosition] = useState(mapArgs.mainPosition);
+  const [, setMainPosition] = useState({ latitude: 37.5057482, longitude: 127.050727 });
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
 
@@ -59,7 +57,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} mainPosition={mainPosition} markerClickEvent={clickMarker} />
+          <Map {...mapArgs} />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}
