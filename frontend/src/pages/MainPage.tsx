@@ -16,6 +16,7 @@ const mapArgs = {
   center: { lat: 37.5057482, lng: 127.050727 },
   zoom: 16,
   size: { width: '100%', height: '100%' },
+  restaurants: data,
 };
 
 function MainPage() {

@@ -1,25 +1,27 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { styled } from 'styled-components';
+import { RestaurantData } from '~/@types/api.types';
+import useDrawMap from './hooks/useDrawMap';
+import useMarker from './hooks/useMarker';
 
 interface MapProps {
   center: google.maps.LatLngLiteral;
   zoom: number;
   size: { width: string; height: string };
+  restaurants: RestaurantData[];
 }
 
-function Map({ center, zoom, size }: MapProps) {
-  const ref = useRef();
+function Map({ center, zoom, size, restaurants }: MapProps) {
+  const googleMapRef = useRef();
+  const { googleMap } = useDrawMap({ mapRef: googleMapRef, center, zoom });
+  const { markers } = useMarker({ map: googleMap, restaurants });
 
-  useEffect(() => {
-    new window.google.maps.Map(ref.current, { center, zoom });
-  });
-
-  return <StyledMap ref={ref} size={size} id="map" />;
+  return <StyledMap ref={googleMapRef} size={size} id="map" />;
 }
+
+export default Map;
 
 const StyledMap = styled.div<{ size: { width: string; height: string } }>`
   width: ${({ size }) => size.width};
   height: ${({ size }) => size.height};
 `;
-
-export default Map;
