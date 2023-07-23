@@ -19,28 +19,26 @@ const mapArgs = {
 };
 
 function MainPage() {
-  const [, setMainPosition] = useState({ latitude: 37.5057482, longitude: 127.050727 });
+  const [, setMainPosition] = useState(mapArgs.center);
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
 
   const clickCard = (restaurant: Restaurant) => {
-    const { latitude, longitude, ...restaurantModalInfo } = restaurant;
+    const { lat, lng, ...restaurantModalInfo } = restaurant;
 
     openModal();
-    setMainPosition({ latitude, longitude });
+    setMainPosition({ lat, lng });
     setCurrentRestaurant(restaurantModalInfo);
   };
 
-  const clickMarker = ({ latitude, longitude }: Coordinate) => {
-    const filteredRestaurant = data.find(
-      restaurantData => latitude === restaurantData.latitude && longitude === restaurantData.longitude,
-    );
+  const clickMarker = ({ lat, lng }: Coordinate) => {
+    const filteredRestaurant = data.find(restaurantData => lat === restaurantData.lat && lng === restaurantData.lng);
 
     const { id, name, category, roadAddress, phoneNumber, naverMapUrl, images }: RestaurantModalInfo =
       filteredRestaurant;
 
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
-    setMainPosition({ latitude, longitude });
+    setMainPosition({ lat, lng });
   };
 
   return (

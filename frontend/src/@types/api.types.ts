@@ -3,8 +3,8 @@ export interface RestaurantData {
   name: string;
   category: string;
   roadAddress: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
   phoneNumber: string;
   naverMapUrl: string;
   celebs: { id: number; name: string; youtubeChannelName: string; profileImageUrl: string }[];
