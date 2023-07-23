@@ -25,10 +25,10 @@ public class Restaurant extends BaseEntity {
     private String category;
 
     @Column(nullable = false)
-    private String latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    private String longitude;
+    private Double longitude;
 
     private String phoneNumber;
 
@@ -47,11 +47,11 @@ public class Restaurant extends BaseEntity {
         return category;
     }
 
-    public String latitude() {
+    public Double latitude() {
         return latitude;
     }
 
-    public String longitude() {
+    public Double longitude() {
         return longitude;
     }
 
