@@ -58,7 +58,7 @@ public class RestaurantQueryRepository {
                 RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK,
                 removeAllBlank(cond.restaurantName()));
         appendQueryIfTrue(appendedQuery,
-                Objects.nonNull(cond.zoomScale),
+                Objects.nonNull(cond.distance),
                 RESTAURANT_DISTANCE_LTE,
                 cond.latitude, cond.longitude, cond.latitude, 3);
         String query = createQuery(appendedQuery);
@@ -80,7 +80,7 @@ public class RestaurantQueryRepository {
             String restaurantName,
             String latitude,
             String longitude,
-            Integer zoomScale
+            Integer distance
     ) {
     }
 }
