@@ -43,14 +43,14 @@ public class SeedData {
 
         List<Restaurant> restaurants = restaurantRepository.saveAll(List.of(
                 음식점("말랑1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("말랑2호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("말랑3호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("도기1호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
+                음식점("말랑2호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
+                음식점("말랑3호점", 기준점에서_10KM_지점.latitude(), 기준점에서_10KM_지점.longitude()),
+                음식점("도기1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
                 음식점("도기2호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
-                음식점("도기3호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
-                음식점("오도1호점", 기준점에서_5KM_지점.latitude(), 기준점에서_5KM_지점.longitude()),
+                음식점("도기3호점", 기준점에서_5KM_지점.latitude(), 기준점에서_5KM_지점.longitude()),
+                음식점("오도1호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
                 음식점("오도2호점", 기준점에서_5KM_지점.latitude(), 기준점에서_5KM_지점.longitude()),
-                음식점("로이스1호점", 기준점에서_10KM_지점.latitude(), 기준점에서_10KM_지점.longitude()),
+                음식점("로이스1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
                 음식점("로이스2호점", 기준점에서_10KM_지점.latitude(), 기준점에서_10KM_지점.longitude())
         ));
 
