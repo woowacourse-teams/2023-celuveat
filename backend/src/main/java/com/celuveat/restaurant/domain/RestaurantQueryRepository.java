@@ -60,7 +60,7 @@ public class RestaurantQueryRepository {
         appendQueryIfTrue(appendedQuery,
                 Objects.nonNull(cond.distance),
                 RESTAURANT_DISTANCE_LTE,
-                cond.latitude, cond.longitude, cond.latitude, 3);
+                cond.latitude, cond.longitude, cond.latitude, cond.distance);
         String query = createQuery(appendedQuery);
         return em.createQuery(query, Restaurant.class).getResultList();
     }
