@@ -14,13 +14,13 @@ import { FONT_SIZE } from '~/styles/common';
 
 const mapArgs = {
   center: { lat: 37.5057482, lng: 127.050727 },
-  zoom: 16,
+  zoom: 13,
   size: { width: '100%', height: '100%' },
   restaurants: data,
 };
 
 function MainPage() {
-  const [, setMainPosition] = useState(mapArgs.center);
+  const [center, setCenter] = useState({ lat: 37.5057482, lng: 127.050727 });
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
 
@@ -28,7 +28,7 @@ function MainPage() {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
 
     openModal();
-    setMainPosition({ lat, lng });
+    setCenter({ lat, lng });
     setCurrentRestaurant(restaurantModalInfo);
   };
 
@@ -39,7 +39,7 @@ function MainPage() {
       filteredRestaurant;
 
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
-    setMainPosition({ lat, lng });
+    setCenter({ lat, lng });
   };
 
   return (
@@ -56,7 +56,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} />
+          <Map {...mapArgs} center={center} />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}

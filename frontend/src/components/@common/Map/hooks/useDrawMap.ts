@@ -14,7 +14,13 @@ const useDrawMap = ({ mapRef, center, zoom }: UseDrawMapProps) => {
     const newMap = new window.google.maps.Map(mapRef.current, { center, zoom });
 
     setGoogleMap(newMap);
-  }, [mapRef, center, zoom]);
+  }, [mapRef]);
+
+  useEffect(() => {
+    if (!googleMap) return;
+
+    googleMap.panTo(center);
+  }, [center]);
 
   return { googleMap };
 };
