@@ -76,9 +76,7 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantQueryResponse> expected = new ArrayList<>();
         Long celebId = 1L;
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
-            if (list.contains(celebId)) {
+            if (isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -143,9 +141,8 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 1L;
         String category = "category:오도1호점";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
-            if (list.contains(celebId) && restaurantQueryResponse.category().equals(category)) {
+            if (isCelebVisited(celebId, restaurantQueryResponse)
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -167,10 +164,8 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && list.contains(celebId)) {
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -216,11 +211,9 @@ class RestaurantQueryRepositoryTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
                     && restaurantQueryResponse.category().equals(category)
-                    && list.contains(celebId)) {
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -241,11 +234,7 @@ class RestaurantQueryRepositoryTest {
         int distance = 2;
         Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점);
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            Double latitude = restaurantQueryResponse.latitude();
-            Double longitude = restaurantQueryResponse.longitude();
-            boolean isInArea = inAreaRestaurants.stream()
-                    .anyMatch(point -> point.latitude().equals(latitude) && point.longitude().equals(longitude));
-            if (isInArea) {
+            if (isRestaurantInDistance(inAreaRestaurants, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -274,11 +263,7 @@ class RestaurantQueryRepositoryTest {
         int distance = 5;
         Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점, 기준점에서_3KM_지점, 기준점에서_5KM_지점);
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            Double latitude = restaurantQueryResponse.latitude();
-            Double longitude = restaurantQueryResponse.longitude();
-            boolean isInArea = inAreaRestaurants.stream()
-                    .anyMatch(point -> point.latitude().equals(latitude) && point.longitude().equals(longitude));
-            if (isInArea) {
+            if (isRestaurantInDistance(inAreaRestaurants, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -308,16 +293,41 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 1L;
         Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점);
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            boolean isInArea = inAreaRestaurants.stream()
-                    .anyMatch(point -> point.latitude().equals(restaurantQueryResponse.latitude())
-                            && point.longitude().equals(restaurantQueryResponse.longitude()));
-            List<Long> celebIds = restaurantQueryResponse.celebs()
-                    .stream()
-                    .map(CelebQueryResponse::id)
-                    .toList();
-            if (isInArea && celebIds.contains(celebId)) {
+            if (isRestaurantInDistance(inAreaRestaurants, restaurantQueryResponse)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
+
+        // when
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
+                new RestaurantSearchCond(
+                        celebId,
+                        null,
+                        null,
+                        String.valueOf(기준점.latitude()),
+                        String.valueOf(기준점.longitude()),
+                        distance)
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
+    }
+
+    private boolean isRestaurantInDistance(
+            Set<Point> inAreaRestaurants,
+            RestaurantQueryResponse restaurantQueryResponse
+    ) {
+        return inAreaRestaurants.stream().anyMatch(point ->
+                point.latitude().equals(restaurantQueryResponse.latitude())
+                        && point.longitude().equals(restaurantQueryResponse.longitude())
+        );
+    }
+
+    private boolean isCelebVisited(Long celebId, RestaurantQueryResponse restaurantQueryResponse) {
+        List<Long> celebIds = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id).toList();
+        return celebIds.contains(celebId);
     }
 }
