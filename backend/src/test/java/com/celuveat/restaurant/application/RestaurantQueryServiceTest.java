@@ -1,5 +1,8 @@
 package com.celuveat.restaurant.application;
 
+import static com.celuveat.restaurant.fixture.PointFixture.기준점;
+import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_2KM_지점;
+import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_3KM_지점;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.SeedData;
@@ -7,9 +10,11 @@ import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.fixture.PointFixture.Point;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -215,6 +220,85 @@ class RestaurantQueryServiceTest {
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, category, restaurantName, null, null, null));
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void 셀럽과_거리_기준으로_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        int distance = 3;
+        Long celebId = 1L;
+        Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점, 기준점에서_3KM_지점);
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            boolean isInArea = inAreaRestaurants.stream()
+                    .anyMatch(point -> point.latitude().equals(restaurantQueryResponse.latitude())
+                            && point.longitude().equals(restaurantQueryResponse.longitude()));
+            List<Long> celebIds = restaurantQueryResponse.celebs()
+                    .stream()
+                    .map(CelebQueryResponse::id)
+                    .toList();
+            if (isInArea && celebIds.contains(celebId)) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                new RestaurantSearchCond(
+                        celebId,
+                        null,
+                        null,
+                        String.valueOf(기준점.latitude()),
+                        String.valueOf(기준점.longitude()),
+                        distance
+                )
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void 셀럽과_음식점이름과_거리를_기준으로_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        int distance = 3;
+        Long celebId = 1L;
+        String restaurantName = "로이스";
+        Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점, 기준점에서_3KM_지점);
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            boolean isInDistance = inAreaRestaurants.stream()
+                    .anyMatch(point -> point.latitude().equals(restaurantQueryResponse.latitude())
+                            && point.longitude().equals(restaurantQueryResponse.longitude()));
+            List<Long> celebIds = restaurantQueryResponse.celebs()
+                    .stream()
+                    .map(CelebQueryResponse::id)
+                    .toList();
+            if (isInDistance
+                    && celebIds.contains(celebId)
+                    && restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName))) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                new RestaurantSearchCond(
+                        celebId,
+                        null,
+                        restaurantName,
+                        String.valueOf(기준점.latitude()),
+                        String.valueOf(기준점.longitude()),
+                        distance
+                )
+        );
 
         // then
         assertThat(result).isNotEmpty();
