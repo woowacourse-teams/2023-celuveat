@@ -1,27 +1,29 @@
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
-import { ProfileImageProps } from '../@common/ProfileImage/ProfileImage';
+import { Restaurant } from '~/@types/restaurant.types';
+import { Celebs } from '~/@types/celeb.types';
 
 interface RestaurantCardProps {
-  imageUrl: string;
-  name: string;
-  address: string;
-  category: string;
-  celeb: ProfileImageProps;
+  restaurant: Restaurant;
+  celebs: Celebs;
+  size: number;
+  onClick: React.MouseEventHandler;
 }
 
-function RestaurantCard({ imageUrl, name, address, category, celeb }: RestaurantCardProps) {
+function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardProps) {
+  const { images, name, roadAddress, category } = restaurant;
+
   return (
-    <StyledContainer>
-      <StyledImage alt={`${name} 대표 이미지`} src={imageUrl} />
+    <StyledContainer onClick={onClick}>
+      <StyledImage alt={`${name} 대표 이미지`} src={`images/${images[0].name}`} />
       <StyledInfo>
         <StyledCategory>{category}</StyledCategory>
         <h5>{name}</h5>
-        <StyledAddress>{address}</StyledAddress>
+        <StyledAddress>{roadAddress}</StyledAddress>
         <StyledAddress>02-1234-5678</StyledAddress>
         <StyledProfileImageSection>
-          <ProfileImage name={celeb.name} imageUrl={celeb.imageUrl} size={celeb.size} />
+          <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />
         </StyledProfileImageSection>
       </StyledInfo>
     </StyledContainer>

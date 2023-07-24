@@ -7,8 +7,8 @@ function Footer() {
   return (
     <StyledFooter>
       <StyledIntro>
-        <p>셀럽들이 다녀간 음식점을 찾아보세요!</p>
-        <p>음식점 추천 플랫폼, 셀럽잇입니다.</p>
+        <p>셀럽들이 다녀간 맛집을 찾아보세요!</p>
+        <p>셀럽 기반 맛집 탐색 플랫폼, 셀럽잇입니다.</p>
       </StyledIntro>
       <StyledContact>CONTACT: celuveat@gmail.com</StyledContact>
       <StyledLastLine>
