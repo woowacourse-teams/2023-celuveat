@@ -75,7 +75,7 @@ public class RestaurantAcceptanceSteps {
         if (restaurantName == null) {
             return true;
         }
-        return restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName));
+        return restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName));
     }
 
     private static boolean 카테고리_조건(String category, RestaurantQueryResponse restaurantQueryResponse) {

@@ -2,7 +2,7 @@ package com.celuveat.restaurant.domain;
 
 import static com.celuveat.common.util.DynamicQueryUtil.appendQueryIfTrue;
 import static com.celuveat.common.util.DynamicQueryUtil.notNull;
-import static com.celuveat.common.util.StringUtil.replaceAllBlank;
+import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static org.springframework.util.StringUtils.hasText;
 
 import jakarta.persistence.EntityManager;
@@ -48,7 +48,7 @@ public class RestaurantQueryRepository {
         appendQueryIfTrue(appendedQuery,
                 hasText(cond.restaurantName()),
                 RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK,
-                replaceAllBlank(cond.restaurantName()));
+                removeAllBlank(cond.restaurantName()));
         String query = createQuery(appendedQuery);
         return em.createQuery(query, Restaurant.class).getResultList();
     }

@@ -114,11 +114,11 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantQueryResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            if (restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName))) {
+            if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantQueryResponse);
             }
         }
-        
+
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, restaurantName));
@@ -163,7 +163,7 @@ class RestaurantQueryRepositoryTest {
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
                     .toList();
-            if (restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName))
+            if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
                 && list.contains(celebId)) {
                 expected.add(restaurantQueryResponse);
             }
@@ -186,7 +186,7 @@ class RestaurantQueryRepositoryTest {
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            if (restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName))
+            if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
                 && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
@@ -212,7 +212,7 @@ class RestaurantQueryRepositoryTest {
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
                     .toList();
-            if (restaurantQueryResponse.name().contains(StringUtil.replaceAllBlank(restaurantName))
+            if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
                 && restaurantQueryResponse.category().equals(category)
                 && list.contains(celebId)) {
                 expected.add(restaurantQueryResponse);
