@@ -1,7 +1,6 @@
 import { Wrapper } from '@googlemaps/react-wrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import Map from './Map';
-import { data } from '~/mocks/data';
 
 const meta: Meta<typeof Map> = {
   title: 'Map',
@@ -25,7 +24,7 @@ export const Default: Story = {
     center: { lat: 37.5057482, lng: 127.050727 },
     zoom: 12,
     size: { width: '600px', height: '600px' },
-    restaurants: data,
+    restaurants: [],
     clickMarker: () => {},
   },
 };

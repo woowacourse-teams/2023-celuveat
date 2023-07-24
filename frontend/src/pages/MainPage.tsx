@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Coordinate } from '~/@types/map.types';
@@ -9,20 +9,29 @@ import Map from '~/components/@common/Map';
 import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
 import useMapModal from '~/hooks/useMapModal';
-import { data } from '~/mocks/data';
 import { FONT_SIZE } from '~/styles/common';
-
-const mapArgs = {
-  center: { lat: 37.5057482, lng: 127.050727 },
-  zoom: 13,
-  size: { width: '100%', height: '100%' },
-  restaurants: data,
-};
 
 function MainPage() {
   const [center, setCenter] = useState({ lat: 37.5057482, lng: 127.050727 });
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
+  const [data, setData] = useState<RestaurantData[]>([]);
+  const mapArgs = {
+    center: { lat: 37.5057482, lng: 127.050727 },
+    zoom: 13,
+    size: { width: '100%', height: '100%' },
+    restaurants: data,
+  };
+
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      const response = await fetch('http://3.35.157.27/api/restaurants');
+      const newData = await response.json();
+
+      setData(newData);
+    };
+    fetchRestaurant();
+  }, []);
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;

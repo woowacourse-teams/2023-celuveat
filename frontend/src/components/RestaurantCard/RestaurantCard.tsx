@@ -16,10 +16,7 @@ function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardPro
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage
-        alt={`${name} 대표 이미지`}
-        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAzMjhfMjY1%2FMDAxNjc5OTk0NjYxMDI5.Mo-i3h1Q8kR4yi0hOL2lQZdA6t6uiQ599aBNnnJ83q8g._NGlnMeHtVCiJVWenUbbtICefoddkW1Wg0g3PCxn9Q4g.JPEG.twinkle_paul%2F100V7467-2.jpg"
-      />
+      <StyledImage alt={`${name} 대표 이미지`} src={`image-data/${images[0].name}`} />
       <StyledInfo>
         <StyledCategory>{category}</StyledCategory>
         <h5>{name}</h5>
