@@ -15,8 +15,8 @@ export const Default: Story = {
     width: '500px',
     height: '300px',
     level: 3,
-    mainPosition: { latitude: 127.050727, longitude: 37.5057482 },
-    markers: [{ latitude: 127.050727, longitude: 37.5057482 }],
+    mainPosition: { longitude: 127.050727, latitude: 37.5057482 },
+    markers: [{ longitude: 127.050727, latitude: 37.5057482 }],
   },
 };
 
@@ -25,12 +25,12 @@ export const MapWithManyMarkers: Story = {
     width: '1000px',
     height: '400px',
     level: 6,
-    mainPosition: { latitude: 127.050727, longitude: 37.5057482 },
+    mainPosition: { longitude: 127.050727, latitude: 37.5057482 },
     markers: [
-      { latitude: 127.023432, longitude: 37.5043233 },
-      { latitude: 127.050727, longitude: 37.5057482 },
-      { latitude: 127.034234, longitude: 37.5023415 },
-      { latitude: 127.062341, longitude: 37.5123423 },
+      { longitude: 127.023432, latitude: 37.5043233 },
+      { longitude: 127.050727, latitude: 37.5057482 },
+      { longitude: 127.034234, latitude: 37.5023415 },
+      { longitude: 127.062341, latitude: 37.5123423 },
     ],
   },
 };
