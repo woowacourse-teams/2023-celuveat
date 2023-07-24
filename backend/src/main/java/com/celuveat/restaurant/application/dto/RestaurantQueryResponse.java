@@ -3,6 +3,7 @@ package com.celuveat.restaurant.application.dto;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record RestaurantQueryResponse(
@@ -10,7 +11,9 @@ public record RestaurantQueryResponse(
         String name,
         String category,
         String roadAddress,
+        @JsonProperty("lat")
         Double latitude,
+        @JsonProperty("lng")
         Double longitude,
         String phoneNumber,
         String naverMapUrl,
