@@ -1,20 +1,20 @@
 package com.celuveat.restaurant.application;
 
-import static com.celuveat.restaurant.fixture.PointFixture.기준점;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_2KM_지점;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_3KM_지점;
+import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
-import com.celuveat.restaurant.fixture.PointFixture.Point;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -55,7 +55,9 @@ class RestaurantQueryServiceTest {
     void 전체_음식점_조회_테스트() {
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, null, null, null, null));
+                new RestaurantSearchCond(null, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -76,7 +78,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, null, null, null, null));
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -97,7 +101,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, null, null, null, null));
+                new RestaurantSearchCond(null, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -118,7 +124,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, restaurantName, null, null, null));
+                new RestaurantSearchCond(null, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -142,7 +150,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, null, null, null, null));
+                new RestaurantSearchCond(celebId, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -167,7 +177,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, restaurantName, null, null, null));
+                new RestaurantSearchCond(celebId, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -190,7 +202,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, restaurantName, null, null, null));
+                new RestaurantSearchCond(null, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -215,7 +229,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, restaurantName, null, null, null));
+                new RestaurantSearchCond(celebId, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -227,11 +243,9 @@ class RestaurantQueryServiceTest {
     void 셀럽과_거리_기준으로_음식점_조회_테스트() {
         // given
         List<RestaurantQueryResponse> expected = new ArrayList<>();
-        int distance = 3;
         Long celebId = 1L;
-        Set<Point> inDistancePoints = Set.of(기준점에서_2KM_지점, 기준점에서_3KM_지점);
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            if (isRestaurantInDistance(inDistancePoints, restaurantQueryResponse)
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantQueryResponse)
                     && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
@@ -239,13 +253,12 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(
-                        celebId,
-                        null,
-                        null,
-                        String.valueOf(기준점.latitude()),
-                        String.valueOf(기준점.longitude()),
-                        distance
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(
+                        박스_1번_지점포함.lowLatitude(),
+                        박스_1번_지점포함.highLatitude(),
+                        박스_1번_지점포함.lowLongitude(),
+                        박스_1번_지점포함.highLongitude()
                 )
         );
 
@@ -259,12 +272,10 @@ class RestaurantQueryServiceTest {
     void 셀럽과_음식점이름과_거리를_기준으로_음식점_조회_테스트() {
         // given
         List<RestaurantQueryResponse> expected = new ArrayList<>();
-        int distance = 3;
         Long celebId = 1L;
         String restaurantName = "로이스";
-        Set<Point> inAreaRestaurants = Set.of(기준점에서_2KM_지점, 기준점에서_3KM_지점);
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            if (isRestaurantInDistance(inAreaRestaurants, restaurantQueryResponse)
+            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantQueryResponse)
                     && isCelebVisited(celebId, restaurantQueryResponse)
                     && restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantQueryResponse);
@@ -273,13 +284,12 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(
-                        celebId,
-                        null,
-                        restaurantName,
-                        String.valueOf(기준점.latitude()),
-                        String.valueOf(기준점.longitude()),
-                        distance
+                new RestaurantSearchCond(celebId, null, restaurantName),
+                new LocationSearchCond(
+                        박스_1_2번_지점포함.lowLatitude(),
+                        박스_1_2번_지점포함.highLatitude(),
+                        박스_1_2번_지점포함.lowLongitude(),
+                        박스_1_2번_지점포함.highLongitude()
                 )
         );
 
@@ -287,20 +297,5 @@ class RestaurantQueryServiceTest {
         assertThat(result).isNotEmpty();
         assertThat(result).usingRecursiveComparison()
                 .isEqualTo(expected);
-    }
-
-    private boolean isRestaurantInDistance(
-            Set<Point> inAreaRestaurants,
-            RestaurantQueryResponse restaurantQueryResponse
-    ) {
-        return inAreaRestaurants.stream().anyMatch(point ->
-                point.latitude().equals(restaurantQueryResponse.latitude())
-                        && point.longitude().equals(restaurantQueryResponse.longitude())
-        );
-    }
-
-    private boolean isCelebVisited(Long celebId, RestaurantQueryResponse restaurantQueryResponse) {
-        List<Long> celebIds = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id).toList();
-        return celebIds.contains(celebId);
     }
 }
