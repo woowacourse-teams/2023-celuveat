@@ -1,9 +1,19 @@
+import { Wrapper } from '@googlemaps/react-wrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import Map from './Map';
+import { data } from '~/mocks/data';
 
 const meta: Meta<typeof Map> = {
   title: 'Map',
   component: Map,
+  decorators: [
+    Story => (
+      <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko">
+        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
+        <Story />
+      </Wrapper>
+    ),
+  ],
 };
 
 export default meta;
@@ -12,25 +22,10 @@ type Story = StoryObj<typeof Map>;
 
 export const Default: Story = {
   args: {
-    width: '500px',
-    height: '300px',
-    level: 3,
-    mainPosition: { longitude: 127.050727, latitude: 37.5057482 },
-    markers: [{ longitude: 127.050727, latitude: 37.5057482 }],
-  },
-};
-
-export const MapWithManyMarkers: Story = {
-  args: {
-    width: '1000px',
-    height: '400px',
-    level: 6,
-    mainPosition: { longitude: 127.050727, latitude: 37.5057482 },
-    markers: [
-      { longitude: 127.023432, latitude: 37.5043233 },
-      { longitude: 127.050727, latitude: 37.5057482 },
-      { longitude: 127.034234, latitude: 37.5023415 },
-      { longitude: 127.062341, latitude: 37.5123423 },
-    ],
+    center: { lat: 37.5057482, lng: 127.050727 },
+    zoom: 12,
+    size: { width: '600px', height: '600px' },
+    restaurants: data,
+    clickMarker: () => {},
   },
 };
