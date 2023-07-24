@@ -20,11 +20,12 @@ public class RestaurantQueryRepository {
     private static final String WHERE = "WHERE ";
     private static final String AND = " AND ";
 
-    private static final String CELEB_ID_EQ = "c.id = %d";
-    private static final String RESTAURANT_CATEGORY_EQ = "r.category = '%s'";
+    private static final String CELEB_ID_EQUAL = "c.id = %d";
+    private static final String RESTAURANT_CATEGORY_EQUAL = "r.category = '%s'";
     private static final String RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK = """
             Function('replace', lower(r.name), ' ', '') like lower('%%%s%%')
             """;
+
     private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
             SELECT r
             FROM Restaurant r
@@ -33,17 +34,18 @@ public class RestaurantQueryRepository {
             JOIN Celeb c
             ON c = v.celeb
             """;
+
     private final EntityManager em;
 
     public List<Restaurant> getRestaurants(RestaurantSearchCond cond) {
         List<String> appendedQuery = new ArrayList<>();
         appendQueryIfTrue(appendedQuery,
                 notNull(cond.celebId()),
-                CELEB_ID_EQ,
+                CELEB_ID_EQUAL,
                 cond.celebId());
         appendQueryIfTrue(appendedQuery,
                 hasText(cond.category()),
-                RESTAURANT_CATEGORY_EQ,
+                RESTAURANT_CATEGORY_EQUAL,
                 cond.category());
         appendQueryIfTrue(appendedQuery,
                 hasText(cond.restaurantName()),

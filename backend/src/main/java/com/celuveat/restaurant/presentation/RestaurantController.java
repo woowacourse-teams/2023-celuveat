@@ -22,6 +22,7 @@ public class RestaurantController {
     ResponseEntity<List<RestaurantQueryResponse>> findAll(
             @ModelAttribute RestaurantSearchCond searchCond
     ) {
-        return ResponseEntity.ok(restaurantQueryService.findAll(searchCond));
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(searchCond);
+        return ResponseEntity.ok(result);
     }
 }
