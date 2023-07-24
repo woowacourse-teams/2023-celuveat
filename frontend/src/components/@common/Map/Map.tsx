@@ -16,7 +16,7 @@ interface MapProps {
 function Map({ center, zoom, size, restaurants, clickMarker }: MapProps) {
   const googleMapRef = useRef();
   const { googleMap } = useDrawMap({ mapRef: googleMapRef, center, zoom });
-  const { markers } = useMarker({ map: googleMap, restaurants, clickMarker });
+  useMarker({ map: googleMap, restaurants, clickMarker });
 
   return <StyledMap ref={googleMapRef} size={size} id="map" />;
 }

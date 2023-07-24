@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { RestaurantData } from '~/@types/api.types';
 import { Coordinate } from '~/@types/map.types';
