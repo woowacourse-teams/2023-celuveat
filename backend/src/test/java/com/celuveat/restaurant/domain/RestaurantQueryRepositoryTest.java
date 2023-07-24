@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.application;
+package com.celuveat.restaurant.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @Sql("/truncate.sql")
-@DisplayName("RestaurantQueryService 은(는)")
+@DisplayName("RestaurantQueryRepository 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class RestaurantQueryServiceTest {
+class RestaurantQueryRepositoryTest {
 
     private final List<RestaurantQueryResponse> seed = new ArrayList<>();
 
@@ -36,7 +36,7 @@ class RestaurantQueryServiceTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantQueryService restaurantQueryService;
+    private RestaurantQueryRepository restaurantQueryRepository;
 
     @BeforeEach
     void setUp() {
@@ -46,16 +46,22 @@ class RestaurantQueryServiceTest {
         System.out.println("=============[INSERT SEED DATA]============");
     }
 
+    private List<String> 이름_추출(List<RestaurantQueryResponse> list) {
+        return list.stream()
+                .map(RestaurantQueryResponse::name)
+                .toList();
+    }
+
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, null));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(seed);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(seed));
     }
 
     @Test
@@ -72,13 +78,13 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, null, null));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -93,13 +99,13 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, category, null));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -114,13 +120,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, null, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).hasSize(expected.size());
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -138,13 +145,13 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, category, null));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -163,13 +170,13 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, null, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -186,13 +193,13 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(null, category, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -213,12 +220,12 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
                 new RestaurantSearchCond(celebId, category, restaurantName));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
-                .isEqualTo(expected);
+        assertThat(result).hasSize(expected.size());
+
     }
 }

@@ -8,7 +8,7 @@ public record RestaurantImageQueryResponse(
         String author,
         String sns
 ) {
-    
+
     public static RestaurantImageQueryResponse of(RestaurantImage restaurantImage) {
         return new RestaurantImageQueryResponse(
                 restaurantImage.id(),

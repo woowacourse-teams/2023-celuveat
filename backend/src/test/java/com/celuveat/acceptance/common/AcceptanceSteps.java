@@ -21,6 +21,8 @@ public class AcceptanceSteps {
     public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;
 
+    public static final Object 없음 = null;
+
     public static LocalDateTime 현재시간() {
         return LocalDateTime.now();
     }

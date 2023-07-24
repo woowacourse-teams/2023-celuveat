@@ -1,6 +1,5 @@
 package com.celuveat.common.config;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

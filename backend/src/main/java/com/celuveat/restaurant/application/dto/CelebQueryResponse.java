@@ -8,7 +8,7 @@ public record CelebQueryResponse(
         String youtubeChannelName,
         String profileImageUrl
 ) {
-    
+
     public static CelebQueryResponse of(Celeb it) {
         return new CelebQueryResponse(
                 it.id(),
