@@ -1,10 +1,8 @@
 package com.celuveat.common;
 
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_10KM_지점;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_2KM_지점;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_3KM_지점;
-import static com.celuveat.restaurant.fixture.PointFixture.기준점에서_5KM_지점;
+import static com.celuveat.restaurant.fixture.LocationFixture.지점1;
+import static com.celuveat.restaurant.fixture.LocationFixture.지점2;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
 import static com.celuveat.video.fixture.VideoFixture.영상;
@@ -42,16 +40,16 @@ public class SeedData {
         Celeb 로이스 = celebs.get(3);
 
         List<Restaurant> restaurants = restaurantRepository.saveAll(List.of(
-                음식점("말랑1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("말랑2호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
-                음식점("말랑3호점", 기준점에서_10KM_지점.latitude(), 기준점에서_10KM_지점.longitude()),
-                음식점("도기1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("도기2호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
-                음식점("도기3호점", 기준점에서_5KM_지점.latitude(), 기준점에서_5KM_지점.longitude()),
-                음식점("오도1호점", 기준점에서_3KM_지점.latitude(), 기준점에서_3KM_지점.longitude()),
-                음식점("오도2호점", 기준점에서_5KM_지점.latitude(), 기준점에서_5KM_지점.longitude()),
-                음식점("로이스1호점", 기준점에서_2KM_지점.latitude(), 기준점에서_2KM_지점.longitude()),
-                음식점("로이스2호점", 기준점에서_10KM_지점.latitude(), 기준점에서_10KM_지점.longitude())
+                음식점("말랑1호점", 지점1.latitude(), 지점1.longitude()),
+                음식점("말랑2호점", 지점1.latitude(), 지점2.longitude()),
+                음식점("말랑3호점", 지점2.latitude(), 지점2.longitude()),
+                음식점("도기1호점", 지점1.latitude(), 지점1.longitude()),
+                음식점("도기2호점", 지점2.latitude(), 지점2.longitude()),
+                음식점("도기3호점", 지점2.latitude(), 지점2.longitude()),
+                음식점("오도1호점", 지점1.latitude(), 지점1.longitude()),
+                음식점("오도2호점", 지점2.latitude(), 지점2.longitude()),
+                음식점("로이스1호점", 지점1.latitude(), 지점1.longitude()),
+                음식점("로이스2호점", 지점2.latitude(), 지점2.longitude())
         ));
 
         Restaurant 말랑1호점 = restaurants.get(0);

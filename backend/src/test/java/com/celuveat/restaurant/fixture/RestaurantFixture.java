@@ -1,6 +1,9 @@
 package com.celuveat.restaurant.fixture;
 
+import com.celuveat.restaurant.application.dto.CelebQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import java.util.List;
 
 public class RestaurantFixture {
 
@@ -26,5 +29,10 @@ public class RestaurantFixture {
                 .latitude(latitude)
                 .longitude(longitude)
                 .build();
+    }
+
+    public static boolean isCelebVisited(Long celebId, RestaurantQueryResponse restaurantQueryResponse) {
+        List<Long> celebIds = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id).toList();
+        return celebIds.contains(celebId);
     }
 }
