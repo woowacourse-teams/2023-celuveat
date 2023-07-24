@@ -25,7 +25,7 @@ function MainPage() {
 
   useEffect(() => {
     const fetchRestaurant = async () => {
-      const response = await fetch('http://3.35.157.27/api/restaurants');
+      const response = await fetch('http://3.35.157.27:8080/api/restaurants');
       const newData = await response.json();
 
       setData(newData);
@@ -88,7 +88,19 @@ const StyledLayout = styled.div`
 
   width: 100%;
   height: 100%;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 63% 37%;
+
+  @media screen and (width <= 1240px) {
+    grid-template-columns: 55% 45%;
+  }
+
+  @media screen and (width <= 950px) {
+    & > div:last-child {
+      display: none;
+    }
+
+    grid-template-columns: 100% 0;
+  }
 `;
 
 const StyledLeftSide = styled.div`
@@ -113,6 +125,10 @@ const StyledRestaurantCardList = styled.div`
 
   margin: 0 2.4rem;
   grid-template-columns: 1fr 1fr 1fr;
+
+  @media screen and (width <= 1240px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const StyledRightSide = styled.div`
