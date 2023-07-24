@@ -1,3 +1,3 @@
-import Map from './Map';
+import MapWrapper from './MapWrapper';
 
-export default Map;
+export default MapWrapper;

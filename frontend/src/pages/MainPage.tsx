@@ -5,7 +5,7 @@ import { Coordinate } from '~/@types/map.types';
 import { Restaurant, RestaurantModalInfo } from '~/@types/restaurant.types';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
-import Map from '~/components/@common/Map';
+import MapWrapper from '~/components/@common/Map';
 import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
 import useMapModal from '~/hooks/useMapModal';
@@ -16,12 +16,6 @@ function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
-  const mapArgs = {
-    center: { lat: 37.5057482, lng: 127.050727 },
-    zoom: 13,
-    size: { width: '100%', height: '100%' },
-    restaurants: data,
-  };
 
   useEffect(() => {
     const fetchRestaurant = async () => {
@@ -54,7 +48,6 @@ function MainPage() {
   return (
     <>
       <Header />
-
       <StyledLayout>
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
@@ -65,7 +58,11 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} center={center} clickMarker={clickMarker} />
+          <MapWrapper
+            center={center}
+            clickMarker={clickMarker}
+            markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
+          />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}

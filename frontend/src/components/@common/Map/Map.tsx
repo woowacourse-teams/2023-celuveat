@@ -1,29 +1,34 @@
-import { useRef } from 'react';
-import { styled } from 'styled-components';
-import { RestaurantData } from '~/@types/api.types';
-import useDrawMap from './hooks/useDrawMap';
-import useMarker from './hooks/useMarker';
-import { Coordinate } from '~/@types/map.types';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable react-hooks/exhaustive-deps */
 
-interface MapProps {
-  center: google.maps.LatLngLiteral;
+import React from 'react';
+import useMap from './hooks/useMap';
+import type { Coordinate } from '~/@types/map.types';
+
+interface MapProps extends google.maps.MapOptions {
   zoom: number;
-  size: { width: string; height: string };
-  restaurants: RestaurantData[];
-  clickMarker: ({ lat, lng }: Coordinate) => void;
+  center: Coordinate;
+  children: React.ReactNode;
+  style: { [key: string]: string };
+  onIdle?: (map: google.maps.Map) => void;
+  onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
-function Map({ center, zoom, size, restaurants, clickMarker }: MapProps) {
-  const googleMapRef = useRef();
-  const { googleMap } = useDrawMap({ mapRef: googleMapRef, center, zoom });
-  useMarker({ map: googleMap, restaurants, clickMarker });
+function Map({ style, zoom, center, children, onClick, onIdle }: MapProps) {
+  const { ref, map } = useMap({ center, zoom, onClick, onIdle });
 
-  return <StyledMap ref={googleMapRef} size={size} id="map" />;
+  return (
+    <>
+      <div ref={ref} id="map" style={style} />
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          // @ts-ignore
+          return React.cloneElement(child, { map });
+        }
+        return null;
+      })}
+    </>
+  );
 }
 
 export default Map;
-
-const StyledMap = styled.div<{ size: { width: string; height: string } }>`
-  width: ${({ size }) => size.width};
-  height: ${({ size }) => size.height};
-`;
