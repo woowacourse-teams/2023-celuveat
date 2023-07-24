@@ -17,8 +17,8 @@ export const Default: Story = {
       name: '스시렌',
       category: '일식당',
       roadAddress: '서울 강남구 선릉로146길 27-8 2F',
-      latitude: 37.5222779,
-      longitude: 127.0423149,
+      lat: 37.5222779,
+      lng: 127.0423149,
       phoneNumber: '010-8072-2032',
       naverMapUrl: 'https://naver.me/58HxhMsl',
       images: [

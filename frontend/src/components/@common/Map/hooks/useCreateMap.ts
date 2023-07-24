@@ -4,20 +4,20 @@ import { useEffect, useState } from 'react';
 import { Coordinate } from '~/@types/map.types';
 
 const useCreateMap = ({
-  mainPosition,
+  center,
   level,
   container,
 }: {
-  mainPosition: Coordinate;
+  center: Coordinate;
   level: number;
   container: React.RefObject<HTMLDivElement>;
 }) => {
-  const { latitude, longitude } = mainPosition;
+  const { lat, lng } = center;
   const [kakaoMap, setKakaoMap] = useState(null);
 
   useEffect(() => {
     const options = {
-      center: new window.kakao.maps.LatLng(latitude, longitude),
+      center: new window.kakao.maps.LatLng(lat, lng),
       level,
     };
     const map = new window.kakao.maps.Map(container.current, options);
