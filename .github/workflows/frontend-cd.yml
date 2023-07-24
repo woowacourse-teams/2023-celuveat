@@ -15,7 +15,7 @@ jobs:
       - name: 🍔 .env 파일 세팅
         run: |
           touch ~/frontend-env/.env
-          echo KAKAO_MAP_API_KEY=${{ secrets.KAKAO_MAP_API_KEY }} >> ~/frontend-env/.env
+          echo GOOGLE_MAP_API_KEY=${{ secrets.GOOGLE_MAP_API_KEY }} >> ~/frontend-env/.env
 
       - name: 🍔 Run Frontend Deploy Script
         run: |
