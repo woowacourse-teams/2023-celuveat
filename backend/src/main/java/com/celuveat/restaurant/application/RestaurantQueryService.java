@@ -33,8 +33,8 @@ public class RestaurantQueryService {
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond
     ) {
-        List<Restaurant> restaurants = restaurantQueryRepository.getRestaurants(restaurantSearchCond,
-                locationSearchCond);
+        List<Restaurant> restaurants =
+                restaurantQueryRepository.getRestaurants(restaurantSearchCond, locationSearchCond);
         List<Video> videos = findVideoByRestaurantIn(restaurants);
         Map<Restaurant, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
         List<RestaurantImage> images = findImageByRestaurantIn(restaurants);

@@ -11,12 +11,6 @@ public class LocationFixture {
     public static final LocationSearchCond 박스_1번_지점포함 = new LocationSearchCond(37.50, 37.52, 127.06, 127.08);
     public static final LocationSearchCond 박스_1_2번_지점포함 = new LocationSearchCond(37.50, 37.53, 127.06, 127.09);
 
-    public record Point(
-            Double latitude,
-            Double longitude
-    ) {
-    }
-
     public static boolean isRestaurantInArea(
             LocationSearchCond locationSearchCond,
             RestaurantQueryResponse restaurantQueryResponse
@@ -25,6 +19,12 @@ public class LocationFixture {
                 && restaurantQueryResponse.latitude() <= locationSearchCond.highLatitude()
                 && locationSearchCond.lowLongitude() <= restaurantQueryResponse.longitude()
                 && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
+    }
+
+    public record Point(
+            Double latitude,
+            Double longitude
+    ) {
     }
 
 }
