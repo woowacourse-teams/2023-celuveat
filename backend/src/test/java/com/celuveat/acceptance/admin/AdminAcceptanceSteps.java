@@ -16,14 +16,14 @@ public class AdminAcceptanceSteps {
             .name("국민연금")
             .roadAddress("국민연금 주소")
             .category("한식")
-            .latitude("국민연금 위도")
-            .longitude("국민연금 경도")
+            .latitude(12.3456)
+            .longitude(12.3456)
             .phoneNumber("국민연금 번호")
             .naverMapUrl("국민연금 네이버지도 링크")
             .build();
 
     public static String 입력_생성(String 셀럽_이름, String 음식점_이름) {
-        return "@" + 셀럽_이름 + "\t" + 음식점_이름 + "png\t유튜브링크\t2023-07-25\t" + 음식점_이름 + "\t" + 음식점_이름 + " 주소\t전화번호\t카테고리\t음식점네이버링크\t위도\t경도";
+        return "@" + 셀럽_이름 + "\t" + 음식점_이름 + "png\t유튜브링크\t2023-07-25\t" + 음식점_이름 + "\t" + 음식점_이름 + " 주소\t전화번호\t카테고리\t음식점네이버링크\t12.3456\t12.3456";
     }
 
     public static List<SaveDataRequest> 요청_생성(String input) {

@@ -56,8 +56,8 @@ public class AdminService {
                 .name(request.restaurantName())
                 .category(request.category())
                 .roadAddress(request.roadAddress())
-                .latitude(request.latitude())
-                .longitude(request.longitude())
+                .latitude(Double.parseDouble(request.latitude()))
+                .longitude(Double.parseDouble(request.longitude()))
                 .phoneNumber(request.phoneNumber())
                 .naverMapUrl(request.naverMapUrl())
                 .build());
