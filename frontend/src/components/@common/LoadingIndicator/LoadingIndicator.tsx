@@ -11,13 +11,13 @@ function LoadingIndicator({ size }: LoadingIndicatorProps) {
   return (
     <StyledLoadingAnimation>
       <StyledBouncing size={size}>
-        <Cel width={`${size}px`} />
+        <Cel />
       </StyledBouncing>
       <StyledBouncing size={size}>
-        <Luv width={`${size}px`} />
+        <Luv />
       </StyledBouncing>
       <StyledBouncing size={size}>
-        <Eat width={`${size}px`} />
+        <Eat />
       </StyledBouncing>
     </StyledLoadingAnimation>
   );
@@ -43,19 +43,19 @@ const bounceAnimation = keyframes`
     top: 0px;
   }
   25% {
-    top: 30px;
+    top: 10px;
   }
   30% {
-    transform: rotate(20deg);
+    transform: rotate(10deg);
   }
   50% {
     top: 0px;
   }
   75% {
-    top: 30px;
+    top: 10px;
   }
   80% {
-    transform: rotate(-20deg);
+    transform: rotate(-10deg);
   }
   100% {
     top: 0px;
