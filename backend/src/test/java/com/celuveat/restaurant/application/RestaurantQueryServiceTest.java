@@ -1,11 +1,16 @@
 package com.celuveat.restaurant.application;
 
+import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -50,7 +55,9 @@ class RestaurantQueryServiceTest {
     void 전체_음식점_조회_테스트() {
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, null));
+                new RestaurantSearchCond(null, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -64,16 +71,16 @@ class RestaurantQueryServiceTest {
         List<RestaurantQueryResponse> expected = new ArrayList<>();
         Long celebId = 1L;
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
-            if (list.contains(celebId)) {
+            if (isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, null));
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -94,7 +101,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, null));
+                new RestaurantSearchCond(null, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -115,7 +124,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, null, restaurantName));
+                new RestaurantSearchCond(null, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -139,7 +150,9 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, null));
+                new RestaurantSearchCond(celebId, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -157,14 +170,16 @@ class RestaurantQueryServiceTest {
             List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
                     .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && list.contains(celebId)) {
+                    && list.contains(celebId)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, null, restaurantName));
+                new RestaurantSearchCond(celebId, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -180,14 +195,16 @@ class RestaurantQueryServiceTest {
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)) {
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(null, category, restaurantName));
+                new RestaurantSearchCond(null, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -203,18 +220,78 @@ class RestaurantQueryServiceTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)
-                && list.contains(celebId)) {
+                    && restaurantQueryResponse.category().equals(category)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                new RestaurantSearchCond(celebId, category, restaurantName));
+                new RestaurantSearchCond(celebId, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void 셀럽과_거리_기준으로_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        Long celebId = 1L;
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantQueryResponse)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(
+                        박스_1번_지점포함.lowLatitude(),
+                        박스_1번_지점포함.highLatitude(),
+                        박스_1번_지점포함.lowLongitude(),
+                        박스_1번_지점포함.highLongitude()
+                )
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    void 셀럽과_음식점이름과_거리를_기준으로_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        Long celebId = 1L;
+        String restaurantName = "로이스";
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantQueryResponse)
+                    && isCelebVisited(celebId, restaurantQueryResponse)
+                    && restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                new RestaurantSearchCond(celebId, null, restaurantName),
+                new LocationSearchCond(
+                        박스_1_2번_지점포함.lowLatitude(),
+                        박스_1_2번_지점포함.highLatitude(),
+                        박스_1_2번_지점포함.lowLongitude(),
+                        박스_1_2번_지점포함.highLongitude()
+                )
+        );
 
         // then
         assertThat(result).isNotEmpty();

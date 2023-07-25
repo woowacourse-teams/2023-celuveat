@@ -2,6 +2,7 @@ package com.celuveat.restaurant.domain;
 
 import static com.celuveat.common.util.DynamicQueryUtil.appendQueryIfTrue;
 import static com.celuveat.common.util.DynamicQueryUtil.notNull;
+import static com.celuveat.common.util.DynamicQueryUtil.notNullRecursive;
 import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -26,6 +27,12 @@ public class RestaurantQueryRepository {
             Function('replace', lower(r.name), ' ', '') like lower('%%%s%%')
             """;
 
+    private static final String RESTAURANT_IN_AREA = """
+                      latitude BETWEEN %s AND %s
+                      AND
+                      longitude BETWEEN %s AND %s
+            """;
+
     private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
             SELECT r
             FROM Restaurant r
@@ -37,20 +44,28 @@ public class RestaurantQueryRepository {
 
     private final EntityManager em;
 
-    public List<Restaurant> getRestaurants(RestaurantSearchCond cond) {
+    public List<Restaurant> getRestaurants(
+            RestaurantSearchCond restaurantSearchCond,
+            LocationSearchCond locationSearchCond
+    ) {
         List<String> appendedQuery = new ArrayList<>();
         appendQueryIfTrue(appendedQuery,
-                notNull(cond.celebId()),
+                notNull(restaurantSearchCond.celebId()),
                 CELEB_ID_EQUAL,
-                cond.celebId());
+                restaurantSearchCond.celebId());
         appendQueryIfTrue(appendedQuery,
-                hasText(cond.category()),
+                hasText(restaurantSearchCond.category()),
                 RESTAURANT_CATEGORY_EQUAL,
-                cond.category());
+                restaurantSearchCond.category());
         appendQueryIfTrue(appendedQuery,
-                hasText(cond.restaurantName()),
+                hasText(restaurantSearchCond.restaurantName()),
                 RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK,
-                removeAllBlank(cond.restaurantName()));
+                removeAllBlank(restaurantSearchCond.restaurantName()));
+        appendQueryIfTrue(appendedQuery,
+                notNullRecursive(locationSearchCond),
+                RESTAURANT_IN_AREA,
+                locationSearchCond.lowLatitude, locationSearchCond.highLatitude,
+                locationSearchCond.lowLongitude, locationSearchCond.highLongitude);
         String query = createQuery(appendedQuery);
         return em.createQuery(query, Restaurant.class).getResultList();
     }
@@ -60,14 +75,22 @@ public class RestaurantQueryRepository {
             return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB;
         }
         return SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB
-               + WHERE
-               + String.join(AND, appendedQuery);
+                + WHERE
+                + String.join(AND, appendedQuery);
     }
 
     public record RestaurantSearchCond(
             Long celebId,
             String category,
             String restaurantName
+    ) {
+    }
+
+    public record LocationSearchCond(
+            Double lowLatitude,
+            Double highLatitude,
+            Double lowLongitude,
+            Double highLongitude
     ) {
     }
 }

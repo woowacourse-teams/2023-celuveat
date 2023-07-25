@@ -1,11 +1,15 @@
 package com.celuveat.restaurant.domain;
 
+import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -56,7 +60,9 @@ class RestaurantQueryRepositoryTest {
     void 전체_음식점_조회_테스트() {
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, null, null));
+                new RestaurantSearchCond(null, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -70,16 +76,16 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantQueryResponse> expected = new ArrayList<>();
         Long celebId = 1L;
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
-            if (list.contains(celebId)) {
+            if (isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, null, null));
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -100,7 +106,9 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, category, null));
+                new RestaurantSearchCond(null, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -121,7 +129,9 @@ class RestaurantQueryRepositoryTest {
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, null, restaurantName));
+                new RestaurantSearchCond(null, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -137,16 +147,17 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 1L;
         String category = "category:오도1호점";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
-            if (list.contains(celebId) && restaurantQueryResponse.category().equals(category)) {
+            if (isCelebVisited(celebId, restaurantQueryResponse)
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, category, null));
+                new RestaurantSearchCond(celebId, category, null),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -161,17 +172,17 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && list.contains(celebId)) {
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, null, restaurantName));
+                new RestaurantSearchCond(celebId, null, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -187,14 +198,16 @@ class RestaurantQueryRepositoryTest {
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)) {
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(null, category, restaurantName));
+                new RestaurantSearchCond(null, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -210,22 +223,104 @@ class RestaurantQueryRepositoryTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            List<Long> list = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id)
-                    .toList();
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)
-                && list.contains(celebId)) {
+                    && restaurantQueryResponse.category().equals(category)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
 
         // when
         List<Restaurant> result = restaurantQueryRepository.getRestaurants(
-                new RestaurantSearchCond(celebId, category, restaurantName));
+                new RestaurantSearchCond(celebId, category, restaurantName),
+                new LocationSearchCond(null, null, null, null)
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
+    }
 
+    @Test
+    void 위치_기준으로_일정_거리내_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantQueryResponse)) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
+                new RestaurantSearchCond(null, null, null),
+                new LocationSearchCond(
+                        박스_1번_지점포함.lowLatitude(),
+                        박스_1번_지점포함.highLatitude(),
+                        박스_1번_지점포함.lowLongitude(),
+                        박스_1번_지점포함.highLongitude()
+                )
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
+    }
+
+    @Test
+    void 위치_기준으로_일정_거리내_모든_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantQueryResponse)) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
+                new RestaurantSearchCond(null, null, null),
+                new LocationSearchCond(
+                        박스_1_2번_지점포함.lowLatitude(),
+                        박스_1_2번_지점포함.highLatitude(),
+                        박스_1_2번_지점포함.lowLongitude(),
+                        박스_1_2번_지점포함.highLongitude()
+                )
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
+    }
+
+    @Test
+    void 셀럽과_거리_기준으로_음식점_조회_테스트() {
+        // given
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        Long celebId = 1L;
+        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantQueryResponse)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
+                expected.add(restaurantQueryResponse);
+            }
+        }
+
+        // when
+        List<Restaurant> result = restaurantQueryRepository.getRestaurants(
+                new RestaurantSearchCond(celebId, null, null),
+                new LocationSearchCond(
+                        박스_1번_지점포함.lowLatitude(),
+                        박스_1번_지점포함.highLatitude(),
+                        박스_1번_지점포함.lowLongitude(),
+                        박스_1번_지점포함.highLongitude()
+                )
+        );
+
+        // then
+        assertThat(result).isNotEmpty();
+        assertThat(result).extracting(Restaurant::name)
+                .containsExactlyElementsOf(이름_추출(expected));
     }
 }

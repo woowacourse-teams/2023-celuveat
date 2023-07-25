@@ -2,6 +2,7 @@ package com.celuveat.restaurant.presentation;
 
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,10 @@ public class RestaurantController {
 
     @GetMapping
     ResponseEntity<List<RestaurantQueryResponse>> findAll(
-            @ModelAttribute RestaurantSearchCond searchCond
+            @ModelAttribute RestaurantSearchCond searchCond,
+            @ModelAttribute LocationSearchCond locationSearchCond
     ) {
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(searchCond);
+        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(searchCond, locationSearchCond);
         return ResponseEntity.ok(result);
     }
 }

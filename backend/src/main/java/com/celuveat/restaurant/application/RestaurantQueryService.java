@@ -8,6 +8,7 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
@@ -28,8 +29,12 @@ public class RestaurantQueryService {
     private final RestaurantImageRepository restaurantImageRepository;
     private final VideoRepository videoRepository;
 
-    public List<RestaurantQueryResponse> findAll(RestaurantSearchCond cond) {
-        List<Restaurant> restaurants = restaurantQueryRepository.getRestaurants(cond);
+    public List<RestaurantQueryResponse> findAll(
+            RestaurantSearchCond restaurantSearchCond,
+            LocationSearchCond locationSearchCond
+    ) {
+        List<Restaurant> restaurants =
+                restaurantQueryRepository.getRestaurants(restaurantSearchCond, locationSearchCond);
         List<Video> videos = findVideoByRestaurantIn(restaurants);
         Map<Restaurant, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
         List<RestaurantImage> images = findImageByRestaurantIn(restaurants);
