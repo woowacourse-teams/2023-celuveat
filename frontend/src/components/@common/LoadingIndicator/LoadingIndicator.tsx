@@ -3,11 +3,11 @@ import Cel from '~/assets/icons/celuveat_cel.svg';
 import Luv from '~/assets/icons/celuveat_luv.svg';
 import Eat from '~/assets/icons/celuveat_eat.svg';
 
-interface LoadingAnimationProps {
+interface LoadingIndicatorProps {
   size: number;
 }
 
-function LoadingAnimation({ size }: LoadingAnimationProps) {
+function LoadingIndicator({ size }: LoadingIndicatorProps) {
   return (
     <StyledLoadingAnimation>
       <StyledBouncing size={size}>
@@ -22,6 +22,8 @@ function LoadingAnimation({ size }: LoadingAnimationProps) {
     </StyledLoadingAnimation>
   );
 }
+
+export default LoadingIndicator;
 
 const StyledLoadingAnimation = styled.div`
   display: flex;
@@ -72,5 +74,3 @@ const StyledBouncing = styled.div<{ size: number }>`
   background: none;
   animation: ${bounceAnimation} 1.6s ease-in-out infinite;
 `;
-
-export default LoadingAnimation;
