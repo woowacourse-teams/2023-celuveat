@@ -12,7 +12,6 @@ import useMapModal from '~/hooks/useMapModal';
 import { FONT_SIZE } from '~/styles/common';
 
 function MainPage() {
-  const [center, setCenter] = useState({ lat: 37.5057482, lng: 127.050727 });
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
@@ -31,7 +30,6 @@ function MainPage() {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
 
     openModal();
-    setCenter({ lat, lng });
     setCurrentRestaurant(restaurantModalInfo);
   };
 
@@ -42,7 +40,6 @@ function MainPage() {
       filteredRestaurant;
 
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
-    setCenter({ lat, lng });
   };
 
   return (
@@ -59,7 +56,6 @@ function MainPage() {
         </StyledLeftSide>
         <StyledRightSide>
           <Map
-            center={center}
             clickMarker={clickMarker}
             markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
           />

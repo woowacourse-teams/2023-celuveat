@@ -25,3 +25,14 @@ export const truncateText = (numberOfLine: number) =>
     overflow: hidden;
     text-overflow: ellipsis;
   `;
+
+export const mapUIBase = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  border-radius: ${BORDER_RADIUS.md};
+  background-color: var(--white);
+  box-shadow: var(--map-button-shadow);
+`;

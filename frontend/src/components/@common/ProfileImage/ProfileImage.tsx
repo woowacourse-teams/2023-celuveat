@@ -17,7 +17,7 @@ const StyledProfile = styled.img<{ size: number; border: boolean }>`
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
 
-  border: ${({ border }) => (border ? `1px solid var(--primary-1)` : `none`)};
+  border: ${({ border }) => (border ? `2px solid var(--primary-1)` : `none`)};
   border-radius: 50%;
   background: var(--red-5);
 `;
