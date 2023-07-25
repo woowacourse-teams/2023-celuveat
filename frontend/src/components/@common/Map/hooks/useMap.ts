@@ -21,9 +21,6 @@ const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
         gestureHandling: 'greedy',
       });
       setMap(newMap);
-      const transitLayer = new google.maps.TransitLayer();
-
-      transitLayer.setMap(map);
     }
   }, [ref]);
 

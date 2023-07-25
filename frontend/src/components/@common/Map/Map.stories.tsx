@@ -1,6 +1,6 @@
 import { Wrapper } from '@googlemaps/react-wrapper';
 import type { Meta, StoryObj } from '@storybook/react';
-import Map from './Map';
+import Map from './MapContent';
 
 const meta: Meta<typeof Map> = {
   title: 'Map',

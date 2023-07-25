@@ -5,7 +5,7 @@ import { Coordinate } from '~/@types/map.types';
 import { Restaurant, RestaurantModalInfo } from '~/@types/restaurant.types';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
-import MapWrapper from '~/components/@common/Map';
+import Map from '~/components/@common/Map';
 import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
 import useMapModal from '~/hooks/useMapModal';
@@ -58,7 +58,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <MapWrapper
+          <Map
             center={center}
             clickMarker={clickMarker}
             markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}

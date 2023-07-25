@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import createOverlay from './createOverlay';
+import createOverlay from './domain/createOverlay';
 
 interface OverlayProps {
   map: google.maps.Map;
