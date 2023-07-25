@@ -1,6 +1,5 @@
 package com.celuveat.admin.presentation.dto;
 
-import java.time.LocalDate;
 import lombok.Builder;
 
 @Builder
@@ -13,7 +12,7 @@ public record SaveDataRequest(
         String phoneNumber,
         String category,
         String naverMapUrl,
-        LocalDate videoUploadDate,
+        String videoUploadDate,
         String latitude,
         String longitude
 ) {
@@ -30,13 +29,12 @@ public record SaveDataRequest(
     private static final int LATITUDE = 9;
     private static final int LONGITUDE = 10;
 
-
     public static SaveDataRequest from(String[] data) {
         return SaveDataRequest.builder()
                 .youtubeChannelName(data[YOUTUBE_CHANNEL_NAME])
                 .imageName(data[IMAGE_NAME])
                 .youtubeVideoUrl(data[YOUTUBE_VIDEO_URL])
-                .videoUploadDate(LocalDate.parse(data[UPLOAD_DATE]))
+                .videoUploadDate(data[UPLOAD_DATE])
                 .restaurantName(data[RESTAURANT_NAME])
                 .roadAddress(data[ROAD_ADDRESS])
                 .phoneNumber(data[PHONE_NUMBER])

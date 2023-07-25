@@ -23,7 +23,17 @@ public class AdminAcceptanceSteps {
             .build();
 
     public static String 입력_생성(String 셀럽_이름, String 음식점_이름) {
-        return "@" + 셀럽_이름 + "\t" + 음식점_이름 + "png\t유튜브링크\t2023-07-25\t" + 음식점_이름 + "\t" + 음식점_이름 + " 주소\t전화번호\t카테고리\t음식점네이버링크\t12.3456\t12.3456";
+        return "@" + 셀럽_이름 +
+                "\t" + 음식점_이름 + "png" +
+                "\t유튜브링크" +
+                "\t2023. 7. 25." +
+                "\t" + 음식점_이름 +
+                "\t" + 음식점_이름 + " 주소" +
+                "\t전화번호" +
+                "\t카테고리" +
+                "\t음식점네이버링크" +
+                "\t12.3456" +
+                "\t12.3456";
     }
 
     public static List<SaveDataRequest> 요청_생성(String input) {
