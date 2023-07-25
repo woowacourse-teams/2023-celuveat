@@ -7,14 +7,16 @@ import type { Celebs } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
-import { BORDER_RADIUS, mapUIBase } from '~/styles/common';
+import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
+import { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
   markers: { position: Coordinate; celebs: Celebs }[];
+  setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
 }
 
 const render = (status: Status) => {
@@ -23,7 +25,7 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers }: MapProps) {
+function Map({ clickMarker, markers, setData }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -36,6 +38,21 @@ function Map({ clickMarker, markers }: MapProps) {
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
+
+    const lowLatitude: number = m.getBounds().getSouthWest().lat();
+    const highLatitude: number = m.getBounds().getNorthEast().lat();
+    const lowLongitude: number = m.getBounds().getSouthWest().lng();
+    const highLongitude: number = m.getBounds().getNorthEast().lng();
+
+    const fetchRestaurants = async () => {
+      const url = `http://3.35.157.27:8080/api/restaurants?lowLatitude=${lowLatitude}&highLatitude=${highLatitude}&lowLongitude=${lowLongitude}&highLongitude=${highLongitude}`;
+      const response = await fetch(url);
+      const newData = await response.json();
+
+      setData(newData);
+    };
+
+    fetchRestaurants();
   };
 
   const clickMyLocationButton = () => {

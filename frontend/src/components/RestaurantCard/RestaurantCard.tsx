@@ -16,7 +16,7 @@ function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardPro
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`images-data/${images[0].name}`} />
+      <StyledImage alt={`${name} 대표 이미지`} src={`http://3.35.157.27:3000/images-data/${images[0].name}`} />
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
