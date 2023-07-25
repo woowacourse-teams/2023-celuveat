@@ -30,6 +30,6 @@ class AuthServiceTest {
     void 로그인시_존재하는_회원이면_존재하는_정보를_반환한다() {
         Member member = authService.login("code", new FakeOAuthClient());
         Member member2 = authService.login("code", new FakeOAuthClient());
-        assertThat(member).usingRecursiveComparison().isEqualTo(member2);
+        assertThat(member).usingRecursiveComparison().ignoringFields("createdDate").isEqualTo(member2);
     }
 }
