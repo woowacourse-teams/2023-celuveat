@@ -4,56 +4,61 @@ import static com.celuveat.auth.domain.OauthServer.KAKAO;
 
 import com.celuveat.auth.domain.OauthId;
 import com.celuveat.auth.domain.OauthMember;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDateTime;
 
+@JsonNaming(value = SnakeCaseStrategy.class)
 public record KakaoMemberResponse(
         Long id,
-        boolean has_signed_up,
-        LocalDateTime connected_at,
-        KakaoAccount kakao_account
+        boolean hasSignedUp,
+        LocalDateTime connectedAt,
+        KakaoAccount kakaoAccount
 ) {
 
     public OauthMember toDomain() {
         return OauthMember.builder()
                 .oauthId(new OauthId(String.valueOf(id), KAKAO))
-                .nickname(kakao_account.profile.nickname)
-                .profileImagePath(kakao_account.profile.profile_image_url)
+                .nickname(kakaoAccount.profile.nickname)
+                .profileImagePath(kakaoAccount.profile.profileImageUrl)
                 .build();
     }
 
+    @JsonNaming(value = SnakeCaseStrategy.class)
     public record KakaoAccount(
-            boolean profile_needs_agreement,
-            boolean profile_nickname_needs_agreement,
-            boolean profile_image_needs_agreement,
+            boolean profileNeedsAgreement,
+            boolean profileNicknameNeedsAgreement,
+            boolean profileImageNeedsAgreement,
             Profile profile,
-            boolean name_needs_agreement,
+            boolean nameNeedsAgreement,
             String name,
-            boolean email_needs_agreement,
-            boolean is_email_valid,
-            boolean is_email_verified,
+            boolean emailNeedsAgreement,
+            boolean isEmailValid,
+            boolean isEmailVerified,
             String email,
-            boolean age_range_needs_agreement,
-            String age_range,
-            boolean birthyear_needs_agreement,
+            boolean ageRangeNeedsAgreement,
+            String ageRange,
+            boolean birthyearNeedsAgreement,
             String birthyear,
-            boolean birthday_needs_agreement,
+            boolean birthdayNeedsAgreement,
             String birthday,
-            String birthday_type,
-            boolean gender_needs_agreement,
+            String birthdayType,
+            boolean genderNeedsAgreement,
             String gender,
-            boolean phone_number_needs_agreement,
-            String phone_number,
-            boolean ci_needs_agreement,
+            boolean phoneNumberNeedsAgreement,
+            String phoneNumber,
+            boolean ciNeedsAgreement,
             String ci,
-            LocalDateTime ci_authenticated_at
+            LocalDateTime ciAuthenticatedAt
     ) {
     }
 
+    @JsonNaming(value = SnakeCaseStrategy.class)
     public record Profile(
             String nickname,
-            String thumbnail_image_url,
-            String profile_image_url,
-            boolean is_default_image
+            String thumbnailImageUrl,
+            String profileImageUrl,
+            boolean isDefaultImage
     ) {
     }
 }

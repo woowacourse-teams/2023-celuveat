@@ -38,7 +38,7 @@ public class OAuthLoginController {
             HttpServletResponse response
     ) {
         Long login = oauthService.login(oauthServer, code);
-        response.sendRedirect("http://localhost:3000/mallang");
+        response.sendRedirect("http://localhost:3000/mallang?accessToken=" + login);
         return ResponseEntity.ok(login);
     }
 }

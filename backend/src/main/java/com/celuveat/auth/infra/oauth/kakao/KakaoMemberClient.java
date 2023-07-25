@@ -1,30 +1,22 @@
 package com.celuveat.auth.infra.oauth.kakao;
 
-import static com.celuveat.auth.exception.AuthExceptionType.NOT_FOUND_USER;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServer;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.exception.AuthException;
+import com.celuveat.auth.infra.oauth.kakao.client.KakaoApiClient;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoMemberResponse;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 @Component
 @RequiredArgsConstructor
 public class KakaoMemberClient implements OauthMemberClient {
 
-    private static final String USER_API_URI = "https://kapi.kakao.com/v2/user/me";
-
-    private final KakaoAccessTokenClient kakaoAccessTokenClient;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final KakaoApiClient kakaoApiClient;
+    private final KakaoConfig kakaoConfig;
 
     @Override
     public OauthServer supportServer() {
@@ -33,27 +25,22 @@ public class KakaoMemberClient implements OauthMemberClient {
 
     @Override
     public OauthMember fetch(String code) {
-        KakaoToken accessToken = kakaoAccessTokenClient.fetch(code);
+        KakaoToken accessToken = kakaoApiClient.fetchAccessToken(tokenRequestBody(code));
         KakaoMemberResponse kakaoMemberResponse = getKakaoMember(accessToken.access_token());
         return kakaoMemberResponse.toDomain();
     }
 
-    private KakaoMemberResponse getKakaoMember(String accessToken) {
-        HttpHeaders httpHeaders = createUrlEncodedHeader();
-        httpHeaders.setBearerAuth(accessToken);
-        HttpEntity<Object> request = new HttpEntity<>(httpHeaders);
-        KakaoMemberResponse kakaoMemberResponse = restTemplate
-                .exchange(USER_API_URI, GET, request, KakaoMemberResponse.class)
-                .getBody();
-        if (kakaoMemberResponse == null) {
-            throw new AuthException(NOT_FOUND_USER);
-        }
-        return kakaoMemberResponse;
+    private MultiValueMap<String, String> tokenRequestBody(String code) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "authorization_code");
+        body.add("client_id", kakaoConfig.clientId());
+        body.add("redirect_uri", kakaoConfig.redirectUri());
+        body.add("code", code);
+        body.add("client_secret", kakaoConfig.clientSecret());
+        return body;
     }
 
-    private HttpHeaders createUrlEncodedHeader() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CONTENT_TYPE, APPLICATION_FORM_URLENCODED_VALUE);
-        return httpHeaders;
+    private KakaoMemberResponse getKakaoMember(String accessToken) {
+        return kakaoApiClient.fetchMember("Bearer " + accessToken);
     }
 }
