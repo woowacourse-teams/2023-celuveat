@@ -8,7 +8,7 @@ public class CelebFixture {
         return Celeb.builder()
                 .name(name)
                 .profileImageUrl(name)
-                .youtubeChannelName(name)
+                .youtubeChannelName("@" + name)
                 .build();
     }
 }
