@@ -7,7 +7,7 @@ import type { Celebs } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
-import { BORDER_RADIUS, mapUIBase } from '~/styles/common';
+import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
@@ -77,12 +77,13 @@ function Map({ clickMarker, markers }: MapProps) {
         <StyledMyPositionButtonUI onClick={clickMyLocationButton} type="button">
           <MyLocation />
         </StyledMyPositionButtonUI>
-        <StyledZoomUI onClick={clickMyLocationButton}>
-          <button type="button" onClick={() => clickZoom(-1)}>
-            <Minus />
-          </button>
+        <StyledZoomUI>
           <button type="button" onClick={() => clickZoom(1)}>
             <Plus />
+          </button>
+          <div />
+          <button type="button" onClick={() => clickZoom(-1)}>
+            <Minus />
           </button>
         </StyledZoomUI>
       </MapContent>
@@ -120,4 +121,20 @@ const StyledZoomUI = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
+
+  & > button {
+    ${mapUIBase}
+    width: 40px;
+    height: 40px;
+    box-shadow: none;
+  }
+
+  & > div {
+    width: 100%;
+    height: 1px;
+
+    background-color: var(--black);
+
+    opacity: 0.1;
+  }
 `;

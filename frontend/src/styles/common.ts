@@ -32,7 +32,7 @@ export const mapUIBase = css`
   align-items: center;
 
   border: none;
-  border-radius: ${BORDER_RADIUS.md};
+  border-radius: ${BORDER_RADIUS.sm};
   background-color: var(--white);
-  box-shadow: var(--map-button-shadow);
+  box-shadow: var(--map-shadow);
 `;
