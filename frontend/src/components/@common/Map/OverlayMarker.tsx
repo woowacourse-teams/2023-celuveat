@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Celeb } from '~/@types/celeb.types';
 import ProfileImage from '../ProfileImage';
-import OverlayView from './Overlay/Overlay';
-import { Coordinate } from '~/@types/map.types';
+import Overlay from './Overlay/Overlay';
+import type { Celeb } from '~/@types/celeb.types';
+import type { Coordinate } from '~/@types/map.types';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
@@ -14,11 +14,11 @@ interface OverlayMarkerProps {
 function OverlayMarker({ celeb, position, map, onClick }: OverlayMarkerProps) {
   return (
     map && (
-      <OverlayView position={position} map={map}>
+      <Overlay position={position} map={map}>
         <StyledMarker type="button" onClick={() => onClick(position)}>
-          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={24} border />
+          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={32} border />
         </StyledMarker>
-      </OverlayView>
+      </Overlay>
     )
   );
 }
