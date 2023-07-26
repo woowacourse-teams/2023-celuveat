@@ -17,7 +17,10 @@ function MapModalContent({ content }: MapModalContentProps) {
           <div>{roadAddress}</div>
           <div>{phoneNumber}</div>
         </div>
-        <StyledRestaurantImage src={`images/${images[0].name}`} alt={`${name} 식당 이미지`} />
+        <StyledRestaurantImage
+          src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
+          alt={`${name} 식당 이미지`}
+        />
       </StyledRestaurantInfo>
       <TextButton
         type="button"
