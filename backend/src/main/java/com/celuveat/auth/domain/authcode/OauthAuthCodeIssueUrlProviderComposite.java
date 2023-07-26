@@ -12,16 +12,20 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OauthAuthCodeIssueUrlProviderMapping {
+public class OauthAuthCodeIssueUrlProviderComposite {
 
     private final Map<OauthServer, OauthAuthCodeIssueUrlProvider> mapping;
 
-    public OauthAuthCodeIssueUrlProviderMapping(Set<OauthAuthCodeIssueUrlProvider> providers) {
+    public OauthAuthCodeIssueUrlProviderComposite(Set<OauthAuthCodeIssueUrlProvider> providers) {
         mapping = providers.stream()
                 .collect(toMap(
                         OauthAuthCodeIssueUrlProvider::supportServer,
                         identity()
                 ));
+    }
+
+    public String provide(OauthServer oauthServer) {
+        return getProvider(oauthServer).provide();
     }
 
     public OauthAuthCodeIssueUrlProvider getProvider(OauthServer oauthServer) {
