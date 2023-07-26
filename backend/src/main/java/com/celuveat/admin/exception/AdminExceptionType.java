@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum AdminExceptionType implements BaseExceptionType {
+    
     NOT_EXISTS_CELEB(BAD_REQUEST, "셀럽이 저장되어 있지 않습니다. 셀럽 먼저 저장해주세요."),
     ;
 
