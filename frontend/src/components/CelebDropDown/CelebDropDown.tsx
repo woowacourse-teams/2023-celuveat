@@ -15,7 +15,7 @@ interface DropDownProps {
 }
 
 function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
-  const [selected, setSelected] = useState<Celeb['name']>('all');
+  const [selected, setSelected] = useState<Celeb['name']>('전체');
   const [isShow, setIsShow] = useState(isOpen);
 
   const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
@@ -30,13 +30,19 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 
   return (
     <>
-      <NavButton label="셀럽" icon={<FastFoodIcon />} onClick={onToggleDropDown} isShow={isShow} />
+      <NavButton
+        label="셀럽"
+        icon={<FastFoodIcon />}
+        onClick={onToggleDropDown}
+        onBlur={onToggleDropDown}
+        isShow={isShow}
+      />
 
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
             {celebs.map(({ id, name, profileImageUrl }) => (
-              <StyledDropDownOption data-id={id} onClick={onSelection(name)}>
+              <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
                   {name}

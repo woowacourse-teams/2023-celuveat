@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { FONT_SIZE } from '~/styles/common';
@@ -7,12 +7,13 @@ interface NavButtonProps {
   label: string;
   icon: React.ReactNode;
   isShow?: boolean;
-  onClick?: (e?: MouseEvent<HTMLElement>) => void;
+  onClick?: (e?: React.MouseEvent<HTMLElement>) => void;
+  onBlur?: (e?: React.FocusEvent<HTMLElement>) => void;
 }
 
-function NavButton({ icon, label, onClick, isShow = false }: NavButtonProps) {
+function NavButton({ icon, label, isShow = false, ...props }: NavButtonProps) {
   return (
-    <StyledNavButton data-label={label} onClick={onClick} isShow={isShow}>
+    <StyledNavButton data-label={label} isShow={isShow} {...props}>
       <div>{icon}</div>
       <div>{label}</div>
     </StyledNavButton>
