@@ -2,11 +2,11 @@ import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
 import { Restaurant } from '~/@types/restaurant.types';
-import { Celebs } from '~/@types/celeb.types';
+import { Celeb } from '~/@types/celeb.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
-  celebs: Celebs;
+  celebs: Celeb[];
   size: number;
   onClick: React.MouseEventHandler;
 }
