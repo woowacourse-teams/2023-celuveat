@@ -13,13 +13,14 @@ export default Header;
 
 const StyledHeader = styled.header`
   display: flex;
+  align-items: center;
 
   position: sticky;
   top: 0;
   z-index: 10;
 
   width: 100%;
-  height: 60px;
+  height: 80px;
 
   padding: 1.2rem 2.4rem;
 
