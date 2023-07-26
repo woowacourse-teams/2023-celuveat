@@ -1,11 +1,11 @@
 package com.celuveat.auth.domain.client;
 
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.domain.OauthServerType;
 
 public interface OauthMemberClient {
 
-    OauthServer supportServer();
+    OauthServerType supportServer();
 
     OauthMember fetch(String code);
 }

@@ -31,7 +31,7 @@ public class OauthMember extends BaseEntity {
     @Embedded
     private OauthId oauthId;
     private String nickname;
-    private String profileImagePath;
+    private String profileImageUrl;
 
     public OauthId oauthId() {
         return oauthId;
@@ -41,16 +41,7 @@ public class OauthMember extends BaseEntity {
         return nickname;
     }
 
-    public String profileImagePath() {
-        return profileImagePath;
-    }
-
-    @Override
-    public String toString() {
-        return "OauthMember{" +
-               "oauthId=" + oauthId +
-               ", nickname='" + nickname + '\'' +
-               ", profileImagePath='" + profileImagePath + '\'' +
-               '}';
+    public String profileImageUrl() {
+        return profileImageUrl;
     }
 }

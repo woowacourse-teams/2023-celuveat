@@ -1,6 +1,6 @@
 package com.celuveat.auth.infra.oauth.naver.dto;
 
-import static com.celuveat.auth.domain.OauthServer.NAVER;
+import static com.celuveat.auth.domain.OauthServerType.NAVER;
 
 import com.celuveat.auth.domain.OauthId;
 import com.celuveat.auth.domain.OauthMember;
@@ -18,7 +18,7 @@ public record NaverMemberResponse(
         return OauthMember.builder()
                 .oauthId(new OauthId(String.valueOf(response.id), NAVER))
                 .nickname(response.nickname)
-                .profileImagePath(response.profileImage)
+                .profileImageUrl(response.profileImage)
                 .build();
     }
 

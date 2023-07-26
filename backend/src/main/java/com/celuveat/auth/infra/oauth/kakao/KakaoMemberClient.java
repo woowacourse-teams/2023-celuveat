@@ -1,7 +1,7 @@
 package com.celuveat.auth.infra.oauth.kakao;
 
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
 import com.celuveat.auth.infra.oauth.kakao.client.KakaoApiClient;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoMemberResponse;
@@ -16,31 +16,28 @@ import org.springframework.util.MultiValueMap;
 public class KakaoMemberClient implements OauthMemberClient {
 
     private final KakaoApiClient kakaoApiClient;
-    private final KakaoConfig kakaoConfig;
+    private final KakaoOauthConfig kakaoOauthConfig;
 
     @Override
-    public OauthServer supportServer() {
-        return OauthServer.KAKAO;
+    public OauthServerType supportServer() {
+        return OauthServerType.KAKAO;
     }
 
     @Override
-    public OauthMember fetch(String code) {
-        KakaoToken accessToken = kakaoApiClient.fetchAccessToken(tokenRequestBody(code));
-        KakaoMemberResponse kakaoMemberResponse = getKakaoMember(accessToken.access_token());
+    public OauthMember fetch(String authCode) {
+        KakaoToken tokenInfo = kakaoApiClient.fetchToken(tokenRequestParams(authCode));
+        KakaoMemberResponse kakaoMemberResponse =
+                kakaoApiClient.fetchMember("Bearer " + tokenInfo.accessToken());
         return kakaoMemberResponse.toDomain();
     }
 
-    private MultiValueMap<String, String> tokenRequestBody(String code) {
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("client_id", kakaoConfig.clientId());
-        body.add("redirect_uri", kakaoConfig.redirectUri());
-        body.add("code", code);
-        body.add("client_secret", kakaoConfig.clientSecret());
-        return body;
-    }
-
-    private KakaoMemberResponse getKakaoMember(String accessToken) {
-        return kakaoApiClient.fetchMember("Bearer " + accessToken);
+    private MultiValueMap<String, String> tokenRequestParams(String authCode) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", kakaoOauthConfig.clientId());
+        params.add("redirect_uri", kakaoOauthConfig.redirectUri());
+        params.add("code", authCode);
+        params.add("client_secret", kakaoOauthConfig.clientSecret());
+        return params;
     }
 }

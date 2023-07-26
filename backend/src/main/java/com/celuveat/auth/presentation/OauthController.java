@@ -1,7 +1,7 @@
 package com.celuveat.auth.presentation;
 
-import com.celuveat.auth.application.OAuthService;
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.application.OauthService;
+import com.celuveat.auth.domain.OauthServerType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
-public class OAuthLoginController {
+public class OauthController {
 
-    private final OAuthService oauthService;
+    private final OauthService oauthService;
 
     @SneakyThrows
-    @GetMapping("/{oauthServer}")
-    ResponseEntity<Void> redirectAuthorizationCodeIssueUrl(
-            @PathVariable OauthServer oauthServer,
+    @GetMapping("/{oauthServerType}")
+    ResponseEntity<Void> redirectAuthCodeRequestUrl(
+            @PathVariable OauthServerType oauthServerType,
             HttpServletResponse response
     ) {
-        String redirectUrl = oauthService.getAuthorizationCodeIssueUrl(oauthServer);
+        String redirectUrl = oauthService.getAuthCodeRequestUrl(oauthServerType);
         response.sendRedirect(redirectUrl);
         return ResponseEntity.ok().build();
     }
 
     @SneakyThrows
-    @GetMapping("/redirected/{oauthServer}")
+    @GetMapping("/redirected/{oauthServerType}")
     ResponseEntity<Long> login(
-            @PathVariable OauthServer oauthServer,
+            @PathVariable OauthServerType oauthServerType,
             @RequestParam("code") String code,
             HttpServletResponse response
     ) {
-        Long login = oauthService.login(oauthServer, code);
+        Long login = oauthService.login(oauthServerType, code);
         response.sendRedirect("http://localhost:3000/mallang?accessToken=" + login);
         return ResponseEntity.ok(login);
     }

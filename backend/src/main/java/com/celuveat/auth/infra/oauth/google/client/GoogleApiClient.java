@@ -13,7 +13,7 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface GoogleApiClient {
 
     @PostExchange(url = "https://oauth2.googleapis.com/token")
-    GoogleToken fetchAccessToken(@RequestParam MultiValueMap<String, String> body);
+    GoogleToken fetchToken(@RequestParam MultiValueMap<String, String> params);
 
     @GetExchange("https://www.googleapis.com/oauth2/v2/userinfo")
     GoogleMemberResponse fetchMember(@RequestHeader(AUTHORIZATION) String bearerToken);

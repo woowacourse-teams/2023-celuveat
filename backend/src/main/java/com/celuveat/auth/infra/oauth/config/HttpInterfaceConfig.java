@@ -14,25 +14,23 @@ public class HttpInterfaceConfig {
 
     @Bean
     public KakaoApiClient kakaoApiClient() {
-        WebClient webClient = WebClient.create();
-        HttpServiceProxyFactory build = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(webClient)).build();
-        return build.createClient(KakaoApiClient.class);
+        return createHttpInterface(KakaoApiClient.class);
     }
 
     @Bean
     public NaverApiClient naverApiClient() {
-        WebClient webClient = WebClient.create();
-        HttpServiceProxyFactory build = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(webClient)).build();
-        return build.createClient(NaverApiClient.class);
+        return createHttpInterface(NaverApiClient.class);
     }
 
     @Bean
     public GoogleApiClient googleApiClient() {
+        return createHttpInterface(GoogleApiClient.class);
+    }
+
+    private <T> T createHttpInterface(Class<T> clazz) {
         WebClient webClient = WebClient.create();
         HttpServiceProxyFactory build = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient)).build();
-        return build.createClient(GoogleApiClient.class);
+        return build.createClient(clazz);
     }
 }

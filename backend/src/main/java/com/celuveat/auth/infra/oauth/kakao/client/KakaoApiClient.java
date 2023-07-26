@@ -14,7 +14,7 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface KakaoApiClient {
 
     @PostExchange(url = "https://kauth.kakao.com/oauth/token", contentType = APPLICATION_FORM_URLENCODED_VALUE)
-    KakaoToken fetchAccessToken(@RequestParam MultiValueMap<String, String> body);
+    KakaoToken fetchToken(@RequestParam MultiValueMap<String, String> params);
 
     @GetExchange("https://kapi.kakao.com/v2/user/me")
     KakaoMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String bearerToken);

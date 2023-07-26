@@ -35,6 +35,7 @@ oauth:
     redirectUri: ${NAVER_REDIRECT_URL}
     client_secret: ${NAVER_CLIENT_SECRET}
     scope: ${NAVER_SCOPE}
+    state: ${NAVER_STATE}
   google:
     client_id: ${GOOGLE_CLIENT_ID}
     redirectUri: ${GOOGLE_REDIRECT_URL}

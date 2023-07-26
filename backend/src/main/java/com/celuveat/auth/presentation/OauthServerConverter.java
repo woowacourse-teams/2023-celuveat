@@ -1,12 +1,12 @@
 package com.celuveat.auth.presentation;
 
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.domain.OauthServerType;
 import org.springframework.core.convert.converter.Converter;
 
-public class OauthServerConverter implements Converter<String, OauthServer> {
+public class OauthServerConverter implements Converter<String, OauthServerType> {
 
     @Override
-    public OauthServer convert(String source) {
-        return OauthServer.fromName(source);
+    public OauthServerType convert(String source) {
+        return OauthServerType.fromName(source);
     }
 }

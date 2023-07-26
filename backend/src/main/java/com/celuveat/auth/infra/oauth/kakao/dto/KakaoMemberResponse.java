@@ -1,6 +1,6 @@
 package com.celuveat.auth.infra.oauth.kakao.dto;
 
-import static com.celuveat.auth.domain.OauthServer.KAKAO;
+import static com.celuveat.auth.domain.OauthServerType.KAKAO;
 
 import com.celuveat.auth.domain.OauthId;
 import com.celuveat.auth.domain.OauthMember;
@@ -20,7 +20,7 @@ public record KakaoMemberResponse(
         return OauthMember.builder()
                 .oauthId(new OauthId(String.valueOf(id), KAKAO))
                 .nickname(kakaoAccount.profile.nickname)
-                .profileImagePath(kakaoAccount.profile.profileImageUrl)
+                .profileImageUrl(kakaoAccount.profile.profileImageUrl)
                 .build();
     }
 

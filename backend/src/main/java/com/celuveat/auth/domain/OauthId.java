@@ -19,13 +19,13 @@ public class OauthId {
 
     @Enumerated(STRING)
     @Column(nullable = false, name = "oauth_server")
-    private OauthServer oauthServer;
+    private OauthServerType oauthServerType;
 
     public String oauthServerId() {
         return oauthServerId;
     }
 
-    public OauthServer oauthServer() {
-        return oauthServer;
+    public OauthServerType oauthServer() {
+        return oauthServerType;
     }
 }

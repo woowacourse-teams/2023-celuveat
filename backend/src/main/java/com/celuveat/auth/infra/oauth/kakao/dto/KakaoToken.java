@@ -1,12 +1,16 @@
 package com.celuveat.auth.infra.oauth.kakao.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonNaming(value = SnakeCaseStrategy.class)
 public record KakaoToken(
-        String token_type,
-        String access_token,
-        String id_token,
-        Integer expires_in,
-        String refresh_token,
-        Integer refresh_token_expires_in,
+        String tokenType,
+        String accessToken,
+        String idToken,
+        Integer expiresIn,
+        String refreshToken,
+        Integer refreshTokenExpiresIn,
         String scope
 ) {
 }

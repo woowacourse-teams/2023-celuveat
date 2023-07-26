@@ -1,6 +1,6 @@
 package com.celuveat.auth.infra.oauth.google.dto;
 
-import static com.celuveat.auth.domain.OauthServer.GOOGLE;
+import static com.celuveat.auth.domain.OauthServerType.GOOGLE;
 
 import com.celuveat.auth.domain.OauthId;
 import com.celuveat.auth.domain.OauthMember;
@@ -20,7 +20,7 @@ public record GoogleMemberResponse(
         return OauthMember.builder()
                 .oauthId(new OauthId(id, GOOGLE))
                 .nickname(givenName)
-                .profileImagePath(picture)
+                .profileImageUrl(picture)
                 .build();
     }
 }

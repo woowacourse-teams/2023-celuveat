@@ -1,7 +1,7 @@
 package com.celuveat.auth.infra.oauth.google;
 
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
 import com.celuveat.auth.infra.oauth.google.client.GoogleApiClient;
 import com.celuveat.auth.infra.oauth.google.dto.GoogleMemberResponse;
@@ -16,27 +16,28 @@ import org.springframework.util.MultiValueMap;
 public class GoogleMemberClient implements OauthMemberClient {
 
     private final GoogleApiClient googleApiClient;
-    private final GoogleConfig googleConfig;
+    private final GoogleOauthConfig googleOauthConfig;
 
     @Override
-    public OauthServer supportServer() {
-        return OauthServer.GOOGLE;
+    public OauthServerType supportServer() {
+        return OauthServerType.GOOGLE;
     }
 
     @Override
-    public OauthMember fetch(String code) {
-        GoogleToken accessToken = googleApiClient.fetchAccessToken(tokenRequestBody(code));
-        GoogleMemberResponse googleMemberResponse = googleApiClient.fetchMember("Bearer " + accessToken.accessToken());
+    public OauthMember fetch(String authCode) {
+        GoogleToken tokenInfo = googleApiClient.fetchToken(tokenRequestParams(authCode));
+        GoogleMemberResponse googleMemberResponse =
+                googleApiClient.fetchMember("Bearer " + tokenInfo.accessToken());
         return googleMemberResponse.toDomain();
     }
 
-    private MultiValueMap<String, String> tokenRequestBody(String code) {
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("client_id", googleConfig.clientId());
-        body.add("client_secret", googleConfig.clientSecret());
-        body.add("code", code);
-        body.add("redirect_uri", googleConfig.redirectUri());
-        return body;
+    private MultiValueMap<String, String> tokenRequestParams(String authCode) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", googleOauthConfig.clientId());
+        params.add("client_secret", googleOauthConfig.clientSecret());
+        params.add("code", authCode);
+        params.add("redirect_uri", googleOauthConfig.redirectUri());
+        return params;
     }
 }

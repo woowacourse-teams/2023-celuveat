@@ -4,7 +4,7 @@ import static com.celuveat.auth.exception.AuthExceptionType.UNSUPPORTED_OAUTH_TY
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
-import com.celuveat.auth.domain.OauthServer;
+import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.exception.AuthException;
 import java.util.Map;
 import java.util.Optional;
@@ -12,24 +12,24 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OauthAuthCodeIssueUrlProviderComposite {
+public class AuthCodeRequestUrlProviderComposite {
 
-    private final Map<OauthServer, OauthAuthCodeIssueUrlProvider> mapping;
+    private final Map<OauthServerType, AuthCodeRequestUrlProvider> mapping;
 
-    public OauthAuthCodeIssueUrlProviderComposite(Set<OauthAuthCodeIssueUrlProvider> providers) {
+    public AuthCodeRequestUrlProviderComposite(Set<AuthCodeRequestUrlProvider> providers) {
         mapping = providers.stream()
                 .collect(toMap(
-                        OauthAuthCodeIssueUrlProvider::supportServer,
+                        AuthCodeRequestUrlProvider::supportServer,
                         identity()
                 ));
     }
 
-    public String provide(OauthServer oauthServer) {
-        return getProvider(oauthServer).provide();
+    public String provide(OauthServerType oauthServerType) {
+        return getProvider(oauthServerType).provide();
     }
 
-    public OauthAuthCodeIssueUrlProvider getProvider(OauthServer oauthServer) {
-        return Optional.ofNullable(mapping.get(oauthServer))
+    public AuthCodeRequestUrlProvider getProvider(OauthServerType oauthServerType) {
+        return Optional.ofNullable(mapping.get(oauthServerType))
                 .orElseThrow(() -> new AuthException(UNSUPPORTED_OAUTH_TYPE));
     }
 }
