@@ -5,24 +5,20 @@ import NavButton from '~/components/@common/NavButton';
 import FastFoodIcon from '~/assets/icons/fastFood.svg';
 import SearchIcon from '~/assets/icons/search.svg';
 import isEqual from '~/utils/compare';
-
-interface Option {
-  value: number;
-  label: string;
-}
+import { Celeb } from '~/@types/celeb.types';
 
 interface DropDownProps {
-  options: Option[];
+  celebs: Celeb[];
   isOpen: boolean;
   externalOnClick?: (e?: MouseEvent<HTMLLIElement>) => void;
 }
 
-function CelebDropDown({ options, externalOnClick, isOpen = false }: DropDownProps) {
-  const [selected, setSelected] = useState(0);
+function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
+  const [selected, setSelected] = useState<Celeb['name']>('');
   const [isShow, setIsShow] = useState(isOpen);
 
-  const onSelection = (value: number) => (event?: MouseEvent<HTMLLIElement>) => {
-    setSelected(value);
+  const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
+    setSelected(celeb);
 
     if (externalOnClick) externalOnClick(event);
   };
@@ -38,10 +34,10 @@ function CelebDropDown({ options, externalOnClick, isOpen = false }: DropDownPro
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {options.map(({ label }, idx) => (
-              <StyledDropDownOption value={idx + 1} data-label={label} onClick={onSelection(idx + 1)}>
-                {isEqual(selected, idx + 1) && <SearchIcon />}
-                {label}
+            {celebs.map(({ name }) => (
+              <StyledDropDownOption data-name={name} onClick={onSelection(name)}>
+                {isEqual(selected, name) && <SearchIcon />}
+                {name}
               </StyledDropDownOption>
             ))}
           </StyledSelectContainer>

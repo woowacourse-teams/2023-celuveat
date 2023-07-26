@@ -12,28 +12,21 @@ type Story = StoryObj<typeof CelebDropDown>;
 
 export const Default: Story = {
   args: {
-    options: [
+    celebs: [
       {
-        value: 1,
-        label: '히밥',
+        id: 1,
+        name: '히밥',
+        youtubeChannelName: '@heebab',
+        profileImageUrl:
+          'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
       },
       {
-        value: 2,
-        label: '뚱시경',
-      },
-      {
-        value: 3,
-        label: '뚱종원',
-      },
-      {
-        value: 4,
-        label: '99대장 나선욱',
-      },
-      {
-        value: 5,
-        label: '감사합니두~',
+        id: 2,
+        name: '정찬성',
+        youtubeChannelName: '@Korean_zzombi',
+        profileImageUrl:
+          'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
       },
     ],
-    isOpen: true,
   },
 };
