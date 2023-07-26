@@ -29,7 +29,7 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
   }, [isShow]);
 
   return (
-    <>
+    <StyledCelebDropDown>
       <NavButton label="셀럽" icon={<FastFoodIcon />} onClick={onToggleDropDown} isShow={isShow} />
 
       {isShow && (
@@ -47,16 +47,24 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
           </StyledSelectContainer>
         </StyledDropDownWrapper>
       )}
-    </>
+    </StyledCelebDropDown>
   );
 }
 
 export default CelebDropDown;
 
+const StyledCelebDropDown = styled.div`
+  position: relative;
+`;
+
 const StyledDropDownWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   align-content: center;
+
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 18px;
 
   width: 216px;
   height: 176px;
@@ -64,9 +72,9 @@ const StyledDropDownWrapper = styled.ul`
   padding: 1.8rem 0;
 
   border-radius: 10px;
-  background: transparent;
+  background: white;
 
-  box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+  box-shadow: var(--shadow);
 `;
 
 const StyledSelectContainer = styled.div`

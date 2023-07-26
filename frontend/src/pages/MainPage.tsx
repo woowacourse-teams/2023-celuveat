@@ -75,10 +75,13 @@ function MainPage() {
   return (
     <>
       <Header />
+      <StyledNavBar>
+        <CelebDropDown celebs={CELEBS} externalOnClick={clickCeleb} />
+        <StyledLine />
+        <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
+      </StyledNavBar>
       <StyledLayout>
         <StyledLeftSide>
-          <CelebDropDown celebs={CELEBS} externalOnClick={clickCeleb} />
-          <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data.map(({ celebs, ...restaurant }: RestaurantData) => (
@@ -109,6 +112,27 @@ function MainPage() {
 }
 
 export default MainPage;
+
+const StyledNavBar = styled.div`
+  display: flex;
+  align-items: center;
+
+  position: sticky;
+  top: 80px;
+
+  width: 100%;
+  height: 80px;
+
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray-1);
+`;
+
+const StyledLine = styled.div`
+  width: 1px;
+  height: 46px;
+
+  background-color: var(--gray-3);
+`;
 
 const StyledLayout = styled.div`
   display: grid;
@@ -160,8 +184,8 @@ const StyledRestaurantCardList = styled.div`
 
 const StyledRightSide = styled.div`
   position: sticky;
-  top: 60px;
+  top: 160px;
 
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 160px);
 `;
