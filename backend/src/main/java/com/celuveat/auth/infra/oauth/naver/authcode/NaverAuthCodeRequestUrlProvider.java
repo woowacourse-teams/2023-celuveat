@@ -24,7 +24,7 @@ public class NaverAuthCodeRequestUrlProvider implements AuthCodeRequestUrlProvid
                 .fromUriString("https://nid.naver.com/oauth2.0/authorize")
                 .queryParam("response_type", "code")
                 .queryParam("client_id", naverOauthConfig.clientId())
-                .queryParam("redirect_url", naverOauthConfig.redirectUri())
+                .queryParam("redirect_uri", naverOauthConfig.redirectUri())
                 .queryParam("state", naverOauthConfig.state())
                 .build()
                 .toUriString();
