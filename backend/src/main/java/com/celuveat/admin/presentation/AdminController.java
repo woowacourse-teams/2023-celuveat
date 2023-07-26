@@ -21,13 +21,13 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/data")
-    ResponseEntity<Void> saveData(@RequestBody String data) {
-        String[] rows = data.split(System.lineSeparator());
+    ResponseEntity<Void> saveData(@RequestBody String rawData) {
+        String[] rows = rawData.split(System.lineSeparator());
         List<SaveDataRequest> requests = Arrays.stream(rows)
                 .map(row -> row.split(TAB))
                 .map(SaveDataRequest::from)
                 .toList();
-        adminService.save(requests);
+        adminService.saveData(requests);
         return ResponseEntity.ok().build();
     }
 }

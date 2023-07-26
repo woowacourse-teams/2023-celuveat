@@ -26,14 +26,14 @@ public class AdminService {
     private final RestaurantImageRepository restaurantImageRepository;
     private final VideoRepository videoRepository;
 
-    public void save(List<SaveDataRequest> requests) {
+    public void saveData(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
             RestaurantImage restaurantImage = request.toRestaurantImage(YOUTUBE, restaurant);
             Video video = request.toVideo(celeb, restaurant);
 
-            saveAll(celeb, restaurant, restaurantImage, video);
+            saveAllData(celeb, restaurant, restaurantImage, video);
         }
     }
 
@@ -44,7 +44,7 @@ public class AdminService {
         ).orElseGet(request::toRestaurant);
     }
 
-    private void saveAll(Celeb celeb, Restaurant restaurant, RestaurantImage restaurantImage, Video video) {
+    private void saveAllData(Celeb celeb, Restaurant restaurant, RestaurantImage restaurantImage, Video video) {
         celebRepository.save(celeb);
         restaurantRepository.save(restaurant);
         restaurantImageRepository.save(restaurantImage);
