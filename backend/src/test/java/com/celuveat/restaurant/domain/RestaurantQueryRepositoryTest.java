@@ -150,7 +150,7 @@ class RestaurantQueryRepositoryTest {
         String category = "category:오도1호점";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (isCelebVisited(celebId, restaurantQueryResponse)
-                && restaurantQueryResponse.category().equals(category)) {
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -175,7 +175,7 @@ class RestaurantQueryRepositoryTest {
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && isCelebVisited(celebId, restaurantQueryResponse)) {
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -200,7 +200,7 @@ class RestaurantQueryRepositoryTest {
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)) {
+                    && restaurantQueryResponse.category().equals(category)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -226,8 +226,8 @@ class RestaurantQueryRepositoryTest {
         String restaurantName = "로 이스";
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (restaurantQueryResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                && restaurantQueryResponse.category().equals(category)
-                && isCelebVisited(celebId, restaurantQueryResponse)) {
+                    && restaurantQueryResponse.category().equals(category)
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }
@@ -304,7 +304,7 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 1L;
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (isRestaurantInArea(박스_1번_지점포함, restaurantQueryResponse)
-                && isCelebVisited(celebId, restaurantQueryResponse)) {
+                    && isCelebVisited(celebId, restaurantQueryResponse)) {
                 expected.add(restaurantQueryResponse);
             }
         }

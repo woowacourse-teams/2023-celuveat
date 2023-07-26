@@ -89,9 +89,9 @@ public class RestaurantAcceptanceSteps {
                     .toList();
 
             if (음식점_이름_조건(restaurantName, restaurantQueryResponse)
-                && 카테고리_조건(category, restaurantQueryResponse)
-                && 셀럽_조건(celebId, list)
-                && 영역_조건(locationSearchCond, restaurantQueryResponse)) {
+                    && 카테고리_조건(category, restaurantQueryResponse)
+                    && 셀럽_조건(celebId, list)
+                    && 영역_조건(locationSearchCond, restaurantQueryResponse)) {
                 예상_응답.add(restaurantQueryResponse);
             }
         }
@@ -128,8 +128,8 @@ public class RestaurantAcceptanceSteps {
         }
 
         return locationSearchCond.lowLatitude() <= restaurantQueryResponse.latitude()
-               && restaurantQueryResponse.latitude() <= locationSearchCond.highLatitude()
-               && locationSearchCond.lowLongitude() <= restaurantQueryResponse.longitude()
-               && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
+                && restaurantQueryResponse.latitude() <= locationSearchCond.highLatitude()
+                && locationSearchCond.lowLongitude() <= restaurantQueryResponse.longitude()
+                && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
     }
 }
