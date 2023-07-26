@@ -11,13 +11,10 @@ import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
-import { RestaurantData } from '~/@types/api.types';
-import useFetch from '~/hooks/useFetch';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
   markers: { position: Coordinate; celebs: Celeb[] }[];
-  setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
 }
 
@@ -27,13 +24,12 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers, setData, setBoundary }: MapProps) {
+function Map({ clickMarker, markers, setBoundary }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [loading, setLoading] = useState(false);
-  const { handleFetch } = useFetch('restaurants');
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);

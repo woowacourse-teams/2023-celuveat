@@ -84,7 +84,6 @@ function MainPage() {
         <StyledRightSide>
           <Map
             clickMarker={clickMarker}
-            setData={setData}
             setBoundary={setBoundary}
             markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
           />
