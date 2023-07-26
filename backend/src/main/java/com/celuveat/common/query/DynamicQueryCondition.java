@@ -1,22 +1,10 @@
-package com.celuveat.common.util;
+package com.celuveat.common.query;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-public class DynamicQueryUtil {
-
-    public static void appendQueryIfTrue(
-            List<String> appendedQuery,
-            boolean condition,
-            String format,
-            Object... param
-    ) {
-        if (condition) {
-            appendedQuery.add(format.formatted(param));
-        }
-    }
+public class DynamicQueryCondition {
 
     public static boolean notNull(Object... o) {
         return Arrays.stream(o)
@@ -38,3 +26,4 @@ public class DynamicQueryUtil {
         }
     }
 }
+
