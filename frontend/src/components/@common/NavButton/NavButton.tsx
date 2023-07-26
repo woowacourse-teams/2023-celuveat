@@ -38,7 +38,7 @@ const StyledNavButton = styled.button<{ isShow: boolean }>`
   font-size: ${FONT_SIZE.sm};
 
   & > *:first-child > svg {
-    fill: #717171;
+    fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
   }
 
   &:hover > *:first-child > svg {
