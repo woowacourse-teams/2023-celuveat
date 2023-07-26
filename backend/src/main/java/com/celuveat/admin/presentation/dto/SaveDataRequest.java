@@ -1,5 +1,12 @@
 package com.celuveat.admin.presentation.dto;
 
+import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantImage;
+import com.celuveat.restaurant.domain.SocialMedia;
+import com.celuveat.video.domain.Video;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 
 @Builder
@@ -42,6 +49,36 @@ public record SaveDataRequest(
                 .naverMapUrl(data[NAVER_MAP_URL])
                 .latitude(data[LATITUDE])
                 .longitude(data[LONGITUDE])
+                .build();
+    }
+
+    public Restaurant toRestaurant() {
+        return Restaurant.builder()
+                .name(restaurantName)
+                .category(category)
+                .roadAddress(roadAddress)
+                .latitude(Double.parseDouble(latitude))
+                .longitude(Double.parseDouble(longitude))
+                .phoneNumber(phoneNumber)
+                .naverMapUrl(naverMapUrl)
+                .build();
+    }
+
+    public RestaurantImage toRestaurantImage(SocialMedia socialMedia, Restaurant restaurant) {
+        return RestaurantImage.builder()
+                .name(imageName)
+                .author(youtubeChannelName)
+                .socialMedia(socialMedia)
+                .restaurant(restaurant)
+                .build();
+    }
+
+    public Video toVideo(Celeb celeb, Restaurant restaurant) {
+        return Video.builder()
+                .youtubeUrl(youtubeVideoUrl)
+                .uploadDate(LocalDate.parse(videoUploadDate, DateTimeFormatter.ofPattern("yyyy. M. d.")))
+                .celeb(celeb)
+                .restaurant(restaurant)
                 .build();
     }
 }
