@@ -19,7 +19,25 @@ spring:
         highlight_sql: true
 
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 
 cors:
   allowedOrigins: ${CORS_ALLOW_ORIGINS}
+
+oauth:
+  kakao:
+    client_id: ${KAKAO_CLIENT_ID}
+    redirectUri: ${KAKAO_REDIRECT_URL}
+    client_secret: ${KAKAO_CLIENT_SECRET}
+    scope: ${KAKAO_SCOPE}
+  naver:
+    client_id: ${NAVER_CLIENT_ID}
+    redirectUri: ${NAVER_REDIRECT_URL}
+    client_secret: ${NAVER_CLIENT_SECRET}
+    scope: ${NAVER_SCOPE}
+    state: ${NAVER_STATE}
+  google:
+    client_id: ${GOOGLE_CLIENT_ID}
+    redirectUri: ${GOOGLE_REDIRECT_URL}
+    client_secret: ${GOOGLE_CLIENT_SECRET}
+    scope: ${GOOGLE_SCOPE}
