@@ -11,10 +11,13 @@ import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
+import { RestaurantData } from '~/@types/api.types';
+import useFetch from '~/hooks/useFetch';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
   markers: { position: Coordinate; celebs: Celebs }[];
+  setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
 }
 
 const render = (status: Status) => {
@@ -23,12 +26,13 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers }: MapProps) {
+function Map({ clickMarker, markers, setData }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [loading, setLoading] = useState(false);
+  const { handleFetch } = useFetch('restaurants');
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -36,6 +40,21 @@ function Map({ clickMarker, markers }: MapProps) {
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
+
+    const lowLatitude = String(m.getBounds().getSouthWest().lat());
+    const highLatitude = String(m.getBounds().getNorthEast().lat());
+    const lowLongitude = String(m.getBounds().getSouthWest().lng());
+    const highLongitude = String(m.getBounds().getNorthEast().lng());
+
+    const queryString = new URLSearchParams({ lowLatitude, highLatitude, lowLongitude, highLongitude }).toString();
+
+    const fetchRestaurants = async () => {
+      const response = await handleFetch({ queryString });
+
+      setData(response);
+    };
+
+    fetchRestaurants();
   };
 
   const clickMyLocationButton = () => {
