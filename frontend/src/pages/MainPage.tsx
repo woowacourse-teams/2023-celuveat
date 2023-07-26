@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Celeb } from '~/@types/celeb.types';
@@ -16,15 +16,20 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useFetch from '~/hooks/useFetch';
 import useMapModal from '~/hooks/useMapModal';
 import { FONT_SIZE } from '~/styles/common';
+import getQueryString from '~/utils/getQueryString';
 
 function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState();
-  const [celebId, setCelebId] = useState<Celeb['id']>();
-  const [restaurantCategory, setRestaurantCategory] = useState<string>();
+  const [celebId, setCelebId] = useState<Celeb['id']>(null);
+  const [restaurantCategory, setRestaurantCategory] = useState('전체');
   const { handleFetch } = useFetch('restaurants');
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, [boundary]);
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
@@ -42,33 +47,23 @@ function MainPage() {
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
   };
 
+  const fetchRestaurants = useCallback(async () => {
+    const queryString = getQueryString({ boundary, celebId, category: restaurantCategory });
+    const response = await handleFetch({ queryString });
+    setData(response);
+  }, [boundary, celebId, restaurantCategory]);
+
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label;
-    const baseQueryString = new URLSearchParams(boundary).toString();
 
     setRestaurantCategory(currentCategory);
-
-    const fetchRestaurants = async () => {
-      const queryString = `${baseQueryString}&category=${currentCategory}`;
-      const response = await handleFetch({ queryString });
-      setData(response);
-    };
-
     fetchRestaurants();
   };
 
   const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
     const currentCelebId = e.currentTarget.dataset.id;
-    const baseQueryString = new URLSearchParams(boundary).toString();
 
     setCelebId(Number(currentCelebId));
-
-    const fetchRestaurants = async () => {
-      const queryString = `${baseQueryString}&celebId=${currentCelebId}`;
-      const response = await handleFetch({ queryString });
-      setData(response);
-    };
-
     fetchRestaurants();
   };
 
@@ -84,7 +79,7 @@ function MainPage() {
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
-            {data.map(({ celebs, ...restaurant }: RestaurantData) => (
+            {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
               <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => clickCard(restaurant)} />
             ))}
           </StyledRestaurantCardList>
