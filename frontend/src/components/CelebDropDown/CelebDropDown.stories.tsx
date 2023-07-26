@@ -27,6 +27,27 @@ export const Default: Story = {
         profileImageUrl:
           'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
       },
+      {
+        id: 3,
+        name: '정찬',
+        youtubeChannelName: '@Korean_zzombi',
+        profileImageUrl:
+          'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
+      },
+      {
+        id: 4,
+        name: '정성',
+        youtubeChannelName: '@Korean_zzombi',
+        profileImageUrl:
+          'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
+      },
+      {
+        id: 5,
+        name: '정찬성1',
+        youtubeChannelName: '@Korean_zzombi',
+        profileImageUrl:
+          'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
+      },
     ],
   },
 };

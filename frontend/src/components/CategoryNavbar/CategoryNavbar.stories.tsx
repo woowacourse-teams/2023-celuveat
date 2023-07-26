@@ -1,8 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import CategoryNavbar from './CategoryNavbar';
 import FastFood from '~/assets/icons/fastFood.svg';
+import { RestaurantCategory } from '~/@types/restaurant.types';
 
-const categories = [
+interface Category {
+  label: RestaurantCategory;
+  icon: React.ReactNode;
+}
+
+const categories: Category[] = [
   {
     label: '일식당',
     icon: <FastFood />,

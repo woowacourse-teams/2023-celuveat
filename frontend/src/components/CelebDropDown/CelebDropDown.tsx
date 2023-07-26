@@ -6,6 +6,7 @@ import FastFoodIcon from '~/assets/icons/fastFood.svg';
 import SearchIcon from '~/assets/icons/search.svg';
 import isEqual from '~/utils/compare';
 import { Celeb } from '~/@types/celeb.types';
+import ProfileImage from '~/components/@common/ProfileImage';
 
 interface DropDownProps {
   celebs: Celeb[];
@@ -34,10 +35,13 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {celebs.map(({ name }) => (
+            {celebs.map(({ name, profileImageUrl }) => (
               <StyledDropDownOption data-name={name} onClick={onSelection(name)}>
+                <div>
+                  <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
+                  {name}
+                </div>
                 {isEqual(selected, name) && <SearchIcon />}
-                {name}
               </StyledDropDownOption>
             ))}
           </StyledSelectContainer>
@@ -76,11 +80,26 @@ const StyledSelectContainer = styled.div`
 
 const StyledDropDownOption = styled.li`
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   height: 44px;
 
-  padding: 0 1.8rem;
+  margin: 0 1.8rem;
 
   cursor: pointer;
+
+  & + & {
+    border-bottom: 1px solid var(--gray-1);
+  }
+
+  &:first-child {
+    border-bottom: 1px solid var(--gray-1);
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
 `;
