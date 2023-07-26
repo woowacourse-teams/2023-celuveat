@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private static final String TAB = "\t";
+
     private final AdminService adminService;
 
     @PostMapping("/data")
     ResponseEntity<Void> saveData(@RequestBody String data) {
         String[] rows = data.split(System.lineSeparator());
         List<SaveDataRequest> requests = Arrays.stream(rows)
-                .map(row -> row.split("\t"))
+                .map(row -> row.split(TAB))
                 .map(SaveDataRequest::from)
                 .toList();
         adminService.save(requests);
