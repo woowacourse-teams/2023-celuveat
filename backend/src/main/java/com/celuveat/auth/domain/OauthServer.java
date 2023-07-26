@@ -13,6 +13,7 @@ import java.util.Optional;
 public enum OauthServer {
 
     KAKAO,
+    NAVER,
     ;
 
     private static final Map<String, OauthServer> typeMap;

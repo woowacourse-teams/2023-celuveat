@@ -26,7 +26,12 @@ cors:
 
 oauth:
   kakao:
-    client_id: ${CLIENT_ID}
-    redirectUri: ${REDIRECT_URL}
-    client_secret: ${CLIENT_SECRET}
-    scope: ${SCOPE}
+    client_id: ${KAKAO_CLIENT_ID}
+    redirectUri: ${KAKAO_REDIRECT_URL}
+    client_secret: ${KAKAO_CLIENT_SECRET}
+    scope: ${KAKAO_SCOPE}
+  naver:
+    client_id: ${NAVER_CLIENT_ID}
+    redirectUri: ${NAVER_REDIRECT_URL}
+    client_secret: ${NAVER_CLIENT_SECRET}
+    scope: ${NAVER_SCOPE}
