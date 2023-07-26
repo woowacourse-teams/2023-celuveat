@@ -3,7 +3,7 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
 import OverlayMarker from './OverlayMarker';
 import type { Coordinate } from '~/@types/map.types';
-import type { Celebs } from '~/@types/celeb.types';
+import type { Celeb } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
@@ -16,7 +16,7 @@ import useFetch from '~/hooks/useFetch';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
-  markers: { position: Coordinate; celebs: Celebs }[];
+  markers: { position: Coordinate; celebs: Celeb[] }[];
   setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
 }
 
