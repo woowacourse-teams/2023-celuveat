@@ -15,7 +15,7 @@ interface DropDownProps {
 }
 
 function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
-  const [selected, setSelected] = useState<Celeb['name']>('');
+  const [selected, setSelected] = useState<Celeb['name']>('all');
   const [isShow, setIsShow] = useState(isOpen);
 
   const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {

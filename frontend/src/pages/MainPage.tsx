@@ -11,7 +11,7 @@ import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
-import CELEBS from '~/constants/celebs';
+import { CELEBS_OPTIONS } from '~/constants/celebs';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useFetch from '~/hooks/useFetch';
 import useMapModal from '~/hooks/useMapModal';

@@ -1,4 +1,4 @@
-const CELEBS = [
+export const CELEBS = [
   {
     id: 1,
     name: '먹적 - (스시에 대출 박는 놈)',
@@ -43,4 +43,13 @@ const CELEBS = [
   },
 ];
 
-export default CELEBS;
+export const CELEBS_OPTIONS = [
+  {
+    id: -1,
+    name: '전체',
+    youtubeChannelName: '@all',
+    profileImageUrl:
+      'https://yt3.googleusercontent.com/ytc/AOPolaQnS9nKQFCtkBihMKt1Jhm-nzkUFY3Z6RQpwnbf=s176-c-k-c0x00ffffff-no-rj',
+  },
+  ...CELEBS,
+];
