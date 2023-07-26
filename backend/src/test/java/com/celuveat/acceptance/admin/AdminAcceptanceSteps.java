@@ -37,7 +37,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset("UTF-8"))
                 .body(data)
-                .when().post("/api/admin/save")
+                .when().post("/api/admin/data")
                 .then().log().all()
                 .extract();
     }
