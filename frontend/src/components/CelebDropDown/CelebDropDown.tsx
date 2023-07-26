@@ -10,7 +10,7 @@ import ProfileImage from '~/components/@common/ProfileImage';
 
 interface DropDownProps {
   celebs: Celeb[];
-  isOpen: boolean;
+  isOpen?: boolean;
   externalOnClick?: (e?: MouseEvent<HTMLLIElement>) => void;
 }
 
@@ -35,8 +35,8 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {celebs.map(({ name, profileImageUrl }) => (
-              <StyledDropDownOption data-name={name} onClick={onSelection(name)}>
+            {celebs.map(({ id, name, profileImageUrl }) => (
+              <StyledDropDownOption data-id={id} onClick={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
                   {name}

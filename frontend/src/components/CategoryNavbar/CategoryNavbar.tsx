@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import NavButton from '~/components/@common/NavButton';
@@ -11,13 +11,13 @@ interface Category {
 
 interface CategoryProps {
   categories: Category[];
-  externalOnClick?: (e?: MouseEvent<HTMLElement>) => void;
+  externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
 }
 
 function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   const [selected, setSelected] = useState<RestaurantCategory>('전체');
 
-  const clickCategory = (value: RestaurantCategory) => (event?: MouseEvent<HTMLElement>) => {
+  const clickCategory = (value: RestaurantCategory) => (event?: React.MouseEvent<HTMLElement>) => {
     setSelected(value);
 
     if (externalOnClick) externalOnClick(event);
@@ -26,13 +26,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   return (
     <StyledCategoryNavbarWrapper>
       {categories.map(({ icon, label }) => (
-        <NavButton
-          label={label}
-          icon={icon}
-          data-label={label}
-          isShow={isEqual(selected, label)}
-          onClick={clickCategory(label)}
-        />
+        <NavButton label={label} icon={icon} isShow={isEqual(selected, label)} onClick={clickCategory(label)} />
       ))}
     </StyledCategoryNavbarWrapper>
   );

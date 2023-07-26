@@ -12,7 +12,7 @@ interface NavButtonProps {
 
 function NavButton({ icon, label, onClick, isShow = false }: NavButtonProps) {
   return (
-    <StyledNavButton onClick={onClick} isShow={isShow}>
+    <StyledNavButton data-label={label} onClick={onClick} isShow={isShow}>
       <div>{icon}</div>
       <div>{label}</div>
     </StyledNavButton>

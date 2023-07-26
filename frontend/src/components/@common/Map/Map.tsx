@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
 import OverlayMarker from './OverlayMarker';
-import type { Coordinate } from '~/@types/map.types';
+import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import type { Celeb } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
@@ -18,6 +18,7 @@ interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
   markers: { position: Coordinate; celebs: Celeb[] }[];
   setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
+  setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
 }
 
 const render = (status: Status) => {
@@ -26,7 +27,7 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers, setData }: MapProps) {
+function Map({ clickMarker, markers, setData, setBoundary }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -45,8 +46,10 @@ function Map({ clickMarker, markers, setData }: MapProps) {
     const highLatitude = String(m.getBounds().getNorthEast().lat());
     const lowLongitude = String(m.getBounds().getSouthWest().lng());
     const highLongitude = String(m.getBounds().getNorthEast().lng());
+    const coordinateBoundary = { lowLatitude, highLatitude, lowLongitude, highLongitude };
+    setBoundary(coordinateBoundary);
 
-    const queryString = new URLSearchParams({ lowLatitude, highLatitude, lowLongitude, highLongitude }).toString();
+    const queryString = new URLSearchParams(coordinateBoundary).toString();
 
     const fetchRestaurants = async () => {
       const response = await handleFetch({ queryString });
