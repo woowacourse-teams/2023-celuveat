@@ -23,7 +23,7 @@ function MainPage() {
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState();
-  const [celebId, setCelebId] = useState<Celeb['id']>(null);
+  const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState('전체');
   const { handleFetch } = useFetch('restaurants');
 
@@ -72,7 +72,7 @@ function MainPage() {
       <Header />
       <StyledLayout>
         <StyledLeftSide>
-          <CelebDropDown celebs={CELEBS} externalOnClick={clickCeleb} />
+          <CelebDropDown celebs={CELEBS_OPTIONS} externalOnClick={clickCeleb} />
           <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>

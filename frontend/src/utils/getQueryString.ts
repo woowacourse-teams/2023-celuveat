@@ -15,7 +15,7 @@ const getQueryString = ({
   category: string;
 }) => {
   let params: ParamTypes = boundary;
-  if (celebId !== null) params = { ...params, celebId: String(celebId) };
+  if (celebId !== -1) params = { ...params, celebId: String(celebId) };
 
   if (category !== '전체') params = { ...params, category };
 
