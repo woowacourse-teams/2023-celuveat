@@ -1,9 +1,7 @@
 package com.celuveat.admin.application;
 
-import static com.celuveat.admin.exception.AdminExceptionType.NOT_EXISTS_CELEB;
 import static com.celuveat.restaurant.domain.SocialMedia.YOUTUBE;
 
-import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -17,7 +15,6 @@ import com.celuveat.video.domain.VideoRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,21 +32,13 @@ public class AdminService {
 
     public void save(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {
-            Celeb celeb = getCelebOrThrow(request);
+            Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
             RestaurantImage restaurantImage = createRestaurantImage(request, YOUTUBE, restaurant);
             Video video = createVideo(request, celeb, restaurant);
 
             saveAll(celeb, restaurant, restaurantImage, video);
         }
-    }
-
-    private Celeb getCelebOrThrow(SaveDataRequest request) {
-        Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
-        if (Objects.isNull(celeb)) {
-            throw new AdminException(NOT_EXISTS_CELEB);
-        }
-        return celeb;
     }
 
     private Restaurant getOrCreateRestaurant(SaveDataRequest request) {
