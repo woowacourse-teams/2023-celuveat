@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Celeb } from '~/@types/celeb.types';
 import { Coordinate } from '~/@types/map.types';
@@ -21,6 +22,7 @@ import getQueryString from '~/utils/getQueryString';
 function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState();
   const [celebId, setCelebId] = useState<Celeb['id']>(null);
@@ -67,6 +69,10 @@ function MainPage() {
     fetchRestaurants();
   };
 
+  const toggleMapExpand = () => {
+    setIsMapExpanded(prev => !prev);
+  };
+
   return (
     <>
       <Header />
@@ -75,8 +81,8 @@ function MainPage() {
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
-      <StyledLayout>
-        <StyledLeftSide>
+      <StyledLayout isMapExpanded={isMapExpanded}>
+        <StyledLeftSide isMapExpanded={isMapExpanded}>
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
@@ -87,9 +93,9 @@ function MainPage() {
         <StyledRightSide>
           <Map
             clickMarker={clickMarker}
-            setData={setData}
             setBoundary={setBoundary}
             markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
+            toggleMapExpand={toggleMapExpand}
           />
           {currentRestaurant && (
             <MapModal
@@ -130,15 +136,27 @@ const StyledLine = styled.div`
   background-color: var(--gray-3);
 `;
 
-const StyledLayout = styled.div`
+const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
   display: grid;
 
   width: 100%;
   height: 100%;
   grid-template-columns: 63% 37%;
 
+  ${({ isMapExpanded }) =>
+    isMapExpanded &&
+    css`
+      grid-template-columns: 100%;
+    `}
+
   @media screen and (width <= 1240px) {
     grid-template-columns: 55% 45%;
+
+    ${({ isMapExpanded }) =>
+      isMapExpanded &&
+      css`
+        grid-template-columns: 100%;
+      `}
   }
 
   @media screen and (width <= 950px) {
@@ -150,7 +168,7 @@ const StyledLayout = styled.div`
   }
 `;
 
-const StyledLeftSide = styled.div`
+const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
@@ -158,6 +176,12 @@ const StyledLeftSide = styled.div`
   z-index: 0;
 
   height: 100%;
+
+  ${({ isMapExpanded }) =>
+    isMapExpanded &&
+    css`
+      display: none;
+    `}
 `;
 
 const StyledCardListHeader = styled.p`
