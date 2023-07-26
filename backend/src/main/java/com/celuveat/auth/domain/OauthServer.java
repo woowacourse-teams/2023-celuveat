@@ -14,6 +14,7 @@ public enum OauthServer {
 
     KAKAO,
     NAVER,
+    GOOGLE,
     ;
 
     private static final Map<String, OauthServer> typeMap;

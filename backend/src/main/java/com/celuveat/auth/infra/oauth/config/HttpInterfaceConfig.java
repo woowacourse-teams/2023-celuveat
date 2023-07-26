@@ -1,5 +1,6 @@
 package com.celuveat.auth.infra.oauth.config;
 
+import com.celuveat.auth.infra.oauth.google.client.GoogleApiClient;
 import com.celuveat.auth.infra.oauth.kakao.client.KakaoApiClient;
 import com.celuveat.auth.infra.oauth.naver.client.NaverApiClient;
 import org.springframework.context.annotation.Bean;
@@ -25,5 +26,13 @@ public class HttpInterfaceConfig {
         HttpServiceProxyFactory build = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient)).build();
         return build.createClient(NaverApiClient.class);
+    }
+
+    @Bean
+    public GoogleApiClient googleApiClient() {
+        WebClient webClient = WebClient.create();
+        HttpServiceProxyFactory build = HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(webClient)).build();
+        return build.createClient(GoogleApiClient.class);
     }
 }
