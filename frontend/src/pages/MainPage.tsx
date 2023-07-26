@@ -29,7 +29,7 @@ function MainPage() {
 
   useEffect(() => {
     fetchRestaurants();
-  }, [boundary]);
+  }, [boundary, data]);
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
