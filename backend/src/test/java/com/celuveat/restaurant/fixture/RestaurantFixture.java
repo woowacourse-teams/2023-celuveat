@@ -31,6 +31,16 @@ public class RestaurantFixture {
                 .build();
     }
 
+    public static final Restaurant 국민연금_구내식당 = Restaurant.builder()
+            .name("국민연금")
+            .roadAddress("국민연금 주소")
+            .category("한식")
+            .latitude(12.3456)
+            .longitude(12.3456)
+            .phoneNumber("국민연금 번호")
+            .naverMapUrl("국민연금 네이버지도 링크")
+            .build();
+
     public static boolean isCelebVisited(Long celebId, RestaurantQueryResponse restaurantQueryResponse) {
         List<Long> celebIds = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id).toList();
         return celebIds.contains(celebId);

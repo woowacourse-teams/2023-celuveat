@@ -1,10 +1,10 @@
 package com.celuveat.admin.application;
 
 
-import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.국민연금;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구내식당;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -71,7 +71,7 @@ class AdminServiceTest {
     void 셀럽과_음식점이_저장되어_있고_데이터_두_개를_저장한다_한_개는_존재하는_음식점이고_나머지_하나는_존재하지_않는다() {
         // given
         셀럽_저장(셀럽("도기"));
-        음식점_저장(국민연금);
+        음식점_저장(국민연금_구내식당);
 
         String input = 입력_생성("도기", "국민연금")
                 + System.lineSeparator()
@@ -93,7 +93,7 @@ class AdminServiceTest {
         // given
         셀럽_저장(셀럽("도기"));
         셀럽_저장(셀럽("로이스"));
-        음식점_저장(국민연금);
+        음식점_저장(국민연금_구내식당);
 
         String input = 입력_생성("도기", "국민연금")
                 + System.lineSeparator()
