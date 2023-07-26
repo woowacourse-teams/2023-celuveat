@@ -19,11 +19,14 @@ spring:
         highlight_sql: true
 
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 
 cors:
   allowedOrigins: ${CORS_ALLOW_ORIGINS}
 
-kakao:
-  client_id: "client_id"
-  client_secret: "client_secret"
+oauth:
+  kakao:
+    client_id: ${CLIENT_ID}
+    redirectUri: ${REDIRECT_URL}
+    client_secret: ${CLIENT_SECRET}
+    scope: ${SCOPE}

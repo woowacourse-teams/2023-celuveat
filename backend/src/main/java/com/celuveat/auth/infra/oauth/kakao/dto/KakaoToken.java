@@ -1,6 +1,6 @@
-package com.celuveat.auth.infra.kakao.dto;
+package com.celuveat.auth.infra.oauth.kakao.dto;
 
-public record TokenResponse(
+public record KakaoToken(
         String token_type,
         String access_token,
         String id_token,
