@@ -41,18 +41,12 @@ function Map({ clickMarker, markers, setData }: MapProps) {
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
 
-    const lowLatitude: number = m.getBounds().getSouthWest().lat();
-    const highLatitude: number = m.getBounds().getNorthEast().lat();
-    const lowLongitude: number = m.getBounds().getSouthWest().lng();
-    const highLongitude: number = m.getBounds().getNorthEast().lng();
+    const lowLatitude = String(m.getBounds().getSouthWest().lat());
+    const highLatitude = String(m.getBounds().getNorthEast().lat());
+    const lowLongitude = String(m.getBounds().getSouthWest().lng());
+    const highLongitude = String(m.getBounds().getNorthEast().lng());
 
-    const object = {
-      lowLatitude: String(lowLatitude),
-      highLatitude: String(highLatitude),
-      lowLongitude: String(lowLongitude),
-      highLongitude: String(highLongitude),
-    };
-    const queryString = new URLSearchParams(object).toString();
+    const queryString = new URLSearchParams({ lowLatitude, highLatitude, lowLongitude, highLongitude }).toString();
 
     const fetchRestaurants = async () => {
       const response = await handleFetch({ queryString });
