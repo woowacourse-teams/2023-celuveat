@@ -119,6 +119,7 @@ const StyledNavBar = styled.div`
 
   position: sticky;
   top: 80px;
+  z-index: 10;
 
   width: 100%;
   height: 80px;
@@ -158,6 +159,8 @@ const StyledLeftSide = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+
+  z-index: 0;
 
   height: 100%;
 `;

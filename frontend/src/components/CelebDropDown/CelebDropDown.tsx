@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MouseEvent, useCallback, useState } from 'react';
 import NavButton from '~/components/@common/NavButton';
 
-import FastFoodIcon from '~/assets/icons/fastFood.svg';
+import CelebIcon from '~/assets/icons/celeb.svg';
 import SearchIcon from '~/assets/icons/search.svg';
 import isEqual from '~/utils/compare';
 import { Celeb } from '~/@types/celeb.types';
@@ -30,7 +30,7 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 
   return (
     <StyledCelebDropDown>
-      <NavButton label="셀럽" icon={<FastFoodIcon />} onClick={onToggleDropDown} isShow={isShow} />
+      <NavButton label="셀럽" icon={<CelebIcon />} onClick={onToggleDropDown} isShow={isShow} />
 
       {isShow && (
         <StyledDropDownWrapper>
