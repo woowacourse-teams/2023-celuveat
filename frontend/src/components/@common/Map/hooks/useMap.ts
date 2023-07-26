@@ -29,6 +29,10 @@ const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
   }, [center]);
 
   useEffect(() => {
+    if (map) map.setZoom(zoom);
+  }, [zoom]);
+
+  useEffect(() => {
     if (map) {
       ['click', 'idle'].forEach(eventName => google.maps.event.clearListeners(map, eventName));
 
