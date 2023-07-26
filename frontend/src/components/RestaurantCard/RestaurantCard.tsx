@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
 import { Restaurant } from '~/@types/restaurant.types';
 import { Celeb } from '~/@types/celeb.types';
@@ -16,16 +16,18 @@ function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardPro
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`image-data/${images[0].name}`} />
-      <StyledInfo>
-        <StyledCategory>{category}</StyledCategory>
-        <h5>{name}</h5>
-        <StyledAddress>{roadAddress}</StyledAddress>
-        <StyledAddress>02-1234-5678</StyledAddress>
+      <StyledImage alt={`${name} 대표 이미지`} src={`http://3.35.157.27:3000/images-data/${images[0].name}`} />
+      <section>
+        <StyledInfo>
+          <StyledCategory>{category}</StyledCategory>
+          <StyledName>{name}</StyledName>
+          <StyledAddress>{roadAddress}</StyledAddress>
+          <StyledAddress>02-1234-5678</StyledAddress>
+        </StyledInfo>
         <StyledProfileImageSection>
           <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />
         </StyledProfileImageSection>
-      </StyledInfo>
+      </section>
     </StyledContainer>
   );
 }
@@ -38,16 +40,22 @@ const StyledContainer = styled.div`
   justify-content: start;
   gap: 0.8rem;
 
-  width: 320px;
-  height: 360px;
+  width: 100%;
+  height: 100%;
+
+  & > section {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 const StyledImage = styled.img`
   width: 100%;
-  height: 320px;
-  object-fit: cover;
+  aspect-ratio: 1.05 / 1;
 
   border-radius: ${BORDER_RADIUS.md};
+
+  object-fit: cover;
 `;
 
 const StyledInfo = styled.div`
@@ -63,7 +71,12 @@ const StyledInfo = styled.div`
   padding: 0.4rem;
 `;
 
+const StyledName = styled.h5`
+  ${truncateText(1)}
+`;
+
 const StyledAddress = styled.span`
+  ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.sm};
 `;
@@ -74,7 +87,5 @@ const StyledCategory = styled.span`
 `;
 
 const StyledProfileImageSection = styled.div`
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
+  align-self: flex-end;
 `;

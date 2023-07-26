@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Coordinate } from '~/@types/map.types';
@@ -12,32 +12,14 @@ import useMapModal from '~/hooks/useMapModal';
 import { FONT_SIZE } from '~/styles/common';
 
 function MainPage() {
-  const [center, setCenter] = useState({ lat: 37.5057482, lng: 127.050727 });
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
-  const mapArgs = {
-    center: { lat: 37.5057482, lng: 127.050727 },
-    zoom: 13,
-    size: { width: '100%', height: '100%' },
-    restaurants: data,
-  };
-
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      const response = await fetch('http://3.35.157.27/api/restaurants');
-      const newData = await response.json();
-
-      setData(newData);
-    };
-    fetchRestaurant();
-  }, []);
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
 
     openModal();
-    setCenter({ lat, lng });
     setCurrentRestaurant(restaurantModalInfo);
   };
 
@@ -48,13 +30,11 @@ function MainPage() {
       filteredRestaurant;
 
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
-    setCenter({ lat, lng });
   };
 
   return (
     <>
       <Header />
-
       <StyledLayout>
         <StyledLeftSide>
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
@@ -65,7 +45,11 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map {...mapArgs} center={center} clickMarker={clickMarker} />
+          <Map
+            clickMarker={clickMarker}
+            setData={setData}
+            markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
+          />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}
@@ -88,7 +72,19 @@ const StyledLayout = styled.div`
 
   width: 100%;
   height: 100%;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 63% 37%;
+
+  @media screen and (width <= 1240px) {
+    grid-template-columns: 55% 45%;
+  }
+
+  @media screen and (width <= 950px) {
+    & > div:last-child {
+      display: none;
+    }
+
+    grid-template-columns: 100% 0;
+  }
 `;
 
 const StyledLeftSide = styled.div`
@@ -113,6 +109,10 @@ const StyledRestaurantCardList = styled.div`
 
   margin: 0 2.4rem;
   grid-template-columns: 1fr 1fr 1fr;
+
+  @media screen and (width <= 1240px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const StyledRightSide = styled.div`
