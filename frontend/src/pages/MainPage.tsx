@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { Coordinate } from '~/@types/map.types';
@@ -15,16 +15,6 @@ function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [data, setData] = useState<RestaurantData[]>([]);
-
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      const response = await fetch('http://3.35.157.27:8080/api/restaurants');
-      const newData = await response.json();
-
-      setData(newData);
-    };
-    fetchRestaurant();
-  }, []);
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
@@ -57,6 +47,7 @@ function MainPage() {
         <StyledRightSide>
           <Map
             clickMarker={clickMarker}
+            setData={setData}
             markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
           />
           {currentRestaurant && (
