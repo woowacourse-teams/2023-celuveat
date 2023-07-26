@@ -47,17 +47,8 @@ function Map({ clickMarker, markers, setData, setBoundary }: MapProps) {
     const lowLongitude = String(m.getBounds().getSouthWest().lng());
     const highLongitude = String(m.getBounds().getNorthEast().lng());
     const coordinateBoundary = { lowLatitude, highLatitude, lowLongitude, highLongitude };
+
     setBoundary(coordinateBoundary);
-
-    const queryString = new URLSearchParams(coordinateBoundary).toString();
-
-    const fetchRestaurants = async () => {
-      const response = await handleFetch({ queryString });
-
-      setData(response);
-    };
-
-    fetchRestaurants();
   };
 
   const clickMyLocationButton = () => {
