@@ -25,7 +25,6 @@ export const truncateText = (numberOfLine: number) =>
     text-overflow: ellipsis;
   `;
 
-
 export const mapUIBase = css`
   display: flex;
   justify-content: center;
@@ -35,6 +34,7 @@ export const mapUIBase = css`
   border-radius: ${BORDER_RADIUS.sm};
   background-color: var(--white);
   box-shadow: var(--map-shadow);
+`;
 
 const colorChange = keyframes`
   0% {
