@@ -1,6 +1,5 @@
 package com.celuveat.admin.application;
 
-
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
@@ -48,14 +47,6 @@ class AdminServiceTest {
     @Autowired
     private VideoRepository videoRepository;
 
-    private Celeb 셀럽_저장(Celeb 셀럽) {
-        return celebRepository.save(셀럽);
-    }
-
-    private Restaurant 음식점_저장(Restaurant 음식점) {
-        return restaurantRepository.save(음식점);
-    }
-
     @Test
     void 저장되어_있지_않은_셀럽으로_데이터를_저장하면_예외가_발생한다() {
         // given
@@ -63,7 +54,7 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // then
-        assertThatThrownBy(() -> adminService.save(요청))
+        assertThatThrownBy(() -> adminService.saveData(요청))
                 .isInstanceOf(AdminException.class);
     }
 
@@ -79,7 +70,7 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
-        adminService.save(요청);
+        adminService.saveData(요청);
 
         // then
         assertThat(celebRepository.count()).isEqualTo(1);
@@ -101,7 +92,7 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
-        adminService.save(요청);
+        adminService.saveData(요청);
 
         // then
         assertThat(celebRepository.count()).isEqualTo(2);
@@ -119,12 +110,20 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
-        adminService.save(요청);
+        adminService.saveData(요청);
 
         // then
         assertThat(celebRepository.count()).isEqualTo(1);
         assertThat(restaurantRepository.count()).isEqualTo(1);
         assertThat(restaurantImageRepository.count()).isEqualTo(1);
         assertThat(videoRepository.count()).isEqualTo(1);
+    }
+
+    private Celeb 셀럽_저장(Celeb 셀럽) {
+        return celebRepository.save(셀럽);
+    }
+
+    private Restaurant 음식점_저장(Restaurant 음식점) {
+        return restaurantRepository.save(음식점);
     }
 }

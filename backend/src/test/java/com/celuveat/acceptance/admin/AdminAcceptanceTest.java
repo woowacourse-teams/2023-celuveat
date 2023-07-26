@@ -7,13 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.celeb.domain.Celeb;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Admin 인수테스트")
-@DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminAcceptanceTest extends AcceptanceTest {
 
     private static final String 줄바꿈 = System.lineSeparator();
