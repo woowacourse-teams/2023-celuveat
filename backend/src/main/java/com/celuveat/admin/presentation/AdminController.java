@@ -18,8 +18,8 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/save")
-    ResponseEntity<Void> save(@RequestBody String data) {
+    @PostMapping("/data")
+    ResponseEntity<Void> saveData(@RequestBody String data) {
         String[] rows = data.split(System.lineSeparator());
         List<SaveDataRequest> requests = Arrays.stream(rows)
                 .map(row -> row.split("\t"))
