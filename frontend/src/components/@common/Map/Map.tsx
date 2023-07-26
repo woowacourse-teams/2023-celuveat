@@ -73,6 +73,24 @@ function Map({ clickMarker, markers, setData }: MapProps) {
     setZoom(prev => prev + number);
   };
 
+  const clickMyLocationButton = () => {
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+      setMyPosition({ lat: position.coords.latitude, lng: position.coords.longitude });
+      setLoading(false);
+      setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
+    });
+  };
+
+  const clickOverlayMarker = (position: Coordinate) => {
+    clickMarker(position);
+    setCenter(position);
+  };
+
+  const clickZoom = (number: number) => {
+    setZoom(prev => prev + number);
+  };
+
   return (
     <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko">
       <MapContent
@@ -94,12 +112,13 @@ function Map({ clickMarker, markers, setData }: MapProps) {
         <StyledMyPositionButtonUI onClick={clickMyLocationButton} type="button">
           <MyLocation />
         </StyledMyPositionButtonUI>
-        <StyledZoomUI onClick={clickMyLocationButton}>
-          <button type="button" onClick={() => clickZoom(-1)}>
-            <Minus />
-          </button>
+        <StyledZoomUI>
           <button type="button" onClick={() => clickZoom(1)}>
             <Plus />
+          </button>
+          <div />
+          <button type="button" onClick={() => clickZoom(-1)}>
+            <Minus />
           </button>
         </StyledZoomUI>
       </MapContent>
@@ -137,4 +156,20 @@ const StyledZoomUI = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
+  
+  & > button {
+    ${mapUIBase}
+    width: 40px;
+    height: 40px;
+    box-shadow: none;
+  }
+
+  & > div {
+    width: 100%;
+    height: 1px;
+
+    background-color: var(--black);
+
+    opacity: 0.1;
+  }
 `;

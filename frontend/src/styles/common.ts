@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-
-import { css } from 'styled-components';
+import { keyframes, css } from 'styled-components';
 
 export const FONT_SIZE = {
   xs: '0.8rem',
@@ -32,7 +31,22 @@ export const mapUIBase = css`
   align-items: center;
 
   border: none;
-  border-radius: ${BORDER_RADIUS.md};
+  border-radius: ${BORDER_RADIUS.sm};
   background-color: var(--white);
-  box-shadow: var(--map-button-shadow);
+  box-shadow: var(--map-shadow);
+`;
+
+const colorChange = keyframes`
+  0% {
+    background-color: var(--gray-1);
+  }
+  100% {
+    background-color: var(--gray-2);
+  }
+`;
+
+export const paintSkeleton = css`
+  animation: ${colorChange} 1s ease-in-out infinite alternate;
+
+  border-radius: ${BORDER_RADIUS.md};
 `;
