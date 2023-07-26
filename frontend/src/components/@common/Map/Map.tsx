@@ -12,6 +12,7 @@ import MyLocation from '~/assets/icons/my-location.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
 import { RestaurantData } from '~/@types/api.types';
+import useFetch from '~/hooks/useFetch';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
@@ -31,6 +32,7 @@ function Map({ clickMarker, markers, setData }: MapProps) {
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [loading, setLoading] = useState(false);
+  const { handleFetch } = useFetch('restaurants');
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -44,33 +46,21 @@ function Map({ clickMarker, markers, setData }: MapProps) {
     const lowLongitude: number = m.getBounds().getSouthWest().lng();
     const highLongitude: number = m.getBounds().getNorthEast().lng();
 
-    const fetchRestaurants = async () => {
-      const url = `http://3.35.157.27:8080/api/restaurants?lowLatitude=${lowLatitude}&highLatitude=${highLatitude}&lowLongitude=${lowLongitude}&highLongitude=${highLongitude}`;
-      const response = await fetch(url);
-      const newData = await response.json();
+    const object = {
+      lowLatitude: String(lowLatitude),
+      highLatitude: String(highLatitude),
+      lowLongitude: String(lowLongitude),
+      highLongitude: String(highLongitude),
+    };
+    const queryString = new URLSearchParams(object).toString();
 
-      setData(newData);
+    const fetchRestaurants = async () => {
+      const response = await handleFetch({ queryString });
+
+      setData(response);
     };
 
     fetchRestaurants();
-  };
-
-  const clickMyLocationButton = () => {
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-      setMyPosition({ lat: position.coords.latitude, lng: position.coords.longitude });
-      setLoading(false);
-      setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
-    });
-  };
-
-  const clickOverlayMarker = (position: Coordinate) => {
-    clickMarker(position);
-    setCenter(position);
-  };
-
-  const clickZoom = (number: number) => {
-    setZoom(prev => prev + number);
   };
 
   const clickMyLocationButton = () => {
@@ -156,7 +146,7 @@ const StyledZoomUI = styled.div`
   position: absolute;
   top: 24px;
   right: 24px;
-  
+
   & > button {
     ${mapUIBase}
     width: 40px;
