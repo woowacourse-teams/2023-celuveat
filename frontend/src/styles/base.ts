@@ -29,6 +29,7 @@ const base = css`
     --black: #424242;
     --white: #fff;
     --shadow: 0 1px 16px 0 rgb(66 66 66 / 10%);
+    --map-shadow: 0 6px 16px rgb(0 0 0 / 12%);
   }
 
   * {
