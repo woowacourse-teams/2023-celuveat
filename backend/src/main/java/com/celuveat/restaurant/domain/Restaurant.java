@@ -19,10 +19,10 @@ public class Restaurant extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String roadAddress;
+    private String category;
 
     @Column(nullable = false)
-    private String category;
+    private String roadAddress;
 
     @Column(nullable = false)
     private Double latitude;
@@ -39,12 +39,12 @@ public class Restaurant extends BaseEntity {
         return name;
     }
 
-    public String roadAddress() {
-        return roadAddress;
-    }
-
     public String category() {
         return category;
+    }
+
+    public String roadAddress() {
+        return roadAddress;
     }
 
     public Double latitude() {

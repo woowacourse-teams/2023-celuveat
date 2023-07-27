@@ -11,10 +11,8 @@ public record RestaurantQueryResponse(
         String name,
         String category,
         String roadAddress,
-        @JsonProperty("lat")
-        Double latitude,
-        @JsonProperty("lng")
-        Double longitude,
+        @JsonProperty("lat") Double latitude,
+        @JsonProperty("lng") Double longitude,
         String phoneNumber,
         String naverMapUrl,
         List<CelebQueryResponse> celebs,
