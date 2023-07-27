@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { FONT_SIZE } from '~/styles/common';
@@ -15,7 +14,9 @@ function NavButton({ icon, label, isShow = false, ...props }: NavButtonProps) {
   return (
     <StyledNavButton data-label={label} isShow={isShow} {...props}>
       <div>{icon}</div>
-      <div>{label}</div>
+      <div>
+        <span>{label}</span>
+      </div>
     </StyledNavButton>
   );
 }
@@ -25,23 +26,71 @@ export default NavButton;
 const StyledNavButton = styled.button<{ isShow: boolean }>`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem 0;
 
-  width: fit-content;
-  height: 56px;
-
-  margin: 1.6rem 0 1rem;
+  width: 80px;
 
   border: none;
-  background: var(--white);
-  outline: none;
+  background: none;
 
   font-size: ${FONT_SIZE.sm};
 
+  & > *:first-child > svg {
+    fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
+  }
+
+  &:hover > *:first-child > svg {
+    fill: var(--black);
+  }
+
+  & > * > * {
+    color: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
+  }
+
+  &:hover > * > * {
+    color: var(--black);
+  }
+
   ${({ isShow }) =>
-    isShow &&
-    css`
-      border-bottom: 3px solid var(--black);
-    `};
+    isShow
+      ? css`
+          & > div:last-child {
+            position: relative;
+
+            &::after {
+              position: absolute;
+              top: calc(100% + 12px);
+              z-index: -1;
+
+              height: 2px;
+
+              background-color: var(--black);
+              white-space: nowrap;
+              inset-inline: 0;
+              content: '';
+            }
+          }
+        `
+      : css`
+          &:hover {
+            & > div:last-child {
+              position: relative;
+
+              &::after {
+                position: absolute;
+                top: calc(100% + 12px);
+                z-index: -1;
+
+                height: 2px;
+
+                background: var(--gray-2);
+                white-space: nowrap;
+                inset-inline: 0;
+                content: '';
+              }
+            }
+          }
+        `};
 `;

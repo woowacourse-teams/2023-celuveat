@@ -36,13 +36,7 @@ export default CategoryNavbar;
 
 const StyledCategoryNavbarWrapper = styled.ul`
   display: flex;
-  gap: 1.2rem;
+  align-items: center;
 
-  width: 100%;
-  height: 56px;
-
-  padding: 1.8rem 0;
-
-  border-radius: 10px;
   background: transparent;
 `;
