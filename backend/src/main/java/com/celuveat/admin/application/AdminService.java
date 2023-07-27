@@ -1,7 +1,9 @@
 package com.celuveat.admin.application;
 
+import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
 import static com.celuveat.restaurant.domain.SocialMedia.YOUTUBE;
 
+import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -11,6 +13,9 @@ import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,9 +36,17 @@ public class AdminService {
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
             RestaurantImage restaurantImage = request.toRestaurantImage(YOUTUBE, restaurant);
-            Video video = request.toVideo(celeb, restaurant);
+            Video video = request.toVideo(celeb, restaurant, toLocalDate(request.videoUploadDate()));
 
             saveAllData(celeb, restaurant, restaurantImage, video);
+        }
+    }
+
+    private LocalDate toLocalDate(String rawData) {
+        try {
+            return LocalDate.parse(rawData, DateTimeFormatter.ofPattern("yyyy. M. d."));
+        } catch (DateTimeParseException e) {
+            throw new AdminException(ILLEGAL_DATE_FORMAT);
         }
     }
 

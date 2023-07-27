@@ -6,7 +6,6 @@ import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.SocialMedia;
 import com.celuveat.video.domain.Video;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import lombok.Builder;
 
 @Builder
@@ -73,10 +72,10 @@ public record SaveDataRequest(
                 .build();
     }
 
-    public Video toVideo(Celeb celeb, Restaurant restaurant) {
+    public Video toVideo(Celeb celeb, Restaurant restaurant, LocalDate localDate) {
         return Video.builder()
                 .youtubeUrl(youtubeVideoUrl)
-                .uploadDate(LocalDate.parse(videoUploadDate, DateTimeFormatter.ofPattern("yyyy. M. d.")))
+                .uploadDate(localDate)
                 .celeb(celeb)
                 .restaurant(restaurant)
                 .build();
