@@ -13,7 +13,7 @@ public record RestaurantImageQueryResponse(
     public static RestaurantImageQueryResponse of(RestaurantImage restaurantImage) {
         return new RestaurantImageQueryResponse(
                 restaurantImage.id(),
-                Base64Util.encode(restaurantImage.name().replace(".png", "")) + ".png",
+                Base64Util.encode(restaurantImage.name().replace(".jpeg", "")) + ".jpeg",
                 restaurantImage.author(),
                 restaurantImage.author()
         );
