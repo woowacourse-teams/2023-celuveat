@@ -1,14 +1,5 @@
 package com.celuveat.admin.application;
 
-import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
-import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
-import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
-import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구내식당;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
@@ -18,7 +9,6 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.video.domain.VideoRepository;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -29,6 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
+import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
+import static com.celuveat.admin.exception.AdminExceptionType.NOT_EXISTS_CELEB;
+import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구내식당;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
@@ -59,8 +60,10 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // then
-        assertThatThrownBy(() -> adminService.saveData(요청))
-                .isInstanceOf(AdminException.class);
+        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
+                adminService.saveData(요청)
+        ).exceptionType();
+        assertThat(exceptionType).isEqualTo(NOT_EXISTS_CELEB);
     }
 
     @ParameterizedTest
