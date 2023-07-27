@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { RestaurantCategory } from '~/@types/restaurant.types';
-import NavButton from '~/components/@common/NavButton';
+import NavItem from '~/components/@common/NavButton/NavButton';
+
 import isEqual from '~/utils/compare';
 
 interface Category {
@@ -26,7 +27,9 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   return (
     <StyledCategoryNavbarWrapper>
       {categories.map(({ icon, label }) => (
-        <NavButton label={label} icon={icon} isShow={isEqual(selected, label)} onClick={clickCategory(label)} />
+        <StyledNavItemButton data-label={label} type="button" onClick={clickCategory(label)}>
+          <NavItem label={label} icon={icon} isShow={isEqual(selected, label)} />
+        </StyledNavItemButton>
       ))}
     </StyledCategoryNavbarWrapper>
   );
@@ -39,4 +42,12 @@ const StyledCategoryNavbarWrapper = styled.ul`
   align-items: center;
 
   background: transparent;
+`;
+
+const StyledNavItemButton = styled.button`
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  outline: none;
 `;

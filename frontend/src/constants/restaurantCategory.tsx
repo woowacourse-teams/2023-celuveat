@@ -17,6 +17,10 @@ interface Category {
 
 const RESTAURANT_CATEGORY: Category[] = [
   {
+    label: '전체',
+    icon: <Pasta />,
+  },
+  {
     label: '일식당',
     icon: <Japanese />,
   },

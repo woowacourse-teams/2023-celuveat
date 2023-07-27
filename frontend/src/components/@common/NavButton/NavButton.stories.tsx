@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import NavButton from './NavButton';
 import FastFoodIcon from '~/assets/icons/fastFood.svg';
+import NavItem from '~/components/@common/NavButton/NavButton';
 
-const meta: Meta<typeof NavButton> = {
-  title: 'NavButton',
-  component: NavButton,
+const meta: Meta<typeof NavItem> = {
+  title: 'NavItem',
+  component: NavItem,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof NavButton>;
+type Story = StoryObj<typeof NavItem>;
 
 export const Default: Story = {
   args: {
