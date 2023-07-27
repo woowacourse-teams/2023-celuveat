@@ -42,6 +42,10 @@ public class AcceptanceSteps {
                 .isEqualTo(예외_타입.errorMessage());
     }
 
+    public static void 잘못된_요청_예외를_검증한다(ExtractableResponse<Response> 잘못된_요청_응답) {
+        assertThat(잘못된_요청_응답.statusCode()).isEqualTo(잘못된_요청.value());
+    }
+
     public static <T> void 값이_존재한다(T t) {
         assertThat(t).isNotNull();
     }
