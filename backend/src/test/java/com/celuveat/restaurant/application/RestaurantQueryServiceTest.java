@@ -26,8 +26,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
-@DisplayName("음식점 조회용 서비스(RestaurantQueryService) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@DisplayName("음식점 조회용 서비스(RestaurantQueryService) 은(는)")
 class RestaurantQueryServiceTest {
 
     private final List<RestaurantQueryResponse> seed = new ArrayList<>();

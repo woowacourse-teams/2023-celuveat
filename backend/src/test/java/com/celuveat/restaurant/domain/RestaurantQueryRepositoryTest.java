@@ -25,8 +25,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
-@DisplayName("레스토랑 조회용 Repo(RestaurantQueryRepository) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@DisplayName("레스토랑 조회용 Repo(RestaurantQueryRepository) 은(는)")
 class RestaurantQueryRepositoryTest {
 
     private final List<RestaurantQueryResponse> seed = new ArrayList<>();
