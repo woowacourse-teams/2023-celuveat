@@ -2,6 +2,7 @@ package com.celuveat.acceptance.admin;
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static io.restassured.http.ContentType.TEXT;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import io.restassured.response.ExtractableResponse;
@@ -35,7 +36,7 @@ public class AdminAcceptanceSteps {
 
     public static ExtractableResponse<Response> 데이터_저장_요청(String data) {
         return given()
-                .contentType(TEXT.withCharset("UTF-8"))
+                .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
                 .when().post("/api/admin/data")
                 .then().log().all()

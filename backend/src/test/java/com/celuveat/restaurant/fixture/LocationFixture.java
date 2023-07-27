@@ -26,5 +26,4 @@ public class LocationFixture {
             Double longitude
     ) {
     }
-
 }

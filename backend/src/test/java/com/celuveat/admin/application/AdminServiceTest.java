@@ -1,27 +1,5 @@
 package com.celuveat.admin.application;
 
-import com.celuveat.admin.exception.AdminException;
-import com.celuveat.admin.presentation.dto.SaveDataRequest;
-import com.celuveat.celeb.domain.Celeb;
-import com.celuveat.celeb.domain.CelebRepository;
-import com.celuveat.common.exception.BaseExceptionType;
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantImageRepository;
-import com.celuveat.restaurant.domain.RestaurantRepository;
-import com.celuveat.video.domain.VideoRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
@@ -31,10 +9,27 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Transactional
-@SpringBootTest
-@Sql("/truncate.sql")
-@DisplayName("AdminService 은(는)")
+import com.celuveat.admin.exception.AdminException;
+import com.celuveat.admin.presentation.dto.SaveDataRequest;
+import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.domain.CelebRepository;
+import com.celuveat.common.IntegrationTest;
+import com.celuveat.common.exception.BaseExceptionType;
+import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantImageRepository;
+import com.celuveat.restaurant.domain.RestaurantRepository;
+import com.celuveat.video.domain.VideoRepository;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@IntegrationTest
+@DisplayName("어드민 서비스(AdminService) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminServiceTest {
 
@@ -60,9 +55,8 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // then
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.saveData(요청)
-        ).exceptionType();
+        BaseExceptionType exceptionType = assertThrows(AdminException.class,
+                () -> adminService.saveData(요청)).exceptionType();
         assertThat(exceptionType).isEqualTo(NOT_EXISTS_CELEB);
     }
 
@@ -72,13 +66,13 @@ class AdminServiceTest {
         // given
         셀럽_저장(셀럽("도기"));
 
+        // when
         String input = 잘못된_입력_생성("도기", "농민백암순대", 영상_업로드_날짜);
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
-        // expect
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.saveData(요청)
-        ).exceptionType();
+        // then
+        BaseExceptionType exceptionType = assertThrows(AdminException.class,
+                () -> adminService.saveData(요청)).exceptionType();
         assertThat(exceptionType).isEqualTo(ILLEGAL_DATE_FORMAT);
     }
 
@@ -88,9 +82,7 @@ class AdminServiceTest {
         셀럽_저장(셀럽("도기"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금")
-                + System.lineSeparator()
-                + 입력_생성("도기", "농민백암순대");
+        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("도기", "농민백암순대");
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
@@ -110,9 +102,7 @@ class AdminServiceTest {
         셀럽_저장(셀럽("로이스"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금")
-                + System.lineSeparator()
-                + 입력_생성("로이스", "국민연금");
+        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("로이스", "국민연금");
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when

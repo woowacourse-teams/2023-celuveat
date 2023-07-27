@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DisplayName("Restaurant 인수테스트")
+@DisplayName("음식점 인수테스트")
 public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Autowired
