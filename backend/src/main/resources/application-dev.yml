@@ -1,7 +1,7 @@
 logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
-    org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
+    org.apache.coyote.http11: debug
 
 spring:
   datasource:
