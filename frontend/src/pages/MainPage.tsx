@@ -32,7 +32,8 @@ function MainPage() {
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
-      setData(response);
+
+      setData(response.content);
     },
     [boundary, celebId, restaurantCategory],
   );
