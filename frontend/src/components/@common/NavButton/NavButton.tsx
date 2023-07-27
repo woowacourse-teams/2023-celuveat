@@ -51,44 +51,43 @@ const StyledNavButton = styled.div<{ isShow: boolean }>`
     color: var(--black);
   }
 
+  &:hover {
+    & > div:last-child {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        top: calc(100% + 12px);
+        z-index: -1;
+
+        height: 2px;
+
+        background: var(--gray-2);
+        white-space: nowrap;
+        inset-inline: 0;
+        content: '';
+      }
+    }
+  }
+
   ${({ isShow }) =>
-    isShow
-      ? css`
-          & > div:last-child {
-            position: relative;
+    isShow &&
+    css`
+      & > div:last-child {
+        position: relative;
 
-            &::after {
-              position: absolute;
-              top: calc(100% + 12px);
-              z-index: -1;
+        &::after {
+          position: absolute;
+          top: calc(100% + 12px);
+          z-index: -1;
 
-              height: 2px;
+          height: 2px;
 
-              background-color: var(--black);
-              white-space: nowrap;
-              inset-inline: 0;
-              content: '';
-            }
-          }
-        `
-      : css`
-          &:hover {
-            & > div:last-child {
-              position: relative;
-
-              &::after {
-                position: absolute;
-                top: calc(100% + 12px);
-                z-index: -1;
-
-                height: 2px;
-
-                background: var(--gray-2);
-                white-space: nowrap;
-                inset-inline: 0;
-                content: '';
-              }
-            }
-          }
-        `};
+          background-color: var(--black);
+          white-space: nowrap;
+          inset-inline: 0;
+          content: '';
+        }
+      }
+    `}
 `;
