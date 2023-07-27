@@ -66,10 +66,11 @@ class AdminServiceTest {
         // given
         셀럽_저장(셀럽("도기"));
 
+        // when
         String input = 잘못된_입력_생성("도기", "농민백암순대", 영상_업로드_날짜);
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
-        // expect
+        // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class,
                 () -> adminService.saveData(요청)).exceptionType();
         assertThat(exceptionType).isEqualTo(ILLEGAL_DATE_FORMAT);
