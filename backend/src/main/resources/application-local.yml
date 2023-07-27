@@ -4,11 +4,6 @@ logging:
     org.apache.coyote.http11: debug #Http 요청정보 로그 남기기
 
 spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER_CLASS_NAME}
 
   jpa:
     show-sql: true
@@ -19,7 +14,7 @@ spring:
         highlight_sql: true
 
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 
 cors:
-  allowedOrigins: ${CORS_ALLOW_ORIGINS}
+  allowedOrigins: http://localhost:3000
