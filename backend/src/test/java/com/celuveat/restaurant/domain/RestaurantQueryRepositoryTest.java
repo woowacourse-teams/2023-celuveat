@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @Sql("/truncate.sql")
-@DisplayName("RestaurantQueryRepository 은(는)")
+@DisplayName("레스토랑 조회용 Repo(RestaurantQueryRepository) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class RestaurantQueryRepositoryTest {
 

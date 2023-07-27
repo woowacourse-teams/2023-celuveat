@@ -7,11 +7,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.celeb.domain.Celeb;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("어드민 인수 테스트")
 class AdminAcceptanceTest extends AcceptanceTest {
 
-    private static final String 줄바꿈 = System.lineSeparator();
+    private final String 줄바꿈 = System.lineSeparator();
 
     @Test
     void 엑셀_스프레드_시트에서_긁은_데이터를_DB에_저장한다() {

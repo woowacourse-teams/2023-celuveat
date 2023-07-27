@@ -11,7 +11,7 @@ public record PageResponse<T>(
         int totalElementsCount,
         int currentElementsCount
 ) {
-    
+
     public static <T> PageResponse<T> from(Page<T> result) {
         return new PageResponse<>(
                 result.getContent(),
