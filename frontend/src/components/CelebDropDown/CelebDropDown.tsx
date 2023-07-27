@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { MouseEvent, useCallback, useState } from 'react';
-import NavButton from '~/components/@common/NavButton';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
 import SearchIcon from '~/assets/icons/search.svg';
 import isEqual from '~/utils/compare';
 import { Celeb } from '~/@types/celeb.types';
 import ProfileImage from '~/components/@common/ProfileImage';
+import NavItem from '~/components/@common/NavButton/NavButton';
 
 interface DropDownProps {
   celebs: Celeb[];
@@ -15,7 +15,7 @@ interface DropDownProps {
 }
 
 function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
-  const [selected, setSelected] = useState<Celeb['name']>('');
+  const [selected, setSelected] = useState<Celeb['name']>('전체');
   const [isShow, setIsShow] = useState(isOpen);
 
   const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
@@ -30,13 +30,15 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 
   return (
     <StyledCelebDropDown>
-      <NavButton label="셀럽" icon={<CelebIcon />} onClick={onToggleDropDown} isShow={isShow} />
+      <StyledNavItemWrapper onClick={onToggleDropDown} onBlur={onToggleDropDown}>
+        <NavItem label="셀럽" icon={<CelebIcon />} isShow={isShow} />
+      </StyledNavItemWrapper>
 
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
             {celebs.map(({ id, name, profileImageUrl }) => (
-              <StyledDropDownOption data-id={id} onClick={onSelection(name)}>
+              <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
                   {name}
@@ -52,6 +54,14 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 }
 
 export default CelebDropDown;
+
+const StyledNavItemWrapper = styled.button`
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  outline: none;
+`;
 
 const StyledCelebDropDown = styled.div`
   position: relative;
