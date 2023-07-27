@@ -24,7 +24,7 @@ function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
-  const [celebId, setCelebId] = useState<Celeb['id']>(null);
+  const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const { handleFetch } = useFetch('restaurants');
 
