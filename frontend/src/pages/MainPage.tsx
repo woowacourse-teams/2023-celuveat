@@ -1,10 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
-import { css, styled } from 'styled-components';
-import { RestaurantData } from '~/@types/api.types';
-import { Celeb } from '~/@types/celeb.types';
-import { Coordinate } from '~/@types/map.types';
-import { Restaurant, RestaurantModalInfo } from '~/@types/restaurant.types';
+import { styled, css } from 'styled-components';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
@@ -12,26 +7,35 @@ import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
-import CELEBS from '~/constants/celebs';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
+import CELEBS from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import useMapModal from '~/hooks/useMapModal';
-import { FONT_SIZE } from '~/styles/common';
 import getQueryString from '~/utils/getQueryString';
+import { FONT_SIZE } from '~/styles/common';
+import type { Celeb } from '~/@types/celeb.types';
+import type { RestaurantData } from '~/@types/api.types';
+import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
+import type { Restaurant, RestaurantCategory, RestaurantModalInfo } from '~/@types/restaurant.types';
 
 function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
   const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [data, setData] = useState<RestaurantData[]>([]);
-  const [boundary, setBoundary] = useState();
+  const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(null);
-  const [restaurantCategory, setRestaurantCategory] = useState('전체');
+  const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const { handleFetch } = useFetch('restaurants');
 
-  useEffect(() => {
-    fetchRestaurants();
-  }, [boundary]);
+  const fetchRestaurants = useCallback(
+    async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
+      const queryString = getQueryString(queryObject);
+      const response = await handleFetch({ queryString });
+      setData(response);
+    },
+    [boundary, celebId, restaurantCategory],
+  );
 
   const clickCard = (restaurant: Restaurant) => {
     const { lat, lng, ...restaurantModalInfo } = restaurant;
@@ -49,29 +53,27 @@ function MainPage() {
     setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
   };
 
-  const fetchRestaurants = useCallback(async () => {
-    const queryString = getQueryString({ boundary, celebId, category: restaurantCategory });
-    const response = await handleFetch({ queryString });
-    setData(response);
-  }, [boundary, celebId, restaurantCategory]);
-
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCategory = e.currentTarget.dataset.label;
+    const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
 
     setRestaurantCategory(currentCategory);
-    fetchRestaurants();
+    fetchRestaurants({ boundary, celebId, category: currentCategory });
   };
 
   const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCelebId = e.currentTarget.dataset.id;
+    const currentCelebId = Number(e.currentTarget.dataset.id);
 
-    setCelebId(Number(currentCelebId));
-    fetchRestaurants();
+    setCelebId(currentCelebId);
+    fetchRestaurants({ boundary, celebId: currentCelebId, category: restaurantCategory });
   };
 
   const toggleMapExpand = () => {
     setIsMapExpanded(prev => !prev);
   };
+
+  useEffect(() => {
+    fetchRestaurants({ boundary, celebId, category: restaurantCategory });
+  }, [boundary]);
 
   return (
     <>
