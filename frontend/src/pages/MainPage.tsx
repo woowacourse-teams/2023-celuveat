@@ -93,12 +93,7 @@ function MainPage() {
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map
-            clickMarker={clickMarker}
-            setBoundary={setBoundary}
-            markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
-            toggleMapExpand={toggleMapExpand}
-          />
+          <Map clickMarker={clickMarker} setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} />
           {currentRestaurant && (
             <MapModal
               modalOpen={modalOpen}

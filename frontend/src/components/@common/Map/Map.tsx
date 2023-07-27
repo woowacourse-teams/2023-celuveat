@@ -3,7 +3,6 @@ import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
 import OverlayMarker from './OverlayMarker';
 import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
-import type { Celeb } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
@@ -13,10 +12,11 @@ import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
+import { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
-  markers: { position: Coordinate; celebs: Celeb[] }[];
+  data: RestaurantData[];
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   toggleMapExpand: () => void;
 }
@@ -27,7 +27,7 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers, setBoundary, toggleMapExpand }: MapProps) {
+function Map({ clickMarker, data, setBoundary, toggleMapExpand }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -85,8 +85,8 @@ function Map({ clickMarker, markers, setBoundary, toggleMapExpand }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        {markers.map(({ position, celebs }) => (
-          <OverlayMarker position={position} onClick={clickOverlayMarker} celeb={celebs[0]} />
+        {data.map(({ celebs, ...restaurant }) => (
+          <OverlayMarker restaurant={restaurant} onClick={clickOverlayMarker} celeb={celebs[0]} />
         ))}
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (

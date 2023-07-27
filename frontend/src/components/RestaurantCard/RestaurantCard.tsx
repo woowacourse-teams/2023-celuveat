@@ -6,8 +6,8 @@ import { Celeb } from '~/@types/celeb.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
-  celebs: Celeb[];
-  size: number;
+  celebs?: Celeb[];
+  size?: number;
   onClick: React.MouseEventHandler;
 }
 
@@ -25,7 +25,7 @@ function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardPro
           <StyledAddress>02-1234-5678</StyledAddress>
         </StyledInfo>
         <StyledProfileImageSection>
-          <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />
+          {celebs && <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />}
         </StyledProfileImageSection>
       </section>
     </StyledContainer>
