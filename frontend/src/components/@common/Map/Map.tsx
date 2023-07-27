@@ -15,7 +15,6 @@ import Plus from '~/assets/icons/plus.svg';
 import { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
-  clickMarker: ({ lat, lng }: Coordinate) => void;
   data: RestaurantData[];
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   toggleMapExpand: () => void;
@@ -27,7 +26,7 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, data, setBoundary, toggleMapExpand }: MapProps) {
+function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -60,11 +59,6 @@ function Map({ clickMarker, data, setBoundary, toggleMapExpand }: MapProps) {
     });
   };
 
-  const clickOverlayMarker = (position: Coordinate) => {
-    clickMarker(position);
-    setCenter(position);
-  };
-
   const clickZoom =
     (number: number): React.MouseEventHandler<HTMLButtonElement> =>
     () => {
@@ -86,7 +80,7 @@ function Map({ clickMarker, data, setBoundary, toggleMapExpand }: MapProps) {
         center={center}
       >
         {data.map(({ celebs, ...restaurant }) => (
-          <OverlayMarker restaurant={restaurant} onClick={clickOverlayMarker} celeb={celebs[0]} />
+          <OverlayMarker restaurant={restaurant} onClick={() => {}} celeb={celebs[0]} />
         ))}
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (
