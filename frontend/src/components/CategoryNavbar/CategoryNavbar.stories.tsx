@@ -18,7 +18,7 @@ const categories: Category[] = [
     icon: <FastFood />,
   },
   {
-    label: '초밥, 롤',
+    label: '초밥,롤',
     icon: <FastFood />,
   },
   {
@@ -30,7 +30,7 @@ const categories: Category[] = [
     icon: <FastFood />,
   },
   {
-    label: '육류, 고기요리',
+    label: '육류,고기요리',
     icon: <FastFood />,
   },
   {

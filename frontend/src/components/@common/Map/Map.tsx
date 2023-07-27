@@ -2,22 +2,23 @@ import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
 import OverlayMarker from './OverlayMarker';
-import type { Coordinate } from '~/@types/map.types';
+import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import type { Celeb } from '~/@types/celeb.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
 import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
+import LeftBracket from '~/assets/icons/left-bracket.svg';
+import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
-import { RestaurantData } from '~/@types/api.types';
-import useFetch from '~/hooks/useFetch';
 
 interface MapProps {
   clickMarker: ({ lat, lng }: Coordinate) => void;
   markers: { position: Coordinate; celebs: Celeb[] }[];
-  setData: React.Dispatch<React.SetStateAction<RestaurantData[]>>;
+  setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
+  toggleMapExpand: () => void;
 }
 
 const render = (status: Status) => {
@@ -26,13 +27,13 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ clickMarker, markers, setData }: MapProps) {
+function Map({ clickMarker, markers, setBoundary, toggleMapExpand }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { handleFetch } = useFetch('restaurants');
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -45,16 +46,9 @@ function Map({ clickMarker, markers, setData }: MapProps) {
     const highLatitude = String(m.getBounds().getNorthEast().lat());
     const lowLongitude = String(m.getBounds().getSouthWest().lng());
     const highLongitude = String(m.getBounds().getNorthEast().lng());
+    const coordinateBoundary = { lowLatitude, highLatitude, lowLongitude, highLongitude };
 
-    const queryString = new URLSearchParams({ lowLatitude, highLatitude, lowLongitude, highLongitude }).toString();
-
-    const fetchRestaurants = async () => {
-      const response = await handleFetch({ queryString });
-
-      setData(response);
-    };
-
-    fetchRestaurants();
+    setBoundary(coordinateBoundary);
   };
 
   const clickMyLocationButton = () => {
@@ -71,8 +65,15 @@ function Map({ clickMarker, markers, setData }: MapProps) {
     setCenter(position);
   };
 
-  const clickZoom = (number: number) => {
-    setZoom(prev => prev + number);
+  const clickZoom =
+    (number: number): React.MouseEventHandler<HTMLButtonElement> =>
+    () => {
+      setZoom(prev => prev + number);
+    };
+
+  const clickMapExpand = () => {
+    setIsMapExpanded(prev => !prev);
+    toggleMapExpand();
   };
 
   return (
@@ -97,14 +98,17 @@ function Map({ clickMarker, markers, setData }: MapProps) {
           <MyLocation />
         </StyledMyPositionButtonUI>
         <StyledZoomUI>
-          <button type="button" onClick={() => clickZoom(1)}>
+          <button type="button" onClick={clickZoom(1)}>
             <Plus />
           </button>
           <div />
-          <button type="button" onClick={() => clickZoom(-1)}>
+          <button type="button" onClick={clickZoom(-1)}>
             <Minus />
           </button>
         </StyledZoomUI>
+        <StyledMapExpandButton onClick={clickMapExpand}>
+          {isMapExpanded ? <RightBracket /> : <LeftBracket />}
+        </StyledMapExpandButton>
       </MapContent>
     </Wrapper>
   );
@@ -126,8 +130,8 @@ const LoadingUI = styled.div`
 const StyledMyPositionButtonUI = styled.button`
   ${mapUIBase}
   position: absolute;
-  top: 24px;
-  left: 24px;
+  top: 129px;
+  right: 24px;
 
   width: 40px;
   height: 40px;
@@ -156,4 +160,14 @@ const StyledZoomUI = styled.div`
 
     opacity: 0.1;
   }
+`;
+
+const StyledMapExpandButton = styled.button`
+  ${mapUIBase}
+  position: absolute;
+  top: 24px;
+  left: 24px;
+
+  width: 40px;
+  height: 40px;
 `;

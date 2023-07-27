@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MouseEvent, useCallback, useState } from 'react';
 import NavButton from '~/components/@common/NavButton';
 
-import FastFoodIcon from '~/assets/icons/fastFood.svg';
+import CelebIcon from '~/assets/icons/celeb.svg';
 import SearchIcon from '~/assets/icons/search.svg';
 import isEqual from '~/utils/compare';
 import { Celeb } from '~/@types/celeb.types';
@@ -10,7 +10,7 @@ import ProfileImage from '~/components/@common/ProfileImage';
 
 interface DropDownProps {
   celebs: Celeb[];
-  isOpen: boolean;
+  isOpen?: boolean;
   externalOnClick?: (e?: MouseEvent<HTMLLIElement>) => void;
 }
 
@@ -29,14 +29,14 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
   }, [isShow]);
 
   return (
-    <>
-      <NavButton label="셀럽" icon={<FastFoodIcon />} onClick={onToggleDropDown} isShow={isShow} />
+    <StyledCelebDropDown>
+      <NavButton label="셀럽" icon={<CelebIcon />} onClick={onToggleDropDown} isShow={isShow} />
 
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {celebs.map(({ name, profileImageUrl }) => (
-              <StyledDropDownOption data-name={name} onClick={onSelection(name)}>
+            {celebs.map(({ id, name, profileImageUrl }) => (
+              <StyledDropDownOption data-id={id} onClick={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
                   {name}
@@ -47,16 +47,24 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
           </StyledSelectContainer>
         </StyledDropDownWrapper>
       )}
-    </>
+    </StyledCelebDropDown>
   );
 }
 
 export default CelebDropDown;
 
+const StyledCelebDropDown = styled.div`
+  position: relative;
+`;
+
 const StyledDropDownWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   align-content: center;
+
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 18px;
 
   width: 216px;
   height: 176px;
@@ -64,9 +72,9 @@ const StyledDropDownWrapper = styled.ul`
   padding: 1.8rem 0;
 
   border-radius: 10px;
-  background: transparent;
+  background: white;
 
-  box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+  box-shadow: var(--shadow);
 `;
 
 const StyledSelectContainer = styled.div`

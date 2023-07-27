@@ -47,6 +47,8 @@ const StyledContainer = styled.div`
     display: flex;
     justify-content: space-between;
   }
+
+  cursor: pointer;
 `;
 
 const StyledImage = styled.img`
