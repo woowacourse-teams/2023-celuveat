@@ -43,7 +43,7 @@ public class RestaurantQueryService {
         Map<Restaurant, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
         List<RestaurantImage> images = findImageByRestaurantIn(restaurants.getContent());
         Map<Restaurant, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
-        List<RestaurantQueryResponse> responseList = toResponseList(celebs, restaurantListMap);
+        List<RestaurantQueryResponse> responseList = toResponseList(restaurants, celebs, restaurantListMap);
         return new PageImpl<>(responseList, pageable, restaurants.getTotalPages());
     }
 
@@ -77,10 +77,11 @@ public class RestaurantQueryService {
     }
 
     private List<RestaurantQueryResponse> toResponseList(
+            Page<Restaurant> restaurants,
             Map<Restaurant, List<Celeb>> celebs,
             Map<Restaurant, List<RestaurantImage>> images
     ) {
-        return images.keySet().stream()
+        return restaurants.getContent().stream()
                 .map(restaurant -> toResponse(celebs.get(restaurant), images.get(restaurant), restaurant))
                 .toList();
     }
