@@ -13,6 +13,7 @@ import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
+import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
@@ -26,13 +27,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SpringBootTest
-@Sql("/truncate.sql")
+@IntegrationTest
 @DisplayName("어드민 서비스(AdminService) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminServiceTest {
@@ -59,9 +55,8 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // then
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.saveData(요청)
-        ).exceptionType();
+        BaseExceptionType exceptionType = assertThrows(AdminException.class,
+                () -> adminService.saveData(요청)).exceptionType();
         assertThat(exceptionType).isEqualTo(NOT_EXISTS_CELEB);
     }
 
@@ -75,9 +70,8 @@ class AdminServiceTest {
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // expect
-        BaseExceptionType exceptionType = assertThrows(AdminException.class, () ->
-                adminService.saveData(요청)
-        ).exceptionType();
+        BaseExceptionType exceptionType = assertThrows(AdminException.class,
+                () -> adminService.saveData(요청)).exceptionType();
         assertThat(exceptionType).isEqualTo(ILLEGAL_DATE_FORMAT);
     }
 
@@ -87,9 +81,7 @@ class AdminServiceTest {
         셀럽_저장(셀럽("도기"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금")
-                + System.lineSeparator()
-                + 입력_생성("도기", "농민백암순대");
+        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("도기", "농민백암순대");
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
@@ -109,9 +101,7 @@ class AdminServiceTest {
         셀럽_저장(셀럽("로이스"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금")
-                + System.lineSeparator()
-                + 입력_생성("로이스", "국민연금");
+        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("로이스", "국민연금");
         List<SaveDataRequest> 요청 = 요청_생성(input);
 
         // when
@@ -151,16 +141,7 @@ class AdminServiceTest {
     }
 
     private String 잘못된_입력_생성(String 셀럽_이름, String 음식점_이름, String 영상_업로드_날짜) {
-        return "@" + 셀럽_이름 +
-                "\t" + 음식점_이름 + "png" +
-                "\t유튜브링크" +
-                "\t" + 영상_업로드_날짜 +
-                "\t" + 음식점_이름 +
-                "\t" + 음식점_이름 + " 주소" +
-                "\t전화번호" +
-                "\t카테고리" +
-                "\t음식점네이버링크" +
-                "\t12.3456" +
-                "\t12.3456";
+        return "@" + 셀럽_이름 + "\t" + 음식점_이름 + "png" + "\t유튜브링크" + "\t" + 영상_업로드_날짜 + "\t" + 음식점_이름 + "\t" + 음식점_이름
+                + " 주소" + "\t전화번호" + "\t카테고리" + "\t음식점네이버링크" + "\t12.3456" + "\t12.3456";
     }
 }

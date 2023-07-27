@@ -6,6 +6,7 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
@@ -20,15 +21,10 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@SpringBootTest
-@Sql("/truncate.sql")
+@IntegrationTest
 @DisplayName("레스토랑 조회용 Repo(RestaurantQueryRepository) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class RestaurantQueryRepositoryTest {
