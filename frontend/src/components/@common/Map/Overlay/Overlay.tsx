@@ -14,6 +14,14 @@ function Overlay({ position, pane = 'floatPane', map, zIndex, children }: Overla
   const container = useMemo(() => {
     const div = document.createElement('div');
     div.style.position = 'absolute';
+    div.style.zIndex = '1';
+    div.onmouseover = function () {
+      div.style.zIndex = '1';
+    };
+    div.onmouseout = function () {
+      div.style.zIndex = 'auto';
+    };
+
     return div;
   }, []);
 
