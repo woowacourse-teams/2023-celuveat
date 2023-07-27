@@ -13,6 +13,7 @@ import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
 import { RestaurantData } from '~/@types/api.types';
+import getQuadrant from '~/utils/getQuadrant';
 
 interface MapProps {
   data: RestaurantData[];
@@ -33,6 +34,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [mainPosition, setMainPosition] = useState({ lat: 37.5057482, lng: 127.050727 });
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -40,6 +42,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
+    setMainPosition({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
 
     const lowLatitude = String(m.getBounds().getSouthWest().lat());
     const highLatitude = String(m.getBounds().getNorthEast().lat());
@@ -79,9 +82,17 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        {data.map(({ celebs, ...restaurant }) => (
-          <OverlayMarker restaurant={restaurant} onClick={() => {}} celeb={celebs[0]} />
-        ))}
+        {data.map(({ celebs, ...restaurant }) => {
+          const { lat, lng } = restaurant;
+          return (
+            <OverlayMarker
+              restaurant={restaurant}
+              onClick={() => {}}
+              celeb={celebs[0]}
+              quadrant={getQuadrant(mainPosition, { lat, lng })}
+            />
+          );
+        })}
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (
           <LoadingUI>
