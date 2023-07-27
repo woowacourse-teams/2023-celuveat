@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,17 +32,19 @@ public class RestaurantQueryService {
     private final RestaurantImageRepository restaurantImageRepository;
     private final VideoRepository videoRepository;
 
-    public List<RestaurantQueryResponse> findAll(
+    public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
-            LocationSearchCond locationSearchCond
+            LocationSearchCond locationSearchCond,
+            Pageable pageable
     ) {
-        List<Restaurant> restaurants =
-                restaurantQueryRepository.getRestaurants(restaurantSearchCond, locationSearchCond);
-        List<Video> videos = findVideoByRestaurantIn(restaurants);
+        Page<Restaurant> restaurants =
+                restaurantQueryRepository.getRestaurants(restaurantSearchCond, locationSearchCond, pageable);
+        List<Video> videos = findVideoByRestaurantIn(restaurants.getContent());
         Map<Restaurant, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
-        List<RestaurantImage> images = findImageByRestaurantIn(restaurants);
+        List<RestaurantImage> images = findImageByRestaurantIn(restaurants.getContent());
         Map<Restaurant, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
-        return toResponseList(celebs, restaurantListMap);
+        List<RestaurantQueryResponse> responseList = toResponseList(celebs, restaurantListMap);
+        return new PageImpl<>(responseList, pageable, restaurants.getTotalPages());
     }
 
     private List<Video> findVideoByRestaurantIn(List<Restaurant> restaurants) {

@@ -3,6 +3,7 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
@@ -63,9 +64,9 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static void 조회_결과를_검증한다(List<RestaurantQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
-        List<RestaurantQueryResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
+        PageResponse<RestaurantQueryResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
-        assertThat(restaurantQueryResponse).usingRecursiveComparison()
+        assertThat(restaurantQueryResponse.content()).usingRecursiveComparison()
                 .isEqualTo(예상_응답);
     }
 

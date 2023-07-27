@@ -22,6 +22,8 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,14 +56,14 @@ class RestaurantQueryServiceTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, null, null),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(seed);
     }
 
@@ -77,14 +79,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, null),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -100,14 +102,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, category, null),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -123,14 +125,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, null, restaurantName),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -149,14 +151,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, category, null),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -176,14 +178,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, restaurantName),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -201,14 +203,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, category, restaurantName),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -228,14 +230,14 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, category, restaurantName),
-                new LocationSearchCond(null, null, null, null)
-        );
+                new LocationSearchCond(null, null, null, null),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -252,19 +254,19 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
                         박스_1번_지점포함.highLatitude(),
                         박스_1번_지점포함.lowLongitude(),
                         박스_1번_지점포함.highLongitude()
-                )
-        );
+                ),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 
@@ -283,19 +285,19 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
                         박스_1_2번_지점포함.highLatitude(),
                         박스_1_2번_지점포함.lowLongitude(),
                         박스_1_2번_지점포함.highLongitude()
-                )
-        );
+                ),
+                PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).usingRecursiveComparison()
+        assertThat(result.getContent()).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 }
