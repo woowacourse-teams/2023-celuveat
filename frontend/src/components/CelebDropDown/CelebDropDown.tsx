@@ -30,13 +30,15 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 
   return (
     <StyledCelebDropDown>
-      <NavButton label="셀럽" icon={<CelebIcon />} onClick={onToggleDropDown} isShow={isShow} />
+      <StyledNavButtonWrapper onClick={onToggleDropDown} onBlur={onToggleDropDown}>
+        <NavButton label="셀럽" icon={<CelebIcon />} isShow={isShow} />
+      </StyledNavButtonWrapper>
 
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
             {celebs.map(({ id, name, profileImageUrl }) => (
-              <StyledDropDownOption data-id={id} onClick={onSelection(name)}>
+              <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
                   {name}
@@ -52,6 +54,14 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
 }
 
 export default CelebDropDown;
+
+const StyledNavButtonWrapper = styled.button`
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  outline: none;
+`;
 
 const StyledCelebDropDown = styled.div`
   position: relative;

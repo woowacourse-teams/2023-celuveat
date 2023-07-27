@@ -6,13 +6,11 @@ interface NavButtonProps {
   label: string;
   icon: React.ReactNode;
   isShow?: boolean;
-  onClick?: (e?: React.MouseEvent<HTMLElement>) => void;
-  onBlur?: (e?: React.FocusEvent<HTMLElement>) => void;
 }
 
-function NavButton({ icon, label, isShow = false, ...props }: NavButtonProps) {
+function NavButton({ icon, label, isShow = false }: NavButtonProps) {
   return (
-    <StyledNavButton data-label={label} isShow={isShow} {...props}>
+    <StyledNavButton isShow={isShow}>
       <div>{icon}</div>
       <div>
         <span>{label}</span>
@@ -23,7 +21,7 @@ function NavButton({ icon, label, isShow = false, ...props }: NavButtonProps) {
 
 export default NavButton;
 
-const StyledNavButton = styled.button<{ isShow: boolean }>`
+const StyledNavButton = styled.div<{ isShow: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;

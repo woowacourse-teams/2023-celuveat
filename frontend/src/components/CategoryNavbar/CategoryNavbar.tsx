@@ -26,7 +26,9 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   return (
     <StyledCategoryNavbarWrapper>
       {categories.map(({ icon, label }) => (
-        <NavButton label={label} icon={icon} isShow={isEqual(selected, label)} onClick={clickCategory(label)} />
+        <StyledNavOptions data-label={label} type="button" onClick={clickCategory(label)}>
+          <NavButton label={label} icon={icon} isShow={isEqual(selected, label)} />
+        </StyledNavOptions>
       ))}
     </StyledCategoryNavbarWrapper>
   );
@@ -39,4 +41,12 @@ const StyledCategoryNavbarWrapper = styled.ul`
   align-items: center;
 
   background: transparent;
+`;
+
+const StyledNavOptions = styled.button`
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  outline: none;
 `;
