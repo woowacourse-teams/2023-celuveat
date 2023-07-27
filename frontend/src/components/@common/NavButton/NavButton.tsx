@@ -2,26 +2,26 @@ import styled, { css } from 'styled-components';
 
 import { FONT_SIZE } from '~/styles/common';
 
-interface NavButtonProps {
+interface NavItemProps {
   label: string;
   icon: React.ReactNode;
   isShow?: boolean;
 }
 
-function NavButton({ icon, label, isShow = false }: NavButtonProps) {
+function NavItem({ icon, label, isShow = false }: NavItemProps) {
   return (
-    <StyledNavButton isShow={isShow}>
+    <StyledNavItem isShow={isShow}>
       <div>{icon}</div>
       <div>
         <span>{label}</span>
       </div>
-    </StyledNavButton>
+    </StyledNavItem>
   );
 }
 
-export default NavButton;
+export default NavItem;
 
-const StyledNavButton = styled.div<{ isShow: boolean }>`
+const StyledNavItem = styled.div<{ isShow: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
