@@ -8,6 +8,7 @@ import Pub from '~/assets/icons/restaurantCategory/pub.svg';
 import Sashimi from '~/assets/icons/restaurantCategory/sashimi.svg';
 import Sushi from '~/assets/icons/restaurantCategory/sushi.svg';
 import Wine from '~/assets/icons/restaurantCategory/wine.svg';
+import All from '~/assets/icons/restaurantCategory/all.svg';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface Category {
@@ -18,7 +19,7 @@ interface Category {
 const RESTAURANT_CATEGORY: Category[] = [
   {
     label: '전체',
-    icon: <Pasta />,
+    icon: <All />,
   },
   {
     label: '일식당',
