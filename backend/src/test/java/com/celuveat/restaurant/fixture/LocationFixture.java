@@ -10,6 +10,8 @@ public class LocationFixture {
 
     public static final LocationSearchCond 박스_1번_지점포함 = new LocationSearchCond(37.50, 37.52, 127.06, 127.08);
     public static final LocationSearchCond 박스_1_2번_지점포함 = new LocationSearchCond(37.50, 37.53, 127.06, 127.09);
+    public static final LocationSearchCond 전체영역_검색_범위 =
+            new LocationSearchCond(10.0, 70.0, 0.0, 170.0);
 
     public static boolean isRestaurantInArea(
             LocationSearchCond locationSearchCond,

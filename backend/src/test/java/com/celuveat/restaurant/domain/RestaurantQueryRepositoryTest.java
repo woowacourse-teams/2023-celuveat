@@ -3,7 +3,9 @@ package com.celuveat.restaurant.domain;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
@@ -12,6 +14,7 @@ import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,15 +60,17 @@ class RestaurantQueryRepositoryTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(seed));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(seed));
     }
 
     @Test
@@ -80,15 +85,17 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -103,15 +110,17 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, category, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -126,16 +135,18 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -152,15 +163,17 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, category, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -177,15 +190,17 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -202,15 +217,17 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, category, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -229,9 +246,9 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, category, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 20));
 
         // then
@@ -250,7 +267,7 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -262,8 +279,10 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -277,7 +296,7 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
@@ -289,8 +308,10 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
@@ -306,7 +327,7 @@ class RestaurantQueryRepositoryTest {
         }
 
         // when
-        Page<Restaurant> result = restaurantQueryRepository.getRestaurants(
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -318,7 +339,9 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result).extracting(Restaurant::name)
-                .containsExactlyElementsOf(이름_추출(expected));
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 }

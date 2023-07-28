@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController {
 
     private static final int DEFAULT_SIZE = 18;
-    
+
     private final RestaurantQueryService restaurantQueryService;
 
     @GetMapping

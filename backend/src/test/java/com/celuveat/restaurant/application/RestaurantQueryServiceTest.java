@@ -3,7 +3,9 @@ package com.celuveat.restaurant.application;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
@@ -54,12 +56,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, null, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(seed);
     }
 
@@ -77,12 +83,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -100,12 +110,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, category, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -123,12 +137,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, null, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -149,12 +167,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, category, null),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -176,12 +198,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, null, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -201,12 +227,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(null, category, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -228,12 +258,16 @@ class RestaurantQueryServiceTest {
         // when
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
                 new RestaurantSearchCond(celebId, category, restaurantName),
-                new LocationSearchCond(null, null, null, null),
+                전체영역_검색_범위,
                 PageRequest.of(0, 100));
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -262,7 +296,11 @@ class RestaurantQueryServiceTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 
@@ -293,7 +331,11 @@ class RestaurantQueryServiceTest {
 
         // then
         assertThat(result).isNotEmpty();
-        assertThat(result.getContent()).usingRecursiveComparison()
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
                 .isEqualTo(expected);
     }
 }
