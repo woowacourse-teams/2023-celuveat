@@ -32,7 +32,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, onClick }: OverlayMar
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={32} border />
         </StyledMarker>
         <StyledModal isClicked={isClicked} quadrant={quadrant}>
-          <RestaurantCard restaurant={restaurant} onClick={() => {}} />
+          <RestaurantCard restaurant={restaurant} onClick={() => {}} type="map" />
         </StyledModal>
       </Overlay>
     )
@@ -64,7 +64,7 @@ const StyledModal = styled.div<{ isClicked: boolean; quadrant: Quadrant }>`
 
   position: absolute;
   top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '30px' : '-280px')};
-  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '30px' : '-200px')};
+  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '45px' : '-200px')};
 
   width: 200px;
 

@@ -8,15 +8,20 @@ interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs?: Celeb[];
   size?: number;
+  type?: 'list' | 'map';
   onClick: React.MouseEventHandler;
 }
 
-function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardProps) {
+function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`http://3.35.157.27:3000/images-data/${images[0].name}`} />
+      <StyledImage
+        alt={`${name} 대표 이미지`}
+        src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
+        type={type}
+      />
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
@@ -51,11 +56,12 @@ const StyledContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled.img<{ type: 'list' | 'map' }>`
   width: 100%;
   aspect-ratio: 1.05 / 1;
 
-  border-radius: ${BORDER_RADIUS.md};
+  border-radius: ${({ type }) =>
+    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
 
   object-fit: cover;
 `;
