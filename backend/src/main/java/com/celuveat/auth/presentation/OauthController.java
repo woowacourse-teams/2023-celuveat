@@ -1,8 +1,12 @@
 package com.celuveat.auth.presentation;
 
+import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
+
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthServerType;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
@@ -30,15 +34,15 @@ public class OauthController {
         return ResponseEntity.ok().build();
     }
 
-    @SneakyThrows
-    @GetMapping("/redirected/{oauthServerType}")
-    ResponseEntity<Long> login(
+    @GetMapping("/login/{oauthServerType}")
+    ResponseEntity<SessionResponse> login(
             @PathVariable OauthServerType oauthServerType,
             @RequestParam("code") String code,
-            HttpServletResponse response
+            HttpServletRequest request
     ) {
-        Long login = oauthService.login(oauthServerType, code);
-        response.sendRedirect("http://localhost:3000/mallang?accessToken=" + login);
-        return ResponseEntity.ok(login);
+        Long memberId = oauthService.login(oauthServerType, code);
+        HttpSession session = request.getSession(true);
+        session.setAttribute(JSESSION_ID, memberId);
+        return ResponseEntity.ok(new SessionResponse(session.getId()));
     }
 }
