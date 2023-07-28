@@ -28,8 +28,8 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, onClick }: OverlayMar
   return (
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
-        <StyledMarker type="button" onClick={clickMarker}>
-          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={32} border />
+        <StyledMarker onClick={clickMarker} isClicked={isClicked}>
+          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border />
         </StyledMarker>
         <StyledModal isClicked={isClicked} quadrant={quadrant}>
           <RestaurantCard restaurant={restaurant} onClick={() => {}} type="map" />
@@ -39,11 +39,19 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, onClick }: OverlayMar
   );
 }
 
-const StyledMarker = styled.button`
-  border: none;
-  background-color: transparent;
+const StyledMarker = styled.div<{ isClicked: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  transition: all 0.2s ease-in-out;
+  width: 36px;
+  height: 36px;
+
+  border: ${({ isClicked }) => (isClicked ? '3px solid var(--orange-2)' : '3px solid transparent')};
+  border-radius: 50%;
+
+  transition: transform 0.2s ease-in-out;
+  transform: ${({ isClicked }) => (isClicked ? 'scale(1.5)' : 'scale(1)')};
 
   &:hover {
     transform: scale(1.5);
@@ -63,8 +71,8 @@ const StyledModal = styled.div<{ isClicked: boolean; quadrant: Quadrant }>`
   display: ${({ isClicked }) => (isClicked ? 'block' : 'none')};
 
   position: absolute;
-  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '30px' : '-280px')};
-  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '45px' : '-200px')};
+  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '40px' : '-280px')};
+  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '45px' : '-210px')};
 
   width: 200px;
 

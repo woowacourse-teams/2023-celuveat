@@ -4,7 +4,7 @@ interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
   name: string;
   imageUrl: string;
   border?: boolean;
-  size: number;
+  size?: number;
 }
 
 function ProfileImage({ name = '셀럽', imageUrl, size, border = false, ...props }: ProfileImageProps) {
@@ -14,16 +14,8 @@ function ProfileImage({ name = '셀럽', imageUrl, size, border = false, ...prop
 export default ProfileImage;
 
 const StyledProfile = styled.img<{ size: number; border: boolean }>`
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
+  width: ${({ size }) => (size ? `${size}px` : '100%')};
+  height: ${({ size }) => (size ? `${size}px` : 'auto')};
 
-  border: ${({ border }) => (border ? `2px solid var(--primary-1)` : `none`)};
   border-radius: 50%;
-  background: var(--red-5);
-
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    border: ${({ border }) => (border ? `3px solid var(--orange-2)` : `none`)};
-  }
 `;
