@@ -7,7 +7,7 @@ import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RestaurantCard from '~/components/RestaurantCard';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import CELEBS from '~/constants/celebs';
+import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import getQueryString from '~/utils/getQueryString';
 import { FONT_SIZE } from '~/styles/common';
@@ -20,7 +20,7 @@ function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
-  const [celebId, setCelebId] = useState<Celeb['id']>(null);
+  const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const { handleFetch } = useFetch('restaurants');
 
@@ -28,6 +28,7 @@ function MainPage() {
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
+    
       setData(response.content);
     },
     [boundary, celebId, restaurantCategory],
@@ -59,7 +60,7 @@ function MainPage() {
     <>
       <Header />
       <StyledNavBar>
-        <CelebDropDown celebs={CELEBS} externalOnClick={clickCeleb} />
+        <CelebDropDown celebs={CELEBS_OPTIONS} externalOnClick={clickCeleb} />
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>

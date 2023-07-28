@@ -18,4 +18,5 @@ const StyledProfile = styled.img<{ size: number; border: boolean }>`
   height: ${({ size }) => (size ? `${size}px` : 'auto')};
 
   border-radius: 50%;
+  background: none;
 `;
