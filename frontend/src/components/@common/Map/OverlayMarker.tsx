@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useState } from 'react';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
@@ -22,14 +22,12 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, onClick }: OverlayMar
 
   const clickMarker = () => {
     onClick({ lat, lng });
-    setIsClicked(prev => !prev);
+    setIsClicked(!isClicked);
   };
-
-  console.log(quadrant);
 
   return (
     map && (
-      <Overlay position={{ lat, lng }} map={map}>
+      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
         <StyledMarker type="button" onClick={clickMarker}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={32} border />
         </StyledMarker>
@@ -52,20 +50,29 @@ const StyledMarker = styled.button`
   }
 `;
 
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const StyledModal = styled.div<{ isClicked: boolean; quadrant: Quadrant }>`
   display: ${({ isClicked }) => (isClicked ? 'block' : 'none')};
 
   position: absolute;
   top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '30px' : '-280px')};
   right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '30px' : '-200px')};
-  z-index: 1;
 
   width: 200px;
 
-  padding: 1.2rem;
-
   border-radius: 12px;
   background-color: #fff;
+
+  animation: ${fadeInAnimation} 100ms ease-in;
+  box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
 `;
 
 export default OverlayMarker;
