@@ -48,7 +48,7 @@ public class RestaurantQueryService {
         List<RestaurantImage> images = findImageByRestaurantIn(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
         List<RestaurantQueryResponse> responseList = toResponseList(restaurantsWithDistance, celebs, restaurantListMap);
-        return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalPages());
+        return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalElements());
     }
 
     private List<Video> findVideoByRestaurantIdIn(List<Long> restaurantIds) {
