@@ -87,7 +87,6 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
           return (
             <OverlayMarker
               restaurant={restaurant}
-              onClick={() => {}}
               celeb={celebs[0]}
               quadrant={getQuadrant(mainPosition, { lat, lng })}
             />
