@@ -14,6 +14,7 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
+import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -129,16 +130,50 @@ public class SeedData {
         ));
 
         return List.of(
-                RestaurantQueryResponse.from(말랑1호점, List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2)),
-                RestaurantQueryResponse.from(말랑2호점, List.of(말랑), List.of(말랑2호점_1)),
-                RestaurantQueryResponse.from(말랑3호점, List.of(말랑), List.of(말랑3호점_1, 말랑3호점_2, 말랑3호점_3)),
-                RestaurantQueryResponse.from(도기1호점, List.of(도기, 오도, 로이스), List.of(도기1호점_1, 도기1호점_2)),
-                RestaurantQueryResponse.from(도기2호점, List.of(도기), List.of(도기2호점_1, 도기2호점_2)),
-                RestaurantQueryResponse.from(도기3호점, List.of(도기, 오도), List.of(도기3호점_1, 도기3호점_2)),
-                RestaurantQueryResponse.from(오도1호점, List.of(오도, 로이스, 말랑), List.of(오도1호점_1, 오도1호점_2, 오도1호점_3)),
-                RestaurantQueryResponse.from(오도2호점, List.of(오도), List.of(오도2호점_1, 오도2호점_2)),
-                RestaurantQueryResponse.from(로이스1호점, List.of(말랑, 도기, 오도, 로이스), List.of(로이스1호점_1)),
-                RestaurantQueryResponse.from(로이스2호점, List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2))
+                RestaurantQueryResponse.from(
+                        withDistance(말랑1호점, 12.3), List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(말랑2호점, 9.3), List.of(말랑), List.of(말랑2호점_1)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(말랑3호점, 4.2), List.of(말랑), List.of(말랑3호점_1, 말랑3호점_2, 말랑3호점_3)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(도기1호점, 121.3), List.of(도기, 오도, 로이스), List.of(도기1호점_1, 도기1호점_2)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(도기2호점, 2.3), List.of(도기), List.of(도기2호점_1, 도기2호점_2)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(도기3호점, 12.1152), List.of(도기, 오도), List.of(도기3호점_1, 도기3호점_2)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(오도1호점, 2.34), List.of(오도, 로이스, 말랑), List.of(오도1호점_1, 오도1호점_2, 오도1호점_3)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(오도2호점, 1123.3), List.of(오도), List.of(오도2호점_1, 오도2호점_2)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(로이스1호점, 11112.3), List.of(말랑, 도기, 오도, 로이스), List.of(로이스1호점_1)
+                ),
+                RestaurantQueryResponse.from(
+                        withDistance(로이스2호점, 1852.4), List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2)
+                )
+        );
+    }
+
+    private RestaurantWithDistance withDistance(Restaurant restaurant, Double distance) {
+        return new RestaurantWithDistance(
+                restaurant.id(),
+                restaurant.name(),
+                restaurant.category(),
+                restaurant.roadAddress(),
+                restaurant.latitude(),
+                restaurant.longitude(),
+                restaurant.phoneNumber(),
+                restaurant.naverMapUrl(),
+                distance
         );
     }
 }

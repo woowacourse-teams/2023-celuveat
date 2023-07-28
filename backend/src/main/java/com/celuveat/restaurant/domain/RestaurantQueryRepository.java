@@ -7,6 +7,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 import com.celuveat.common.query.DynamicQuery;
 import com.celuveat.common.query.DynamicQueryAssembler;
+import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,14 @@ public class RestaurantQueryRepository {
                       longitude BETWEEN %s AND %s
             """;
 
-    private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
-            SELECT DISTINCT r
-            FROM Restaurant r
-            JOIN Video v
-            ON v.restaurant = r
-            JOIN Celeb c
-            ON c = v.celeb
-            """;
+//    private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
+//            SELECT DISTINCT r
+//            FROM Restaurant r
+//            JOIN Video v
+//            ON v.restaurant = r
+//            JOIN Celeb c
+//            ON c = v.celeb
+//            """;
 
     private static final String COUNT_QUERY = """
             SELECT DISTINCT count(*)
@@ -51,13 +52,41 @@ public class RestaurantQueryRepository {
             ON c = v.celeb
             """;
 
+    private static final String ORDER_BY_DISTANCE_ASC = """
+            ORDER BY dist ASC
+            """;
+
+    private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
+            SELECT DISTINCT new com.celuveat.restaurant.domain.dto.RestaurantWithDistance(
+                r.id,
+                r.name,
+                r.category,
+                r.roadAddress,
+                r.latitude,
+                r.longitude,
+                r.phoneNumber,
+                r.naverMapUrl,
+                (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
+                * cos(radians(longitude) - radians(%s))
+                + sin(radians(%s)) * sin(radians(latitude)))) * 1000 AS dist
+            )
+            FROM Restaurant r
+            JOIN Video v
+            ON v.restaurant = r
+            JOIN Celeb c
+            ON c = v.celeb
+            """;
+
     private final EntityManager em;
 
-    public Page<Restaurant> getRestaurants(
+    public Page<RestaurantWithDistance> getRestaurantsWithDistance(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
             Pageable pageable
     ) {
+        double middleLat = calculateMiddle(locationSearchCond.lowLatitude, locationSearchCond.highLatitude);
+        double middleLng = calculateMiddle(locationSearchCond.lowLongitude, locationSearchCond.highLongitude);
+
         DynamicQueryAssembler dynamicQueryAssembler = new DynamicQueryAssembler(
                 celebIdEqual(restaurantSearchCond),
                 restaurantCategoryEqual(restaurantSearchCond),
@@ -65,8 +94,13 @@ public class RestaurantQueryRepository {
                 restaurantInArea(locationSearchCond)
         );
         String whereQuery = dynamicQueryAssembler.assemble();
-        List<Restaurant> resultList = em
-                .createQuery(SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB + whereQuery, Restaurant.class)
+        List<RestaurantWithDistance> resultList = em
+                .createQuery(
+                        SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB.formatted(middleLat, middleLng, middleLat)
+                                + whereQuery
+                                + ORDER_BY_DISTANCE_ASC,
+                        RestaurantWithDistance.class
+                )
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
@@ -75,6 +109,10 @@ public class RestaurantQueryRepository {
                 pageable,
                 () -> (Long) em.createQuery(COUNT_QUERY + whereQuery).getSingleResult()
         );
+    }
+
+    private double calculateMiddle(double x, double y) {
+        return (x + y) / 2.0;
     }
 
     private DynamicQuery celebIdEqual(RestaurantSearchCond restaurantSearchCond) {
@@ -125,4 +163,3 @@ public class RestaurantQueryRepository {
     ) {
     }
 }
-
