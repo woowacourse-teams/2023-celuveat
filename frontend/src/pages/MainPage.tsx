@@ -17,6 +17,7 @@ import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData } from '~/@types/api.types';
 import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import type { Restaurant, RestaurantCategory, RestaurantModalInfo } from '~/@types/restaurant.types';
+import LoginButton from '~/components/@common/LoginButton/LoginButton';
 
 function MainPage() {
   const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
@@ -32,7 +33,7 @@ function MainPage() {
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
-    
+
       setData(response.content);
     },
     [boundary, celebId, restaurantCategory],
@@ -79,6 +80,9 @@ function MainPage() {
   return (
     <>
       <Header />
+      <LoginButton type="kakao" />
+      <LoginButton type="naver" />
+      <LoginButton type="google" />
       <StyledNavBar>
         <CelebDropDown celebs={CELEBS_OPTIONS} externalOnClick={clickCeleb} />
         <StyledLine />
