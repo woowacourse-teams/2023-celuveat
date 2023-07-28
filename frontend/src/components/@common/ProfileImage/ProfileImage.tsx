@@ -19,5 +19,5 @@ const StyledProfile = styled.img<{ size: number; border: boolean }>`
 
   border: ${({ border }) => (border ? `2px solid var(--primary-1)` : `none`)};
   border-radius: 50%;
-  background: var(--red-5);
+  background: none;
 `;
