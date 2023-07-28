@@ -34,15 +34,6 @@ public class RestaurantQueryRepository {
                       longitude BETWEEN %s AND %s
             """;
 
-//    private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
-//            SELECT DISTINCT r
-//            FROM Restaurant r
-//            JOIN Video v
-//            ON v.restaurant = r
-//            JOIN Celeb c
-//            ON c = v.celeb
-//            """;
-
     private static final String COUNT_QUERY = """
             SELECT DISTINCT count(*)
             FROM Restaurant r
