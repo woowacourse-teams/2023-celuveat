@@ -70,7 +70,7 @@ function MainPage() {
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => {}} />
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} />
             ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
