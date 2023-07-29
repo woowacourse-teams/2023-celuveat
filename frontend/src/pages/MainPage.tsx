@@ -71,7 +71,7 @@ function MainPage() {
           <RestaurantCardList restaurantDataList={data} loading={loading} />
         </StyledLeftSide>
         <StyledRightSide>
-          <Map setBoundary={setBoundary} data={data?.content} toggleMapExpand={toggleMapExpand} />
+          <Map setBoundary={setBoundary} data={data?.content} toggleMapExpand={toggleMapExpand} loadingData={loading} />
         </StyledRightSide>
       </StyledLayout>
       <Footer />

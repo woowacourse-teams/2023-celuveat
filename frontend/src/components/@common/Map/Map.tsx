@@ -19,6 +19,7 @@ interface MapProps {
   data: RestaurantData[];
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   toggleMapExpand: () => void;
+  loadingData: boolean;
 }
 
 const render = (status: Status) => {
@@ -27,7 +28,7 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
-function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
+function Map({ data, setBoundary, toggleMapExpand, loadingData }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -93,7 +94,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
           );
         })}
         {myPosition && <OverlayMyLocation position={myPosition} />}
-        {loading && (
+        {(loadingData || loading) && (
           <LoadingUI>
             <LoadingDots />
           </LoadingUI>
@@ -127,8 +128,7 @@ const LoadingUI = styled.div`
   right: calc(50% - 41px);
 
   width: 82px;
-
-  padding: 1.6rem 2.4rem;
+  height: 40px;
 `;
 
 const StyledMyPositionButtonUI = styled.button`
