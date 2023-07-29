@@ -1,11 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Menu from '~/assets/icons/etc/menu.svg';
 import User from '~/assets/icons/etc/user.svg';
 
-function InfoButton() {
+interface InfoButtonProps {
+  isShow?: boolean;
+}
+
+function InfoButton({ isShow = false }: InfoButtonProps) {
   return (
-    <StyledInfoButton>
+    <StyledInfoButton isShow={isShow}>
       <Menu />
       <User />
     </StyledInfoButton>
@@ -14,7 +18,7 @@ function InfoButton() {
 
 export default InfoButton;
 
-const StyledInfoButton = styled.button`
+const StyledInfoButton = styled.button<InfoButtonProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,6 +32,12 @@ const StyledInfoButton = styled.button`
   background: transparent;
 
   cursor: pointer;
+
+  ${({ isShow }) =>
+    isShow &&
+    css`
+      box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+    `}
 
   &:hover {
     box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
