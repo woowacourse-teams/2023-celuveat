@@ -25,8 +25,22 @@ interface MapProps {
 const render = (status: Status) => {
   if (status === Status.FAILURE)
     return <div>지도를 불러올 수 없습니다. 페이지를 새로고침 하거나 네트워크 연결을 다시 한 번 확인해주세요.</div>;
-  return <LoadingDots />;
+  return (
+    <StyledMapLoadingContainer>
+      <LoadingDots />
+    </StyledMapLoadingContainer>
+  );
 };
+
+const StyledMapLoadingContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+
+  background-color: var(--gray-2);
+`;
 
 function Map({ data, setBoundary, toggleMapExpand, loadingData }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
