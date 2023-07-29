@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Logo from '~/assets/logo.png';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
+import useBooleanState from '~/hooks/useBooleanState';
 
 const options = [
   { id: 1, value: '로그인' },
@@ -11,16 +12,12 @@ const options = [
 ];
 
 function Header() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleModalShow = (isShow: boolean) => {
-    setIsModalOpen(isShow);
-  };
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
 
-    if (currentOption === '로그인') handleModalShow(true);
+    if (currentOption === '로그인') openModal();
   };
 
   return (
@@ -30,7 +27,7 @@ function Header() {
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} />
       </StyledHeader>
       <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" handleModalShow={handleModalShow}>
+        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
           <LoginModalContent />
         </ModalContent>
       </Modal>

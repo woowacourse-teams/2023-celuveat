@@ -4,25 +4,17 @@ import Exit from '~/assets/icons/exit.svg';
 interface ModalContentProps {
   isShow?: boolean;
   title: string;
-  handleModalShow: (isShow: boolean) => void;
+  closeModal: () => void;
   children: React.ReactNode;
 }
 
-function ModalContent({ isShow = false, title, handleModalShow, children }: ModalContentProps) {
+function ModalContent({ isShow = false, title, closeModal, children }: ModalContentProps) {
   return (
     <StyledModalContentWrapper isShow={isShow}>
-      <StyledModalOverlay
-        onClick={() => {
-          handleModalShow(false);
-        }}
-      />
+      <StyledModalOverlay onClick={closeModal} />
       <StyledModalContent isShow={isShow}>
         <StyledModalHeader>
-          <Exit
-            onClick={() => {
-              handleModalShow(false);
-            }}
-          />
+          <Exit onClick={closeModal} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
         </StyledModalHeader>
         <StyledModalBody>{children}</StyledModalBody>
