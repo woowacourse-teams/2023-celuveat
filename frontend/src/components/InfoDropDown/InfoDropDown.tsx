@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent } from 'react';
 import InfoButton from '~/components/@common/InfoButton';
+import useBooleanState from '~/hooks/useBooleanState';
 
 interface Option {
   id: number;
@@ -14,19 +15,11 @@ interface DropDownProps {
 }
 
 function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProps) {
-  const [isShow, setIsShow] = useState(isOpen);
+  const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
   const onSelection = () => (event?: MouseEvent<HTMLLIElement>) => {
     if (externalOnClick) externalOnClick(event);
   };
-
-  const onToggleDropDown = useCallback(() => {
-    setIsShow(!isShow);
-  }, [isShow]);
-
-  const onCloseDropDown = useCallback(() => {
-    setIsShow(false);
-  }, []);
 
   return (
     <StyledInfoDropDown>
