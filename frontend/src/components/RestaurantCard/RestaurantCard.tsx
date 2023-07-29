@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE, paintSkeleton, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
 import { Restaurant } from '~/@types/restaurant.types';
 import { Celeb } from '~/@types/celeb.types';
@@ -9,7 +9,7 @@ interface RestaurantCardProps {
   celebs?: Celeb[];
   size?: number;
   type?: 'list' | 'map';
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
 }
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
@@ -21,6 +21,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: Re
         alt={`${name} 대표 이미지`}
         src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
         type={type}
+        loading="lazy"
       />
       <section>
         <StyledInfo>
@@ -57,6 +58,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledImage = styled.img<{ type: 'list' | 'map' }>`
+  ${paintSkeleton}
   width: 100%;
   aspect-ratio: 1.05 / 1;
 
