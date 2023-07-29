@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
 import OverlayMarker from './OverlayMarker';
-import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
@@ -12,8 +11,10 @@ import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
-import { RestaurantData } from '~/@types/api.types';
 import getQuadrant from '~/utils/getQuadrant';
+
+import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
+import type { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
   data: RestaurantData[];
@@ -27,8 +28,10 @@ const render = (status: Status) => {
   return <LoadingDots />;
 };
 
+const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
+
 function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
-  const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
+  const [center, setCenter] = useState<Coordinate>(JamsilCampus);
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);

@@ -11,6 +11,7 @@ import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import getQueryString from '~/utils/getQueryString';
 import { FONT_SIZE } from '~/styles/common';
+
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData } from '~/@types/api.types';
 import type { CoordinateBoundary } from '~/@types/map.types';

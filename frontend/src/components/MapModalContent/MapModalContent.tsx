@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { RestaurantModalInfo } from '~/@types/restaurant.types';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
+import { BASE_URL } from '~/App';
 
 interface MapModalContentProps {
   content: RestaurantModalInfo;
@@ -17,10 +18,7 @@ function MapModalContent({ content }: MapModalContentProps) {
           <div>{roadAddress}</div>
           <div>{phoneNumber}</div>
         </div>
-        <StyledRestaurantImage
-          src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
-          alt={`${name} 식당 이미지`}
-        />
+        <StyledRestaurantImage src={`${BASE_URL}images-data/${images[0].name}`} alt={`${name} 식당 이미지`} />
       </StyledRestaurantInfo>
       <TextButton
         type="button"
