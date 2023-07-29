@@ -15,19 +15,18 @@ function ModalContent({ isShow = false, title, handleModalShow, children }: Moda
         onClick={() => {
           handleModalShow(false);
         }}
-      >
-        <StyledModalContent isShow={isShow}>
-          <StyledModalHeader>
-            <Exit
-              onClick={() => {
-                handleModalShow(false);
-              }}
-            />
-            <StyledModalTitleText>{title}</StyledModalTitleText>
-          </StyledModalHeader>
-          <StyledModalBody>{children}</StyledModalBody>
-        </StyledModalContent>
-      </StyledModalOverlay>
+      />
+      <StyledModalContent isShow={isShow}>
+        <StyledModalHeader>
+          <Exit
+            onClick={() => {
+              handleModalShow(false);
+            }}
+          />
+          <StyledModalTitleText>{title}</StyledModalTitleText>
+        </StyledModalHeader>
+        <StyledModalBody>{children}</StyledModalBody>
+      </StyledModalContent>
     </StyledModalContentWrapper>
   );
 }
