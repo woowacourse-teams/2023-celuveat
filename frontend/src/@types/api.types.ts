@@ -1,3 +1,12 @@
+export interface RestaurantListData {
+  content: RestaurantData[];
+  currentElementsCount: number;
+  currentPage: number;
+  pageSize: number;
+  totalElementsCount: number;
+  totalPage: number;
+}
+
 export interface RestaurantData {
   id: number;
   name: string;

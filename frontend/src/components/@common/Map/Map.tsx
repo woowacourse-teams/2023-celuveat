@@ -82,7 +82,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        {data.map(({ celebs, ...restaurant }) => {
+        {data?.map(({ celebs, ...restaurant }) => {
           const { lat, lng } = restaurant;
           return (
             <OverlayMarker
