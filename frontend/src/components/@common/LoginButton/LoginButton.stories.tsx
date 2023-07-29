@@ -20,7 +20,7 @@ export default meta;
 
 type Story = StoryObj<typeof LoginButton>;
 
-export const Default: Story = {
+export const Google: Story = {
   args: { type: 'google' },
 };
 

@@ -5,6 +5,7 @@ import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
+import Google from '~/assets/icons/oauth/google.svg';
 
 interface LoginButtonProps {
   type: 'google' | 'kakao' | 'naver';
@@ -13,6 +14,7 @@ interface LoginButtonProps {
 const LoginIcon: Record<string, React.ReactNode> = {
   naver: <Naver />,
   kakao: <KaKao />,
+  google: <Google />,
 };
 
 function LoginButton({ type }: LoginButtonProps) {
@@ -52,6 +54,12 @@ const StyledLoginButtonWrapper = styled(Link)<LoginButtonProps>`
     type === 'kakao' &&
     css`
       background: #fee500;
+    `}
+
+  ${({ type }) =>
+    type === 'google' &&
+    css`
+      border: 1px solid var(--gray-3);
     `}
 
   cursor: pointer;
