@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useEffect, useState } from 'react';
 import RestaurantCard from '../RestaurantCard/RestaurantCard';
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import { FONT_SIZE } from '~/styles/common';
@@ -10,15 +11,19 @@ interface RestaurantCardListProps {
 }
 
 function RestaurantCardList({ restaurantDataList, loading }: RestaurantCardListProps) {
-  if (!restaurantDataList || loading) return <RestaurantCardListSkeleton />;
+  const [prevCardNumber, setPrevCardNumber] = useState(18);
 
-  const { content, totalElementsCount } = restaurantDataList;
+  useEffect(() => {
+    if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);
+  }, [restaurantDataList?.currentElementsCount]);
+
+  if (!restaurantDataList || loading) return <RestaurantCardListSkeleton cardNumber={prevCardNumber} />;
 
   return (
     <div>
-      <StyledCardListHeader>음식점 수 {totalElementsCount} 개</StyledCardListHeader>
+      <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
       <StyledRestaurantCardList>
-        {content?.map(({ celebs, ...restaurant }: RestaurantData) => (
+        {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
           <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => {}} />
         ))}
       </StyledRestaurantCardList>

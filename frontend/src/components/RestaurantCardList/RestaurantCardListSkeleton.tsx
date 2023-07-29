@@ -2,12 +2,16 @@ import { styled } from 'styled-components';
 import RestaurantCardSkeleton from '../RestaurantCard/RestaurantCardSkeleton';
 import { BORDER_RADIUS, paintSkeleton } from '~/styles/common';
 
-function RestaurantCardListSkeleton() {
+interface RestaurantCardListSkeletonProps {
+  cardNumber: number;
+}
+
+function RestaurantCardListSkeleton({ cardNumber }: RestaurantCardListSkeletonProps) {
   return (
     <div>
       <StyledCardListHeader />
       <StyledRestaurantCardList>
-        {Array.from({ length: 18 }, () => (
+        {Array.from({ length: cardNumber }, () => (
           <RestaurantCardSkeleton />
         ))}
       </StyledRestaurantCardList>
