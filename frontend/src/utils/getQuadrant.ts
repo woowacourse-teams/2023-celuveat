@@ -12,9 +12,7 @@ const getQuadrant = (center: Coordinate, target: Coordinate): Quadrant => {
 
   if (dx < 0 && dy < 0) return 3;
 
-  if (dx > 0 && dy < 0) return 4;
-
-  return 1;
+  return 4;
 };
 
 export default getQuadrant;
