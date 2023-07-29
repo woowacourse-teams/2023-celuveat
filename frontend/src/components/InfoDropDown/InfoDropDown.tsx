@@ -10,7 +10,7 @@ interface Option {
 interface DropDownProps {
   options: Option[];
   isOpen?: boolean;
-  externalOnClick?: (e?: MouseEvent<HTMLLIElement>) => void;
+  externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
 }
 
 function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProps) {
@@ -24,9 +24,13 @@ function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProp
     setIsShow(!isShow);
   }, [isShow]);
 
+  const onCloseDropDown = useCallback(() => {
+    setIsShow(false);
+  }, []);
+
   return (
     <StyledInfoDropDown>
-      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onToggleDropDown}>
+      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
         <InfoButton isShow={isShow} />
       </StyledInfoButtonWrapper>
 
@@ -34,7 +38,7 @@ function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProp
         <StyledDropDownWrapper>
           <StyledSelectContainer>
             {options.map(({ id, value }) => (
-              <StyledDropDownOption key={id} data-id={id} onMouseDown={onSelection()}>
+              <StyledDropDownOption key={id} data-name={value} onMouseDown={onSelection()}>
                 {value}
               </StyledDropDownOption>
             ))}
@@ -56,7 +60,12 @@ const StyledInfoButtonWrapper = styled.button`
 `;
 
 const StyledInfoDropDown = styled.div`
-  position: relative;
+  display: relative;
+
+  z-index: 100000000;
+
+  width: 77px;
+  height: 42px;
 `;
 
 const StyledDropDownWrapper = styled.ul`
@@ -66,7 +75,7 @@ const StyledDropDownWrapper = styled.ul`
 
   position: absolute;
   top: calc(100% + 16px);
-  left: 18px;
+  right: 0;
 
   width: 216px;
   height: 176px;
@@ -78,7 +87,7 @@ const StyledDropDownWrapper = styled.ul`
 
   font-size: 1.4rem;
 
-  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s var(--shadow);
 `;
 
 const StyledSelectContainer = styled.div`
