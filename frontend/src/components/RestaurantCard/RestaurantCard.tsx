@@ -1,8 +1,9 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE, paintSkeleton, truncateText } from '~/styles/common';
+import { FONT_SIZE, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
-import { Restaurant } from '~/@types/restaurant.types';
-import { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
+import type { Celeb } from '~/@types/celeb.types';
+import ImageCarousel from '../@common/ImageCarousel';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -17,12 +18,9 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: Re
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage
-        alt={`${name} 대표 이미지`}
-        src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
-        type={type}
-        loading="lazy"
-      />
+      <div>
+        <ImageCarousel images={images} type={type} />
+      </div>
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
@@ -55,17 +53,6 @@ const StyledContainer = styled.div`
   }
 
   cursor: pointer;
-`;
-
-const StyledImage = styled.img<{ type: 'list' | 'map' }>`
-  ${paintSkeleton}
-  width: 100%;
-  aspect-ratio: 1.05 / 1;
-
-  border-radius: ${({ type }) =>
-    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
-
-  object-fit: cover;
 `;
 
 const StyledInfo = styled.div`

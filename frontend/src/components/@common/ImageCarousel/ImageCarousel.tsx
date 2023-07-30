@@ -4,12 +4,14 @@ import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
+import WaterMarkImage from '../WaterMarkImage';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
+  type: 'list' | 'map';
 }
 
-function ImageCarousel({ images }: ImageCarouselProps) {
+function ImageCarousel({ images, type }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const goToPrevious = () => {
@@ -21,10 +23,10 @@ function ImageCarousel({ images }: ImageCarouselProps) {
   };
 
   return (
-    <StyledCarouselContainer>
+    <StyledCarouselContainer type={type}>
       <StyledCarouselSlide currentIndex={currentIndex}>
-        {images.map(({ id, name }, index) => (
-          <Img key={id} src={name} alt={`${index + 1}`} />
+        {images.map(({ id, name, author }) => (
+          <WaterMarkImage key={id} imageUrl={name} waterMark={author} />
         ))}
       </StyledCarouselSlide>
       {currentIndex !== 0 && (
@@ -50,13 +52,14 @@ function ImageCarousel({ images }: ImageCarouselProps) {
 
 export default ImageCarousel;
 
-const StyledCarouselContainer = styled.div`
+const StyledCarouselContainer = styled.div<{ type: 'list' | 'map' }>`
   position: relative;
 
-  width: 315px;
+  width: 100%;
   overflow: hidden;
 
-  border-radius: ${BORDER_RADIUS.md};
+  border-radius: ${({ type }) =>
+    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
 
   button {
     visibility: hidden;
@@ -112,15 +115,12 @@ const StyledCarouselSlide = styled.div<{ currentIndex: number }>`
   display: flex;
 
   width: 100%;
-  height: auto;
 
   transition: transform 0.3s ease-in-out;
   transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
-`;
+  flex-wrap: nowrap;
 
-const Img = styled.img`
-  width: 100%;
-  height: auto;
+  aspect-ratio: 1.05 / 1;
 `;
 
 const StyledDots = styled.div<{ currentIndex: number }>`
