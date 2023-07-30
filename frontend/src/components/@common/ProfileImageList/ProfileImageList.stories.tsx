@@ -38,5 +38,6 @@ export const Default: Story = {
         youtubeChannelName: '@d0dam',
       },
     ],
+    size: 42,
   },
 };
