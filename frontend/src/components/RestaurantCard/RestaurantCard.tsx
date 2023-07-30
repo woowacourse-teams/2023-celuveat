@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 import { FONT_SIZE, truncateText } from '~/styles/common';
-import ProfileImage from '../@common/ProfileImage';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import type { Restaurant } from '~/@types/restaurant.types';
 import type { Celeb } from '~/@types/celeb.types';
+import ProfileImageList from '../@common/ProfileImageList';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -15,7 +15,7 @@ interface RestaurantCardProps {
 }
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
-  const { images, name, roadAddress, category } = restaurant;
+  const { images, name, roadAddress, category, phoneNumber } = restaurant;
 
   return (
     <StyledContainer onClick={onClick}>
@@ -28,10 +28,10 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: Re
           <StyledCategory>{category}</StyledCategory>
           <StyledName>{name}</StyledName>
           <StyledAddress>{roadAddress}</StyledAddress>
-          <StyledAddress>02-1234-5678</StyledAddress>
+          <StyledAddress>{phoneNumber}</StyledAddress>
         </StyledInfo>
         <StyledProfileImageSection>
-          {celebs && <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />}
+          {celebs && <ProfileImageList celebs={celebs} size={size} />}
         </StyledProfileImageSection>
       </section>
     </StyledContainer>
@@ -69,7 +69,6 @@ const StyledImageViewer = styled.div`
 
 const StyledInfo = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 0.4rem;
 
