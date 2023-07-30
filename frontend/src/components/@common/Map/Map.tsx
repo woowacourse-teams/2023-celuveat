@@ -37,7 +37,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mainPosition, setMainPosition] = useState({ lat: 37.5057482, lng: 127.050727 });
+  const [currentCenter, setCurrentCenter] = useState<Coordinate>(JamsilCampus);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -45,7 +45,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
-    setMainPosition({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
+    setCurrentCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
 
     const lowLatitude = String(m.getBounds().getSouthWest().lat());
     const highLatitude = String(m.getBounds().getNorthEast().lat());
@@ -91,7 +91,7 @@ function Map({ data, setBoundary, toggleMapExpand }: MapProps) {
             <OverlayMarker
               restaurant={restaurant}
               celeb={celebs[0]}
-              quadrant={getQuadrant(mainPosition, { lat, lng })}
+              quadrant={getQuadrant(currentCenter, { lat, lng })}
             />
           );
         })}
