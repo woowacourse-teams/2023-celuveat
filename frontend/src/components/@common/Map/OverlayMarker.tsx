@@ -2,11 +2,12 @@ import styled, { keyframes } from 'styled-components';
 import { useRef, useState } from 'react';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
-import type { Celeb } from '~/@types/celeb.types';
-import { Restaurant } from '~/@types/restaurant.types';
 import RestaurantCard from '~/components/RestaurantCard';
+import useOnClickOutside from '~/hooks/useOnClickOutside';
+
 import type { Quadrant } from '~/utils/getQuadrant';
-import useOnClickOutside from '~/hooks/useOnClickOuside';
+import type { Restaurant } from '~/@types/restaurant.types';
+import type { Celeb } from '~/@types/celeb.types';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
@@ -21,15 +22,17 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   const ref = useRef();
   useOnClickOutside(ref, () => setIsClicked(false));
 
+  const clickMarker = () => setIsClicked(true);
+
   return (
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
-        <StyledMarker onClick={() => setIsClicked(true)} isClicked={isClicked} ref={ref}>
+        <StyledMarker onClick={clickMarker} isClicked={isClicked} ref={ref}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border />
         </StyledMarker>
         {isClicked && (
           <StyledModal quadrant={quadrant}>
-            <RestaurantCard restaurant={restaurant} onClick={() => {}} type="map" />
+            <RestaurantCard restaurant={restaurant} type="map" />
           </StyledModal>
         )}
       </Overlay>

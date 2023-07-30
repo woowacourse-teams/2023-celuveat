@@ -1,27 +1,25 @@
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
-import { Restaurant } from '~/@types/restaurant.types';
-import { Celeb } from '~/@types/celeb.types';
+import { BASE_URL } from '~/App';
+
+import type { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs?: Celeb[];
   size?: number;
   type?: 'list' | 'map';
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
 }
 
-function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
+function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick = () => {} }: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
   return (
     <StyledContainer onClick={onClick}>
-      <StyledImage
-        alt={`${name} 대표 이미지`}
-        src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
-        type={type}
-      />
+      <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}images-data/${images[0].name}`} type={type} />
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>

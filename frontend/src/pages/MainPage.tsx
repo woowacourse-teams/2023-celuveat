@@ -11,6 +11,7 @@ import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import getQueryString from '~/utils/getQueryString';
 import { FONT_SIZE } from '~/styles/common';
+
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData } from '~/@types/api.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
@@ -69,7 +70,7 @@ function MainPage() {
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => {}} />
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} />
             ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
