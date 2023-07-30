@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
+import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 
 interface ImageCarouselProps {
-  imageUrls: string[];
+  images: RestaurantImage[];
 }
 
-function ImageCarousel({ imageUrls }: ImageCarouselProps) {
+function ImageCarousel({ images }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const goToPrevious = () => {
@@ -22,8 +23,8 @@ function ImageCarousel({ imageUrls }: ImageCarouselProps) {
   return (
     <StyledCarouselContainer>
       <StyledCarouselSlide currentIndex={currentIndex}>
-        {imageUrls.map((imageUrl, index) => (
-          <Img src={imageUrl} alt={`${index + 1}`} />
+        {images.map(({ id, name }, index) => (
+          <Img key={id} src={name} alt={`${index + 1}`} />
         ))}
       </StyledCarouselSlide>
       {currentIndex !== 0 && (
@@ -31,14 +32,14 @@ function ImageCarousel({ imageUrls }: ImageCarouselProps) {
           <LeftBracket width={10} height={10} />
         </StyledLeftButton>
       )}
-      {currentIndex !== imageUrls.length - 1 && (
+      {currentIndex !== images.length - 1 && (
         <StyledRightButton type="button" onClick={goToNext}>
           <RightBracket width={10} height={10} />
         </StyledRightButton>
       )}
-      {imageUrls.length > 1 && (
+      {images.length > 1 && (
         <StyledDots currentIndex={currentIndex}>
-          {Array.from({ length: imageUrls.length }, () => (
+          {Array.from({ length: images.length }, () => (
             <StyledDot />
           ))}
         </StyledDots>

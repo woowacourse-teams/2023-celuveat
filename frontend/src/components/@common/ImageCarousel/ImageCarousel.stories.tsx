@@ -12,19 +12,17 @@ type Story = StoryObj<typeof ImageCarousel>;
 
 export const Default: Story = {
   args: {
-    imageUrls: [
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
-      'https://picsum.photos/315/300',
+    images: [
+      { id: 1, name: 'https://picsum.photos/315/300', author: '@d0dam', sns: 'youtube' },
+      { id: 2, name: 'https://picsum.photos/315/300', author: '@d0dam', sns: 'youtube' },
+      { id: 3, name: 'https://picsum.photos/315/300', author: '@d0dam', sns: 'youtube' },
+      { id: 4, name: 'https://picsum.photos/315/300', author: '@d0dam', sns: 'youtube' },
     ],
   },
 };
 
 export const OneImage: Story = {
-  args: { imageUrls: ['https://picsum.photos/315/300'] },
+  args: {
+    images: [{ id: 1, name: 'https://picsum.photos/315/300', author: '@d0dam', sns: 'youtube' }],
+  },
 };
