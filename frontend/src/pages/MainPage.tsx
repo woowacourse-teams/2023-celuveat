@@ -23,14 +23,18 @@ function MainPage() {
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
+  const [isHoveredList, setIsHoveredList] = useState<{ cardId: number; isHovered: boolean }[]>([]);
   const { handleFetch } = useFetch('restaurants');
 
   const fetchRestaurants = useCallback(
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
+      const { content }: { content: RestaurantData[] } = response;
 
-      setData(response.content);
+      setData(content);
+      const newIsHoveredList = content?.map(restaurant => ({ cardId: restaurant.id, isHovered: false }));
+      setIsHoveredList(newIsHoveredList);
     },
     [boundary, celebId, restaurantCategory],
   );
@@ -53,6 +57,16 @@ function MainPage() {
     setIsMapExpanded(prev => !prev);
   };
 
+  const hoverRestaurantCard = (targetId: number) => {
+    setIsHoveredList(prev =>
+      prev.map(item => (item.cardId === targetId ? { cardId: item.cardId, isHovered: true } : item)),
+    );
+  };
+
+  const unHoverRestaurantCard = () => {
+    setIsHoveredList(prev => prev.map(item => ({ cardId: item.cardId, isHovered: false })));
+  };
+
   useEffect(() => {
     fetchRestaurants({ boundary, celebId, category: restaurantCategory });
   }, [boundary]);
@@ -70,12 +84,18 @@ function MainPage() {
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} />
+              <RestaurantCard
+                restaurant={restaurant}
+                celebs={celebs}
+                size={42}
+                onMouseEnter={hoverRestaurantCard}
+                onMouseLeave={unHoverRestaurantCard}
+              />
             ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} />
+          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} isHoveredList={isHoveredList} />
         </StyledRightSide>
       </StyledLayout>
       <Footer />

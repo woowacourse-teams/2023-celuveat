@@ -12,13 +12,23 @@ interface RestaurantCardProps {
   size?: number;
   type?: 'list' | 'map';
   onClick?: React.MouseEventHandler;
+  onMouseEnter?: (targetId: number) => void;
+  onMouseLeave?: () => void;
 }
 
-function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick = () => {} }: RestaurantCardProps) {
+function RestaurantCard({
+  restaurant,
+  celebs,
+  size,
+  type = 'list',
+  onClick = () => {},
+  onMouseEnter,
+  onMouseLeave,
+}: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
   return (
-    <StyledContainer onClick={onClick}>
+    <StyledContainer onClick={onClick} onMouseEnter={() => onMouseEnter(restaurant.id)} onMouseLeave={onMouseLeave}>
       <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}images-data/${images[0].name}`} type={type} />
       <section>
         <StyledInfo>

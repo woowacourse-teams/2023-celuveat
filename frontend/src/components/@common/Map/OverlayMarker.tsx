@@ -14,9 +14,10 @@ interface OverlayMarkerProps {
   map?: google.maps.Map;
   restaurant: Restaurant;
   quadrant: Quadrant;
+  isRestaurantHovered: boolean;
 }
 
-function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps) {
+function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }: OverlayMarkerProps) {
   const { lat, lng } = restaurant;
   const [isClicked, setIsClicked] = useState(false);
   const ref = useRef();
@@ -27,7 +28,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   return (
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
-        <StyledMarker onClick={clickMarker} isClicked={isClicked} ref={ref}>
+        <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered} ref={ref}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border />
         </StyledMarker>
         {isClicked && (
@@ -40,7 +41,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   );
 }
 
-const StyledMarker = styled.div<{ isClicked: boolean }>`
+const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,11 +49,12 @@ const StyledMarker = styled.div<{ isClicked: boolean }>`
   width: 36px;
   height: 36px;
 
-  border: ${({ isClicked }) => (isClicked ? '3px solid var(--orange-2)' : '3px solid transparent')};
+  border: ${({ isClicked, isRestaurantHovered }) =>
+    isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid transparent'};
   border-radius: 50%;
 
   transition: transform 0.2s ease-in-out;
-  transform: ${({ isClicked }) => (isClicked ? 'scale(1.5)' : 'scale(1)')};
+  transform: ${({ isClicked, isRestaurantHovered }) => (isClicked || isRestaurantHovered ? 'scale(1.5)' : 'scale(1)')};
 
   &:hover {
     transform: scale(1.5);
