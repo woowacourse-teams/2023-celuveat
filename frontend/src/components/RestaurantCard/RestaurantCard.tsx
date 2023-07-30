@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
+import ImageCarousel from '../@common/ImageCarousel';
+import Love from '~/assets/icons/love.svg';
 import type { Restaurant } from '~/@types/restaurant.types';
 import type { Celeb } from '~/@types/celeb.types';
-import ImageCarousel from '../@common/ImageCarousel';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -18,9 +19,10 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: Re
 
   return (
     <StyledContainer onClick={onClick}>
-      <div>
+      <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
-      </div>
+        <Love fill="#000" fillOpacity={0.5} />
+      </StyledImageViewer>
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
@@ -53,6 +55,16 @@ const StyledContainer = styled.div`
   }
 
   cursor: pointer;
+`;
+
+const StyledImageViewer = styled.div`
+  position: relative;
+
+  & > svg {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
 `;
 
 const StyledInfo = styled.div`
