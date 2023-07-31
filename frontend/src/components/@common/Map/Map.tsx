@@ -101,7 +101,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId }: Map
         zoom={zoom}
         center={center}
       >
-        {data?.map(({ celebs, ...restaurant }) => {
+        {data?.map(({ celebs, ...restaurant }) => 
           const { lat, lng } = restaurant;
           return (
             <OverlayMarker
