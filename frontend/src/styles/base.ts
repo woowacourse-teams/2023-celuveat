@@ -24,7 +24,8 @@ const base = css`
     --gray-4: #393939;
     --gray-5: #2c2c2c;
     --gray-6: #161616;
-    --orange: #ffb26b;
+    --orange-1: #ffb26b;
+    --orange-2: #eb982d;
     --yellow: #ffd56f;
     --black: #424242;
     --white: #fff;

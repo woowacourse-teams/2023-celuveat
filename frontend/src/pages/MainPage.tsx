@@ -5,54 +5,37 @@ import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
-import MapModal from '~/components/MapModal/MapModal';
 import RestaurantCard from '~/components/RestaurantCard';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
-import useMapModal from '~/hooks/useMapModal';
 import getQueryString from '~/utils/getQueryString';
 import { FONT_SIZE } from '~/styles/common';
+
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData } from '~/@types/api.types';
-import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
-import type { Restaurant, RestaurantCategory, RestaurantModalInfo } from '~/@types/restaurant.types';
+import type { CoordinateBoundary } from '~/@types/map.types';
+import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 function MainPage() {
-  const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantModalInfo | null>(null);
-  const { modalOpen, isVisible, closeModal, openModal } = useMapModal(true);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [data, setData] = useState<RestaurantData[]>([]);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
   const { handleFetch } = useFetch('restaurants');
 
   const fetchRestaurants = useCallback(
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
-    
-      setData(response.content);
+      const { content }: { content: RestaurantData[] } = response;
+
+      setData(content);
     },
     [boundary, celebId, restaurantCategory],
   );
-
-  const clickCard = (restaurant: Restaurant) => {
-    const { lat, lng, ...restaurantModalInfo } = restaurant;
-
-    openModal();
-    setCurrentRestaurant(restaurantModalInfo);
-  };
-
-  const clickMarker = ({ lat, lng }: Coordinate) => {
-    const filteredRestaurant = data.find(restaurantData => lat === restaurantData.lat && lng === restaurantData.lng);
-
-    const { id, name, category, roadAddress, phoneNumber, naverMapUrl, images }: RestaurantModalInfo =
-      filteredRestaurant;
-
-    setCurrentRestaurant({ id, name, category, roadAddress, phoneNumber, naverMapUrl, images });
-  };
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
@@ -89,25 +72,12 @@ function MainPage() {
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => clickCard(restaurant)} />
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
             ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map
-            clickMarker={clickMarker}
-            setBoundary={setBoundary}
-            markers={data.map(({ lat, lng, celebs }) => ({ position: { lat, lng }, celebs }))}
-            toggleMapExpand={toggleMapExpand}
-          />
-          {currentRestaurant && (
-            <MapModal
-              modalOpen={modalOpen}
-              isVisible={isVisible}
-              onClickExit={closeModal}
-              modalRestaurantInfo={currentRestaurant}
-            />
-          )}
+          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} hoveredId={hoveredId} />
         </StyledRightSide>
       </StyledLayout>
       <Footer />
@@ -188,7 +158,7 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
 `;
 
 const StyledCardListHeader = styled.p`
-  margin: 3.2rem 2.4rem;
+  margin: 2.4rem 2.4rem 0;
 
   font-size: ${FONT_SIZE.md};
 `;

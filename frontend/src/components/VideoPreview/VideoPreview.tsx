@@ -42,7 +42,7 @@ function VideoPreview({
         </StyledVideoCover>
       )}
       <StyledVideoInfo>
-        <ProfileImage name={celebName} imageUrl={profileImageUrl} size={38} />
+        <ProfileImage name={celebName} imageUrl={profileImageUrl} size="38px" />
         <StyledTitle>{title}</StyledTitle>
         <StyledViewAndDate>
           <div>{celebName}</div>

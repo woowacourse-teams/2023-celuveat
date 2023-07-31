@@ -40,7 +40,7 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
             {celebs.map(({ id, name, profileImageUrl }) => (
               <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size={20} />
+                  <ProfileImage name={name} imageUrl={profileImageUrl} size="20px" />
                   {name}
                 </div>
                 {isEqual(selected, name) && <SearchIcon />}
