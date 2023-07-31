@@ -1,35 +1,39 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { useRef, useState } from 'react';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
-import type { Celeb } from '~/@types/celeb.types';
-import { Restaurant } from '~/@types/restaurant.types';
 import RestaurantCard from '~/components/RestaurantCard';
+import useOnClickOutside from '~/hooks/useOnClickOutside';
+
 import type { Quadrant } from '~/utils/getQuadrant';
-import useOnClickOutside from '~/hooks/useOnClickOuside';
+import type { Restaurant } from '~/@types/restaurant.types';
+import type { Celeb } from '~/@types/celeb.types';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
   map?: google.maps.Map;
   restaurant: Restaurant;
   quadrant: Quadrant;
+  isRestaurantHovered: boolean;
 }
 
-function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps) {
+function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }: OverlayMarkerProps) {
   const { lat, lng } = restaurant;
   const [isClicked, setIsClicked] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setIsClicked(false));
 
+  const clickMarker = () => setIsClicked(true);
+
   return (
     map && (
-      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
-        <StyledMarker onClick={() => setIsClicked(true)} isClicked={isClicked} ref={ref}>
-          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border />
+      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
+        <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered} ref={ref}>
+          <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border size="100%" />
         </StyledMarker>
         {isClicked && (
           <StyledModal quadrant={quadrant}>
-            <RestaurantCard restaurant={restaurant} onClick={() => {}} type="map" />
+            <RestaurantCard restaurant={restaurant} type="map" />
           </StyledModal>
         )}
       </Overlay>
@@ -37,7 +41,16 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   );
 }
 
-const StyledMarker = styled.div<{ isClicked: boolean }>`
+const scaleUp = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+`;
+
+const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,7 +58,8 @@ const StyledMarker = styled.div<{ isClicked: boolean }>`
   width: 36px;
   height: 36px;
 
-  border: ${({ isClicked }) => (isClicked ? '3px solid var(--orange-2)' : '3px solid transparent')};
+  border: ${({ isClicked, isRestaurantHovered }) =>
+    isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid transparent'};
   border-radius: 50%;
 
   transition: transform 0.2s ease-in-out;
@@ -54,6 +68,12 @@ const StyledMarker = styled.div<{ isClicked: boolean }>`
   &:hover {
     transform: scale(1.5);
   }
+
+  ${({ isRestaurantHovered }) =>
+    isRestaurantHovered &&
+    css`
+      animation: ${scaleUp} 0.2s ease-in-out forwards;
+    `}
 `;
 
 const fadeInAnimation = keyframes`

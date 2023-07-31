@@ -1,28 +1,41 @@
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
-import { Restaurant } from '~/@types/restaurant.types';
-import { Celeb } from '~/@types/celeb.types';
+import { BASE_URL } from '~/App';
+
+import type { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs?: Celeb[];
-  size?: number;
+  size?: string;
   type?: 'list' | 'map';
   onClick?: React.MouseEventHandler;
+  setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
+function RestaurantCard({
+  restaurant,
+  celebs,
+  size,
+  type = 'list',
+  onClick = () => {},
+  setHoveredId = () => {},
+}: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
+  const onMouseEnter = () => {
+    setHoveredId(restaurant.id);
+  };
+
+  const onMouseLeave = () => {
+    setHoveredId(null);
+  };
+
   return (
-    <StyledContainer onClick={onClick}>
-      <StyledImage
-        alt={`${name} 대표 이미지`}
-        src={`http://3.35.157.27:3000/images-data/${images[0].name}`}
-        type={type}
-        loading="lazy"
-      />
+    <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}/images-data/${images[0].name}`} type={type} />
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
