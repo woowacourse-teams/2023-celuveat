@@ -12,8 +12,7 @@ interface RestaurantCardProps {
   size?: number;
   type?: 'list' | 'map';
   onClick?: React.MouseEventHandler;
-  onMouseEnter?: (targetId: number) => void;
-  onMouseLeave?: () => void;
+  setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function RestaurantCard({
@@ -22,13 +21,20 @@ function RestaurantCard({
   size,
   type = 'list',
   onClick = () => {},
-  onMouseEnter,
-  onMouseLeave,
+  setHoveredId,
 }: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
+  const onMouseEnter = () => {
+    setHoveredId(restaurant.id);
+  };
+
+  const onMouseLeave = () => {
+    setHoveredId(null);
+  };
+
   return (
-    <StyledContainer onClick={onClick} onMouseEnter={() => onMouseEnter(restaurant.id)} onMouseLeave={onMouseLeave}>
+    <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}images-data/${images[0].name}`} type={type} />
       <section>
         <StyledInfo>

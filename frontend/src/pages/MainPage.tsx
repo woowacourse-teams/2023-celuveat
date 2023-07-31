@@ -23,7 +23,7 @@ function MainPage() {
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
-  const [isHoveredList, setIsHoveredList] = useState<{ cardId: number; isHovered: boolean }[]>([]);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
   const { handleFetch } = useFetch('restaurants');
 
   const fetchRestaurants = useCallback(
@@ -33,8 +33,6 @@ function MainPage() {
       const { content }: { content: RestaurantData[] } = response;
 
       setData(content);
-      const newIsHoveredList = content?.map(restaurant => ({ cardId: restaurant.id, isHovered: false }));
-      setIsHoveredList(newIsHoveredList);
     },
     [boundary, celebId, restaurantCategory],
   );
@@ -57,16 +55,6 @@ function MainPage() {
     setIsMapExpanded(prev => !prev);
   };
 
-  const hoverRestaurantCard = (targetId: number) => {
-    setIsHoveredList(prev =>
-      prev.map(item => (item.cardId === targetId ? { cardId: item.cardId, isHovered: true } : item)),
-    );
-  };
-
-  const unHoverRestaurantCard = () => {
-    setIsHoveredList(prev => prev.map(item => ({ cardId: item.cardId, isHovered: false })));
-  };
-
   useEffect(() => {
     fetchRestaurants({ boundary, celebId, category: restaurantCategory });
   }, [boundary]);
@@ -84,18 +72,12 @@ function MainPage() {
           <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
           <StyledRestaurantCardList>
             {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard
-                restaurant={restaurant}
-                celebs={celebs}
-                size={42}
-                onMouseEnter={hoverRestaurantCard}
-                onMouseLeave={unHoverRestaurantCard}
-              />
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} setHoveredId={setHoveredId} />
             ))}
           </StyledRestaurantCardList>
         </StyledLeftSide>
         <StyledRightSide>
-          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} isHoveredList={isHoveredList} />
+          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} hoveredId={hoveredId} />
         </StyledRightSide>
       </StyledLayout>
       <Footer />

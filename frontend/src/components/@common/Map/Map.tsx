@@ -18,7 +18,7 @@ import type { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
   data: RestaurantData[];
-  isHoveredList: { cardId: number; isHovered: boolean }[];
+  hoveredId: number | null;
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   toggleMapExpand: () => void;
 }
@@ -31,7 +31,7 @@ const render = (status: Status) => {
 
 const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
 
-function Map({ data, setBoundary, toggleMapExpand, isHoveredList }: MapProps) {
+function Map({ data, setBoundary, toggleMapExpand, hoveredId }: MapProps) {
   const [center, setCenter] = useState<Coordinate>(JamsilCampus);
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -86,14 +86,14 @@ function Map({ data, setBoundary, toggleMapExpand, isHoveredList }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        {data.map(({ celebs, ...restaurant }, idx) => {
+        {data.map(({ celebs, ...restaurant }) => {
           const { lat, lng } = restaurant;
           return (
             <OverlayMarker
               restaurant={restaurant}
               celeb={celebs[0]}
               quadrant={getQuadrant(currentCenter, { lat, lng })}
-              isRestaurantHovered={isHoveredList[idx].isHovered}
+              isRestaurantHovered={restaurant.id === hoveredId}
             />
           );
         })}
