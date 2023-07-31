@@ -46,9 +46,7 @@ function MainPage() {
     refetch();
   };
 
-  const toggleMapExpand = () => {
-    setIsMapExpanded(prev => !prev);
-  };
+  const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
 
   return (
     <>
