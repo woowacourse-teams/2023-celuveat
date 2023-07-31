@@ -22,30 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RestaurantQueryRepository {
 
-    private static final String CELEB_ID_EQUAL = "c.id = %d";
-    private static final String RESTAURANT_CATEGORY_EQUAL = "r.category = '%s'";
-    private static final String RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK = """
-            Function('replace', lower(r.name), ' ', '') like lower('%%%s%%')
-            """;
-
-    private static final String RESTAURANT_IN_AREA = """
-                      latitude BETWEEN %s AND %s
-                      AND
-                      longitude BETWEEN %s AND %s
-            """;
-
-    private static final String COUNT_QUERY = """
-            SELECT DISTINCT count(*)
-            FROM Restaurant r
-            JOIN Video v
-            ON v.restaurant = r
-            JOIN Celeb c
-            ON c = v.celeb
-            """;
-
-    private static final String ORDER_BY_DISTANCE_ASC = """
-            ORDER BY dist ASC
-            """;
+    private static final String HAVERSINE_FORMULA = """
+            (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
+                 * cos(radians(longitude) - radians(%s))
+                 + sin(radians(%s)) * sin(radians(latitude)))) * 1000
+             """;
 
     private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
             SELECT DISTINCT new com.celuveat.restaurant.domain.dto.RestaurantWithDistance(
@@ -57,10 +38,35 @@ public class RestaurantQueryRepository {
                 r.longitude,
                 r.phoneNumber,
                 r.naverMapUrl,
-                (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
-                * cos(radians(longitude) - radians(%s))
-                + sin(radians(%s)) * sin(radians(latitude)))) * 1000 AS dist
+                %s AS dist
             )
+            FROM Restaurant r
+            JOIN Video v
+            ON v.restaurant = r
+            JOIN Celeb c
+            ON c = v.celeb
+            """;
+
+    private static final String CELEB_ID_EQUAL = "c.id = %d";
+
+    private static final String RESTAURANT_CATEGORY_EQUAL = "r.category = '%s'";
+
+    private static final String RESTAURANT_NAME_LIKE_IGNORE_CASE_IGNORE_BLANK = """
+            Function('replace', lower(r.name), ' ', '') like lower('%%%s%%')
+            """;
+
+    private static final String RESTAURANT_IN_AREA = """
+                      latitude BETWEEN %s AND %s
+                      AND
+                      longitude BETWEEN %s AND %s
+            """;
+
+    private static final String ORDER_BY_DISTANCE_ASC = """
+            ORDER BY dist ASC
+            """;
+
+    private static final String COUNT_QUERY = """
+            SELECT DISTINCT count(*)
             FROM Restaurant r
             JOIN Video v
             ON v.restaurant = r
@@ -77,17 +83,14 @@ public class RestaurantQueryRepository {
     ) {
         double middleLat = calculateMiddle(locationSearchCond.lowLatitude, locationSearchCond.highLatitude);
         double middleLng = calculateMiddle(locationSearchCond.lowLongitude, locationSearchCond.highLongitude);
-
-        DynamicQueryAssembler dynamicQueryAssembler = new DynamicQueryAssembler(
+        String whereQuery = DynamicQueryAssembler.assemble(
                 celebIdEqual(restaurantSearchCond),
                 restaurantCategoryEqual(restaurantSearchCond),
                 restaurantNameLike(restaurantSearchCond),
                 restaurantInArea(locationSearchCond)
         );
-        String whereQuery = dynamicQueryAssembler.assemble();
-        List<RestaurantWithDistance> resultList = em
-                .createQuery(
-                        SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB.formatted(middleLat, middleLng, middleLat)
+        List<RestaurantWithDistance> resultList = em.createQuery(
+                        SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB.formatted(getDistanceColumn(middleLat, middleLng))
                                 + whereQuery
                                 + ORDER_BY_DISTANCE_ASC,
                         RestaurantWithDistance.class
@@ -100,6 +103,10 @@ public class RestaurantQueryRepository {
                 pageable,
                 () -> (Long) em.createQuery(COUNT_QUERY + whereQuery).getSingleResult()
         );
+    }
+
+    private String getDistanceColumn(double middleLat, double middleLng) {
+        return HAVERSINE_FORMULA.formatted(middleLat, middleLng, middleLat);
     }
 
     private double calculateMiddle(double x, double y) {

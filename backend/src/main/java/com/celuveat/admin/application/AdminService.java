@@ -37,16 +37,7 @@ public class AdminService {
             Restaurant restaurant = getOrCreateRestaurant(request);
             RestaurantImage restaurantImage = request.toRestaurantImage(YOUTUBE, restaurant);
             Video video = request.toVideo(celeb, restaurant, toLocalDate(request.videoUploadDate()));
-
             saveAllData(celeb, restaurant, restaurantImage, video);
-        }
-    }
-
-    private LocalDate toLocalDate(String rawData) {
-        try {
-            return LocalDate.parse(rawData, DateTimeFormatter.ofPattern("yyyy. M. d."));
-        } catch (DateTimeParseException e) {
-            throw new AdminException(ILLEGAL_DATE_FORMAT);
         }
     }
 
@@ -55,6 +46,14 @@ public class AdminService {
                 request.restaurantName(),
                 request.roadAddress()
         ).orElseGet(request::toRestaurant);
+    }
+
+    private LocalDate toLocalDate(String rawData) {
+        try {
+            return LocalDate.parse(rawData, DateTimeFormatter.ofPattern("yyyy. M. d."));
+        } catch (DateTimeParseException e) {
+            throw new AdminException(ILLEGAL_DATE_FORMAT);
+        }
     }
 
     private void saveAllData(Celeb celeb, Restaurant restaurant, RestaurantImage restaurantImage, Video video) {
