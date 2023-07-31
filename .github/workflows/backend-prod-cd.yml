@@ -1,0 +1,18 @@
+name: ✨ Celuveat backend PROD CD ✨
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+    
+jobs:
+  deploy-backend:
+    runs-on: [self-hosted, prod]
+        
+    steps:
+      - name: ✨ Run Backend Deploy Script 
+        run: |
+          cd ~
+          sudo sh deploy-backend.sh
