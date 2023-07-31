@@ -19,10 +19,13 @@
     "@googlemaps/react-wrapper": "^1.1.35",
     "@storybook/react": "^7.0.25",
     "@storybook/react-webpack5": "^7.0.25",
+    "@tanstack/react-query": "^4.32.0",
+    "@tanstack/react-query-devtools": "^4.32.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/styled-components": "^5.1.26",
+    "axios": "^1.4.0",
     "babel-plugin-root-import": "^6.6.0",
     "copy-webpack-plugin": "^11.0.0",
     "dotenv": "^16.3.1",
@@ -55,6 +58,7 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@svgr/webpack": "^8.0.1",
+    "@tanstack/eslint-plugin-query": "^4.29.25",
     "@testing-library/react": "^14.0.0",
     "@types/google.maps": "^3.53.5",
     "@types/jest": "^29.5.3",
@@ -83,7 +87,8 @@
     "stylelint-config-standard": "^34.0.0",
     "stylelint-order": "^6.0.3",
     "terser-webpack-plugin": "^5.3.9",
-    "ts-jest": "^29.1.1"
+    "ts-jest": "^29.1.1",
+    "zustand": "^4.3.9"
   },
   "eslintConfig": {
     "extends": [

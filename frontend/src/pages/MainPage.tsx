@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { styled, css } from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
@@ -7,58 +8,43 @@ import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { CELEBS_OPTIONS } from '~/constants/celebs';
-import useFetch from '~/hooks/useFetch';
-import getQueryString from '~/utils/getQueryString';
 import RestaurantCardList from '~/components/RestaurantCardList';
+import { getRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
-import type { RestaurantListData } from '~/@types/api.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
+import type { RestaurantListData } from '~/@types/api.types';
 
 function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [data, setData] = useState<RestaurantListData>(null);
-  const [loading, setLoading] = useState(false);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const { handleFetch } = useFetch('restaurants');
 
-  const fetchRestaurants = useCallback(
-    async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
-      setLoading(true);
-      const queryString = getQueryString(queryObject);
-      const response = await handleFetch({ queryString });
-
-      setData(response);
-      setLoading(false);
-    },
-    [boundary, celebId, restaurantCategory],
-  );
+  const { data, isLoading, refetch } = useQuery<RestaurantListData>({
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory }),
+  });
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
 
     setRestaurantCategory(currentCategory);
-    fetchRestaurants({ boundary, celebId, category: currentCategory });
+    refetch();
   };
 
   const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
     const currentCelebId = Number(e.currentTarget.dataset.id);
 
     setCelebId(currentCelebId);
-    fetchRestaurants({ boundary, celebId: currentCelebId, category: restaurantCategory });
+    refetch();
   };
 
   const toggleMapExpand = () => {
     setIsMapExpanded(prev => !prev);
   };
-
-  useEffect(() => {
-    fetchRestaurants({ boundary, celebId, category: restaurantCategory });
-  }, [boundary]);
 
   return (
     <>
@@ -70,7 +56,7 @@ function MainPage() {
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList restaurantDataList={data} loading={loading} setHoveredId={setHoveredId} />
+          <RestaurantCardList restaurantDataList={data} loading={isLoading} setHoveredId={setHoveredId} />
         </StyledLeftSide>
         <StyledRightSide>
           <Map
@@ -78,7 +64,7 @@ function MainPage() {
             data={data?.content}
             toggleMapExpand={toggleMapExpand}
             hoveredId={hoveredId}
-            loadingData={loading}
+            loadingData={isLoading}
           />
         </StyledRightSide>
       </StyledLayout>
