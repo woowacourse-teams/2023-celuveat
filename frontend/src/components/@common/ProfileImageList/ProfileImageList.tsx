@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
-import { Celeb } from '~/@types/celeb.types';
 import ProfileImage from '../ProfileImage/ProfileImage';
+import useBooleanState from '~/hooks/useBooleanState';
+
+import type { Celeb } from '~/@types/celeb.types';
 
 interface ProfileImageListProps {
   celebs: Celeb[];
@@ -9,13 +10,10 @@ interface ProfileImageListProps {
 }
 
 function ProfileImageList({ celebs, size }: ProfileImageListProps) {
-  const [hover, setHover] = useState(false);
-
-  const onMouseEnter = () => setHover(true);
-  const onMouseLeave = () => setHover(false);
+  const { value: hover, setTrue, setFalse } = useBooleanState(false);
 
   return (
-    <StyledProfileImageList onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} size={size}>
+    <StyledProfileImageList onMouseEnter={setTrue} onMouseLeave={setFalse} size={size}>
       {celebs.map((celeb, index) => (
         <StyledProfileImageWrapper key={celeb.id} index={index} hover={hover}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={size} />
