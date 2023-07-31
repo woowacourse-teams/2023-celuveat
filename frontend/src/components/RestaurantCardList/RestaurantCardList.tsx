@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
-import RestaurantCard from '../RestaurantCard/RestaurantCard';
+import RestaurantCard from '../RestaurantCard';
 import { FONT_SIZE } from '~/styles/common';
 import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
 

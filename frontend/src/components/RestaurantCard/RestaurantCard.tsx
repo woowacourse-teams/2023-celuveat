@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE, paintSkeleton, truncateText } from '~/styles/common';
-import ProfileImage from '../@common/ProfileImage';
-import { BASE_URL } from '~/App';
+import ImageCarousel from '../@common/ImageCarousel';
+import Love from '~/assets/icons/love.svg';
+import ProfileImageList from '../@common/ProfileImageList';
+import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
@@ -23,7 +24,7 @@ function RestaurantCard({
   onClick = () => {},
   setHoveredId = () => {},
 }: RestaurantCardProps) {
-  const { images, name, roadAddress, category } = restaurant;
+  const { images, name, roadAddress, category, phoneNumber } = restaurant;
 
   const onMouseEnter = () => {
     setHoveredId(restaurant.id);
@@ -35,16 +36,19 @@ function RestaurantCard({
 
   return (
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}/images-data/${images[0].name}`} type={type} />
+      <StyledImageViewer>
+        <ImageCarousel images={images} type={type} />
+        <Love fill="#000" fillOpacity={0.5} />
+      </StyledImageViewer>
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
           <StyledName>{name}</StyledName>
           <StyledAddress>{roadAddress}</StyledAddress>
-          <StyledAddress>02-1234-5678</StyledAddress>
+          <StyledAddress>{phoneNumber}</StyledAddress>
         </StyledInfo>
         <StyledProfileImageSection>
-          {celebs && <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />}
+          {celebs && <ProfileImageList celebs={celebs} size={size} />}
         </StyledProfileImageSection>
       </section>
     </StyledContainer>
@@ -70,20 +74,18 @@ const StyledContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledImage = styled.img<{ type: 'list' | 'map' }>`
-  ${paintSkeleton}
-  width: 100%;
-  aspect-ratio: 1.05 / 1;
+const StyledImageViewer = styled.div`
+  position: relative;
 
-  border-radius: ${({ type }) =>
-    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0 `};
-
-  object-fit: cover;
+  & > svg {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
 `;
 
 const StyledInfo = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 0.4rem;
 
