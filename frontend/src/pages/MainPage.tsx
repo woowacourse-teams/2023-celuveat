@@ -176,7 +176,7 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
 `;
 
 const StyledCardListHeader = styled.p`
-  margin: 3.2rem 2.4rem;
+  margin: 2.4rem 2.4rem 0;
 
   font-size: ${FONT_SIZE.md};
 `;

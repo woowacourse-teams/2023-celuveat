@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { useRef, useState } from 'react';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
@@ -27,7 +27,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
 
   return (
     map && (
-      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked ? 18 : 0}>
+      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
         <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered} ref={ref}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border />
         </StyledMarker>
@@ -40,6 +40,15 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
     )
   );
 }
+
+const scaleUp = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+`;
 
 const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boolean }>`
   display: flex;
@@ -54,11 +63,17 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
   border-radius: 50%;
 
   transition: transform 0.2s ease-in-out;
-  transform: ${({ isClicked, isRestaurantHovered }) => (isClicked || isRestaurantHovered ? 'scale(1.5)' : 'scale(1)')};
+  transform: ${({ isClicked }) => (isClicked ? 'scale(1.5)' : 'scale(1)')};
 
   &:hover {
     transform: scale(1.5);
   }
+
+  ${({ isRestaurantHovered }) =>
+    isRestaurantHovered &&
+    css`
+      animation: ${scaleUp} 0.2s ease-in-out forwards;
+    `}
 `;
 
 const fadeInAnimation = keyframes`
