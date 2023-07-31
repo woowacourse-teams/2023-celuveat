@@ -6,9 +6,10 @@ import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
+import { Oauth } from '~/@types/oauth.types';
 
 interface LoginButtonProps {
-  type: 'google' | 'kakao' | 'naver';
+  type: Oauth;
 }
 
 const LoginIcon: Record<string, React.ReactNode> = {
