@@ -76,7 +76,7 @@ const StyledImage = styled.img<{ type: 'list' | 'map' }>`
   aspect-ratio: 1.05 / 1;
 
   border-radius: ${({ type }) =>
-    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
+    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0 `};
 
   object-fit: cover;
 `;
