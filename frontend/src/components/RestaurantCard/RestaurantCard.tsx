@@ -34,14 +34,6 @@ function RestaurantCard({
     setHoveredId(null);
   };
 
-  const onMouseEnter = () => {
-    setHoveredId(restaurant.id);
-  };
-
-  const onMouseLeave = () => {
-    setHoveredId(null);
-  };
-
   return (
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
