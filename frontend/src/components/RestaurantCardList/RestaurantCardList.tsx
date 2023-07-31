@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RestaurantCard from '../RestaurantCard';
 import { FONT_SIZE } from '~/styles/common';
 import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
@@ -18,9 +18,12 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
   const [prevCardNumber, setPrevCardNumber] = useState(18);
 
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
-    const currentPage = Number(e.currentTarget.value) - 1;
-    setCurrentPage(currentPage);
+    const pageValue = e.currentTarget.value;
     window.scrollTo(0, 0);
+
+    if (pageValue === 'prev') return setCurrentPage(prev => prev - 1);
+    if (pageValue === 'next') return setCurrentPage(prev => prev + 1);
+    return setCurrentPage(Number(pageValue) - 1);
   };
 
   useEffect(() => {
@@ -39,14 +42,14 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
       </StyledRestaurantCardList>
       <PageNationBar
         totalPage={restaurantDataList.totalPage}
-        currentPage={restaurantDataList.currentPage}
+        currentPage={restaurantDataList.currentPage + 1}
         clickPageButton={clickPageButton}
       />
     </StyledRestaurantCardListContainer>
   );
 }
 
-export default RestaurantCardList;
+export default React.memo(RestaurantCardList);
 
 const StyledRestaurantCardListContainer = styled.div`
   display: flex;

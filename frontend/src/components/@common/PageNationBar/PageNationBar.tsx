@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
@@ -9,15 +10,15 @@ interface PageNationBarProps {
 }
 
 function PageNationBar({ totalPage, currentPage, clickPageButton }: PageNationBarProps) {
-  const makePageNumber = (currentPageNumber: number) => {
-    const isNeedPrevDots = currentPageNumber - 2 > 1;
-    const isNeedNextDots = currentPageNumber + 2 < totalPage;
+  const makePageNumber = useMemo(() => {
+    const isNeedPrevDots = currentPage - 2 > 1;
+    const isNeedNextDots = currentPage + 2 < totalPage;
 
     if (totalPage < 7) {
       return Array.from({ length: totalPage }, (_, index) => index + 1);
     }
     if (isNeedPrevDots && isNeedNextDots) {
-      return [1, '...', currentPageNumber - 1, currentPageNumber, currentPageNumber + 1, '...', totalPage];
+      return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPage];
     }
     if (isNeedPrevDots && !isNeedNextDots) {
       return [1, '...', totalPage - 3, totalPage - 2, totalPage - 1, totalPage];
@@ -27,22 +28,26 @@ function PageNationBar({ totalPage, currentPage, clickPageButton }: PageNationBa
     }
 
     return Array.from({ length: totalPage }, (_, index) => index + 1);
-  };
+  }, [totalPage, currentPage]);
 
   return (
     <StyledPageNationBar>
-      <LeftBracket width={12} height={12} />
-      {makePageNumber(currentPage + 1).map(value => (
+      <StyledBracketButton value="prev" disabled={currentPage === 1} onClick={clickPageButton}>
+        <LeftBracket width={12} height={12} />
+      </StyledBracketButton>
+      {makePageNumber.map(value => (
         <StyledPageButton
           value={value}
-          isCurrentPage={value === currentPage + 1}
+          isCurrentPage={value === currentPage}
           onClick={clickPageButton}
           disabled={value === '...'}
         >
           {value}
         </StyledPageButton>
       ))}
-      <RightBracket width={12} height={12} />
+      <StyledBracketButton value="next" disabled={currentPage === totalPage} onClick={clickPageButton}>
+        <RightBracket width={12} height={12} />
+      </StyledBracketButton>
     </StyledPageNationBar>
   );
 }
@@ -54,25 +59,34 @@ const StyledPageNationBar = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0 1.6rem;
-  margin-top: 3.2rem;
+  margin-top: 3.6rem;
+
+  & > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+  }
+`;
+
+const StyledBracketButton = styled.button<{ disabled: boolean }>`
+  background: none;
+
+  ${({ disabled }) => disabled && `opacity: 0.2;`}
 `;
 
 const StyledPageButton = styled.button<{ isCurrentPage: boolean; value: number | string }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 32px;
-  height: 32px;
-
-  border: none;
-  border-radius: 50%;
   background: none;
 
   ${({ isCurrentPage }) =>
     isCurrentPage
       ? css`
-          background: var(--black);
+          background-color: var(--black);
 
           color: var(--white);
         `
