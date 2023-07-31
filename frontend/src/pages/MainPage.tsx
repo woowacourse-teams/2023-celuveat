@@ -5,21 +5,21 @@ import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
-import RestaurantCard from '~/components/RestaurantCard';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import getQueryString from '~/utils/getQueryString';
-import { FONT_SIZE } from '~/styles/common';
+import RestaurantCardList from '~/components/RestaurantCardList';
 
 import type { Celeb } from '~/@types/celeb.types';
-import type { RestaurantData } from '~/@types/api.types';
+import type { RestaurantListData } from '~/@types/api.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [data, setData] = useState<RestaurantData[]>([]);
+  const [data, setData] = useState<RestaurantListData>(null);
+  const [loading, setLoading] = useState(false);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
@@ -28,11 +28,12 @@ function MainPage() {
 
   const fetchRestaurants = useCallback(
     async (queryObject: { boundary: CoordinateBoundary; celebId: number; category: RestaurantCategory }) => {
+      setLoading(true);
       const queryString = getQueryString(queryObject);
       const response = await handleFetch({ queryString });
-      const { content }: { content: RestaurantData[] } = response;
 
-      setData(content);
+      setData(response);
+      setLoading(false);
     },
     [boundary, celebId, restaurantCategory],
   );
@@ -69,15 +70,16 @@ function MainPage() {
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <StyledCardListHeader>음식점 수 {data.length} 개</StyledCardListHeader>
-          <StyledRestaurantCardList>
-            {data?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
-            ))}
-          </StyledRestaurantCardList>
+          <RestaurantCardList restaurantDataList={data} loading={loading} setHoveredId={setHoveredId} />
         </StyledLeftSide>
         <StyledRightSide>
-          <Map setBoundary={setBoundary} data={data} toggleMapExpand={toggleMapExpand} hoveredId={hoveredId} />
+          <Map
+            setBoundary={setBoundary}
+            data={data?.content}
+            toggleMapExpand={toggleMapExpand}
+            hoveredId={hoveredId}
+            loadingData={loading}
+          />
         </StyledRightSide>
       </StyledLayout>
       <Footer />
@@ -155,26 +157,6 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
     css`
       display: none;
     `}
-`;
-
-const StyledCardListHeader = styled.p`
-  margin: 2.4rem 2.4rem 0;
-
-  font-size: ${FONT_SIZE.md};
-`;
-
-const StyledRestaurantCardList = styled.div`
-  display: grid;
-  gap: 4rem 2.4rem;
-
-  height: 100%;
-
-  margin: 0 2.4rem;
-  grid-template-columns: 1fr 1fr 1fr;
-
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 1fr 1fr;
-  }
 `;
 
 const StyledRightSide = styled.div`

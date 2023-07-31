@@ -14,7 +14,7 @@ export default LoadingDots;
 
 const StyledLoadingDots = styled.div`
   display: flex;
-  gap: 0 0.6rem;
+  gap: 0 1.4rem;
 
   & > div:nth-child(2) {
     animation-delay: 0.14s;
@@ -30,13 +30,13 @@ const pulseAnimation = keyframes`
     transform: scale(0);
   }
   90%, 100% {
-    transform: scale(1);
+    transform: scale(10);
   }
 `;
 
 const StyledLoadingDot = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 1.2px;
+  height: 1.2px;
 
   border-radius: 50%;
   background-color: var(--black);

@@ -47,6 +47,4 @@ const colorChange = keyframes`
 
 export const paintSkeleton = css`
   animation: ${colorChange} 1s ease-in-out infinite alternate;
-
-  border-radius: ${BORDER_RADIUS.md};
 `;

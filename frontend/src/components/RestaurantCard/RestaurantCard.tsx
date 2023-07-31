@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE, paintSkeleton, truncateText } from '~/styles/common';
 import ProfileImage from '../@common/ProfileImage';
 import { BASE_URL } from '~/App';
 
@@ -35,7 +35,7 @@ function RestaurantCard({
 
   return (
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}images-data/${images[0].name}`} type={type} />
+      <StyledImage alt={`${name} 대표 이미지`} src={`${BASE_URL}/images-data/${images[0].name}`} type={type} />
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
@@ -71,11 +71,12 @@ const StyledContainer = styled.div`
 `;
 
 const StyledImage = styled.img<{ type: 'list' | 'map' }>`
+  ${paintSkeleton}
   width: 100%;
   aspect-ratio: 1.05 / 1;
 
   border-radius: ${({ type }) =>
-    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
+    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0 `};
 
   object-fit: cover;
 `;
