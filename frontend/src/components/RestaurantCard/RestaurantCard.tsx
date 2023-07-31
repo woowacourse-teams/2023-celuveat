@@ -21,7 +21,7 @@ function RestaurantCard({
   size,
   type = 'list',
   onClick = () => {},
-  setHoveredId,
+  setHoveredId = () => {},
 }: RestaurantCardProps) {
   const { images, name, roadAddress, category } = restaurant;
 
