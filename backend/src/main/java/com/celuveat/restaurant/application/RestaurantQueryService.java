@@ -1,6 +1,7 @@
 package com.celuveat.restaurant.application;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
@@ -15,7 +16,6 @@ import com.celuveat.video.domain.VideoRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,30 +37,34 @@ public class RestaurantQueryService {
             LocationSearchCond locationSearchCond,
             Pageable pageable
     ) {
-        Page<RestaurantWithDistance> restaurantsWithDistance =
-                restaurantQueryRepository.getRestaurantsWithDistance(restaurantSearchCond, locationSearchCond,
-                        pageable);
-        List<Long> restaurantIds = restaurantsWithDistance.getContent().stream()
-                .map(RestaurantWithDistance::id)
-                .toList();
-        List<Video> videos = findVideoByRestaurantIdIn(restaurantIds);
-        Map<Long, List<Celeb>> celebs = mapToCeleb(groupingVideoByRestaurant(videos));
-        List<RestaurantImage> images = findImageByRestaurantIn(restaurantIds);
+        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistance(
+                restaurantSearchCond, locationSearchCond, pageable
+        );
+        List<Long> restaurantIds = extractRestaurantIds(restaurantsWithDistance);
+        List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
+        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
         List<RestaurantQueryResponse> responseList = toResponseList(restaurantsWithDistance, celebs, restaurantListMap);
         return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalElements());
     }
 
-    private List<Video> findVideoByRestaurantIdIn(List<Long> restaurantIds) {
-        return videoRepository.findAllByRestaurantIdIn(restaurantIds);
+    private List<Long> extractRestaurantIds(Page<RestaurantWithDistance> restaurantsWithDistance) {
+        return restaurantsWithDistance.getContent().stream()
+                .map(RestaurantWithDistance::id)
+                .toList();
     }
 
     private Map<Long, List<Video>> groupingVideoByRestaurant(List<Video> videos) {
         return videos.stream()
-                .collect(groupingBy(video -> video.restaurant().id(), LinkedHashMap::new, Collectors.toList()));
+                .collect(groupingBy(
+                        video -> video.restaurant().id(),
+                        LinkedHashMap::new,
+                        toList()
+                ));
     }
 
-    private Map<Long, List<Celeb>> mapToCeleb(Map<Long, List<Video>> restaurantVideos) {
+    private Map<Long, List<Celeb>> mapVideoToCeleb(Map<Long, List<Video>> restaurantVideos) {
         Map<Long, List<Celeb>> celebs = new LinkedHashMap<>();
         for (Long restaurantId : restaurantVideos.keySet()) {
             List<Celeb> list = restaurantVideos.get(restaurantId).stream()
@@ -71,13 +75,13 @@ public class RestaurantQueryService {
         return celebs;
     }
 
-    private List<RestaurantImage> findImageByRestaurantIn(List<Long> restaurantIds) {
-        return restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
-    }
-
     private Map<Long, List<RestaurantImage>> groupingImageByRestaurant(List<RestaurantImage> images) {
         return images.stream()
-                .collect(groupingBy(image -> image.restaurant().id(), LinkedHashMap::new, Collectors.toList()));
+                .collect(groupingBy(
+                        image -> image.restaurant().id(),
+                        LinkedHashMap::new,
+                        toList()
+                ));
     }
 
     private List<RestaurantQueryResponse> toResponseList(

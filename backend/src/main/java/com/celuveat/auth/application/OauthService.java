@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OauthService {
 
-    private final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
-    private final OauthMemberClientComposite oauthMemberClientComposite;
     private final OauthMemberRepository oauthMemberRepository;
+    private final OauthMemberClientComposite oauthMemberClientComposite;
+    private final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
 
     public String getAuthCodeRequestUrl(OauthServerType oauthServerType) {
         return authCodeRequestUrlProviderComposite.provide(oauthServerType);
