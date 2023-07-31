@@ -1,6 +1,7 @@
 package com.celuveat.restaurant.presentation;
 
 import com.celuveat.common.PageResponse;
+import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -42,7 +43,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/{restaurantId}/like")
-    ResponseEntity<Void> like(@PathVariable Long restaurantId) {
+    ResponseEntity<Void> like(@PathVariable Long restaurantId, @Auth Long memberId) {
         return ResponseEntity.ok().build();
     }
 }
