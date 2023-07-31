@@ -46,6 +46,6 @@ export const Default: Story = {
           'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
       },
     ],
-    size: 42,
+    size: '42px',
   },
 };

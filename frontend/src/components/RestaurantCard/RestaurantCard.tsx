@@ -1,31 +1,54 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, FONT_SIZE, truncateText } from '~/styles/common';
-import ProfileImage from '../@common/ProfileImage';
-import { Restaurant } from '~/@types/restaurant.types';
-import { Celeb } from '~/@types/celeb.types';
+import ImageCarousel from '../@common/ImageCarousel';
+import Love from '~/assets/icons/love.svg';
+import ProfileImageList from '../@common/ProfileImageList';
+import { FONT_SIZE, truncateText } from '~/styles/common';
+
+import type { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
-  celebs: Celeb[];
-  size: number;
-  onClick: React.MouseEventHandler;
+  celebs?: Celeb[];
+  size?: string;
+  type?: 'list' | 'map';
+  onClick?: React.MouseEventHandler;
+  setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCard({ restaurant, celebs, size, onClick }: RestaurantCardProps) {
-  const { images, name, roadAddress, category } = restaurant;
+function RestaurantCard({
+  restaurant,
+  celebs,
+  size,
+  type = 'list',
+  onClick = () => {},
+  setHoveredId = () => {},
+}: RestaurantCardProps) {
+  const { images, name, roadAddress, category, phoneNumber } = restaurant;
+
+  const onMouseEnter = () => {
+    setHoveredId(restaurant.id);
+  };
+
+  const onMouseLeave = () => {
+    setHoveredId(null);
+  };
 
   return (
-    <StyledContainer onClick={onClick}>
-      <StyledImage alt={`${name} 대표 이미지`} src={`http://3.35.157.27:3000/images-data/${images[0].name}`} />
+    <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <StyledImageViewer>
+        <ImageCarousel images={images} type={type} />
+        <Love fill="#000" fillOpacity={0.5} />
+      </StyledImageViewer>
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
           <StyledName>{name}</StyledName>
           <StyledAddress>{roadAddress}</StyledAddress>
-          <StyledAddress>02-1234-5678</StyledAddress>
+          <StyledAddress>{phoneNumber}</StyledAddress>
         </StyledInfo>
         <StyledProfileImageSection>
-          <ProfileImage name={celebs[0].name} imageUrl={celebs[0].profileImageUrl} size={size} />
+          {celebs && <ProfileImageList celebs={celebs} size={size} />}
         </StyledProfileImageSection>
       </section>
     </StyledContainer>
@@ -51,18 +74,18 @@ const StyledContainer = styled.div`
   cursor: pointer;
 `;
 
-const StyledImage = styled.img`
-  width: 100%;
-  aspect-ratio: 1.05 / 1;
+const StyledImageViewer = styled.div`
+  position: relative;
 
-  border-radius: ${BORDER_RADIUS.md};
-
-  object-fit: cover;
+  & > svg {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
 `;
 
 const StyledInfo = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 0.4rem;
 
