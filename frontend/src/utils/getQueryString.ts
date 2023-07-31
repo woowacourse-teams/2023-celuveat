@@ -1,20 +1,13 @@
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
+import { GetRestaurantsQueryParams } from '~/api';
 
 interface ParamTypes extends CoordinateBoundary {
   celebId?: string;
   category?: RestaurantCategory;
 }
 
-const getQueryString = ({
-  boundary,
-  celebId,
-  category,
-}: {
-  boundary: CoordinateBoundary;
-  celebId: number;
-  category: RestaurantCategory;
-}) => {
+const getQueryString = ({ boundary, celebId, category }: GetRestaurantsQueryParams) => {
   let params: ParamTypes = boundary;
   if (celebId !== -1) params = { ...params, celebId: String(celebId) };
 
