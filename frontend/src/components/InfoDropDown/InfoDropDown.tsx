@@ -67,8 +67,8 @@ const StyledDropDownWrapper = styled.ul`
   align-content: center;
 
   position: absolute;
-  top: calc(100% + 16px);
-  right: 0;
+  top: calc(100% - 8px);
+  right: 18px;
 
   width: 216px;
   height: 176px;
@@ -80,7 +80,7 @@ const StyledDropDownWrapper = styled.ul`
 
   font-size: 1.4rem;
 
-  transition: box-shadow 0.2s var(--shadow);
+  box-shadow: var(--shadow);
 `;
 
 const StyledSelectContainer = styled.div`
