@@ -36,11 +36,11 @@ const StyledInfoButton = styled.button<InfoButtonProps>`
   ${({ isShow }) =>
     isShow &&
     css`
-      box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+      box-shadow: var(--shadow);
     `}
 
   &:hover {
-    box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+    box-shadow: var(--shadow);
 
     transition: box-shadow 0.2s ease-in-out;
   }
