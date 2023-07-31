@@ -9,7 +9,7 @@ import type { Restaurant } from '~/@types/restaurant.types';
 interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs?: Celeb[];
-  size?: number;
+  size?: string;
   type?: 'list' | 'map';
   onClick?: React.MouseEventHandler;
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
