@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { RestaurantCategory } from '~/@types/restaurant.types';
 import NavItem from '~/components/@common/NavButton/NavButton';
-
 import isEqual from '~/utils/compare';
+
+import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface Category {
   label: RestaurantCategory;

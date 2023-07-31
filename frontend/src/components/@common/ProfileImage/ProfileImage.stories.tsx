@@ -14,6 +14,6 @@ export const Default: Story = {
   args: {
     name: '누군가',
     imageUrl: 'https://avatars.githubusercontent.com/u/51052049?v=4',
-    size: 64,
+    size: '64px',
   },
 };

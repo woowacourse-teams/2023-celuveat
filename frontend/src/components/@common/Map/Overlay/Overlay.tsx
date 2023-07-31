@@ -14,6 +14,7 @@ function Overlay({ position, pane = 'floatPane', map, zIndex, children }: Overla
   const container = useMemo(() => {
     const div = document.createElement('div');
     div.style.position = 'absolute';
+
     return div;
   }, []);
 
