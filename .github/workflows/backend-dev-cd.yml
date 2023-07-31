@@ -9,7 +9,7 @@ on:
     
 jobs:
   deploy-backend:
-    runs-on: [self-hosted, prod]
+    runs-on: [self-hosted, dev]
         
     steps:
       - name: ✨ Run Backend Deploy Script 
