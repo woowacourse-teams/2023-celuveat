@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,5 +39,10 @@ public class RestaurantController {
                 pageable
         );
         return ResponseEntity.ok(PageResponse.from(result));
+    }
+
+    @PostMapping("/{restaurantId}/like")
+    ResponseEntity<Void> like(@PathVariable Long restaurantId) {
+        return ResponseEntity.ok().build();
     }
 }
