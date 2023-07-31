@@ -9,6 +9,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
   "stylelint.enable": true,
+
   "stylelint.config": null,
   "stylelint.validate": ["css", "scss", "typescript", "typescriptreact"]
 }
