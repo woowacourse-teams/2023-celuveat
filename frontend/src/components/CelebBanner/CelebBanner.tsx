@@ -27,7 +27,7 @@ function CelebBanner({
   return (
     <StyledContainer background={backgroundImageUrl}>
       <StyledCelebInfo>
-        <ProfileImage name={name} imageUrl={profileImageUrl} size={172} />
+        <ProfileImage name={name} imageUrl={profileImageUrl} size="172px" />
         <StyledName>{name}</StyledName>
         <StyledDetail>
           {youtubeChannelName} 구독자 {subscriberCount / 10_000}만명 ∙ 음식점 {restaurantCount}개

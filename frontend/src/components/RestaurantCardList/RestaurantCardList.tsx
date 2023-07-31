@@ -1,16 +1,18 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import RestaurantCard from '../RestaurantCard/RestaurantCard';
-import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import { FONT_SIZE } from '~/styles/common';
 import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
+
+import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 
 interface RestaurantCardListProps {
   restaurantDataList: RestaurantListData | null;
   loading: boolean;
+  setHoveredId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCardList({ restaurantDataList, loading }: RestaurantCardListProps) {
+function RestaurantCardList({ restaurantDataList, loading, setHoveredId }: RestaurantCardListProps) {
   const [prevCardNumber, setPrevCardNumber] = useState(18);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ function RestaurantCardList({ restaurantDataList, loading }: RestaurantCardListP
       <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
       <StyledRestaurantCardList>
         {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
-          <RestaurantCard restaurant={restaurant} celebs={celebs} size={42} onClick={() => {}} />
+          <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
         ))}
       </StyledRestaurantCardList>
     </div>

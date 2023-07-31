@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
-import OverlayMarker from './OverlayMarker';
-import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
@@ -12,11 +10,15 @@ import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
-import { RestaurantData } from '~/@types/api.types';
 import getQuadrant from '~/utils/getQuadrant';
+import OverlayMarker from './OverlayMarker';
+
+import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
+import type { RestaurantData } from '~/@types/api.types';
 
 interface MapProps {
   data: RestaurantData[];
+  hoveredId: number | null;
   setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   toggleMapExpand: () => void;
   loadingData: boolean;
@@ -42,14 +44,16 @@ const StyledMapLoadingContainer = styled.section`
   background-color: var(--gray-2);
 `;
 
-function Map({ data, setBoundary, toggleMapExpand, loadingData }: MapProps) {
+const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
+
+function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId }: MapProps) {
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mainPosition, setMainPosition] = useState({ lat: 37.5057482, lng: 127.050727 });
+  const [currentCenter, setCurrentCenter] = useState<Coordinate>(JamsilCampus);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -57,7 +61,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData }: MapProps) {
 
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
-    setMainPosition({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
+    setCurrentCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
 
     const lowLatitude = String(m.getBounds().getSouthWest().lat());
     const highLatitude = String(m.getBounds().getNorthEast().lat());
@@ -103,7 +107,8 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData }: MapProps) {
             <OverlayMarker
               restaurant={restaurant}
               celeb={celebs[0]}
-              quadrant={getQuadrant(mainPosition, { lat, lng })}
+              quadrant={getQuadrant(currentCenter, { lat, lng })}
+              isRestaurantHovered={restaurant.id === hoveredId}
             />
           );
         })}

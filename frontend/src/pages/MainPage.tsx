@@ -9,11 +9,12 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { CELEBS_OPTIONS } from '~/constants/celebs';
 import useFetch from '~/hooks/useFetch';
 import getQueryString from '~/utils/getQueryString';
+import RestaurantCardList from '~/components/RestaurantCardList';
+
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
-import RestaurantCardList from '~/components/RestaurantCardList';
 
 function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
@@ -22,6 +23,7 @@ function MainPage() {
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
   const { handleFetch } = useFetch('restaurants');
 
   const fetchRestaurants = useCallback(
@@ -68,10 +70,16 @@ function MainPage() {
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList restaurantDataList={data} loading={loading} />
+          <RestaurantCardList restaurantDataList={data} loading={loading} setHoveredId={setHoveredId} />
         </StyledLeftSide>
         <StyledRightSide>
-          <Map setBoundary={setBoundary} data={data?.content} toggleMapExpand={toggleMapExpand} loadingData={loading} />
+          <Map
+            setBoundary={setBoundary}
+            data={data?.content}
+            toggleMapExpand={toggleMapExpand}
+            hoveredId={hoveredId}
+            loadingData={loading}
+          />
         </StyledRightSide>
       </StyledLayout>
       <Footer />

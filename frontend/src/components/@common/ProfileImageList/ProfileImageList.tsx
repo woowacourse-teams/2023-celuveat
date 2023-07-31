@@ -6,7 +6,7 @@ import type { Celeb } from '~/@types/celeb.types';
 
 interface ProfileImageListProps {
   celebs: Celeb[];
-  size: number;
+  size: string;
 }
 
 function ProfileImageList({ celebs, size }: ProfileImageListProps) {
@@ -25,11 +25,11 @@ function ProfileImageList({ celebs, size }: ProfileImageListProps) {
 
 export default ProfileImageList;
 
-const StyledProfileImageList = styled.div<{ size: number }>`
+const StyledProfileImageList = styled.div<{ size: string }>`
   position: relative;
 
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
+  width: ${({ size }) => `${size}`};
+  height: ${({ size }) => `${size}`};
 `;
 
 const StyledProfileImageWrapper = styled.div<{ index: number; hover: boolean }>`

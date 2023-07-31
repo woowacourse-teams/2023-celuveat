@@ -1,24 +1,41 @@
 import { styled } from 'styled-components';
-import { FONT_SIZE, truncateText } from '~/styles/common';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
-import type { Restaurant } from '~/@types/restaurant.types';
-import type { Celeb } from '~/@types/celeb.types';
 import ProfileImageList from '../@common/ProfileImageList';
+import { FONT_SIZE, truncateText } from '~/styles/common';
+
+import type { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   celebs?: Celeb[];
-  size?: number;
+  size?: string;
   type?: 'list' | 'map';
   onClick?: React.MouseEventHandler;
+  setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCard({ restaurant, celebs, size, type = 'list', onClick }: RestaurantCardProps) {
+function RestaurantCard({
+  restaurant,
+  celebs,
+  size,
+  type = 'list',
+  onClick = () => {},
+  setHoveredId = () => {},
+}: RestaurantCardProps) {
   const { images, name, roadAddress, category, phoneNumber } = restaurant;
 
+  const onMouseEnter = () => {
+    setHoveredId(restaurant.id);
+  };
+
+  const onMouseLeave = () => {
+    setHoveredId(null);
+  };
+
   return (
-    <StyledContainer onClick={onClick}>
+    <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
         <Love fill="#000" fillOpacity={0.5} />

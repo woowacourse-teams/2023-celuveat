@@ -38,6 +38,6 @@ export const Default: Story = {
         youtubeChannelName: '@d0dam',
       },
     ],
-    size: 42,
+    size: '42px',
   },
 };
