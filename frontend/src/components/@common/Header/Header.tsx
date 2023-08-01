@@ -5,13 +5,15 @@ import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
 import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
+import useTokenStore from '~/hooks/store/useTokenState';
 import useBooleanState from '~/hooks/useBooleanState';
-import useLocalStorage from '~/hooks/useLocalStorage';
 import { isEmptyString } from '~/utils/compare';
 
 function Header() {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const { value: token, clearStorage } = useLocalStorage();
+
+  const token = useTokenStore(state => state.token);
+  const clearToken = useTokenStore(state => state.clearToken);
 
   const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
 
@@ -20,7 +22,7 @@ function Header() {
 
     if (currentOption === '로그인') openModal();
     if (currentOption === '로그아웃') {
-      clearStorage();
+      clearToken();
     }
   };
 

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import getAccessToken from '~/api/oauth';
-import useLocalStorage from '~/hooks/useLocalStorage';
+import useTokenState from '~/hooks/store/useTokenState';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
@@ -16,7 +16,9 @@ interface OauthCodeResponse {
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
-  const { changeStorageValue } = useLocalStorage();
+
+  const updateToken = useTokenState(state => state.updateToken);
+
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
 
@@ -25,7 +27,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
     onSuccess: (data: OauthCodeResponse) => {
       const { jsessionId } = data;
 
-      changeStorageValue(jsessionId);
+      updateToken(jsessionId);
 
       navigator('/');
     },
