@@ -1,4 +1,4 @@
-package com.celuveat.common.auth;
+package com.celuveat.auth.presentation;
 
 public class AuthConstant {
 

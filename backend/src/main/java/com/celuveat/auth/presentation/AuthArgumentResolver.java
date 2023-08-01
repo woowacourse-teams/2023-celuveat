@@ -1,9 +1,10 @@
-package com.celuveat.common.auth;
+package com.celuveat.auth.presentation;
 
 import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST;
-import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
+import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.exception.AuthException;
+import com.celuveat.common.auth.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;

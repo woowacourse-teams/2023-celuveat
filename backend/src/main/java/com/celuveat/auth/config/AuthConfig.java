@@ -1,6 +1,6 @@
-package com.celuveat.common.config;
+package com.celuveat.auth.config;
 
-import com.celuveat.common.auth.AuthArgumentResolver;
+import com.celuveat.auth.presentation.AuthArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
