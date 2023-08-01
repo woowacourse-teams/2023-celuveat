@@ -27,6 +27,12 @@ function Overlay({ position, pane = 'floatPane', map, zIndex, children }: Overla
 
   useEffect(() => {
     container.style.zIndex = `${zIndex}`;
+    container.onmouseover = function () {
+      container.style.zIndex = '18';
+    };
+    container.onmouseout = function () {
+      container.style.zIndex = `${zIndex}`;
+    };
   }, [zIndex, container]);
 
   return createPortal(children, container);
