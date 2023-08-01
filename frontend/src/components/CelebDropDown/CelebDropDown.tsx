@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
 import SearchIcon from '~/assets/icons/search.svg';
-import isEqual from '~/utils/compare';
-import { Celeb } from '~/@types/celeb.types';
+import { isEqual } from '~/utils/compare';
 import ProfileImage from '~/components/@common/ProfileImage';
 import NavItem from '~/components/@common/NavButton/NavButton';
+import useBooleanState from '~/hooks/useBooleanState';
+
+import type { Celeb } from '~/@types/celeb.types';
 
 interface DropDownProps {
   celebs: Celeb[];
@@ -16,7 +18,7 @@ interface DropDownProps {
 
 function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
   const [selected, setSelected] = useState<Celeb['name']>('전체');
-  const [isShow, setIsShow] = useState(isOpen);
+  const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
   const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
     setSelected(celeb);
@@ -24,13 +26,9 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
     if (externalOnClick) externalOnClick(event);
   };
 
-  const onToggleDropDown = useCallback(() => {
-    setIsShow(!isShow);
-  }, [isShow]);
-
   return (
     <StyledCelebDropDown>
-      <StyledNavItemWrapper onClick={onToggleDropDown} onBlur={onToggleDropDown}>
+      <StyledNavItemWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
         <NavItem label="셀럽" icon={<CelebIcon />} isShow={isShow} />
       </StyledNavItemWrapper>
 
