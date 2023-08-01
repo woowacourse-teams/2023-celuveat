@@ -49,6 +49,8 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
   );
 }
 
+export default OverlayMarker;
+
 const scaleUp = keyframes`
   0% {
     transform: scale(1);
@@ -106,5 +108,3 @@ const StyledModal = styled.div<{ quadrant: Quadrant }>`
   animation: ${fadeInAnimation} 100ms ease-in;
   box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
 `;
-
-export default OverlayMarker;

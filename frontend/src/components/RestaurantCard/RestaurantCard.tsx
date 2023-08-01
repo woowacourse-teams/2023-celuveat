@@ -83,7 +83,7 @@ const StyledImageViewer = styled.div`
 const StyledInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.6rem;
 
   position: relative;
 
@@ -99,7 +99,7 @@ const StyledName = styled.h5`
 const StyledAddress = styled.span`
   ${truncateText(1)}
   color: var(--gray-4);
-  font-size: ${FONT_SIZE.sm};
+  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledCategory = styled.span`
