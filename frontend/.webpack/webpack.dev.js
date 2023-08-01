@@ -6,6 +6,7 @@ module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
+    disableHostCheck: true,
     static: {
       directory: path.resolve(__dirname, '../public'),
     },
