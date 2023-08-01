@@ -26,7 +26,7 @@ function MainPage() {
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
 
   const {
-    data: restaurantDataList,
+    data: restaurantListData,
     isLoading,
     refetch,
   } = useQuery<RestaurantListData>({
@@ -73,12 +73,12 @@ function MainPage() {
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList restaurantDataList={restaurantDataList} loading={isLoading} setHoveredId={setHoveredId} />
+          <RestaurantCardList restaurantDataList={restaurantListData} loading={isLoading} setHoveredId={setHoveredId} />
         </StyledLeftSide>
         <StyledRightSide>
           <Map
             setBoundary={setBoundary}
-            data={restaurantDataList?.content}
+            data={restaurantListData?.content}
             toggleMapExpand={toggleMapExpand}
             hoveredId={hoveredId}
             loadingData={isLoading}
