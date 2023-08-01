@@ -2,6 +2,7 @@ package com.celuveat.restaurant.presentation;
 
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
+import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -27,6 +28,7 @@ public class RestaurantController {
     private static final int DEFAULT_SIZE = 18;
 
     private final RestaurantQueryService restaurantQueryService;
+    private final RestaurantLikeService restaurantLikeService;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
@@ -44,6 +46,7 @@ public class RestaurantController {
 
     @PostMapping("/{restaurantId}/like")
     ResponseEntity<Void> like(@PathVariable Long restaurantId, @Auth Long memberId) {
+        restaurantLikeService.like(restaurantId, memberId);
         return ResponseEntity.ok().build();
     }
 }
