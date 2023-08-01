@@ -22,7 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HttpSession session = getSession(request);
         Long memberId = Optional.ofNullable(session.getAttribute(JSESSION_ID))
-                .map(it -> (Long) it)
+                .map(id -> (Long) id)
                 .orElseThrow(() -> new AuthException(UNAUTHORIZED_REQUEST));
         authContext.setMemberId(memberId);
         return true;
