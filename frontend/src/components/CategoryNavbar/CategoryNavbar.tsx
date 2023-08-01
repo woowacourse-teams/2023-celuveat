@@ -27,7 +27,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   return (
     <StyledCategoryNavbarWrapper>
       {categories.map(({ icon, label }) => (
-        <StyledNavItemButton data-label={label} type="button" onClick={clickCategory(label)}>
+        <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
           <NavItem label={label} icon={icon} isShow={isEqual(selected, label)} />
         </StyledNavItemButton>
       ))}

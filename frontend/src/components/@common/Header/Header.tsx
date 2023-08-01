@@ -29,6 +29,8 @@ function Header() {
       <StyledHeader>
         <StyledLogo alt="셀럽잇 로고" src={Logo} />
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} />
+        <StyledLogo alt="홈" src={Logo} role="button" />
+        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal>
         <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
