@@ -1,5 +1,8 @@
 package com.celuveat.auth.presentation;
 
+import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST;
+
+import com.celuveat.auth.exception.AuthException;
 import com.celuveat.common.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -28,6 +31,9 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) {
+        if (authContext.memberId() == null) {
+            throw new AuthException(UNAUTHORIZED_REQUEST);
+        }
         return authContext.memberId();
     }
 }
