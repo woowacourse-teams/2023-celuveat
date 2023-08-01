@@ -1,3 +1,3 @@
-const isEqual = (targetA: string | number, targetB: string | number) => targetA === targetB;
+export const isEqual = (targetA: string | number, targetB: string | number) => targetA === targetB;
 
-export default isEqual;
+export const isEmptyString = (target: string) => target.length === 0;

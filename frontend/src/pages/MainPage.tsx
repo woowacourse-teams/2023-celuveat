@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled, css } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { CELEBS_OPTIONS } from '~/constants/celebs';
+
 import RestaurantCardList from '~/components/RestaurantCardList';
-import { getRestaurants } from '~/api';
+import { getCelebs, getRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
+import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 
 function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
@@ -22,11 +23,27 @@ function MainPage() {
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [celebOptions, setCelebOptions] = useState<Celeb[]>();
 
-  const { data, isLoading, refetch } = useQuery<RestaurantListData>({
+  const {
+    data: restaurantListData,
+    isLoading,
+    refetch,
+  } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory],
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory }),
   });
+
+  const celebOptionsMutation = useMutation({
+    mutationFn: () => getCelebs(),
+    onSuccess: (data: Celeb[]) => {
+      setCelebOptions([OPTION_FOR_CELEB_ALL, ...data]);
+    },
+  });
+
+  useEffect(() => {
+    celebOptionsMutation.mutate();
+  }, []);
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
@@ -50,18 +67,18 @@ function MainPage() {
     <>
       <Header />
       <StyledNavBar>
-        <CelebDropDown celebs={CELEBS_OPTIONS} externalOnClick={clickCeleb} />
+        <CelebDropDown celebs={celebOptions} externalOnClick={clickCeleb} />
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList restaurantDataList={data} loading={isLoading} setHoveredId={setHoveredId} />
+          <RestaurantCardList restaurantDataList={restaurantListData} loading={isLoading} setHoveredId={setHoveredId} />
         </StyledLeftSide>
         <StyledRightSide>
           <Map
             setBoundary={setBoundary}
-            data={data?.content}
+            data={restaurantListData?.content}
             toggleMapExpand={toggleMapExpand}
             hoveredId={hoveredId}
             loadingData={isLoading}
