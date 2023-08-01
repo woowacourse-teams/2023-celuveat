@@ -9,8 +9,8 @@ interface WaterMarkImageProps {
 function WaterMarkImage({ waterMark, imageUrl }: WaterMarkImageProps) {
   return (
     <StyledWaterMarkImage>
-      <StyledImage src={`http://3.35.157.27:3000/images-data/${imageUrl}`} alt={`${waterMark}`} loading="lazy" />
-      <StyledWaterMark>{waterMark}</StyledWaterMark>
+      <StyledImage src={`http://3.35.157.27:3000/images-data/${imageUrl}`} alt="음식점" loading="lazy" />
+      <StyledWaterMark aria-hidden="true">{waterMark}</StyledWaterMark>
     </StyledWaterMarkImage>
   );
 }

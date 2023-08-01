@@ -38,12 +38,14 @@ function RestaurantCard({
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
-        <Love fill="#000" fillOpacity={0.5} />
+        <LikeButton aria-label="좋아요" type="button">
+          <Love fill="#000" fillOpacity={0.5} aria-hidden="true" />
+        </LikeButton>
       </StyledImageViewer>
       <section>
         <StyledInfo>
           <StyledCategory>{category}</StyledCategory>
-          <StyledName>{name}</StyledName>
+          <StyledName role="columnheader">{name}</StyledName>
           <StyledAddress>{roadAddress}</StyledAddress>
           <StyledAddress>{phoneNumber}</StyledAddress>
         </StyledInfo>
@@ -76,12 +78,6 @@ const StyledContainer = styled.div`
 
 const StyledImageViewer = styled.div`
   position: relative;
-
-  & > svg {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-  }
 `;
 
 const StyledInfo = styled.div`
@@ -113,4 +109,13 @@ const StyledCategory = styled.span`
 
 const StyledProfileImageSection = styled.div`
   align-self: flex-end;
+`;
+
+const LikeButton = styled.button`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  border: none;
+  background-color: transparent;
 `;

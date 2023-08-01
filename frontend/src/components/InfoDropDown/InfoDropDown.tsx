@@ -12,9 +12,10 @@ interface DropDownProps {
   options: Option[];
   isOpen?: boolean;
   externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
+  label: string;
 }
 
-function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProps) {
+function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropDownProps) {
   const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
   const onSelection = () => (event?: MouseEvent<HTMLLIElement>) => {
@@ -22,7 +23,7 @@ function InfoDropDown({ options, externalOnClick, isOpen = false }: DropDownProp
   };
 
   return (
-    <StyledInfoDropDown>
+    <StyledInfoDropDown role="button" aria-label={label}>
       <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
         <InfoButton isShow={isShow} />
       </StyledInfoButtonWrapper>
