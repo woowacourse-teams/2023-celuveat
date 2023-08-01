@@ -1,13 +1,7 @@
 package com.celuveat.auth.presentation;
 
-import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST;
-import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
-
-import com.celuveat.auth.exception.AuthException;
 import com.celuveat.common.auth.Auth;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -16,11 +10,15 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
+@RequiredArgsConstructor
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final AuthContext authContext;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(Auth.class);
+        return parameter.hasParameterAnnotation(Auth.class)
+                && parameter.getParameterType().equals(Long.class);
     }
 
     @Override
@@ -30,10 +28,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        HttpSession session = request.getSession(false);
-        return Optional.ofNullable(session)
-                .map(it -> (Long) it.getAttribute(JSESSION_ID))
-                .orElseThrow(() -> new AuthException(UNAUTHORIZED_REQUEST));
+        return authContext.memberId();
     }
 }
