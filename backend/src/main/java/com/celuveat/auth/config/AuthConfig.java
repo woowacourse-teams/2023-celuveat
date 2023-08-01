@@ -13,17 +13,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class AuthConfig implements WebMvcConfigurer {
 
-    private final AuthArgumentResolver authArgumentResolver;
     private final AuthInterceptor authInterceptor;
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(authArgumentResolver);
-    }
+    private final AuthArgumentResolver authArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/restaurants/*/like");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(authArgumentResolver);
     }
 }
