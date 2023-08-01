@@ -43,7 +43,7 @@ function MainPage() {
 
   useEffect(() => {
     celebOptionsMutation.mutate();
-  }, [celebOptions]);
+  }, []);
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
