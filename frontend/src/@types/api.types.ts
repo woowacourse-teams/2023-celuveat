@@ -10,6 +10,7 @@ export interface RestaurantListData {
 export interface RestaurantData {
   id: number;
   name: string;
+  isLiked: boolean;
   category: string;
   roadAddress: string;
   lat: number;

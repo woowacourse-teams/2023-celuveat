@@ -17,6 +17,7 @@ export const Default: Story = {
     onClickExit: () => {},
     modalRestaurantInfo: {
       id: 1,
+      isLiked: false,
       name: '김천재의육회반한연어 신논현본점',
       category: '요리주점',
       roadAddress: '서울 강남구 강남대로118길 47 2층',

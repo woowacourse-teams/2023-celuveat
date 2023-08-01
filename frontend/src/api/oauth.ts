@@ -1,11 +1,10 @@
-import { BASE_URL } from '../constants/api';
-
-import type { Oauth } from '~/@types/oauth.types';
 import { apiClient } from '~/api';
 
+import type { Oauth } from '~/@types/oauth.types';
+
 const getAccessToken = async (type: Oauth, code: string) => {
-  const response = await apiClient.get(`${BASE_URL}/api/oauth/login/${type}?code=${code}`);
-  // 통신 에러 되었을 때 로직 추가
+  const response = await apiClient.get(`${process.env.BASE_URL}/api/oauth/login/${type}?code=${code}`);
+
   return response.data;
 };
 

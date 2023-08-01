@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useMutation } from '@tanstack/react-query';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -6,6 +7,7 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
+import postRestaurantLike from '~/api/User';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -24,7 +26,7 @@ function RestaurantCard({
   onClick = () => {},
   setHoveredId = () => {},
 }: RestaurantCardProps) {
-  const { images, name, roadAddress, category, phoneNumber } = restaurant;
+  const { images, name, roadAddress, category, phoneNumber, isLiked } = restaurant;
 
   const onMouseEnter = () => {
     setHoveredId(restaurant.id);
@@ -34,12 +36,18 @@ function RestaurantCard({
     setHoveredId(null);
   };
 
+  const toggleRestaurantLike = useMutation({
+    mutationFn: () => postRestaurantLike(restaurant.id),
+  });
+
+  const loveColor = isLiked ? 'red' : '#000';
+
   return (
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
-        <LikeButton aria-label="좋아요" type="button">
-          <Love fill="#000" fillOpacity={0.5} aria-hidden="true" />
+        <LikeButton aria-label="좋아요" type="button" onClick={() => toggleRestaurantLike.mutate()}>
+          <Love fill={loveColor} fillOpacity={0.5} aria-hidden="true" />
         </LikeButton>
       </StyledImageViewer>
       <section>
@@ -118,4 +126,10 @@ const LikeButton = styled.button`
 
   border: none;
   background-color: transparent;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  /* cursor: pointer; */
 `;

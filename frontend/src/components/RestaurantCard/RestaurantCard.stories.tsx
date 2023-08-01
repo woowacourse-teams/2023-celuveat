@@ -14,6 +14,7 @@ export const Default: Story = {
   args: {
     restaurant: {
       id: 1,
+      isLiked: true,
       name: '스시렌',
       category: '일식당',
       roadAddress: '서울 강남구 선릉로146길 27-8 2F',
