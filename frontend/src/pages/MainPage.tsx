@@ -7,7 +7,7 @@ import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-// import { CELEBS_OPTIONS } from '~/constants/celebs';
+
 import RestaurantCardList from '~/components/RestaurantCardList';
 import { getCelebs, getRestaurants } from '~/api';
 
