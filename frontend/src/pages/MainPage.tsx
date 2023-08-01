@@ -7,9 +7,8 @@ import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { CELEBS_OPTIONS } from '~/constants/celebs';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import { getRestaurants } from '~/api';
+import { getCelebs, getRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
@@ -27,6 +26,21 @@ function MainPage() {
     queryKey: ['restaurants', boundary, celebId, restaurantCategory],
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory }),
   });
+
+  const { data: celebs } = useQuery<Celeb[]>({
+    queryKey: ['celebs'],
+    queryFn: getCelebs,
+  });
+
+  const celebsOptions = [
+    {
+      id: -1,
+      name: '전체',
+      youtubeChannelName: '@all',
+      profileImageUrl: 'All',
+    },
+    ...celebs,
+  ];
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
@@ -50,7 +64,7 @@ function MainPage() {
     <>
       <Header />
       <StyledNavBar>
-        <CelebDropDown celebs={CELEBS_OPTIONS} externalOnClick={clickCeleb} />
+        <CelebDropDown celebs={celebsOptions} externalOnClick={clickCeleb} />
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
