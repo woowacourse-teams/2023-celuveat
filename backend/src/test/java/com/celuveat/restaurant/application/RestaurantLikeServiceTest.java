@@ -58,9 +58,9 @@ class RestaurantLikeServiceTest {
         OauthMember 말랑 = 멤버("말랑");
         restaurantRepository.save(음식점);
         oauthMemberRepository.save(말랑);
+        restaurantLikeService.like(음식점.id(), 말랑.id());
 
         // when
-        restaurantLikeService.like(음식점.id(), 말랑.id());
         restaurantLikeService.like(음식점.id(), 말랑.id());
         Optional<RestaurantLike> result = restaurantLikeRepository.findByRestaurantAndMember(음식점, 말랑);
 
