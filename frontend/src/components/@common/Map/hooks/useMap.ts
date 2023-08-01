@@ -8,6 +8,156 @@ interface UseDrawMapProps {
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
+const styles = [
+  {
+    featureType: 'landscape.man_made',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#f9f4f2',
+      },
+    ],
+  },
+  {
+    featureType: 'landscape.natural.landcover',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#d3eddb',
+      },
+    ],
+  },
+  {
+    featureType: 'landscape.natural.terrain',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#dbf0e0',
+      },
+    ],
+  },
+  {
+    featureType: 'poi.business',
+    elementType: 'labels.icon',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'poi.park',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#dbf3cc',
+      },
+    ],
+  },
+  {
+    featureType: 'poi.school',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#f2f2f2',
+      },
+      {
+        lightness: '0',
+      },
+    ],
+  },
+  {
+    featureType: 'road',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#ffffff',
+      },
+    ],
+  },
+  {
+    featureType: 'road',
+    elementType: 'geometry.stroke',
+    stylers: [
+      {
+        color: '#cfc8c4',
+      },
+    ],
+  },
+  {
+    featureType: 'road',
+    elementType: 'labels.icon',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'road.highway.controlled_access',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#ffffff',
+      },
+    ],
+  },
+  {
+    featureType: 'road.highway.controlled_access',
+    elementType: 'geometry.stroke',
+    stylers: [
+      {
+        color: '#cfc8c4',
+      },
+    ],
+  },
+  {
+    featureType: 'road.arterial',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#ffffff',
+      },
+    ],
+  },
+  {
+    featureType: 'road.arterial',
+    elementType: 'geometry.stroke',
+    stylers: [
+      {
+        color: '#cfc8c4',
+      },
+    ],
+  },
+  {
+    featureType: 'road.local',
+    elementType: 'labels.text',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'transit.line',
+    elementType: 'geometry.stroke',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'water',
+    elementType: 'geometry.fill',
+    stylers: [
+      {
+        color: '#b3e6f4',
+      },
+    ],
+  },
+];
+
 const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map>(null);
@@ -19,6 +169,7 @@ const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
         zoom,
         disableDefaultUI: true,
         gestureHandling: 'greedy',
+        styles,
       });
       setMap(newMap);
     }
