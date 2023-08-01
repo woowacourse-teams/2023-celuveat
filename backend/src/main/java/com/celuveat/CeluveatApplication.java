@@ -11,5 +11,4 @@ public class CeluveatApplication {
     public static void main(String[] args) {
         SpringApplication.run(CeluveatApplication.class, args);
     }
-
 }
