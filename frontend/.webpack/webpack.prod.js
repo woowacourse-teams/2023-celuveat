@@ -7,4 +7,7 @@ module.exports = {
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
+  performance: {
+    hints: false,
+  },
 };
