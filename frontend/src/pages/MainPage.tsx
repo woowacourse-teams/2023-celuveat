@@ -25,7 +25,7 @@ function MainPage() {
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
-
+  
   const {
     data: restaurantListData,
     isLoading,
@@ -41,7 +41,7 @@ function MainPage() {
       setCelebOptions([OPTION_FOR_CELEB_ALL, ...data]);
     },
   });
-
+    
   useEffect(() => {
     celebOptionsMutation.mutate();
   }, []);
