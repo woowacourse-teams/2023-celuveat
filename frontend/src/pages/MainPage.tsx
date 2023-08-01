@@ -11,12 +11,11 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import { getCelebs, getRestaurants } from '~/api';
 
-import All from '~/assets/all.png';
-
 import type { Celeb } from '~/@types/celeb.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
+import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 
 function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
@@ -38,15 +37,7 @@ function MainPage() {
   const celebOptionsMutation = useMutation({
     mutationFn: () => getCelebs(),
     onSuccess: (data: Celeb[]) => {
-      setCelebOptions([
-        {
-          id: -1,
-          name: '전체',
-          youtubeChannelName: '@all',
-          profileImageUrl: All,
-        },
-        ...data,
-      ]);
+      setCelebOptions([OPTION_FOR_CELEB_ALL, ...data]);
     },
   });
 
