@@ -1,15 +1,15 @@
-name: ✨ Celuveat backend DEV CD ✨
+name: ✨ Celuveat backend PROD CD ✨
 
 on:
   push:
     branches:
-      - develop-backend
+      - main
     paths:
       - 'backend/**'
     
 jobs:
   deploy-backend:
-    runs-on: [self-hosted, dev]
+    runs-on: [self-hosted, prod]
         
     steps:
       - name: ✨ Run Backend Deploy Script 
