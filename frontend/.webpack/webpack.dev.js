@@ -12,7 +12,6 @@ module.exports = {
     hot: true,
     open: true,
     historyApiFallback: true,
-    disableHostCheck: true,
   },
   plugins: [
     new CopyWebpackPlugin({
