@@ -56,9 +56,9 @@ public class RestaurantQueryRepository {
             """;
 
     private static final String RESTAURANT_IN_AREA = """
-                      latitude BETWEEN %s AND %s
-                      AND
-                      longitude BETWEEN %s AND %s
+            latitude BETWEEN %s AND %s
+            AND
+            longitude BETWEEN %s AND %s
             """;
 
     private static final String ORDER_BY_DISTANCE_ASC = """
@@ -66,7 +66,7 @@ public class RestaurantQueryRepository {
             """;
 
     private static final String COUNT_QUERY = """
-            SELECT DISTINCT count(*)
+            SELECT count(DISTINCT r)
             FROM Restaurant r
             JOIN Video v
             ON v.restaurant = r
