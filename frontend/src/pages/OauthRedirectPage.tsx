@@ -1,38 +1,44 @@
+import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { BASE_URL } from '~/constants/api';
+
+import getAccessToken from '~/api/oauth';
+import useLocalStorage from '~/hooks/useLocalStorage';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
 }
 
+interface OauthCodeResponse {
+  jsessionId: string;
+}
+
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigator = useNavigate();
+  const { changeStorageValue } = useLocalStorage();
+  const searchParams = new URLSearchParams(location.search);
+  const code = searchParams.get('code');
 
-  const handleOAuth = async (code: string) => {
-    try {
-      // 카카오로부터 받아온 code를 서버에 전달하여 카카오로 회원가입 & 로그인한다
-      const response = await fetch(`${BASE_URL}/oauth/login/${type}?code=${code}`);
-      await response.json(); // 응답 데이터
+  const oauthTokenMutation = useMutation({
+    mutationFn: () => getAccessToken(type, code),
+    onSuccess: (data: OauthCodeResponse) => {
+      const { jsessionId } = data;
 
-      alert('로그인 성공');
+      changeStorageValue(jsessionId);
 
-      navigate('/success');
-    } catch (error) {
-      navigate('/fail'); // 실패 페이지
-    }
-  };
+      navigator('/');
+    },
+    onError: () => {
+      navigator('/fail');
+    },
+  });
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const code = searchParams.get('code'); // 카카오는 Redirect 시키면서 code를 쿼리 스트링으로 준다.
-
     if (code) {
-      alert(`CODE = ${code}`);
-      handleOAuth(code);
+      oauthTokenMutation.mutate();
     }
-  }, [location]);
+  }, [code]);
 
   return (
     <div>

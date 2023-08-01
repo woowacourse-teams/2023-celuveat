@@ -3,7 +3,7 @@ import { MouseEvent, useCallback, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
 import SearchIcon from '~/assets/icons/search.svg';
-import isEqual from '~/utils/compare';
+import { isEqual } from '~/utils/compare';
 import { Celeb } from '~/@types/celeb.types';
 import ProfileImage from '~/components/@common/ProfileImage';
 import NavItem from '~/components/@common/NavButton/NavButton';
