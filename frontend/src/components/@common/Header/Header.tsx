@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
 import Logo from '~/assets/logo.png';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
+import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
+import useTokenStore from '~/hooks/store/useTokenState';
 import useBooleanState from '~/hooks/useBooleanState';
-
-const options = [
-  { id: 1, value: '로그인' },
-  { id: 2, value: '회원가입' },
-];
+import { isEmptyString } from '~/utils/compare';
 
 function Header() {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+
+  const token = useTokenStore(state => state.token);
+  const clearToken = useTokenStore(state => state.clearToken);
+
+  const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
 
     if (currentOption === '로그인') openModal();
+    if (currentOption === '로그아웃') {
+      clearToken();
+    }
   };
 
   return (
