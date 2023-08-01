@@ -21,17 +21,18 @@ function MainPage() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
-
+  
   const {
     data: restaurantListData,
     isLoading,
     refetch,
   } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory],
-    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory }),
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
   const celebOptionsMutation = useMutation({
@@ -40,7 +41,7 @@ function MainPage() {
       setCelebOptions([OPTION_FOR_CELEB_ALL, ...data]);
     },
   });
-
+    
   useEffect(() => {
     celebOptionsMutation.mutate();
   }, []);
@@ -49,6 +50,7 @@ function MainPage() {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
 
     setRestaurantCategory(currentCategory);
+    setCurrentPage(0);
     refetch();
   };
 
@@ -56,12 +58,11 @@ function MainPage() {
     const currentCelebId = Number(e.currentTarget.dataset.id);
 
     setCelebId(currentCelebId);
+    setCurrentPage(0);
     refetch();
   };
 
-  const toggleMapExpand = () => {
-    setIsMapExpanded(prev => !prev);
-  };
+  const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
 
   return (
     <>
@@ -73,11 +74,17 @@ function MainPage() {
       </StyledNavBar>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList restaurantDataList={restaurantListData} loading={isLoading} setHoveredId={setHoveredId} />
+          <RestaurantCardList
+            restaurantDataList={restaurantListData}
+            loading={isLoading}
+            setHoveredId={setHoveredId}
+            setCurrentPage={setCurrentPage}
+          />
         </StyledLeftSide>
         <StyledRightSide>
           <Map
             setBoundary={setBoundary}
+            setCurrentPage={setCurrentPage}
             data={restaurantListData?.content}
             toggleMapExpand={toggleMapExpand}
             hoveredId={hoveredId}
@@ -147,13 +154,7 @@ const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
 `;
 
 const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
-
   z-index: 0;
-
-  height: 100%;
 
   ${({ isMapExpanded }) =>
     isMapExpanded &&
