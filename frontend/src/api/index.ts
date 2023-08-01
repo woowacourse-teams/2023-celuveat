@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Celeb } from '../@types/celeb.types';
-/* eslint-disable import/prefer-default-export */
 
 import type { RestaurantListData } from '~/@types/api.types';
 import { CoordinateBoundary } from '~/@types/map.types';
@@ -13,7 +12,7 @@ export interface GetRestaurantsQueryParams {
   category: RestaurantCategory;
 }
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: `${process.env.BASE_URL}/api`,
   headers: {
     'Content-type': 'application/json',
