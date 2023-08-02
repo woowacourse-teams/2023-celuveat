@@ -6,6 +6,7 @@ import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
 
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import PageNationBar from '../@common/PageNationBar';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface RestaurantCardListProps {
   restaurantDataList: RestaurantListData | null;
@@ -15,6 +16,7 @@ interface RestaurantCardListProps {
 }
 
 function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurrentPage }: RestaurantCardListProps) {
+  const { isMobile } = useMediaQuery();
   const [prevCardNumber, setPrevCardNumber] = useState(18);
 
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
@@ -34,7 +36,7 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
 
   return (
     <StyledRestaurantCardListContainer>
-      <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
+      {!isMobile && <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>}
       <StyledRestaurantCardList>
         {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
           <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
@@ -74,5 +76,9 @@ const StyledRestaurantCardList = styled.div`
 
   @media screen and (width <= 1240px) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (width <= 743px) {
+    grid-template-columns: 1fr;
   }
 `;
