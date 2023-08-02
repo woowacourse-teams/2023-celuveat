@@ -1,24 +1,30 @@
 import styled, { css } from 'styled-components';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { shallow } from 'zustand/shallow';
 import BottomSheetHeader from './BottomSheetHeader';
 import { BORDER_RADIUS } from '~/styles/common';
 import useOnClickOutside from '~/hooks/useOnClickOutside';
+import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 
 interface BottomSheetProps {
   children: React.ReactNode;
 }
 
 function BottomSheet({ children }: BottomSheetProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, close } = useBottomSheetStatus(
+    state => ({
+      isOpen: state.isOpen,
+      close: state.close,
+    }),
+    shallow,
+  );
   const ref = useRef<HTMLDivElement>();
-
-  const close = () => setIsOpen(false);
 
   useOnClickOutside(ref, close);
 
   return (
     <Wrapper isOpen={isOpen} ref={ref}>
-      <BottomSheetHeader setIsOpen={setIsOpen}>지도에 표시된 음식점 100개</BottomSheetHeader>
+      <BottomSheetHeader>지도에 표시된 음식점 100개</BottomSheetHeader>
       <StyledContent>{children}</StyledContent>
     </Wrapper>
   );
@@ -48,7 +54,7 @@ const Wrapper = styled.div<{ isOpen: boolean }>`
   ${({ isOpen }) =>
     isOpen &&
     css`
-      position: unset;
+      position: sticky;
 
       transform: translateY(-36vh);
     `}

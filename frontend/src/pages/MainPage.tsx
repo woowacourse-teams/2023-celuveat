@@ -9,7 +9,7 @@ import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import BottomSheet from '~/components/@common/BottomSheetPage/BottomSheet';
+import BottomSheet from '~/components/@common/BottomSheet';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import { getCelebs, getRestaurants } from '~/api';
 
@@ -17,8 +17,10 @@ import type { Celeb } from '~/@types/celeb.types';
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
+import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 
 function MainPage() {
+  const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
   const { isMobile } = useMediaQuery();
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [boundary, setBoundary] = useState<CoordinateBoundary>();
@@ -85,6 +87,7 @@ function MainPage() {
               hoveredId={hoveredId}
               loadingData={isLoading}
             />
+            <StyledMapBottomCover isBottomSheetOpen={isBottomSheetOpen} />
           </StyledLayer>
           <BottomSheet>
             <RestaurantCardList
@@ -149,12 +152,29 @@ const StyledLine = styled.div`
 `;
 
 const StyledLayer = styled.div`
+  display: flex;
+  flex-direction: column;
+
   position: fixed;
   top: 160px;
   z-index: 0;
 
   width: 100%;
   height: 100%;
+`;
+
+const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+
+  transition: height 0.8s ease-in-out;
+
+  ${({ isBottomSheetOpen }) =>
+    isBottomSheetOpen &&
+    css`
+      height: 800px;
+    `}
 `;
 
 const StyledMobileLayout = styled.div`

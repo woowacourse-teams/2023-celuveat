@@ -6,18 +6,23 @@ interface MovingDirection {
   Y: 'none' | 'up' | 'down';
 }
 
+interface Coordinate {
+  X: number;
+  Y: number;
+}
+
 interface BottomSheetMetrics {
   touchStart: {
-    sheet: { X: number; Y: number }; // touchstart에서 BottomSheet의 최상단 모서리의 Y값
-    touch: { X: number; Y: number }; // touchstart에서 터치 포인트의 Y값
+    sheet: Coordinate;
+    touch: Coordinate;
   };
   touchMove: {
-    sheet: { X: number; Y: number };
-    touch: { X: number; Y: number };
+    sheet: Coordinate;
+    touch: Coordinate;
   };
   touchEnd: {
-    sheet: { X: number; Y: number };
-    touch: { X: number; Y: number };
+    sheet: Coordinate;
+    touch: Coordinate;
   };
 }
 
@@ -36,10 +41,7 @@ const initialMetrics: BottomSheetMetrics = {
   },
 };
 
-export default function useBottomSheet(
-  sheetRef: React.MutableRefObject<HTMLDivElement>,
-  openEvent: React.Dispatch<React.SetStateAction<boolean>>,
-) {
+function useTouchMoveDirection(sheetRef: React.MutableRefObject<HTMLDivElement>) {
   const [movingDirection, setMovingDirection] = useState<MovingDirection>({ X: 'none', Y: 'none' });
   const metrics = useRef<BottomSheetMetrics>(initialMetrics);
 
@@ -108,3 +110,5 @@ export default function useBottomSheet(
 
   return { movingDirection, metrics };
 }
+
+export default useTouchMoveDirection;

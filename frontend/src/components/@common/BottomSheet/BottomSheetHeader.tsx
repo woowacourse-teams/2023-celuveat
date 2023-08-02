@@ -1,19 +1,25 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import useBottomSheet from './useBottomSheet';
+import { shallow } from 'zustand/shallow';
 import { FONT_SIZE } from '~/styles/common';
+import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 
 interface BottomSheetHeaderProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: string;
 }
 
-function BottomSheetHeader({ children, setIsOpen }: BottomSheetHeaderProps) {
-  const ref = useRef<HTMLDivElement>();
-  const { movingDirection } = useBottomSheet(ref, setIsOpen);
+function BottomSheetHeader({ children }: BottomSheetHeaderProps) {
+  const { open, close } = useBottomSheetStatus(
+    state => ({
+      open: state.open,
+      close: state.close,
+    }),
+    shallow,
+  );
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const ref = useRef<HTMLDivElement>();
+  const { movingDirection } = useTouchMoveDirection(ref);
 
   useEffect(() => {
     if (movingDirection.Y === 'up') open();
