@@ -54,6 +54,17 @@ module.exports = {
       },
     ],
   },
+
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, '../public'),
+    },
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+    allowedHosts: 'all',
+  },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
