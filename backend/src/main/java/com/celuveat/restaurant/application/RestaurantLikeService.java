@@ -26,7 +26,7 @@ public class RestaurantLikeService {
         Optional<RestaurantLike> restaurantLike =
                 restaurantLikeRepository.findByRestaurantAndMember(restaurant, member);
         restaurantLike.ifPresentOrElse(
-                it -> restaurantLikeRepository.delete(it),
+                restaurantLikeRepository::delete,
                 () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member))
         );
     }
