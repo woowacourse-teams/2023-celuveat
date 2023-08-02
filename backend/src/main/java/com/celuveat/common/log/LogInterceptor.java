@@ -25,7 +25,7 @@ public class LogInterceptor implements HandlerInterceptor {
         LogContext logContext = new LogContext(logId);
         requestLogIdHolder.setLogId(logId);
         logContextHolder.setLogContext(logContext);
-        log.info("[Web Request Start]  ID: {}, IP: {}, HOST: {}, ORIGIN: {}, URL: {}",
+        log.info("[Web Request START]  ID: {}, IP: {}, HOST: {}, ORIGIN: {}, URL: {}",
                 logContext.logId(),
                 request.getRemoteAddr(),
                 request.getRemoteHost(),
