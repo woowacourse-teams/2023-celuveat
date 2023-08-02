@@ -8,8 +8,10 @@ import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useTokenStore from '~/hooks/store/useTokenState';
 import useBooleanState from '~/hooks/useBooleanState';
 import { isEmptyString } from '~/utils/compare';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 function Header() {
+  const { isMobile } = useMediaQuery();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
   const token = useTokenStore(state => state.token);
@@ -28,7 +30,7 @@ function Header() {
 
   return (
     <>
-      <StyledHeader>
+      <StyledHeader isMobile={isMobile}>
         <StyledLogo alt="홈" src={Logo} role="button" />
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
@@ -43,12 +45,12 @@ function Header() {
 
 export default Header;
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.header<{ isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
+  position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
   top: 0;
   z-index: 20;
 

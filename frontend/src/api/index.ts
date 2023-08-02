@@ -11,6 +11,7 @@ export interface GetRestaurantsQueryParams {
   boundary: CoordinateBoundary;
   celebId: number;
   category: RestaurantCategory;
+  page: number;
 }
 
 export const apiClient = axios.create({
