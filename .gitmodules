@@ -1,3 +1,3 @@
 [submodule "backend/backend-submodule"]
 	path = backend/backend-submodule
-	url = https://github.com/celuveat/backend-submodule.git
+	url = git@github.com:celuveat/backend-submodule.git
