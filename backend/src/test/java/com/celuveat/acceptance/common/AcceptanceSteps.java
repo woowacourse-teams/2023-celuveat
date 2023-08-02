@@ -1,6 +1,6 @@
 package com.celuveat.acceptance.common;
 
-import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
+import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
