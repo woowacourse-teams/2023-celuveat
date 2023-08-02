@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { RestaurantModalInfo } from '~/@types/restaurant.types';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
+
 import { BASE_URL } from '~/App';
 
 interface MapModalContentProps {
