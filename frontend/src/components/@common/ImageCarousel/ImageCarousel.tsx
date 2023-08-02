@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
@@ -13,18 +14,20 @@ interface ImageCarouselProps {
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const ref = useRef();
+  const { movingDirection } = useTouchMoveDirection(ref);
 
-  const goToPrevious = () => {
-    setCurrentIndex(prevIndex => prevIndex - 1);
-  };
+  const goToPrevious = () => setCurrentIndex(prevIndex => prevIndex - 1);
+  const goToNext = () => setCurrentIndex(prevIndex => prevIndex + 1);
 
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => prevIndex + 1);
-  };
+  useEffect(() => {
+    if (movingDirection.X === 'left') goToNext();
+    if (movingDirection.X === 'right') goToPrevious();
+  }, [movingDirection.X]);
 
   return (
     <StyledCarouselContainer type={type}>
-      <StyledCarouselSlide currentIndex={currentIndex}>
+      <StyledCarouselSlide currentIndex={currentIndex} ref={ref}>
         {images.map(({ id, name, author }) => (
           <WaterMarkImage key={id} imageUrl={name} waterMark={author} />
         ))}
