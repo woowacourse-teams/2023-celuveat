@@ -49,4 +49,9 @@ public class RestaurantController {
         restaurantLikeService.like(restaurantId, memberId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/like")
+    ResponseEntity<Void> getLikes(@Auth Long memberId) {
+        return ResponseEntity.ok().build();
+    }
 }
