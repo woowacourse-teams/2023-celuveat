@@ -5,11 +5,15 @@ on:
     branches:
       - develop-backend
       - main
+    paths:
+      - 'backend/**'
 
   pull_request:
     branches:
       - develop-backend
       - main
+    paths:
+      - 'backend/**'
 
 permissions:
   checks: write
