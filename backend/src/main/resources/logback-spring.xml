@@ -16,17 +16,18 @@
     </springProfile>
 
     <springProfile name="dev, prod">
-        <property name="logPattern" value="%d{HH:mm:ss.SSS} [%20thread] %-5level %-53logger{36} - %msg%n"/>
         <property name="infoLogPath" value="logs/backend/info"/>
         <property name="errorLogPath" value="logs/backend/error"/>
+        <property name="fileNamePattern" value="%d{yyyy-MM-dd}_%i.log"/>
+        <property name="logPattern" value="%d{HH:mm:ss.SSS} [%20thread] %-5level %-53logger{36} - %msg%n"/>
 
         <appender name="info-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${infoLogPath}/info.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <maxHistory>7</maxHistory>
-                <maxFileSize>1KB</maxFileSize>
-                <totalSizeCap>10GB</totalSizeCap>
-                <fileNamePattern>${infoLogPath}/%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>100GB</totalSizeCap>
+                <fileNamePattern>${infoLogPath}/${fileNamePattern}</fileNamePattern>
             </rollingPolicy>
             <encoder>
                 <pattern>${logPattern}</pattern>
@@ -47,9 +48,9 @@
             <file>${errorLogPath}/error.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <maxHistory>7</maxHistory>
-                <maxFileSize>1KB</maxFileSize>
-                <totalSizeCap>10GB</totalSizeCap>
-                <fileNamePattern>${errorLogPath}/%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>100GB</totalSizeCap>
+                <fileNamePattern>${errorLogPath}/${fileNamePattern}</fileNamePattern>
             </rollingPolicy>
             <encoder>
                 <pattern>${logPattern}</pattern>
