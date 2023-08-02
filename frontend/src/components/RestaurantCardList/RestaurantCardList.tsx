@@ -20,6 +20,7 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
   const [prevCardNumber, setPrevCardNumber] = useState(18);
 
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
     const pageValue = e.currentTarget.value;
     window.scrollTo(0, 0);
 
