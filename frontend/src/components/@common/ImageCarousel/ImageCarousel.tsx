@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
@@ -12,29 +14,32 @@ interface ImageCarouselProps {
 }
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
+  const { isMobile } = useMediaQuery();
+  const ref = useRef();
+  const { movingDirection } = useTouchMoveDirection(ref);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const goToPrevious = () => {
-    setCurrentIndex(prevIndex => prevIndex - 1);
-  };
+  const goToPrevious = () => setCurrentIndex(prevIndex => prevIndex - 1);
+  const goToNext = () => setCurrentIndex(prevIndex => prevIndex + 1);
 
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => prevIndex + 1);
-  };
+  useEffect(() => {
+    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) goToNext();
+    if (movingDirection.X === 'right' && currentIndex !== 0) goToPrevious();
+  }, [movingDirection.X]);
 
   return (
     <StyledCarouselContainer type={type}>
-      <StyledCarouselSlide currentIndex={currentIndex}>
+      <StyledCarouselSlide currentIndex={currentIndex} ref={ref}>
         {images.map(({ id, name, author }) => (
           <WaterMarkImage key={id} imageUrl={name} waterMark={author} />
         ))}
       </StyledCarouselSlide>
-      {currentIndex !== 0 && (
+      {!isMobile && currentIndex !== 0 && (
         <StyledLeftButton type="button" onClick={goToPrevious}>
           <LeftBracket width={10} height={10} />
         </StyledLeftButton>
       )}
-      {currentIndex !== images.length - 1 && (
+      {!isMobile && currentIndex !== images.length - 1 && (
         <StyledRightButton type="button" onClick={goToNext}>
           <RightBracket width={10} height={10} />
         </StyledRightButton>

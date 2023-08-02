@@ -42,6 +42,8 @@ const StyledCategoryNavbarWrapper = styled.ul`
   align-items: center;
 
   background: transparent;
+
+  overflow-x: scroll;
 `;
 
 const StyledNavItemButton = styled.button`
