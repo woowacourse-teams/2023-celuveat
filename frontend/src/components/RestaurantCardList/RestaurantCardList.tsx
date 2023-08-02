@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import RestaurantCard from '../RestaurantCard';
 import { FONT_SIZE } from '~/styles/common';
@@ -37,7 +37,7 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
   return (
     <StyledRestaurantCardListContainer>
       {!isMobile && <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>}
-      <StyledRestaurantCardList>
+      <StyledRestaurantCardList isMobile={isMobile}>
         {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
           <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
         ))}
@@ -66,7 +66,7 @@ const StyledCardListHeader = styled.p`
   font-weight: 700;
 `;
 
-const StyledRestaurantCardList = styled.div`
+const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
   display: grid;
   gap: 4rem 2.4rem;
 
@@ -78,7 +78,18 @@ const StyledRestaurantCardList = styled.div`
     grid-template-columns: 1fr 1fr;
   }
 
-  @media screen and (width <= 743px) {
-    grid-template-columns: 1fr;
-  }
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          grid-template-columns: 1fr 1fr;
+
+          @media screen and (width <= 550px) {
+            grid-template-columns: 1fr;
+          }
+        `
+      : css`
+          @media screen and (width <= 743px) {
+            grid-template-columns: 1fr;
+          }
+        `}
 `;
