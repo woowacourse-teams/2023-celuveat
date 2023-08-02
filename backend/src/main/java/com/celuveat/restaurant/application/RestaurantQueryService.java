@@ -3,10 +3,14 @@ package com.celuveat.restaurant.application;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
+import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -30,6 +34,8 @@ public class RestaurantQueryService {
 
     private final RestaurantQueryRepository restaurantQueryRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
     public Page<RestaurantQueryResponse> findAll(
@@ -100,5 +106,10 @@ public class RestaurantQueryService {
             RestaurantWithDistance restaurantWithDistance
     ) {
         return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
+    }
+
+    public List<RestaurantLike> findAllRestaurantLikeByMemberId(Long memberId) {
+        OauthMember member = oauthMemberRepository.getById(memberId);
+        return restaurantLikeRepository.findAllByMember(member);
     }
 }
