@@ -1,20 +1,29 @@
 package com.celuveat.restaurant.application;
 
+import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.domain.RestaurantRepository;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +51,15 @@ class RestaurantQueryServiceTest {
 
     @Autowired
     private RestaurantQueryService restaurantQueryService;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private RestaurantLikeRepository restaurantLikeRepository;
+
+    @Autowired
+    private OauthMemberRepository oauthMemberRepository;
 
     @BeforeEach
     void setUp() {
@@ -337,5 +355,34 @@ class RestaurantQueryServiceTest {
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    void 멤버_아이디로_음식점_좋아요를_검색한다() {
+        // given
+        OauthMember 오도 = 멤버("오도");
+        oauthMemberRepository.save(오도);
+        Restaurant 음식점1 = 음식점("맛집1");
+        Restaurant 음식점2 = 음식점("맛집2");
+        Restaurant 음식점3 = 음식점("맛집3");
+        restaurantRepository.saveAll(List.of(음식점1, 음식점2, 음식점3));
+        RestaurantLike 음식점_좋아요1 = 음식점_좋아요(음식점1, 오도);
+        RestaurantLike 음식점_좋아요2 = 음식점_좋아요(음식점2, 오도);
+        RestaurantLike 음식점_좋아요3 = 음식점_좋아요(음식점3, 오도);
+        restaurantLikeRepository.saveAll(List.of(
+                음식점_좋아요1,
+                음식점_좋아요2,
+                음식점_좋아요3
+        ));
+
+        // when
+        List<RestaurantLike> restaurantLikes = restaurantQueryService.findAllRestaurantLikeByMemberId(오도.id());
+
+        // then
+        assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(List.of(
+                음식점_좋아요1,
+                음식점_좋아요2,
+                음식점_좋아요3
+        ));
     }
 }
