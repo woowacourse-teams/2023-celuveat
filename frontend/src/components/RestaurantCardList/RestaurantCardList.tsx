@@ -33,7 +33,19 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
     if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);
   }, [restaurantDataList?.currentElementsCount]);
 
-  if (!restaurantDataList || loading) return <RestaurantCardListSkeleton cardNumber={prevCardNumber} />;
+  if (!restaurantDataList || loading)
+    return (
+      <StyledSkeleton>
+        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />{' '}
+        {restaurantDataList && (
+          <PageNationBar
+            totalPage={restaurantDataList.totalPage}
+            currentPage={restaurantDataList.currentPage + 1}
+            clickPageButton={clickPageButton}
+          />
+        )}
+      </StyledSkeleton>
+    );
 
   return (
     <StyledRestaurantCardListContainer>
@@ -53,6 +65,10 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
 }
 
 export default React.memo(RestaurantCardList);
+
+const StyledSkeleton = styled.div`
+  padding-bottom: 3.2rem;
+`;
 
 const StyledRestaurantCardListContainer = styled.div`
   display: flex;
