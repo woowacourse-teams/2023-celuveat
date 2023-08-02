@@ -165,16 +165,24 @@ const StyledLayer = styled.div`
 `;
 
 const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
+  position: fixed;
+  bottom: 0;
+
   width: 100%;
   height: 0;
-  overflow: hidden;
 
   transition: height 0.8s ease-in-out;
+
+  background: var(--white);
+
+  overflow: hidden;
 
   ${({ isBottomSheetOpen }) =>
     isBottomSheetOpen &&
     css`
-      height: 800px;
+      z-index: 20;
+
+      height: 36vh;
     `}
 `;
 

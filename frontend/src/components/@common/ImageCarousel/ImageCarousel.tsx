@@ -62,9 +62,8 @@ const StyledCarouselContainer = styled.div<{ type: 'list' | 'map' }>`
   overflow: hidden;
 
   border-radius: ${({ type }) =>
-    type === 'list' ? `${BORDER_RADIUS.md}` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0`};
-
-  button {
+      type === 'list' ? `${BORDER_RADIUS.md};` : `${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0;`}
+    button {
     visibility: hidden;
 
     display: flex;

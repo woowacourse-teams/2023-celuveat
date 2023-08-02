@@ -45,14 +45,14 @@ const Wrapper = styled.div<{ isOpen: boolean }>`
   border-top-left-radius: ${BORDER_RADIUS.lg};
   border-top-right-radius: ${BORDER_RADIUS.lg};
 
-  transition: transform 0.8s ease-in-out;
+  transition: height 0.8s ease-in-out;
 
   ${({ isOpen }) =>
     isOpen &&
     css`
-      position: sticky;
+      position: absolute;
 
-      transform: translateY(-36vh);
+      height: calc(36vh + 74px);
     `}
 
   &::before {
