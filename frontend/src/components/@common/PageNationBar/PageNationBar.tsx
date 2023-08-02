@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
+import { FONT_SIZE } from '~/styles/common';
 
 interface PageNationBarProps {
   totalPage: number;
@@ -71,6 +72,21 @@ const StyledPageNationBar = styled.div`
 
     border: none;
     border-radius: 50%;
+  }
+
+  @media screen and (width <= 420px) {
+    gap: 0 0.8rem;
+    margin-top: 3.6rem;
+
+    & > button {
+      width: 24px;
+      height: 24px;
+
+      border: none;
+      border-radius: 50%;
+
+      font-size: ${FONT_SIZE.sm};
+    }
   }
 `;
 

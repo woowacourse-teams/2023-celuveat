@@ -1,15 +1,18 @@
 import { styled } from 'styled-components';
 import RestaurantCardSkeleton from '../RestaurantCard/RestaurantCardSkeleton';
 import { BORDER_RADIUS, paintSkeleton } from '~/styles/common';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface RestaurantCardListSkeletonProps {
   cardNumber: number;
 }
 
 function RestaurantCardListSkeleton({ cardNumber }: RestaurantCardListSkeletonProps) {
+  const { isMobile } = useMediaQuery();
+
   return (
     <div>
-      <StyledCardListHeader />
+      {!isMobile && <StyledCardListHeader />}
       <StyledRestaurantCardList>
         {Array.from({ length: cardNumber }, () => (
           <RestaurantCardSkeleton />
@@ -42,5 +45,9 @@ const StyledRestaurantCardList = styled.div`
 
   @media screen and (width <= 1240px) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (width <= 743px) {
+    grid-template-columns: 1fr;
   }
 `;

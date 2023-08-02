@@ -15,6 +15,7 @@ import OverlayMarker from './OverlayMarker';
 
 import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantData } from '~/@types/api.types';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface MapProps {
   data: RestaurantData[];
@@ -48,6 +49,7 @@ const StyledMapLoadingContainer = styled.section`
 const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
 
 function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
+  const { isMobile } = useMediaQuery();
   const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [zoom, setZoom] = useState(16);
@@ -133,9 +135,11 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
             <Minus />
           </button>
         </StyledZoomUI>
-        <StyledMapExpandButton onClick={clickMapExpand}>
-          {isMapExpanded ? <RightBracket /> : <LeftBracket />}
-        </StyledMapExpandButton>
+        {!isMobile && (
+          <StyledMapExpandButton onClick={clickMapExpand}>
+            {isMapExpanded ? <RightBracket /> : <LeftBracket />}
+          </StyledMapExpandButton>
+        )}
       </MapContent>
     </Wrapper>
   );
