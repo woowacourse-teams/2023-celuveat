@@ -1,7 +1,3 @@
-logging:
-  level:
-    org.hibernate.orm.jdbc.bind: TRACE
-
 spring:
   profiles:
     active: test
@@ -28,7 +24,3 @@ server:
 
 cors:
   allowedOrigins: "CORS_ALLOW_ORIGINS"
-
-kakao:
-  client_id: "client_id"
-  client_secret: "client_secret"
