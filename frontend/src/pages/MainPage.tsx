@@ -67,6 +67,7 @@ function MainPage() {
   };
 
   const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
+  const bottomSheetHeader = (total: number) => `지도 영역에 있는 음식점 수 ${total}개`;
 
   return (
     <>
@@ -89,7 +90,7 @@ function MainPage() {
             />
             <StyledMapBottomCover isBottomSheetOpen={isBottomSheetOpen} />
           </StyledLayer>
-          <BottomSheet>
+          <BottomSheet title={bottomSheetHeader(restaurantListData?.totalElementsCount)} isLoading={isLoading}>
             <RestaurantCardList
               restaurantDataList={restaurantListData}
               loading={isLoading}

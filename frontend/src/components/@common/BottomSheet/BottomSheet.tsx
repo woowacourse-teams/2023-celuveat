@@ -8,23 +8,19 @@ import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 
 interface BottomSheetProps {
   children: React.ReactNode;
+  title: string;
+  isLoading: boolean;
 }
 
-function BottomSheet({ children }: BottomSheetProps) {
-  const { isOpen, close } = useBottomSheetStatus(
-    state => ({
-      isOpen: state.isOpen,
-      close: state.close,
-    }),
-    shallow,
-  );
+function BottomSheet({ children, title = '', isLoading }: BottomSheetProps) {
+  const { isOpen, close } = useBottomSheetStatus(state => ({ isOpen: state.isOpen, close: state.close }), shallow);
   const ref = useRef<HTMLDivElement>();
 
   useOnClickOutside(ref, close);
 
   return (
     <Wrapper isOpen={isOpen} ref={ref}>
-      <BottomSheetHeader>지도에 표시된 음식점 100개</BottomSheetHeader>
+      <BottomSheetHeader isLoading={isLoading}>{title}</BottomSheetHeader>
       <StyledContent>{children}</StyledContent>
     </Wrapper>
   );
