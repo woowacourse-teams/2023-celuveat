@@ -1,18 +1,23 @@
 package com.celuveat.common;
 
+import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.fixture.LocationFixture.지점1;
 import static com.celuveat.restaurant.fixture.LocationFixture.지점2;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
+import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static com.celuveat.video.fixture.VideoFixture.영상;
 
+import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
+import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.VideoRepository;
@@ -29,6 +34,8 @@ public class SeedData {
     private final CelebRepository celebRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
     public List<RestaurantQueryResponse> insertSeedData() {
@@ -127,6 +134,16 @@ public class SeedData {
                 영상("로이스1호점-오도", 로이스1호점, 오도),
                 영상("로이스1호점-로이스", 로이스1호점, 로이스),
                 영상("로이스2호점-로이스", 로이스2호점, 로이스)
+        ));
+
+        OauthMember 멤버 = 멤버("오도");
+        oauthMemberRepository.save(멤버);
+
+        restaurantLikeRepository.saveAll(List.of(
+                음식점_좋아요(말랑1호점, 멤버),
+                음식점_좋아요(말랑3호점, 멤버),
+                음식점_좋아요(도기2호점, 멤버),
+                음식점_좋아요(로이스2호점, 멤버)
         ));
 
         return List.of(
