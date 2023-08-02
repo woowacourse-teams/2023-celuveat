@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import OauthRedirectPage from '~/pages/OauthRedirectPage';
 import MainPage from '~/pages/MainPage';
 
+export const { BASE_URL } = process.env;
+
 function App() {
   return (
     <BrowserRouter>
