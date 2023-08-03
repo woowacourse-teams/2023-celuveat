@@ -1,0 +1,54 @@
+name: ✨ Celuveat Backend CI ✨
+
+on:
+  push:
+    branches:
+      - develop-backend
+      - main
+    paths:
+      - 'backend/**'
+
+  pull_request:
+    branches:
+      - develop-backend
+      - main
+    paths:
+      - 'backend/**'
+
+permissions:
+  checks: write
+  pull-requests: write
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: ✨ JDK 17 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: ✨ Gradlew 권한 설정
+        run: chmod +x ./gradlew
+        working-directory: ${{ env.working-directory }}
+
+      - name: ✨ 테스트 진행
+        run: ./gradlew test
+        working-directory: ${{ env.working-directory }}
+
+      - name: ✨ 테스트 결과 Report
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: ${{ always() }}
+        with:
+          files: '**/build/test-results/**/*.xml'
+
+      - name: ✨ 테스트 실패 Comment
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'

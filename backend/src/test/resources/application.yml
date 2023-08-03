@@ -1,0 +1,34 @@
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
+
+spring:
+  profiles:
+    active: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    username: sa
+    password:
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+
+    hibernate:
+      ddl-auto: create
+
+server:
+  servlet:
+    contextPath: /api
+
+cors:
+  allowedOrigins: "CORS_ALLOW_ORIGINS"
+
+kakao:
+  client_id: "client_id"
+  client_secret: "client_secret"
