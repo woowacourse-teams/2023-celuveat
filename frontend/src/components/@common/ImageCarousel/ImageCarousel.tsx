@@ -19,12 +19,18 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
   const { movingDirection } = useTouchMoveDirection(ref);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const goToPrevious = () => setCurrentIndex(prevIndex => prevIndex - 1);
-  const goToNext = () => setCurrentIndex(prevIndex => prevIndex + 1);
+  const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex - 1);
+  };
+  const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  };
 
   useEffect(() => {
-    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) goToNext();
-    if (movingDirection.X === 'right' && currentIndex !== 0) goToPrevious();
+    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) setCurrentIndex(prevIndex => prevIndex + 1);
+    if (movingDirection.X === 'right' && currentIndex !== 0) setCurrentIndex(prevIndex => prevIndex - 1);
   }, [movingDirection.X]);
 
   return (

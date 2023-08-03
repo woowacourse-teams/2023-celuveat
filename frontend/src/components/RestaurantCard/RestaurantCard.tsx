@@ -12,30 +12,18 @@ interface RestaurantCardProps {
   celebs?: Celeb[];
   size?: string;
   type?: 'list' | 'map';
-  onClick?: React.MouseEventHandler;
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCard({
-  restaurant,
-  celebs,
-  size,
-  type = 'list',
-  onClick = () => {},
-  setHoveredId = () => {},
-}: RestaurantCardProps) {
-  const { images, name, roadAddress, category, phoneNumber } = restaurant;
+function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
+  const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
 
-  const onMouseEnter = () => {
-    setHoveredId(restaurant.id);
-  };
-
-  const onMouseLeave = () => {
-    setHoveredId(null);
-  };
+  const onMouseEnter = () => setHoveredId(restaurant.id);
+  const onMouseLeave = () => setHoveredId(null);
+  const openDetail = () => window.open(naverMapUrl, '_blank');
 
   return (
-    <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <StyledContainer onClick={openDetail} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
         <LikeButton aria-label="좋아요" type="button">
