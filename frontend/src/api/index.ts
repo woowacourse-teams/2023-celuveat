@@ -22,7 +22,13 @@ export const apiClient = axios.create({
 
 export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
   const queryString = getQueryString(queryParams);
+
+  await new Promise(resolve => {
+    setTimeout(resolve, 400);
+  });
+
   const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+
   return response.data;
 };
 
