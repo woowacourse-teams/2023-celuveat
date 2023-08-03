@@ -1,11 +1,18 @@
 import styled, { keyframes } from 'styled-components';
+import Dot from '~/assets/icons/dot.svg';
 
 function LoadingDots() {
   return (
     <StyledLoadingDots>
-      <StyledLoadingDot />
-      <StyledLoadingDot />
-      <StyledLoadingDot />
+      <StyledLoadingDot>
+        <Dot />
+      </StyledLoadingDot>
+      <StyledLoadingDot>
+        <Dot />
+      </StyledLoadingDot>
+      <StyledLoadingDot>
+        <Dot />
+      </StyledLoadingDot>
     </StyledLoadingDots>
   );
 }
@@ -35,11 +42,13 @@ const pulseAnimation = keyframes`
 `;
 
 const StyledLoadingDot = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 1.2px;
   height: 1.2px;
 
-  border-radius: 50%;
-  background-color: var(--black);
   animation: ${pulseAnimation} 0.4s ease-in-out infinite alternate;
   animation-timing-function: cubic-bezier(0, 0, 1, 1);
 `;
