@@ -2,9 +2,11 @@ name: 🍔 Celuveat Frontend CI 🍔
 
 on:
   push:
-    branches: [ "develop-frontend" ]
-  pull_request:
-    branches: [ "develop-frontend" ]
+    branches:
+      - develop-frontend
+    pull_request:
+      branches:
+        - develop-frontend
 
 jobs:
   frontend-test:
