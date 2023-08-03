@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
-import Logo from '~/assets/logo.png';
+import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
@@ -31,7 +31,7 @@ function Header() {
   return (
     <>
       <StyledHeader isMobile={isMobile}>
-        <StyledLogo alt="홈" src={Logo} role="button" />
+        <Logo width={124} />
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal>
@@ -61,8 +61,4 @@ const StyledHeader = styled.header<{ isMobile: boolean }>`
 
   background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
-`;
-
-const StyledLogo = styled.img`
-  width: 136px;
 `;
