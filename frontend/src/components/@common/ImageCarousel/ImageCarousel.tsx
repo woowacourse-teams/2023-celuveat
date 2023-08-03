@@ -37,7 +37,7 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
     <StyledCarouselContainer type={type}>
       <StyledCarouselSlide currentIndex={currentIndex} ref={ref}>
         {images.map(({ id, name, author }) => (
-          <WaterMarkImage key={id} imageUrl={name} waterMark={author} />
+          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} />
         ))}
       </StyledCarouselSlide>
       {!isMobile && currentIndex !== 0 && (
