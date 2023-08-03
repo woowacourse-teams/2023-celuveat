@@ -32,7 +32,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 검색영역_조건으로_음식점을_조회한다() {
             // given
-            var 전체_음식점 = seedData.insertSeedData();
+            var 전체_음식점 = seedData.insertSeedData().responses();
             var 예상_응답 = 예상_응답(전체_음식점, 없음, 없음, 없음, 검색_영역(박스_1_2번_지점포함));
 
             // when
@@ -45,7 +45,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 음식점_검색_조건으로_검색한다() {
             // given
-            var 전체_음식점 = seedData.insertSeedData();
+            var 전체_음식점 = seedData.insertSeedData().responses();
             var 셀럽들 = 셀럽들(셀럽_전체_조회_요청());
             var 말랑 = 특정_이름의_셀럽을_찾는다(셀럽들, "말랑");
             var 예상_응답 = 예상_응답(전체_음식점, 말랑.id(), 없음, "말 랑 ", 검색_영역(박스_1번_지점포함));
@@ -60,7 +60,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 음식점_및_검색영역_조건으로_검색한다() {
             // given
-            var 전체_음식점 = seedData.insertSeedData();
+            var 전체_음식점 = seedData.insertSeedData().responses();
             var 셀럽들 = 셀럽들(셀럽_전체_조회_요청());
             var 말랑 = 특정_이름의_셀럽을_찾는다(셀럽들, "말랑");
             var 예상_응답 = 예상_응답(전체_음식점, 말랑.id(), 없음, "말 랑 ", 검색_영역(박스_1번_지점포함));

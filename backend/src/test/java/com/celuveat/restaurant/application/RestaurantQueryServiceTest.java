@@ -8,17 +8,16 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.auth.domain.OauthMemberRepository;
+import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
+import com.celuveat.common.SeedData.SeedDataResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
-import com.celuveat.restaurant.domain.RestaurantRepository;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,18 +46,12 @@ class RestaurantQueryServiceTest {
     @Autowired
     private RestaurantQueryService restaurantQueryService;
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
-
-    @Autowired
-    private OauthMemberRepository oauthMemberRepository;
+    private SeedDataResponse seedDataResponse;
 
     @BeforeEach
     void setUp() {
-        seed.addAll(seedData.insertSeedData());
+        seedDataResponse = seedData.insertSeedData();
+        seed.addAll(seedDataResponse.responses());
         em.flush();
         em.clear();
         System.out.println("=============[INSERT SEED DATA]============");
@@ -355,6 +348,7 @@ class RestaurantQueryServiceTest {
     @Test
     void 멤버_아이디로_음식점_좋아요를_검색한다() {
         // given
+        OauthMember 좋아요_멤버 = seedDataResponse.member();
         List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
         for (RestaurantQueryResponse restaurantQueryResponse : seed) {
             if (isLikedRestaurant(restaurantQueryResponse.name())) {
@@ -363,7 +357,8 @@ class RestaurantQueryServiceTest {
         }
 
         // when
-        List<RestaurantLikeQueryResponse> restaurantLikes = restaurantQueryService.findAllRestaurantLikeByMemberId(1L);
+        List<RestaurantLikeQueryResponse> restaurantLikes =
+                restaurantQueryService.findAllRestaurantLikeByMemberId(좋아요_멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);
