@@ -20,7 +20,7 @@ const LoginIcon: Record<string, React.ReactNode> = {
 
 function LoginButton({ type }: LoginButtonProps) {
   return (
-    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]} target="_blank">
+    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]}>
       <div>{LoginIcon[type]}</div>
       <StyledLoginButtonText>{OAUTH_BUTTON_MESSAGE[type]}</StyledLoginButtonText>
     </StyledLoginButtonWrapper>
