@@ -21,19 +21,23 @@ const StyledWaterMarkImage = styled.div`
   position: relative;
 
   width: 100%;
-  aspect-ratio: 1.05 / 1;
+  min-width: 100%;
 
-  height: auto;
+  /* aspect-ratio: 1.05 / 1; */
+  padding-top: 95%;
 `;
 
 const StyledImage = styled.img`
   ${paintSkeleton}
-  display: block;
+  position: absolute;
+  inset: 0;
 
-  aspect-ratio: 1.05 / 1;
+  /* aspect-ratio: 1.05 / 1; */
+
   object-fit: cover;
 
   width: 100%;
+  height: 100%;
 `;
 
 const StyledWaterMark = styled.div`

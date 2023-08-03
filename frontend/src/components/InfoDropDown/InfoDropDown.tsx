@@ -57,9 +57,6 @@ const StyledInfoDropDown = styled.div`
   display: relative;
 
   z-index: 100000000;
-
-  width: 77px;
-  height: 42px;
 `;
 
 const StyledDropDownWrapper = styled.ul`

@@ -122,9 +122,6 @@ const StyledCarouselSlide = styled.div<{ currentIndex: number }>`
 
   transition: transform 0.3s ease-in-out;
   transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
-  flex-wrap: nowrap;
-
-  aspect-ratio: 1.05 / 1;
 `;
 
 const StyledDots = styled.div<{ currentIndex: number }>`

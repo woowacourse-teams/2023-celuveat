@@ -55,7 +55,7 @@ const StyledHeader = styled.header<{ isMobile: boolean }>`
   z-index: 20;
 
   width: 100%;
-  height: 80px;
+  height: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
 
   padding: 1.2rem 2.4rem;
 
