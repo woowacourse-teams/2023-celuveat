@@ -42,6 +42,10 @@ const RESTAURANT_CATEGORY: Category[] = [
     icon: <Pasta />,
   },
   {
+    label: '와인',
+    icon: <Wine />,
+  },
+  {
     label: '육류,고기요리',
     icon: <Meat />,
   },
@@ -56,10 +60,6 @@ const RESTAURANT_CATEGORY: Category[] = [
   {
     label: '요리주점',
     icon: <Pub />,
-  },
-  {
-    label: '와인',
-    icon: <Wine />,
   },
 ];
 
