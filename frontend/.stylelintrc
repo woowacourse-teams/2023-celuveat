@@ -1,0 +1,101 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-order"],
+  "customSyntax": "postcss-styled-syntax",
+  "rules": {
+    "declaration-empty-line-before": [
+      "always",
+      {
+        "ignore": ["first-nested", "after-comment", "after-declaration", "inside-single-line-block"]
+      }
+    ],
+    "order/order": ["custom-properties", "declarations"],
+    "declaration-property-unit-allowed-list": {
+      "/^border/": ["px", "%"],
+      "/^width|^height/": ["px", "%", "vh", "vw"],
+      "/^margin|^padding|^gap/": ["rem"]
+    },
+    "order/properties-order": [
+      {
+        "groupName": "display",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": [
+          "display",
+          "flex",
+          "flex-direction",
+          "flex-grow",
+          "flex-shrink",
+          "flex-basis",
+          "flex-flow",
+          "justify-content",
+          "align-items",
+          "align-content",
+          "gap"
+        ]
+      },
+
+      {
+        "groupName": "positioning",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["position", "top", "right", "bottom", "left", "z-index"]
+      },
+      {
+        "groupName": "float",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["float"]
+      },
+      {
+        "groupName": "width / height",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["width", "min-width", "max-width", "height", "min-height", "max-height"]
+      },
+      {
+        "groupName": "padding / margin",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["padding", "margin"]
+      },
+      {
+        "groupName": "border / background",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": [
+          "border",
+          "border-radius",
+          "background",
+          "background-color",
+          "background-image",
+          "background-repeat",
+          "background-position",
+          "background-size"
+        ]
+      },
+      {
+        "groupName": "colors and typography",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": [
+          "color",
+          "font",
+          "font-family",
+          "font-size",
+          "font-weight",
+          "line-height",
+          "text-align",
+          "text-transform",
+          "text-decoration"
+        ]
+      },
+      {
+        "groupName": "other",
+        "emptyLineBefore": "always",
+        "noEmptyLineBetween": true,
+        "properties": ["cursor", "opacity", "transition", "transform"]
+      }
+    ]
+  }
+}

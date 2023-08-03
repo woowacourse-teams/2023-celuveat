@@ -1,0 +1,23 @@
+name: 🍔 Celuveat frontend DEV CD 🍔
+
+on:
+  push:
+    branches:
+      - develop-frontend
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy-frontend:
+    runs-on: [self-hosted, dev]
+
+    steps:
+      - name: 🍔 .env 파일 세팅
+        run: |
+          touch ~/frontend-env/.env
+          echo GOOGLE_MAP_API_KEY=${{ secrets.GOOGLE_MAP_API_KEY }} > ~/frontend-env/.env
+          echo BASE_URL=${{ secrets.DEV_BASE_URL }} >> ~/frontend-env/.env
+      - name: 🍔 Run Frontend Deploy Script
+        run: |
+          cd ~
+          sudo sh deploy-frontend.sh

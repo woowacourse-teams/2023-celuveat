@@ -1,0 +1,42 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "react"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "ignorePatterns": ["build", "dist", "public", "webpack.**.js", "mocks", "fileTransformer.js"],
+  "rules": {
+    "no-console": "warn",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/extensions": "off",
+    "react-hooks/exhaustive-deps": "off"
+  }
+}
