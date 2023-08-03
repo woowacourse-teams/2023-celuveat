@@ -218,14 +218,6 @@ const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
         grid-template-columns: 100vw;
       `}
   }
-
-  @media screen and (width <= 950px) {
-    & > div:last-child {
-      display: none;
-    }
-
-    grid-template-columns: 100vw 0;
-  }
 `;
 
 const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
