@@ -38,7 +38,7 @@ public class SeedData {
     private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
-    public List<RestaurantQueryResponse> insertSeedData() {
+    public SeedDataResponse insertSeedData() {
         List<Celeb> celebs = celebRepository.saveAll(
                 List.of(셀럽("말랑"), 셀럽("도기"), 셀럽("오도"), 셀럽("로이스"))
         );
@@ -146,7 +146,7 @@ public class SeedData {
                 음식점_좋아요(로이스2호점, 멤버)
         ));
 
-        return List.of(
+        return new SeedDataResponse(멤버, List.of(
                 RestaurantQueryResponse.from(
                         withDistance(말랑1호점, 12.3), List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2)
                 ),
@@ -177,7 +177,7 @@ public class SeedData {
                 RestaurantQueryResponse.from(
                         withDistance(로이스2호점, 1852.4), List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2)
                 )
-        );
+        ));
     }
 
     private RestaurantWithDistance withDistance(Restaurant restaurant, Double distance) {
@@ -192,5 +192,11 @@ public class SeedData {
                 restaurant.naverMapUrl(),
                 distance
         );
+    }
+
+    public record SeedDataResponse(
+            OauthMember member,
+            List<RestaurantQueryResponse> responses
+    ) {
     }
 }
