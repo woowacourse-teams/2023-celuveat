@@ -36,7 +36,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
         <StyledMarkerContainer ref={ref}>
           <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered}>
-            <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border size="100%" />
+            <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
           </StyledMarker>
           {isClicked && (
             <StyledModal quadrant={quadrant} onClick={clickModal}>
@@ -77,10 +77,10 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
   border-radius: 50%;
 
   transition: transform 0.2s ease-in-out;
-  transform: ${({ isClicked }) => (isClicked ? 'scale(1.5)' : 'scale(1)')};
+  transform: ${({ isClicked }) => (isClicked ? 'scale(1.4)' : 'scale(1)')};
 
   &:hover {
-    transform: scale(1.5);
+    transform: scale(1.4);
   }
 
   ${({ isRestaurantHovered }) =>
