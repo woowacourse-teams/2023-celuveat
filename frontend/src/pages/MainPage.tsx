@@ -182,7 +182,7 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
     css`
       z-index: 20;
 
-      height: 36vh;
+      height: calc(36vh - 74px);
     `}
 `;
 
