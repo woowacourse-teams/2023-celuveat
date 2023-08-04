@@ -36,11 +36,14 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {celebs.map(({ id, name, profileImageUrl }) => (
+            {celebs.map(({ id, name, youtubeChannelName, profileImageUrl }) => (
               <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
                   <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />
-                  <div>{name}</div>
+                  <div>
+                    <StyledCelebName>{name}</StyledCelebName>
+                    <StyledChannelName>{youtubeChannelName}</StyledChannelName>
+                  </div>
                 </div>
                 {isEqual(selected, name) && <SearchIcon width={24} />}
               </StyledDropDownOption>
@@ -75,7 +78,7 @@ const StyledDropDownWrapper = styled.ul`
   top: calc(100% + 16px);
   left: 18px;
 
-  width: 320px;
+  width: 380px;
   height: 440px;
 
   padding: 1.2rem 0;
@@ -125,4 +128,15 @@ const StyledDropDownOption = styled.li`
   &:hover {
     background-color: var(--gray-1);
   }
+`;
+
+const StyledCelebName = styled.div`
+  font-family: SUIT-Medium;
+`;
+
+const StyledChannelName = styled.div`
+  padding-top: 0.4rem;
+
+  color: var(--gray-3);
+  font-size: ${FONT_SIZE.sm};
 `;
