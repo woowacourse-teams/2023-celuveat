@@ -102,9 +102,9 @@ function useTouchMoveDirection(sheetRef: React.MutableRefObject<HTMLDivElement>)
     sheetRef?.current?.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      sheetRef.current?.removeEventListener('touchstart', handleTouchStart);
-      sheetRef.current?.removeEventListener('touchmove', handleTouchMove);
-      sheetRef.current?.removeEventListener('touchend', handleTouchEnd);
+      sheetRef?.current?.removeEventListener('touchstart', handleTouchStart);
+      sheetRef?.current?.removeEventListener('touchmove', handleTouchMove);
+      sheetRef?.current?.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
