@@ -47,36 +47,30 @@ function useTouchMoveDirection(sheetRef: React.MutableRefObject<HTMLDivElement>)
 
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
+      if (!e) return;
+
       e.stopPropagation();
+
       const { touchStart } = metrics.current;
       const { sheet, touch } = touchStart;
 
-      sheet.X = sheetRef.current.getBoundingClientRect().x;
-      sheet.Y = sheetRef.current.getBoundingClientRect().y;
+      sheet.X = sheetRef?.current?.getBoundingClientRect()?.x;
+      sheet.Y = sheetRef?.current?.getBoundingClientRect()?.y;
 
-      touch.X = e.touches[0].clientX;
-      touch.Y = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = () => {
-      const { touchMove } = metrics.current;
-      const { sheet } = touchMove;
-
-      sheet.X = sheetRef.current.getBoundingClientRect().x;
-      sheet.Y = sheetRef.current.getBoundingClientRect().y;
+      touch.X = e?.touches[0]?.clientX;
+      touch.Y = e?.touches[0]?.clientY;
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (!e) return;
+
       e.stopPropagation();
-      const { touchStart, touchEnd } = metrics.current;
-      const { sheet } = touchEnd;
+
+      const { touchStart } = metrics.current;
 
       const { clientX, clientY } = e.changedTouches[0];
       const distanceX = touchStart.touch.X - clientX;
       const distanceY = touchStart.touch.Y - clientY;
-
-      sheet.X = sheetRef.current.getBoundingClientRect().x;
-      sheet.Y = sheetRef.current.getBoundingClientRect().y;
 
       if (distanceY > 7.5) {
         setMovingDirection(prev => ({ ...prev, Y: 'up' }));
@@ -98,12 +92,10 @@ function useTouchMoveDirection(sheetRef: React.MutableRefObject<HTMLDivElement>)
     };
 
     sheetRef?.current?.addEventListener('touchstart', handleTouchStart);
-    sheetRef?.current?.addEventListener('touchmove', handleTouchMove);
     sheetRef?.current?.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       sheetRef?.current?.removeEventListener('touchstart', handleTouchStart);
-      sheetRef?.current?.removeEventListener('touchmove', handleTouchMove);
       sheetRef?.current?.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
