@@ -34,22 +34,26 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
   return (
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
-        <div ref={ref}>
+        <StyledMarkerContainer ref={ref}>
           <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered}>
-            <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} border size="100%" />
+            <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
           </StyledMarker>
           {isClicked && (
             <StyledModal quadrant={quadrant} onClick={clickModal}>
               <RestaurantCard restaurant={restaurant} type="map" />
             </StyledModal>
           )}
-        </div>
+        </StyledMarkerContainer>
       </Overlay>
     )
   );
 }
 
 export default OverlayMarker;
+
+const StyledMarkerContainer = styled.div`
+  position: relative;
+`;
 
 const scaleUp = keyframes`
   0% {
@@ -73,10 +77,10 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
   border-radius: 50%;
 
   transition: transform 0.2s ease-in-out;
-  transform: ${({ isClicked }) => (isClicked ? 'scale(1.5)' : 'scale(1)')};
+  transform: ${({ isClicked }) => (isClicked ? 'scale(1.4)' : 'scale(1)')};
 
   &:hover {
-    transform: scale(1.5);
+    transform: scale(1.4);
   }
 
   ${({ isRestaurantHovered }) =>
@@ -97,10 +101,10 @@ const fadeInAnimation = keyframes`
 
 const StyledModal = styled.div<{ quadrant: Quadrant }>`
   position: absolute;
-  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '40px' : '-280px')};
-  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '45px' : '-210px')};
+  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '48px' : '-288px')};
+  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '0px' : '-210px')};
 
-  width: 200px;
+  width: 248px;
 
   border-radius: 12px;
   background-color: #fff;

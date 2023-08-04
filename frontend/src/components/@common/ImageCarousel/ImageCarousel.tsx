@@ -19,19 +19,25 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
   const { movingDirection } = useTouchMoveDirection(ref);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const goToPrevious = () => setCurrentIndex(prevIndex => prevIndex - 1);
-  const goToNext = () => setCurrentIndex(prevIndex => prevIndex + 1);
+  const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex - 1);
+  };
+  const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  };
 
   useEffect(() => {
-    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) goToNext();
-    if (movingDirection.X === 'right' && currentIndex !== 0) goToPrevious();
+    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) setCurrentIndex(prevIndex => prevIndex + 1);
+    if (movingDirection.X === 'right' && currentIndex !== 0) setCurrentIndex(prevIndex => prevIndex - 1);
   }, [movingDirection.X]);
 
   return (
     <StyledCarouselContainer type={type}>
       <StyledCarouselSlide currentIndex={currentIndex} ref={ref}>
         {images.map(({ id, name, author }) => (
-          <WaterMarkImage key={id} imageUrl={name} waterMark={author} />
+          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} />
         ))}
       </StyledCarouselSlide>
       {!isMobile && currentIndex !== 0 && (
@@ -122,9 +128,6 @@ const StyledCarouselSlide = styled.div<{ currentIndex: number }>`
 
   transition: transform 0.3s ease-in-out;
   transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
-  flex-wrap: nowrap;
-
-  aspect-ratio: 1.05 / 1;
 `;
 
 const StyledDots = styled.div<{ currentIndex: number }>`

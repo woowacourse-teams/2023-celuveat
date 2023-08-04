@@ -9,6 +9,7 @@ import NavItem from '~/components/@common/NavButton/NavButton';
 import useBooleanState from '~/hooks/useBooleanState';
 
 import type { Celeb } from '~/@types/celeb.types';
+import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 interface DropDownProps {
   celebs: Celeb[];
@@ -35,13 +36,16 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
       {isShow && (
         <StyledDropDownWrapper>
           <StyledSelectContainer>
-            {celebs.map(({ id, name, profileImageUrl }) => (
+            {celebs.map(({ id, name, youtubeChannelName, profileImageUrl }) => (
               <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size="20px" />
-                  {name}
+                  <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />
+                  <div>
+                    <StyledCelebName>{name}</StyledCelebName>
+                    <StyledChannelName>{youtubeChannelName}</StyledChannelName>
+                  </div>
                 </div>
-                {isEqual(selected, name) && <SearchIcon />}
+                {isEqual(selected, name) && <SearchIcon width={24} />}
               </StyledDropDownOption>
             ))}
           </StyledSelectContainer>
@@ -74,20 +78,20 @@ const StyledDropDownWrapper = styled.ul`
   top: calc(100% + 16px);
   left: 18px;
 
-  width: 216px;
-  height: 176px;
+  width: 380px;
+  height: 440px;
 
-  padding: 1.8rem 0;
+  padding: 1.2rem 0;
 
-  border-radius: 10px;
-  background: white;
+  border-radius: ${BORDER_RADIUS.md};
+  background: var(--white);
 
   box-shadow: var(--shadow);
 `;
 
 const StyledSelectContainer = styled.div`
   width: 100%;
-  height: 150px;
+  height: 100%;
 
   background: transparent;
 
@@ -99,9 +103,11 @@ const StyledDropDownOption = styled.li`
   justify-content: space-between;
   align-items: center;
 
-  height: 44px;
+  height: 60px;
 
-  margin: 0 1.8rem;
+  padding: 0 1.8rem;
+
+  font-size: ${FONT_SIZE.md};
 
   cursor: pointer;
 
@@ -116,6 +122,21 @@ const StyledDropDownOption = styled.li`
   & > div {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0 1.2rem;
   }
+
+  &:hover {
+    background-color: var(--gray-1);
+  }
+`;
+
+const StyledCelebName = styled.div`
+  font-family: SUIT-Medium;
+`;
+
+const StyledChannelName = styled.div`
+  padding-top: 0.4rem;
+
+  color: var(--gray-3);
+  font-size: ${FONT_SIZE.sm};
 `;

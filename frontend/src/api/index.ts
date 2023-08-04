@@ -22,7 +22,9 @@ export const apiClient = axios.create({
 
 export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
   const queryString = getQueryString(queryParams);
+
   const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+
   return response.data;
 };
 

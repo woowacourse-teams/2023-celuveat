@@ -79,7 +79,7 @@ function MainPage() {
       </StyledNavBar>
       {isMobile ? (
         <StyledMobileLayout>
-          <StyledLayer>
+          <StyledLayer isMobile={isMobile}>
             <Map
               setBoundary={setBoundary}
               setCurrentPage={setCurrentPage}
@@ -135,7 +135,7 @@ const StyledNavBar = styled.div<{ isMobile: boolean }>`
   align-items: center;
 
   position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
-  top: 80px;
+  top: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
   z-index: 11;
 
   width: 100%;
@@ -152,12 +152,12 @@ const StyledLine = styled.div`
   background-color: var(--gray-3);
 `;
 
-const StyledLayer = styled.div`
+const StyledLayer = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
   position: fixed;
-  top: 160px;
+  top: ${({ isMobile }) => (isMobile ? '140px' : '160px')};
   z-index: 0;
 
   width: 100%;
@@ -182,7 +182,7 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
     css`
       z-index: 20;
 
-      height: 36vh;
+      height: calc(36vh - 74px);
     `}
 `;
 
@@ -201,30 +201,22 @@ const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
 
   width: 100%;
   height: 100%;
-  grid-template-columns: 63% 37%;
+  grid-template-columns: 63vw 37vw;
 
   ${({ isMapExpanded }) =>
     isMapExpanded &&
     css`
-      grid-template-columns: 100%;
+      grid-template-columns: 100vw;
     `}
 
   @media screen and (width <= 1240px) {
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 55vw 45vw;
 
     ${({ isMapExpanded }) =>
       isMapExpanded &&
       css`
-        grid-template-columns: 100%;
+        grid-template-columns: 100vw;
       `}
-  }
-
-  @media screen and (width <= 950px) {
-    & > div:last-child {
-      display: none;
-    }
-
-    grid-template-columns: 100% 0;
   }
 `;
 

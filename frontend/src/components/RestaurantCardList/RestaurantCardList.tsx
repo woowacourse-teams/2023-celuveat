@@ -49,17 +49,30 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
 
   return (
     <StyledRestaurantCardListContainer>
-      {!isMobile && <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>}
-      <StyledRestaurantCardList isMobile={isMobile}>
-        {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
-          <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
-        ))}
-      </StyledRestaurantCardList>
-      <PageNationBar
-        totalPage={restaurantDataList.totalPage}
-        currentPage={restaurantDataList.currentPage + 1}
-        clickPageButton={clickPageButton}
-      />
+      {restaurantDataList.content.length !== 0 ? (
+        <>
+          {!isMobile && (
+            <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
+          )}
+          <StyledRestaurantCardList isMobile={isMobile}>
+            {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
+              <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
+            ))}
+          </StyledRestaurantCardList>
+          <PageNationBar
+            totalPage={restaurantDataList.totalPage}
+            currentPage={restaurantDataList.currentPage + 1}
+            clickPageButton={clickPageButton}
+          />
+        </>
+      ) : (
+        <>
+          <h3>일치하는 음식점이 없어요.</h3>
+          <StyledDescription>
+            더 많은 음식점을 둘러보려면 필터링 옵션 살펴보거나 지도를 움직여 주세요!
+          </StyledDescription>
+        </>
+      )}
     </StyledRestaurantCardListContainer>
   );
 }
@@ -76,6 +89,10 @@ const StyledRestaurantCardListContainer = styled.div`
   gap: 3.2rem;
 
   margin: 3.2rem 2.4rem;
+`;
+
+const StyledDescription = styled.div`
+  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledCardListHeader = styled.p`
