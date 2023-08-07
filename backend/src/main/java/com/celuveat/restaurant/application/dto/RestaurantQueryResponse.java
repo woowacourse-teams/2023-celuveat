@@ -16,6 +16,8 @@ public record RestaurantQueryResponse(
         String phoneNumber,
         String naverMapUrl,
         Integer distance,
+        Boolean isLiked,
+        Integer viewCount,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -35,6 +37,8 @@ public record RestaurantQueryResponse(
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
                 restaurant.distance().intValue(),
+                false,
+                null,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
