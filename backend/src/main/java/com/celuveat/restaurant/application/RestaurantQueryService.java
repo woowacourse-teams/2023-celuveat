@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
@@ -16,6 +17,7 @@ import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
@@ -39,6 +41,7 @@ public class RestaurantQueryService {
     private final RestaurantLikeRepository restaurantLikeRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
@@ -144,4 +147,19 @@ public class RestaurantQueryService {
     ) {
         return RestaurantLikeQueryResponse.from(restaurant, celebs, images);
     }
+
+    public RestaurantDetailQueryResponse findRestaurantDetailById(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
+        int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
+        List<Video> videos = videoRepository.findAllByRestaurant(restaurant);
+
+        return RestaurantDetailQueryResponse.of(
+                restaurant,
+                restaurantImages,
+                likeCount,
+                videos
+        );
+    }
+
 }

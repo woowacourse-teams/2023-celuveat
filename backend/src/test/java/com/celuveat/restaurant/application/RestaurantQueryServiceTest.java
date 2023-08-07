@@ -16,6 +16,7 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
@@ -49,7 +50,7 @@ class RestaurantQueryServiceTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantQueryService restaurantQueryService;
+    private RestaurantLikeRepository restaurantLikeRepository;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -58,7 +59,7 @@ class RestaurantQueryServiceTest {
     private OauthMemberRepository oauthMemberRepository;
 
     @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
+    private RestaurantQueryService restaurantQueryService;
 
     @BeforeEach
     void setUp() {
@@ -403,5 +404,27 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
+    }
+
+    @Test
+    void 음식점_상세_조회_테스트() {
+        // given
+        String likedRestaurant = "로이스2호점";
+        Long restaurantId = seed.stream()
+                .filter(restaurant -> restaurant.name().equals(likedRestaurant))
+                .findFirst().orElseThrow()
+                .id();
+        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+
+        // when
+        RestaurantDetailQueryResponse result =
+                restaurantQueryService.findRestaurantDetailById(restaurantId);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("likeCount", "viewCount", "imageUrls", "videos")
+                .isEqualTo(restaurant);
+        assertThat(result.likeCount()).isEqualTo(1);
     }
 }
