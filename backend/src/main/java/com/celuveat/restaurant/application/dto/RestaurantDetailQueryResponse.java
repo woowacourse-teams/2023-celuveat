@@ -14,6 +14,7 @@ public record RestaurantDetailQueryResponse(
         Double longitude,
         String phoneNumber,
         String naverMapUrl,
+        Integer likeCount,
         Integer viewCount,
         List<RestaurantImageQueryResponse> imageUrls,
         List<VideoWithCelebQueryResponse> videos
@@ -22,6 +23,7 @@ public record RestaurantDetailQueryResponse(
     public static RestaurantDetailQueryResponse of(
             Restaurant restaurant,
             List<RestaurantImage> restaurantImages,
+            int likeCount,
             List<Video> videos
     ) {
         return new RestaurantDetailQueryResponse(
@@ -33,6 +35,7 @@ public record RestaurantDetailQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                likeCount,
                 0, //TODO view count
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList(),
                 videos.stream().map(VideoWithCelebQueryResponse::from).toList()
