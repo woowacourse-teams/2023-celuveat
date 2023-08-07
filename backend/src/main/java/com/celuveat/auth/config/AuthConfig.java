@@ -2,6 +2,7 @@ package com.celuveat.auth.config;
 
 import com.celuveat.auth.presentation.AuthArgumentResolver;
 import com.celuveat.auth.presentation.AuthInterceptor;
+import com.celuveat.auth.presentation.LooseAuthArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ public class AuthConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
+    private final LooseAuthArgumentResolver looseAuthArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,5 +29,6 @@ public class AuthConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authArgumentResolver);
+        resolvers.add(looseAuthArgumentResolver);
     }
 }
