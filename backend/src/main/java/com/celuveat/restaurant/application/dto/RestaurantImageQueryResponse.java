@@ -15,7 +15,7 @@ public record RestaurantImageQueryResponse(
                 restaurantImage.id(),
                 Base64Util.encode(restaurantImage.name().replace(".jpeg", "")) + ".jpeg",
                 restaurantImage.author(),
-                restaurantImage.author()
+                restaurantImage.socialMedia().name()
         );
     }
 }
