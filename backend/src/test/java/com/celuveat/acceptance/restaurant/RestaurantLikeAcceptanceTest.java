@@ -1,9 +1,10 @@
 package com.celuveat.acceptance.restaurant;
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
+import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.toRestaurantLikeQueryResponse;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
-import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.예상_응답;
+import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요한_음식점_조회_요청;
@@ -16,10 +17,14 @@ import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.presentation.SessionResponse;
 import com.celuveat.common.SeedData;
+import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +53,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         var 세션_아이디 = 세션_아이디를_가져온다(로그인_응답);
 
         // when
-        var 좋아요_응답 = 좋아요_요청을_보낸다(맛집, 세션_아이디);
+        var 좋아요_응답 = 좋아요_요청을_보낸다(맛집.id(), 세션_아이디);
         var 결과 = 음식점_좋아요를_조회한다(맛집, 오도);
 
         // then
@@ -59,12 +64,17 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
     @Test
     void 좋아요한_음식점을_조회한다() {
         // given
-        var 데이터_입력_결과 = seedData.insertSeedData();
-        var 멤버 = 데이터_입력_결과.member();
-        var 전체_음식점 = 데이터_입력_결과.restaurants();
+        var 전체_음식점 = seedData.insertSeedData();
+        var 멤버 = 멤버("오도");
+        멤버를_저장한다(멤버);
+
         OAuth_응답을_설정한다(멤버);
         var 로그인_응답 = 로그인을_요청한다();
         var 세션_아이디 = 세션_아이디를_가져온다(로그인_응답);
+
+        var 좋아요_누를_음식점_아이디 = 좋아요_누를_음식점_아이디를_뽑는다(전체_음식점);
+        음식점들에_좋아요를_누른다(좋아요_누를_음식점_아이디, 세션_아이디);
+
         var 예상_응답 = 예상_응답(전체_음식점);
 
         // when
@@ -73,6 +83,15 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         // then
         응답_상태를_검증한다(응답, 정상_처리);
         결과를_검증한다(응답, 예상_응답);
+    }
+
+    private List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantQueryResponse> 전체_음식점) {
+        return List.of(
+                전체_음식점.get(1).id(),
+                전체_음식점.get(3).id(),
+                전체_음식점.get(4).id(),
+                전체_음식점.get(7).id()
+        );
     }
 
     private void 멤버를_저장한다(OauthMember 멤버) {
@@ -93,5 +112,20 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
 
     private Optional<RestaurantLike> 음식점_좋아요를_조회한다(Restaurant 음식점, OauthMember 멤버) {
         return restaurantLikeRepository.findByRestaurantAndMember(음식점, 멤버);
+    }
+
+    private List<RestaurantLikeQueryResponse> 예상_응답(List<RestaurantQueryResponse> 전체_음식점) {
+        RestaurantQueryResponse restaurantQueryResponse1 = 전체_음식점.get(1);
+        RestaurantQueryResponse restaurantQueryResponse2 = 전체_음식점.get(3);
+        RestaurantQueryResponse restaurantQueryResponse3 = 전체_음식점.get(4);
+        RestaurantQueryResponse restaurantQueryResponse4 = 전체_음식점.get(7);
+        List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
+        expected.addAll(List.of(
+                toRestaurantLikeQueryResponse(restaurantQueryResponse1),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse2),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse3),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse4)
+        ));
+        return expected;
     }
 }

@@ -1,23 +1,28 @@
 package com.celuveat.restaurant.application;
 
+import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.common.SeedData.SeedDataResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.domain.RestaurantRepository;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +51,18 @@ class RestaurantQueryServiceTest {
     @Autowired
     private RestaurantQueryService restaurantQueryService;
 
-    private SeedDataResponse seedDataResponse;
+    @Autowired
+    private OauthMemberRepository oauthMemberRepository;
+
+    @Autowired
+    private RestaurantLikeRepository restaurantLikeRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @BeforeEach
     void setUp() {
-        seedDataResponse = seedData.insertSeedData();
-        seed.addAll(seedDataResponse.restaurants());
+        seed.addAll(seedData.insertSeedData());
         em.flush();
         em.clear();
         System.out.println("=============[INSERT SEED DATA]============");
@@ -348,25 +359,35 @@ class RestaurantQueryServiceTest {
     @Test
     void 멤버_아이디로_음식점_좋아요를_검색한다() {
         // given
-        OauthMember 좋아요_멤버 = seedDataResponse.member();
+        OauthMember 멤버 = 멤버("오도");
+        oauthMemberRepository.save(멤버);
+        RestaurantQueryResponse restaurantQueryResponse1 = seed.get(0);
+        RestaurantQueryResponse restaurantQueryResponse2 = seed.get(2);
+        RestaurantQueryResponse restaurantQueryResponse3 = seed.get(4);
+        RestaurantQueryResponse restaurantQueryResponse4 = seed.get(9);
+        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantQueryResponse1.id());
+        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantQueryResponse2.id());
+        Restaurant 도기2호점 = restaurantRepository.getById(restaurantQueryResponse3.id());
+        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantQueryResponse4.id());
+        restaurantLikeRepository.saveAll(List.of(
+                음식점_좋아요(말랑1호점, 멤버),
+                음식점_좋아요(말랑3호점, 멤버),
+                음식점_좋아요(도기2호점, 멤버),
+                음식점_좋아요(로이스2호점, 멤버)
+        ));
         List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
-        for (RestaurantQueryResponse restaurantQueryResponse : seed) {
-            if (isLikedRestaurant(restaurantQueryResponse.name())) {
-                expected.add(toRestaurantLikeQueryResponse(restaurantQueryResponse));
-            }
-        }
+        expected.addAll(List.of(
+                toRestaurantLikeQueryResponse(restaurantQueryResponse1),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse2),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse3),
+                toRestaurantLikeQueryResponse(restaurantQueryResponse4)
+        ));
 
         // when
-        List<RestaurantLikeQueryResponse> restaurantLikes =
-                restaurantQueryService.findAllByMemberId(좋아요_멤버.id());
+        List<RestaurantLikeQueryResponse> restaurantLikes = restaurantQueryService.findAllByMemberId(멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);
-    }
-
-    private boolean isLikedRestaurant(String name) {
-        List<String> likedRestaurants = List.of("말랑1호점", "말랑3호점", "도기2호점", "로이스2호점");
-        return likedRestaurants.contains(name);
     }
 
     private RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(RestaurantQueryResponse restaurantQueryResponse) {

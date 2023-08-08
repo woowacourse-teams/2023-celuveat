@@ -1,15 +1,12 @@
 package com.celuveat.common;
 
-import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.fixture.LocationFixture.지점1;
 import static com.celuveat.restaurant.fixture.LocationFixture.지점2;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
-import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static com.celuveat.video.fixture.VideoFixture.영상;
 
-import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -38,7 +35,7 @@ public class SeedData {
     private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
-    public SeedDataResponse insertSeedData() {
+    public List<RestaurantQueryResponse> insertSeedData() {
         List<Celeb> celebs = celebRepository.saveAll(
                 List.of(셀럽("말랑"), 셀럽("도기"), 셀럽("오도"), 셀럽("로이스"))
         );
@@ -136,17 +133,7 @@ public class SeedData {
                 영상("로이스2호점-로이스", 로이스2호점, 로이스)
         ));
 
-        OauthMember 멤버 = 멤버("오도");
-        oauthMemberRepository.save(멤버);
-
-        restaurantLikeRepository.saveAll(List.of(
-                음식점_좋아요(말랑1호점, 멤버),
-                음식점_좋아요(말랑3호점, 멤버),
-                음식점_좋아요(도기2호점, 멤버),
-                음식점_좋아요(로이스2호점, 멤버)
-        ));
-
-        return new SeedDataResponse(멤버, List.of(
+        return List.of(
                 RestaurantQueryResponse.from(
                         withDistance(말랑1호점, 12.3), List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2)
                 ),
@@ -177,7 +164,7 @@ public class SeedData {
                 RestaurantQueryResponse.from(
                         withDistance(로이스2호점, 1852.4), List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2)
                 )
-        ));
+        );
     }
 
     private RestaurantWithDistance withDistance(Restaurant restaurant, Double distance) {
@@ -192,11 +179,5 @@ public class SeedData {
                 restaurant.naverMapUrl(),
                 distance
         );
-    }
-
-    public record SeedDataResponse(
-            OauthMember member,
-            List<RestaurantQueryResponse> restaurants
-    ) {
     }
 }
