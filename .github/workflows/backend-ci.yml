@@ -3,14 +3,14 @@ name: ✨ Celuveat Backend CI ✨
 on:
   push:
     branches:
-      - develop-backend2
+      - develop-backend*
       - main
     paths:
       - 'backend/**'
 
   pull_request:
     branches:
-      - develop-backend2
+      - develop-backend*
       - main
     paths:
       - 'backend/**'
