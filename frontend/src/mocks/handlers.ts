@@ -7,6 +7,14 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
   }),
 
+  rest.get('/restaurants/like', (req, res, ctx) => {
+    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
+      return restaurantItem.isLiked;
+    });
+
+    return res(ctx.status(200), ctx.json(data));
+  }),
+
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     const { restaurantId } = req.params;
 

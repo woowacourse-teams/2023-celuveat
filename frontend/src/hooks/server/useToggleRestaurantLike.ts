@@ -22,14 +22,12 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const toggleLike = useMutation({
     mutationFn: async (restaurantId: number) => userInstance.post(`/restaurants/${restaurantId}/like`),
     onMutate: () => {
-      close();
-
       const previousRestaurantListData: RestaurantListData = queryClient.getQueryData(['restaurants']);
       const newRestaurantListData = previousRestaurantListData?.content.map(restaurantItem =>
         restaurantItem.id === restaurant.id ? { ...restaurantItem, isLiked: !restaurantItem.isLiked } : restaurantItem,
       );
 
-      queryClient.setQueryData(['restaurant'], newRestaurantListData);
+      queryClient.setQueryData(['restaurants'], newRestaurantListData);
 
       return { previousRestaurantListData };
     },
@@ -55,6 +53,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
 
   const toggleRestaurantLike = useCallback(() => {
     toggleLike.mutate(restaurant.id);
+    close();
   }, []);
 
   return { toggleRestaurantLike };

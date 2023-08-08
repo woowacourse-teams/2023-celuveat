@@ -20,7 +20,7 @@ class HttpRestaurantLikeInterceptor {
 
   onResponse(response: AxiosResponse): AxiosResponse {
     if (isEmptyString(response.data)) {
-      response.data = '좋아요 성공했습니다!!';
+      response.data = [];
     }
 
     return response;

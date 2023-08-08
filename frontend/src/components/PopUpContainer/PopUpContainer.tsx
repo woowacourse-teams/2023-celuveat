@@ -1,3 +1,4 @@
+import React from 'react';
 import { Modal } from '~/components/@common/Modal';
 import PopUp from '~/components/@common/PopUp/PopUp';
 import useToastState from '~/hooks/store/useToastState';
@@ -16,4 +17,4 @@ function PopUpContainer({ imgUrl }: PopUpContainerProps) {
   return <Modal>{isOpen && <PopUp text={text} isSuccess={isSuccess} imgUrl={imgUrl} />}</Modal>;
 }
 
-export default PopUpContainer;
+export default React.memo(PopUpContainer);
