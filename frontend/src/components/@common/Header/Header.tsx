@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import Logo from '~/assets/logo.png';
+import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
@@ -46,7 +46,7 @@ function Header() {
     <>
       <StyledHeader isMobile={isMobile}>
         <Link to="/">
-          <StyledLogo alt="홈" src={Logo} role="button" />
+          <Logo role="button" width={136} />
         </Link>
         <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko" libraries={['places']}>
           <SearchBar />
@@ -80,10 +80,6 @@ const StyledHeader = styled.header<{ isMobile: boolean }>`
 
   background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
-`;
-
-const StyledLogo = styled.img`
-  width: 136px;
 `;
 
 const StyledMapLoadingContainer = styled.section`
