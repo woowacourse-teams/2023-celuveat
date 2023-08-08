@@ -3,10 +3,16 @@ package com.celuveat.restaurant.application;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
+import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -30,6 +36,8 @@ public class RestaurantQueryService {
 
     private final RestaurantQueryRepository restaurantQueryRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
     public Page<RestaurantQueryResponse> findAll(
@@ -100,5 +108,40 @@ public class RestaurantQueryService {
             RestaurantWithDistance restaurantWithDistance
     ) {
         return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
+    }
+
+    public List<RestaurantLikeQueryResponse> findAllByMemberId(Long memberId) {
+        OauthMember member = oauthMemberRepository.getById(memberId);
+        List<RestaurantLike> restaurantLikes = restaurantLikeRepository.findAllByMember(member);
+        List<Restaurant> restaurants = extractRestaurants(restaurantLikes);
+        List<Video> videos = videoRepository.findAllByRestaurantIn(restaurants);
+        Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
+        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIn(restaurants);
+        Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
+        return toResponseList(restaurants, celebs, restaurantListMap);
+    }
+
+    private List<Restaurant> extractRestaurants(List<RestaurantLike> restaurantLikes) {
+        return restaurantLikes.stream()
+                .map(RestaurantLike::restaurant)
+                .toList();
+    }
+
+    private List<RestaurantLikeQueryResponse> toResponseList(
+            List<Restaurant> restaurants,
+            Map<Long, List<Celeb>> celebs,
+            Map<Long, List<RestaurantImage>> images
+    ) {
+        return restaurants.stream()
+                .map(restaurant -> toResponse(celebs.get(restaurant.id()), images.get(restaurant.id()), restaurant))
+                .toList();
+    }
+
+    private RestaurantLikeQueryResponse toResponse(
+            List<Celeb> celebs,
+            List<RestaurantImage> images,
+            Restaurant restaurant
+    ) {
+        return RestaurantLikeQueryResponse.from(restaurant, celebs, images);
     }
 }

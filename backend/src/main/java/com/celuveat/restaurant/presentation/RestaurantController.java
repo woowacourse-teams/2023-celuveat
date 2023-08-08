@@ -4,10 +4,12 @@ import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryService;
+import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +50,10 @@ public class RestaurantController {
     ResponseEntity<Void> like(@PathVariable Long restaurantId, @Auth Long memberId) {
         restaurantLikeService.like(restaurantId, memberId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/like")
+    ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
+        return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
     }
 }

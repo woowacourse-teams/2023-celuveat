@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RestaurantImageRepository extends JpaRepository<RestaurantImage, Long> {
 
     List<RestaurantImage> findAllByRestaurantIdIn(List<Long> restaurantIds);
+
+    List<RestaurantImage> findAllByRestaurantIn(List<Restaurant> restaurants);
 }
