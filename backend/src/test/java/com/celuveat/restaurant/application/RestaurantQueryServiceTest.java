@@ -6,6 +6,7 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +21,7 @@ import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantLike;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -409,16 +411,14 @@ class RestaurantQueryServiceTest {
     @Test
     void 음식점_상세_조회_테스트() {
         // given
-        String likedRestaurant = "로이스2호점";
-        Long restaurantId = seed.stream()
-                .filter(restaurant -> restaurant.name().equals(likedRestaurant))
-                .findFirst().orElseThrow()
-                .id();
-        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        Restaurant restaurant = restaurantRepository.save(음식점("로이스1호점"));
+        OauthMember oauthMember = 멤버("로이스");
+        oauthMemberRepository.save(oauthMember);
+        restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
 
         // when
         RestaurantDetailQueryResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurantId);
+                restaurantQueryService.findRestaurantDetailById(restaurant.id());
 
         // then
         assertThat(result)
