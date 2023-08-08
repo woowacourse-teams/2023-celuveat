@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class RestaurantAcceptanceSteps {
 
@@ -141,6 +142,13 @@ public class RestaurantAcceptanceSteps {
                 && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
     }
 
+    public static RestaurantQueryResponse 특정_이름의_음식점을_찾는다(List<RestaurantQueryResponse> 음식점들, String 음식점_이름) {
+        return 음식점들.stream()
+                .filter(restaurantQueryResponse -> restaurantQueryResponse.name().equals(음식점_이름))
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
+    }
+
     public static ExtractableResponse<Response> 음식점_상세_조회_요청(
             Long restaurantId,
             Long celebId
@@ -161,11 +169,13 @@ public class RestaurantAcceptanceSteps {
     ) {
         RestaurantQueryResponse restaurantResponse = 전체_음식점.stream()
                 .filter(restaurant -> restaurant.id().equals(restaurantId))
-                .findFirst().orElseThrow(IllegalStateException::new);
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
 
         CelebQueryResponse targetCeleb = restaurantResponse.celebs().stream()
                 .filter(celeb -> celeb.id().equals(celebId))
-                .findFirst().orElseThrow();
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
 
         return toRestaurantDetailQueryResponse(
                 restaurantResponse,
@@ -209,7 +219,7 @@ public class RestaurantAcceptanceSteps {
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
                 0, // likeCount
-                0, //viewCount
+                0, // viewCount
                 celebs,
                 images
         );
@@ -222,5 +232,11 @@ public class RestaurantAcceptanceSteps {
                 .usingRecursiveComparison()
                 .ignoringFields("likeCount", "viewCount")
                 .isEqualTo(예상_응답);
+    }
+
+    public static void 조회수를_검증한다(int 예상_조회수, ExtractableResponse<Response> 응답) {
+        RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
+        });
+        assertThat(response.viewCount()).isEqualTo(예상_조회수);
     }
 }
