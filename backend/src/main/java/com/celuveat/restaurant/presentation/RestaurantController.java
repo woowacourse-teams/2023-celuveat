@@ -54,6 +54,6 @@ public class RestaurantController {
 
     @GetMapping("/like")
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikes(@Auth Long memberId) {
-        return ResponseEntity.ok(restaurantQueryService.findAllRestaurantLikeByMemberId(memberId));
+        return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
     }
 }

@@ -110,7 +110,7 @@ public class RestaurantQueryService {
         return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
     }
 
-    public List<RestaurantLikeQueryResponse> findAllRestaurantLikeByMemberId(Long memberId) {
+    public List<RestaurantLikeQueryResponse> findAllByMemberId(Long memberId) {
         OauthMember member = oauthMemberRepository.getById(memberId);
         List<RestaurantLike> restaurantLikes = restaurantLikeRepository.findAllByMember(member);
         List<Restaurant> restaurants = extractRestaurants(restaurantLikes);
