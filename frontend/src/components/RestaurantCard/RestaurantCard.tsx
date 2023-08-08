@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -16,32 +17,33 @@ interface RestaurantCardProps {
 }
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
-  const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
+  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
-  const openDetail = () => window.open(naverMapUrl, '_blank');
 
   return (
-    <StyledContainer onClick={openDetail} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      <StyledImageViewer>
-        <ImageCarousel images={images} type={type} />
-        <LikeButton aria-label="좋아요" type="button">
-          <Love fill="#000" fillOpacity={0.5} aria-hidden="true" />
-        </LikeButton>
-      </StyledImageViewer>
-      <section>
-        <StyledInfo>
-          <StyledCategory>{category}</StyledCategory>
-          <StyledName role="columnheader">{name}</StyledName>
-          <StyledAddress>{roadAddress}</StyledAddress>
-          <StyledAddress>{phoneNumber}</StyledAddress>
-        </StyledInfo>
-        <StyledProfileImageSection>
-          {celebs && <ProfileImageList celebs={celebs} size={size} />}
-        </StyledProfileImageSection>
-      </section>
-    </StyledContainer>
+    <Link to={`restaurants/${id}?celebId=${celebs[0].id}`}>
+      <StyledContainer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <StyledImageViewer>
+          <ImageCarousel images={images} type={type} />
+          <LikeButton aria-label="좋아요" type="button">
+            <Love fill="#000" fillOpacity={0.5} aria-hidden="true" />
+          </LikeButton>
+        </StyledImageViewer>
+        <section>
+          <StyledInfo>
+            <StyledCategory>{category}</StyledCategory>
+            <StyledName role="columnheader">{name}</StyledName>
+            <StyledAddress>{roadAddress}</StyledAddress>
+            <StyledAddress>{phoneNumber}</StyledAddress>
+          </StyledInfo>
+          <StyledProfileImageSection>
+            {celebs && <ProfileImageList celebs={celebs} size={size} />}
+          </StyledProfileImageSection>
+        </section>
+      </StyledContainer>
+    </Link>
   );
 }
 
