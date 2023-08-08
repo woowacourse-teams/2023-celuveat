@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,9 +26,17 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-        final String errorMessage = e.getFieldErrors().stream()
+        String errorMessage = e.getFieldErrors().stream()
                 .map(it -> it.getField() + " : " + it.getDefaultMessage())
                 .collect(Collectors.joining("\n"));
+        log.warn("[ERROR] 잘못된 요청이 들어왔습니다: {}", errorMessage);
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ExceptionResponse(errorMessage));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    ResponseEntity<ExceptionResponse> handleMissingParams(MissingServletRequestParameterException e) {
+        String errorMessage = e.getParameterName() + " 값이 누락 되었습니다.";
         log.warn("[ERROR] 잘못된 요청이 들어왔습니다: {}", errorMessage);
         return ResponseEntity.status(BAD_REQUEST)
                 .body(new ExceptionResponse(errorMessage));

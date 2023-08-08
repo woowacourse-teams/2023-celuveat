@@ -18,7 +18,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
-import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -91,7 +90,32 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 음식점ID로_조회() {
             // given
-            var 전체_음식점 = new ArrayList<>(seedData.insertSeedData());
+            var 전체_음식점 = seedData.insertSeedData();
+            var 조회_음식점ID = 1L;
+            var 셀럽ID = 1L;
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점ID, 셀럽ID);
+
+            // when
+            var 응답 = 음식점_상세_조회_요청(조회_음식점ID, 셀럽ID);
+
+            // then
+            상세_조회_결과를_검증한다(예상_응답, 응답);
+        }
+
+        @Test
+        void 셀럽ID_없이_음식점을_상세_조회하면_예외가_발생한다() {
+            // when
+            var 조회_음식점ID = 1L;
+            var 응답 = 음식점_상세_조회_요청(조회_음식점ID, (Long) 없음);
+
+            // then
+            잘못된_요청_예외를_검증한다(응답);
+        }
+
+        @Test
+        void 음식점을_상세_조회하면_조회수가_증가한다() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
             var 조회_음식점ID = 1L;
             var 셀럽ID = 1L;
             var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점ID, 셀럽ID);

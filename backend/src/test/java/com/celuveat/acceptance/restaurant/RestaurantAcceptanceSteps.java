@@ -145,8 +145,10 @@ public class RestaurantAcceptanceSteps {
             Long restaurantId,
             Long celebId
     ) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebId", celebId);
         return given()
-                .queryParams("celebId", celebId)
+                .queryParams(param)
                 .when().get("/api/restaurants/{restaurantId}", restaurantId)
                 .then().log().all()
                 .extract();
