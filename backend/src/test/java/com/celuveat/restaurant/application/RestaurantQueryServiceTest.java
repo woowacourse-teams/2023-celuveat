@@ -423,7 +423,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result)
                 .usingRecursiveComparison()
-                .ignoringFields("likeCount", "viewCount", "imageUrls", "videos")
+                .ignoringFields("likeCount", "viewCount", "imageUrls")
                 .isEqualTo(restaurant);
         assertThat(result.likeCount()).isEqualTo(1);
     }

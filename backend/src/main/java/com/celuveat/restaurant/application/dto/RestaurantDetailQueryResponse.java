@@ -1,8 +1,9 @@
 package com.celuveat.restaurant.application.dto;
 
+import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
-import com.celuveat.video.domain.Video;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record RestaurantDetailQueryResponse(
@@ -10,21 +11,21 @@ public record RestaurantDetailQueryResponse(
         String name,
         String category,
         String roadAddress,
-        Double latitude,
-        Double longitude,
+        @JsonProperty("lat") Double latitude,
+        @JsonProperty("lng") Double longitude,
         String phoneNumber,
         String naverMapUrl,
         Integer likeCount,
         Integer viewCount,
-        List<RestaurantImageQueryResponse> imageUrls,
-        List<VideoWithCelebQueryResponse> videos
+        List<CelebQueryResponse> celebs,
+        List<RestaurantImageQueryResponse> imageUrls
 ) {
 
     public static RestaurantDetailQueryResponse of(
             Restaurant restaurant,
+            List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
-            int likeCount,
-            List<Video> videos
+            int likeCount
     ) {
         return new RestaurantDetailQueryResponse(
                 restaurant.id(),
@@ -37,8 +38,8 @@ public record RestaurantDetailQueryResponse(
                 restaurant.naverMapUrl(),
                 likeCount,
                 0, //TODO view count
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList(),
-                videos.stream().map(VideoWithCelebQueryResponse::from).toList()
+                celebs.stream().map(CelebQueryResponse::of).toList(),
+                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
     }
 }

@@ -152,14 +152,19 @@ public class RestaurantQueryService {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
         int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
-        List<Video> videos = videoRepository.findAllByRestaurant(restaurant);
-
+        List<Celeb> celebs = getCelebsByRestaurant(restaurant);
         return RestaurantDetailQueryResponse.of(
                 restaurant,
+                celebs,
                 restaurantImages,
-                likeCount,
-                videos
+                likeCount
         );
     }
 
+    private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
+        return videoRepository.findAllByRestaurant(restaurant) //FIXME N+1
+                .stream()
+                .map(Video::celeb)
+                .toList();
+    }
 }
