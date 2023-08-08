@@ -10,7 +10,7 @@ const axiosUserApi = (url: string, options?: Record<string, string>) => {
     baseURL: SERVER_URL,
     headers: {
       'Content-type': 'application/json',
-      Cookies: `JSESSIONID=${token}`,
+      Cookie: `JSESSIONID=${token}`,
       ...options,
     },
   });
