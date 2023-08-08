@@ -14,7 +14,7 @@ public record VideoWithCelebQueryResponse(
         String profileImageUrl
 
 ) {
-    public static VideoWithCelebQueryResponse from(Video video) {
+    public static VideoWithCelebQueryResponse of(Video video) {
         Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(
                 video.id(),
