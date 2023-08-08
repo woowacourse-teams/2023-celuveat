@@ -196,7 +196,7 @@ public class SeedData {
 
     public record SeedDataResponse(
             OauthMember member,
-            List<RestaurantQueryResponse> responses
+            List<RestaurantQueryResponse> restaurants
     ) {
     }
 }

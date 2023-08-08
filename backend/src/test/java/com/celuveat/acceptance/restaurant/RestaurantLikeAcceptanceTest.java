@@ -61,7 +61,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         // given
         var 데이터_입력_결과 = seedData.insertSeedData();
         var 멤버 = 데이터_입력_결과.member();
-        var 전체_음식점 = 데이터_입력_결과.responses();
+        var 전체_음식점 = 데이터_입력_결과.restaurants();
         OAuth_응답을_설정한다(멤버);
         var 로그인_응답 = 로그인을_요청한다();
         var 세션_아이디 = 세션_아이디를_가져온다(로그인_응답);
