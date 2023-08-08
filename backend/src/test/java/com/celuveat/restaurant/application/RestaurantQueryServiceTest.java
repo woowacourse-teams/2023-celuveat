@@ -6,7 +6,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -411,9 +410,10 @@ class RestaurantQueryServiceTest {
     @Test
     void 음식점_상세_조회_테스트() {
         // given
-        Restaurant restaurant = restaurantRepository.save(음식점("로이스1호점"));
+        RestaurantQueryResponse restaurantQueryResponse = seed.get(0);
         OauthMember oauthMember = 멤버("로이스");
         oauthMemberRepository.save(oauthMember);
+        Restaurant restaurant = restaurantRepository.getById(restaurantQueryResponse.id());
         restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
 
         // when
@@ -423,8 +423,27 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result)
                 .usingRecursiveComparison()
-                .ignoringFields("likeCount", "viewCount", "imageUrls")
-                .isEqualTo(restaurant);
+                .ignoringFields("likeCount", "viewCount")
+                .isEqualTo(toRestaurantDetailQueryResponse(restaurantQueryResponse));
         assertThat(result.likeCount()).isEqualTo(1);
+    }
+
+    private RestaurantDetailQueryResponse toRestaurantDetailQueryResponse(
+            RestaurantQueryResponse restaurantQueryResponse
+    ) {
+        return new RestaurantDetailQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                0, // likeCount
+                0, //viewCount
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
     }
 }

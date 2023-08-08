@@ -18,7 +18,7 @@ public record RestaurantDetailQueryResponse(
         Integer likeCount,
         Integer viewCount,
         List<CelebQueryResponse> celebs,
-        List<RestaurantImageQueryResponse> imageUrls
+        List<RestaurantImageQueryResponse> images
 ) {
 
     public static RestaurantDetailQueryResponse of(
