@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("RestaurantService(음식점 좋아요 서비스) 은(는)")
+@DisplayName("RestaurantService(음식점 서비스) 은(는)")
 class RestaurantServiceTest {
 
     @Autowired
