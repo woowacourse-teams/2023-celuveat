@@ -29,6 +29,12 @@ public class RestaurantQueryFacade {
         return RestaurantDetailQueryResponse.from(response, relocatedCelebs, relocatedImages);
     }
 
+    private CelebQueryResponse findCeleb(List<CelebQueryResponse> celebQueryResponses, Long celebId) {
+        return celebQueryResponses.stream()
+                .filter(celeb -> celeb.id().equals(celebId))
+                .findFirst().orElseThrow();
+    }
+
     private List<CelebQueryResponse> relocateCelebsByCelebId(
             CelebQueryResponse targetCeleb,
             List<CelebQueryResponse> celebQueryResponses
@@ -38,19 +44,13 @@ public class RestaurantQueryFacade {
         return celebs;
     }
 
-    private CelebQueryResponse findCeleb(List<CelebQueryResponse> celebQueryResponses, Long celebId) {
-        return celebQueryResponses.stream()
-                .filter(celeb -> celeb.id().equals(celebId))
-                .findFirst().orElseThrow();
-    }
-
     private List<RestaurantImageQueryResponse> relocateImagesByCelebId(
-            String celebName,
+            String targetCelebName,
             List<RestaurantImageQueryResponse> imageQueryResponses
     ) {
         List<RestaurantImageQueryResponse> images = new ArrayList<>(imageQueryResponses);
         Optional<RestaurantImageQueryResponse> imageResponse = images.stream()
-                .filter(image -> image.author().equals(celebName))
+                .filter(image -> image.author().equals(targetCelebName))
                 .findFirst();
         imageResponse.ifPresent(imageQueryResponse ->
                 Collections.swap(images, 0, images.indexOf(imageQueryResponse))
