@@ -6,9 +6,12 @@ import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름�
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_결과를_검증한다;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
@@ -79,6 +82,23 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             잘못된_요청_예외를_검증한다(응답);
+        }
+    }
+
+    @Nested
+    class 음식점_상세_조회 {
+        @Test
+        void 음식점ID로_조회() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 조회_음식점ID = 1L;
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점ID);
+
+            // when
+            var 응답 = 음식점_상세_조회_요청(조회_음식점ID);
+
+            // then
+            상세_조회_결과를_검증한다(예상_응답, 응답);
         }
     }
 }

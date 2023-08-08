@@ -4,6 +4,7 @@ import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryService;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -55,5 +56,10 @@ public class RestaurantController {
     @GetMapping("/like")
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
         return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
+    }
+
+    @GetMapping("/{restaurantId}")
+    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(@PathVariable Long restaurantId) {
+        return ResponseEntity.ok(restaurantQueryService.findRestaurantDetailById(restaurantId));
     }
 }

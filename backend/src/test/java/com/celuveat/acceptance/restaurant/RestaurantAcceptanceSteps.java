@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -136,5 +137,58 @@ public class RestaurantAcceptanceSteps {
                 && restaurantQueryResponse.latitude() <= locationSearchCond.highLatitude()
                 && locationSearchCond.lowLongitude() <= restaurantQueryResponse.longitude()
                 && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
+    }
+
+    public static ExtractableResponse<Response> 음식점_상세_조회_요청(
+            Long restaurantId
+    ) {
+        return given()
+//                .queryParams(param)
+                .when().get("/api/restaurants/{restaurantId}", restaurantId)
+                .then().log().all()
+                .extract();
+    }
+
+    public static RestaurantDetailQueryResponse 상세_조회_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점,
+            Long restaurantId
+    ) {
+        for (RestaurantQueryResponse restaurantQueryResponse : 전체_음식점) {
+            if (restaurantQueryResponse.id().equals(restaurantId)) {
+                return toRestaurantDetailQueryResponse(restaurantQueryResponse);
+            }
+        }
+
+        throw new IllegalStateException();
+    }
+
+    public static void 상세_조회_결과를_검증한다(RestaurantDetailQueryResponse 예상_응답, ExtractableResponse<Response> 응답) {
+        RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
+        });
+        assertThat(response)
+                .usingRecursiveComparison()
+                .ignoringFields("likeCount", "viewCount")
+                .ignoringFieldsOfTypes()
+                .ignoringCollectionOrder()
+                .isEqualTo(예상_응답);
+    }
+
+    private static RestaurantDetailQueryResponse toRestaurantDetailQueryResponse(
+            RestaurantQueryResponse restaurantQueryResponse
+    ) {
+        return new RestaurantDetailQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                0, // likeCount
+                0, //viewCount
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
     }
 }
