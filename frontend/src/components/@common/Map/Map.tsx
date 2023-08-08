@@ -13,7 +13,7 @@ import Plus from '~/assets/icons/plus.svg';
 import getQuadrant from '~/utils/getQuadrant';
 import OverlayMarker from './OverlayMarker';
 
-import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
+import type { Coordinate } from '~/@types/map.types';
 import type { RestaurantData } from '~/@types/api.types';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import useMapState from '~/hooks/store/useMapState';
@@ -21,7 +21,6 @@ import useMapState from '~/hooks/store/useMapState';
 interface MapProps {
   data: RestaurantData[];
   hoveredId: number | null;
-  setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   toggleMapExpand: () => void;
   loadingData: boolean;
@@ -47,11 +46,16 @@ const StyledMapLoadingContainer = styled.section`
   background-color: var(--gray-2);
 `;
 
-function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
-  const [center, setCenter] = useMapState(state => [state.center, state.setCenter]);
+function Map({ data, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
+  const [center, setCenter, zoom, setZoom, setBoundary] = useMapState(state => [
+    state.center,
+    state.setCenter,
+    state.zoom,
+    state.setZoom,
+    state.setBoundary,
+  ]);
   const { isMobile } = useMediaQuery();
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
-  const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -88,7 +92,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
   const clickZoom =
     (number: number): React.MouseEventHandler<HTMLButtonElement> =>
     () => {
-      setZoom(prev => prev + number);
+      setZoom(zoom + number);
     };
 
   const clickMapExpand = () => {
