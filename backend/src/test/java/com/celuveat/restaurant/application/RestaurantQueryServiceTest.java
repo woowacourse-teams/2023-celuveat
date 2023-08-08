@@ -51,7 +51,7 @@ class RestaurantQueryServiceTest {
     @BeforeEach
     void setUp() {
         seedDataResponse = seedData.insertSeedData();
-        seed.addAll(seedDataResponse.responses());
+        seed.addAll(seedDataResponse.restaurants());
         em.flush();
         em.clear();
         System.out.println("=============[INSERT SEED DATA]============");
