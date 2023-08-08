@@ -15,7 +15,7 @@ public record VideoWithCelebQueryResponse(
 
 ) {
     public static VideoWithCelebQueryResponse from(Video video) {
-        Celeb celeb = video.celeb(); //FIXME: N + 1
+        Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(
                 video.id(),
                 video.youtubeUrl(),

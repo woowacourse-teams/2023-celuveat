@@ -162,7 +162,7 @@ public class RestaurantQueryService {
     }
 
     private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
-        return videoRepository.findAllByRestaurant(restaurant) //FIXME N+1
+        return videoRepository.findAllByRestaurant(restaurant)
                 .stream()
                 .map(Video::celeb)
                 .toList();
