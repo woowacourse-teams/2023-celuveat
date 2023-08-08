@@ -37,6 +37,10 @@ public class Restaurant extends BaseEntity {
 
     private Integer viewCount;
 
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
+
     public String name() {
         return name;
     }
