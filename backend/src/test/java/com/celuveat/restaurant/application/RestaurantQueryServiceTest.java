@@ -358,7 +358,7 @@ class RestaurantQueryServiceTest {
 
         // when
         List<RestaurantLikeQueryResponse> restaurantLikes =
-                restaurantQueryService.findAllRestaurantLikeByMemberId(좋아요_멤버.id());
+                restaurantQueryService.findAllByMemberId(좋아요_멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);
