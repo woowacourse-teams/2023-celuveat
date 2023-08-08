@@ -52,13 +52,13 @@ class RestaurantQueryServiceTest {
     private RestaurantQueryService restaurantQueryService;
 
     @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
     private OauthMemberRepository oauthMemberRepository;
 
     @Autowired
     private RestaurantLikeRepository restaurantLikeRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
 
     @BeforeEach
     void setUp() {
