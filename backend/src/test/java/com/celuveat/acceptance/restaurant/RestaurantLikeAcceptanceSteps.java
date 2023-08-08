@@ -5,17 +5,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 
 public class RestaurantLikeAcceptanceSteps {
+
+    public static void 음식점들에_좋아요를_누른다(List<Long> 좋아요_누를_음식점_아이디, String 세션_아이디) {
+        좋아요_누를_음식점_아이디.forEach(id -> 좋아요_요청을_보낸다(id, 세션_아이디));
+    }
 
     public static ExtractableResponse<Response> 로그인을_요청한다() {
         return given()
@@ -24,9 +26,9 @@ public class RestaurantLikeAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(Restaurant 맛집, String 세션_아이디) {
+    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(Long 맛집_아이디, String 세션_아이디) {
         return given(세션_아이디)
-                .when().post("/api/restaurants/" + 맛집.id() + "/like")
+                .when().post("/api/restaurants/" + 맛집_아이디 + "/like")
                 .then().log().all()
                 .extract();
     }
@@ -38,22 +40,7 @@ public class RestaurantLikeAcceptanceSteps {
                 .extract();
     }
 
-    public static List<RestaurantLikeQueryResponse> 예상_응답(List<RestaurantQueryResponse> 전체_음식점) {
-        List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
-        for (RestaurantQueryResponse restaurantQueryResponse : 전체_음식점) {
-            if (isLikedRestaurant(restaurantQueryResponse.name())) {
-                expected.add(toRestaurantLikeQueryResponse(restaurantQueryResponse));
-            }
-        }
-        return expected;
-    }
-
-    private static boolean isLikedRestaurant(String name) {
-        List<String> likedRestaurants = List.of("말랑1호점", "말랑3호점", "도기2호점", "로이스2호점");
-        return likedRestaurants.contains(name);
-    }
-
-    private static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
+    public static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
             RestaurantQueryResponse restaurantQueryResponse
     ) {
         return new RestaurantLikeQueryResponse(
