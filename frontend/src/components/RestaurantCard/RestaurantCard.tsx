@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -7,7 +6,8 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import postRestaurantLike from '~/api/User';
+import useToggleRestaurantLike from '~/hooks/server/useToggleRestaurantLike';
+import PopUpContainer from '~/components/PopUpContainer';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -27,6 +27,7 @@ function RestaurantCard({
   setHoveredId = () => {},
 }: RestaurantCardProps) {
   const { images, name, roadAddress, category, phoneNumber, isLiked } = restaurant;
+  const { toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
 
   const onMouseEnter = () => {
     setHoveredId(restaurant.id);
@@ -36,18 +37,12 @@ function RestaurantCard({
     setHoveredId(null);
   };
 
-  const toggleRestaurantLike = useMutation({
-    mutationFn: () => postRestaurantLike(restaurant.id),
-  });
-
-  const loveColor = isLiked ? 'red' : '#000';
-
   return (
     <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
-        <LikeButton aria-label="좋아요" type="button" onClick={() => toggleRestaurantLike.mutate()}>
-          <Love fill={loveColor} fillOpacity={0.5} aria-hidden="true" />
+        <LikeButton aria-label="좋아요" type="button" onClick={toggleRestaurantLike}>
+          <Love fill={isLiked ? 'red' : '#000'} fillOpacity={0.5} aria-hidden="true" />
         </LikeButton>
       </StyledImageViewer>
       <section>
@@ -60,6 +55,7 @@ function RestaurantCard({
         <StyledProfileImageSection>
           {celebs && <ProfileImageList celebs={celebs} size={size} />}
         </StyledProfileImageSection>
+        <PopUpContainer imgUrl={restaurant.images[0].name} />
       </section>
     </StyledContainer>
   );
