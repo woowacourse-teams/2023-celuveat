@@ -37,7 +37,7 @@ public record RestaurantDetailQueryResponse(
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
                 likeCount,
-                0, //TODO view count
+                restaurant.viewCount(),
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
@@ -58,7 +58,7 @@ public record RestaurantDetailQueryResponse(
                 other.phoneNumber(),
                 other.naverMapUrl(),
                 other.likeCount(),
-                other.viewCount(), //TODO view count
+                other.viewCount(),
                 celebs,
                 restaurantImages
         );

@@ -5,6 +5,7 @@ import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
+import com.celuveat.restaurant.application.RestaurantService;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
@@ -35,6 +36,7 @@ public class RestaurantController {
     private final RestaurantQueryService restaurantQueryService;
     private final RestaurantLikeService restaurantLikeService;
     private final RestaurantQueryFacade restaurantQueryFacade;
+    private final RestaurantService restaurantService;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
