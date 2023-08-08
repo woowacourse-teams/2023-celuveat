@@ -114,10 +114,9 @@ public class RestaurantQueryService {
         OauthMember member = oauthMemberRepository.getById(memberId);
         List<RestaurantLike> restaurantLikes = restaurantLikeRepository.findAllByMember(member);
         List<Restaurant> restaurants = extractRestaurants(restaurantLikes);
-        List<Long> restaurantIds = extractRestaurantIds(restaurants);
-        List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
+        List<Video> videos = videoRepository.findAllByRestaurantIn(restaurants);
         Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
-        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
+        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIn(restaurants);
         Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
         return toResponseList(restaurants, celebs, restaurantListMap);
     }
@@ -125,12 +124,6 @@ public class RestaurantQueryService {
     private List<Restaurant> extractRestaurants(List<RestaurantLike> restaurantLikes) {
         return restaurantLikes.stream()
                 .map(RestaurantLike::restaurant)
-                .toList();
-    }
-
-    private List<Long> extractRestaurantIds(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .map(Restaurant::id)
                 .toList();
     }
 
