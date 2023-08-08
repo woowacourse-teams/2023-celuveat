@@ -12,6 +12,7 @@ export interface RestaurantData {
   name: string;
   category: string;
   roadAddress: string;
+  isLiked?: boolean;
   lat: number;
   lng: number;
   phoneNumber: string;

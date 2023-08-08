@@ -41,7 +41,7 @@ const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
 
   position: fixed;
   top: 95%;
-  left: ${({ isMobile }) => (isMobile ? '50%' : '10%')};
+  left: ${({ isMobile }) => (isMobile ? '50%' : '144px')};
   z-index: 9999;
 
   width: 224px;

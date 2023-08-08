@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { MouseEventHandler } from 'react';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -6,6 +7,8 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
+import useToggleRestaurantLike from '~/hooks/server/useToggleRestaurantLike';
+import PopUpContainer from '~/components/PopUpContainer';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -17,17 +20,24 @@ interface RestaurantCardProps {
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
   const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
+  const { toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
   const openDetail = () => window.open(naverMapUrl, '_blank');
 
+  const toggle: MouseEventHandler = e => {
+    e.stopPropagation();
+
+    toggleRestaurantLike();
+  };
+
   return (
     <StyledContainer onClick={openDetail} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <StyledImageViewer>
         <ImageCarousel images={images} type={type} />
-        <LikeButton aria-label="좋아요" type="button">
-          <Love fill="#000" fillOpacity={0.5} aria-hidden="true" />
+        <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
+          <Love fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.5} aria-hidden="true" />
         </LikeButton>
       </StyledImageViewer>
       <section>
@@ -40,6 +50,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
         <StyledProfileImageSection>
           {celebs && <ProfileImageList celebs={celebs} size={size} />}
         </StyledProfileImageSection>
+        <PopUpContainer imgUrl={restaurant.images[0].name} />
       </section>
     </StyledContainer>
   );
@@ -106,4 +117,8 @@ const LikeButton = styled.button`
 
   border: none;
   background-color: transparent;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `;

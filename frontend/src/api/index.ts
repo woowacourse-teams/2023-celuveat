@@ -5,6 +5,7 @@ import type { RestaurantListData } from '~/@types/api.types';
 import { CoordinateBoundary } from '~/@types/map.types';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import getQueryString from '~/utils/getQueryString';
+import { SERVER_URL } from '~/constants/api';
 
 export interface GetRestaurantsQueryParams {
   boundary: CoordinateBoundary;
@@ -14,7 +15,7 @@ export interface GetRestaurantsQueryParams {
 }
 
 export const apiClient = axios.create({
-  baseURL: `${process.env.BASE_URL}/api`,
+  baseURL: SERVER_URL,
   headers: {
     'Content-type': 'application/json',
   },
