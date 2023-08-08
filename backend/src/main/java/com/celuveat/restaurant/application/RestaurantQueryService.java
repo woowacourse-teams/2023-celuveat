@@ -153,7 +153,7 @@ public class RestaurantQueryService {
         List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
         int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
-        return RestaurantDetailQueryResponse.of(
+        return RestaurantDetailQueryResponse.from(
                 restaurant,
                 celebs,
                 restaurantImages,

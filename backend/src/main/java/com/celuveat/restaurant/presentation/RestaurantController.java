@@ -3,6 +3,7 @@ package com.celuveat.restaurant.presentation;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantLikeService;
+import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,6 +34,7 @@ public class RestaurantController {
 
     private final RestaurantQueryService restaurantQueryService;
     private final RestaurantLikeService restaurantLikeService;
+    private final RestaurantQueryFacade restaurantQueryFacade;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
@@ -59,7 +62,10 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}")
-    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(@PathVariable Long restaurantId) {
-        return ResponseEntity.ok(restaurantQueryService.findRestaurantDetailById(restaurantId));
+    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
+            @PathVariable Long restaurantId,
+            @RequestParam Long celebId
+    ) {
+        return ResponseEntity.ok(restaurantQueryFacade.findRestaurantDetailById(restaurantId, celebId));
     }
 }

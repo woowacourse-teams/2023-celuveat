@@ -21,7 +21,7 @@ public record RestaurantDetailQueryResponse(
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantDetailQueryResponse of(
+    public static RestaurantDetailQueryResponse from(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
@@ -40,6 +40,27 @@ public record RestaurantDetailQueryResponse(
                 0, //TODO view count
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+        );
+    }
+
+    public static RestaurantDetailQueryResponse from(
+            RestaurantDetailQueryResponse other,
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> restaurantImages
+    ) {
+        return new RestaurantDetailQueryResponse(
+                other.id(),
+                other.name(),
+                other.category(),
+                other.roadAddress(),
+                other.latitude(),
+                other.longitude(),
+                other.phoneNumber(),
+                other.naverMapUrl(),
+                other.likeCount(),
+                other.viewCount(), //TODO view count
+                celebs,
+                restaurantImages
         );
     }
 }
