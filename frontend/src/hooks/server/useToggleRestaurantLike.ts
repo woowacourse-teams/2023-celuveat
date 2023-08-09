@@ -2,14 +2,16 @@ import { shallow } from 'zustand/shallow';
 import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import userInstance from '~/api/RestaurantLike';
 import useToastState from '~/hooks/store/useToastState';
 
 import type { Restaurant } from '../../@types/restaurant.types';
 import type { RestaurantListData } from '../../@types/api.types';
+import useBooleanState from '~/hooks/useBooleanState';
+import { userMSWInstance } from '~/api/User';
 
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { onSuccess, onFailure, close } = useToastState(
     state => ({
       onSuccess: state.onSuccess,
@@ -20,7 +22,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
   );
 
   const toggleLike = useMutation({
-    mutationFn: async (restaurantId: number) => userInstance.post(`/restaurants/${restaurantId}/like`),
+    mutationFn: async (restaurantId: number) => userMSWInstance.post(`/restaurants/${restaurantId}/like`),
     onMutate: () => {
       close();
 
@@ -35,7 +37,11 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     },
 
     onError: (error: AxiosError, newData, context) => {
-      onFailure(error.response.data as string);
+      if (error.response.status < 500) {
+        openModal();
+      } else {
+        onFailure(error.response.data as string);
+      }
 
       if (context.previousRestaurantListData) {
         queryClient.setQueriesData(['restaurants'], context.previousRestaurantListData);
@@ -57,7 +63,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     toggleLike.mutate(restaurant.id);
   }, []);
 
-  return { toggleRestaurantLike };
+  return { isModalOpen, closeModal, toggleRestaurantLike };
 };
 
 export default useToggleRestaurantLike;
