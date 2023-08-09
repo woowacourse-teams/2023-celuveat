@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AdminAcceptanceSteps {
 
-    private static final String TAB = "\t";
+    public static final String TAB = "\t";
 
     public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {
         return "@" + 셀럽_이름 +
