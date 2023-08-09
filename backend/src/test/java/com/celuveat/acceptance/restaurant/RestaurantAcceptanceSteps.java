@@ -203,7 +203,6 @@ public class RestaurantAcceptanceSteps {
         return images;
     }
 
-
     private static RestaurantDetailQueryResponse toRestaurantDetailQueryResponse(
             RestaurantQueryResponse restaurantQueryResponse,
             List<CelebQueryResponse> celebs,

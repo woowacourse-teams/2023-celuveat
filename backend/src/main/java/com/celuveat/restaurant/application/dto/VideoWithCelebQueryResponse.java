@@ -12,8 +12,8 @@ public record VideoWithCelebQueryResponse(
         String name,
         String youtubeChannelName,
         String profileImageUrl
-
 ) {
+    
     public static VideoWithCelebQueryResponse of(Video video) {
         Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(

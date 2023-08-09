@@ -89,6 +89,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Nested
     class 음식점_상세_조회 {
+
         @Test
         void 음식점ID로_조회() {
             // given

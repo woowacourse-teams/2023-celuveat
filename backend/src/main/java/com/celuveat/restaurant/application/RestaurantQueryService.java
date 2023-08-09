@@ -36,12 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RestaurantQueryService {
 
-    private final RestaurantQueryRepository restaurantQueryRepository;
-    private final RestaurantImageRepository restaurantImageRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
-    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
     private final RestaurantRepository restaurantRepository;
+    private final OauthMemberRepository oauthMemberRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantQueryRepository restaurantQueryRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,

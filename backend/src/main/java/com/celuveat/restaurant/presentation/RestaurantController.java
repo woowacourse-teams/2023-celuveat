@@ -33,10 +33,10 @@ public class RestaurantController {
 
     private static final int DEFAULT_SIZE = 18;
 
-    private final RestaurantQueryService restaurantQueryService;
+    private final RestaurantService restaurantService;
     private final RestaurantLikeService restaurantLikeService;
     private final RestaurantQueryFacade restaurantQueryFacade;
-    private final RestaurantService restaurantService;
+    private final RestaurantQueryService restaurantQueryService;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
