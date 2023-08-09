@@ -5,7 +5,8 @@ import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_저�
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청_생성;
-import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_FORMAT;
+import static com.celuveat.admin.exception.AdminExceptionType.EXIST_NULL;
+import static com.celuveat.admin.exception.AdminExceptionType.INVALID_URL_PATTERN;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -98,7 +99,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () -> 셀럽_저장_요청_생성(input))
                 .exceptionType();
-        assertThat(exceptionType).isEqualTo(ILLEGAL_FORMAT);
+        assertThat(exceptionType).isEqualTo(EXIST_NULL);
     }
 
     @Test
@@ -109,7 +110,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () -> 셀럽_저장_요청_생성(input))
                 .exceptionType();
-        assertThat(exceptionType).isEqualTo(ILLEGAL_FORMAT);
+        assertThat(exceptionType).isEqualTo(EXIST_NULL);
     }
 
     @Test
@@ -120,17 +121,17 @@ class AdminAcceptanceTest extends AcceptanceTest {
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () -> 셀럽_저장_요청_생성(input))
                 .exceptionType();
-        assertThat(exceptionType).isEqualTo(ILLEGAL_FORMAT);
+        assertThat(exceptionType).isEqualTo(EXIST_NULL);
     }
 
     @Test
     void 데이터_순서가_다르면_예외가_발생한다() {
         // given
-        String input = "@도기\t도기\thttps://이미지";
+        String input = "https://\t@도기\t@도기";
 
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class, () -> 셀럽_저장_요청_생성(input))
                 .exceptionType();
-        assertThat(exceptionType).isEqualTo(ILLEGAL_FORMAT);
+        assertThat(exceptionType).isEqualTo(INVALID_URL_PATTERN);
     }
 }

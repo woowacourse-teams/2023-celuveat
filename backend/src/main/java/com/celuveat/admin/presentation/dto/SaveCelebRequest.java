@@ -1,6 +1,8 @@
 package com.celuveat.admin.presentation.dto;
 
-import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_FORMAT;
+import static com.celuveat.admin.exception.AdminExceptionType.EXIST_NULL;
+import static com.celuveat.admin.exception.AdminExceptionType.INVALID_URL_PATTERN;
+import static com.celuveat.admin.exception.AdminExceptionType.INVALID_YOUTUBE_CHANNEL_NAME;
 
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.celeb.domain.Celeb;
@@ -25,20 +27,20 @@ public record SaveCelebRequest(
     private void validateNullOrBlank(String[] data) {
         for (String field : data) {
             if (field == null || field.isBlank()) {
-                throw new AdminException(ILLEGAL_FORMAT);
+                throw new AdminException(EXIST_NULL);
             }
         }
     }
 
     private void validateYoutubeChannelNamePattern(String youtubeChannelName) {
         if (!youtubeChannelName.startsWith("@")) {
-            throw new AdminException(ILLEGAL_FORMAT);
+            throw new AdminException(INVALID_YOUTUBE_CHANNEL_NAME);
         }
     }
 
     private void validateUrlPattern(String profileImageUrl) {
         if (!profileImageUrl.startsWith("https://")) {
-            throw new AdminException(ILLEGAL_FORMAT);
+            throw new AdminException(INVALID_URL_PATTERN);
         }
     }
 
