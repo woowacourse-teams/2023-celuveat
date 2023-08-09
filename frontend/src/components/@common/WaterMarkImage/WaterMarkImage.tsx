@@ -3,7 +3,7 @@ import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 
 interface WaterMarkImageProps {
   waterMark: string;
-  imageUrl: string;
+  imageUrl?: string;
   type: 'list' | 'map';
 }
 

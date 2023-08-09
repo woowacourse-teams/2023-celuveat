@@ -40,7 +40,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
           </StyledMarker>
           {isClicked && (
             <StyledModal quadrant={quadrant} onClick={clickModal}>
-              <RestaurantCard restaurant={restaurant} type="map" />
+              <RestaurantCard restaurant={restaurant} type="map" celebs={[celeb]} size="0" />
             </StyledModal>
           )}
         </StyledMarkerContainer>

@@ -10,7 +10,7 @@ import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
-  celebs?: Celeb[];
+  celebs: Celeb[];
   size?: string;
   type?: 'list' | 'map';
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
@@ -49,7 +49,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
 export default RestaurantCard;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: start;

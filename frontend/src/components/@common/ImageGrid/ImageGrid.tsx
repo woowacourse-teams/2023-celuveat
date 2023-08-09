@@ -13,10 +13,10 @@ function ImageGrid({ images }: ImageGridProps) {
         <WaterMarkImage type="list" imageUrl={images[0].url} waterMark={images[0].waterMark} />
       </StyledMainImage>
       <StyledAdditionalImage>
-        <WaterMarkImage type="list" imageUrl={images[1].url} waterMark={images[1].waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[2].url} waterMark={images[2].waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[3].url} waterMark={images[3].waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[4].url} waterMark={images[4].waterMark} />
+        <WaterMarkImage type="list" imageUrl={images[1]?.url} waterMark={images[1]?.waterMark} />
+        <WaterMarkImage type="list" imageUrl={images[2]?.url} waterMark={images[2]?.waterMark} />
+        <WaterMarkImage type="list" imageUrl={images[3]?.url} waterMark={images[3]?.waterMark} />
+        <WaterMarkImage type="list" imageUrl={images[4]?.url} waterMark={images[4]?.waterMark} />
       </StyledAdditionalImage>
     </StyledImageGridContainer>
   );
