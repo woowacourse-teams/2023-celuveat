@@ -8,13 +8,13 @@ import {
 } from './handlers';
 
 // 좋아요 성공 시
-// export const worker = setupWorker(...handlers);
+export const worker = setupWorker(...handlers);
 
 // 400 에러
 // export const worker = setupWorker(...errorPostLike400handlers);
 
 // 403에러
-export const worker = setupWorker(...errorPostLike403Handlers);
+// export const worker = setupWorker(...errorPostLike403Handlers);
 
 // 404에러
 // export const worker = setupWorker(...errorPostLike404Handlers);

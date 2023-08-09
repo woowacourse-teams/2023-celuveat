@@ -7,7 +7,7 @@ import useToastState from '~/hooks/store/useToastState';
 import type { Restaurant } from '../../@types/restaurant.types';
 import type { RestaurantListData } from '../../@types/api.types';
 import useBooleanState from '~/hooks/useBooleanState';
-import { userMSWInstance } from '~/api/User';
+import { userInstance } from '~/api/User';
 
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
   );
 
   const toggleLike = useMutation({
-    mutationFn: async (restaurantId: number) => userMSWInstance.post(`/restaurants/${restaurantId}/like`),
+    mutationFn: async (restaurantId: number) => userInstance.post(`/restaurants/${restaurantId}/like`),
     onMutate: () => {
       close();
 
