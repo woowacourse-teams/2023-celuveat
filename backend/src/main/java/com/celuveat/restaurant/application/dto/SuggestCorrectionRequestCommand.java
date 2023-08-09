@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record CreateRestaurantCorrectionCommand(
+public record SuggestCorrectionRequestCommand(
         Long restaurantId,
         List<String> contents
 ) {

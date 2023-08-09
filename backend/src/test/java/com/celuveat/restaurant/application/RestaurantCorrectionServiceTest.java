@@ -3,7 +3,7 @@ package com.celuveat.restaurant.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
-import com.celuveat.restaurant.application.dto.CreateRestaurantCorrectionCommand;
+import com.celuveat.restaurant.application.dto.SuggestCorrectionRequestCommand;
 import com.celuveat.restaurant.domain.correction.RestaurantCorrection;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -27,13 +27,13 @@ class RestaurantCorrectionServiceTest {
     void 음식점_수정_요청을_생성한다() {
         // given
         Long restaurantId = restaurantServiceTestHelper.음식점을_저장한다("틀린이름");
-        CreateRestaurantCorrectionCommand command = CreateRestaurantCorrectionCommand.builder()
+        SuggestCorrectionRequestCommand command = SuggestCorrectionRequestCommand.builder()
                 .restaurantId(restaurantId)
                 .contents(List.of("음식점 이름이 틀렸어요.", "지도도 틀렸어요. 일좀 똑바로하세요."))
                 .build();
 
         // when
-        restaurantCorrectionService.create(command);
+        restaurantCorrectionService.suggest(command);
 
         // then
         List<RestaurantCorrection> restaurantCorrections = restaurantServiceTestHelper.음식점_정보_수정_제안을_모두_조회한다();
