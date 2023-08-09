@@ -56,7 +56,6 @@ class RestaurantQueryFacadeTest {
                         영상("youtube2.com", 로이스2호점, celebs.get(1))
                 )
         );
-
         Celeb targetCeleb = celebs.get(1);
 
         // when

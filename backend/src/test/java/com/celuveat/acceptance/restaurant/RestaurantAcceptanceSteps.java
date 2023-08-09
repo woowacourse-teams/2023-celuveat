@@ -162,6 +162,10 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
+    public static void 음식점_상세_조회_실패_요청(RestaurantQueryResponse 조회_음식점) {
+        음식점_상세_조회_요청(조회_음식점.id(), 12314121L);
+    }
+
     public static RestaurantDetailQueryResponse 상세_조회_예상_응답(
             List<RestaurantQueryResponse> 전체_음식점,
             Long restaurantId,

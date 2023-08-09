@@ -6,26 +6,28 @@ import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class RestaurantQueryFacade {
 
+    private final RestaurantService restaurantService;
     private final RestaurantQueryService restaurantQueryService;
 
+    @Transactional
     public RestaurantDetailQueryResponse findRestaurantDetailById(
             Long restaurantId,
             Long celebId
     ) {
+        restaurantService.increaseViewCount(restaurantId);
         RestaurantDetailQueryResponse response = restaurantQueryService.findRestaurantDetailById(restaurantId);
         CelebQueryResponse targetCeleb = findCeleb(response.celebs(), celebId);
         List<CelebQueryResponse> relocatedCelebs = relocateCelebsByCelebId(targetCeleb, response.celebs());
         List<RestaurantImageQueryResponse> relocatedImages =
                 relocateImagesByCelebId(targetCeleb.name(), response.images());
-
         return RestaurantDetailQueryResponse.from(response, relocatedCelebs, relocatedImages);
     }
 
@@ -49,12 +51,10 @@ public class RestaurantQueryFacade {
             List<RestaurantImageQueryResponse> imageQueryResponses
     ) {
         List<RestaurantImageQueryResponse> images = new ArrayList<>(imageQueryResponses);
-        Optional<RestaurantImageQueryResponse> imageResponse = images.stream()
+        images.stream()
                 .filter(image -> image.author().equals(targetCelebName))
-                .findFirst();
-        imageResponse.ifPresent(imageQueryResponse ->
-                Collections.swap(images, 0, images.indexOf(imageQueryResponse))
-        );
+                .findFirst()
+                .ifPresent(imageQueryResponse -> Collections.swap(images, 0, images.indexOf(imageQueryResponse)));
         return images;
     }
 }

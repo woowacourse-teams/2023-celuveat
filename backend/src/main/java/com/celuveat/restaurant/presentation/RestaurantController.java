@@ -68,7 +68,6 @@ public class RestaurantController {
             @PathVariable Long restaurantId,
             @RequestParam Long celebId
     ) {
-        restaurantService.increaseViewCount(restaurantId);
         return ResponseEntity.ok(restaurantQueryFacade.findRestaurantDetailById(restaurantId, celebId));
     }
 }
