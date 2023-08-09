@@ -29,7 +29,7 @@ public class ExceptionControllerAdvice {
         String errorMessage = e.getFieldErrors().stream()
                 .map(it -> it.getField() + " : " + it.getDefaultMessage())
                 .collect(Collectors.joining("\n"));
-        log.warn("[ERROR] 잘못된 요청이 들어왔습니다: {}", errorMessage);
+        log.warn("[WARN] 잘못된 요청이 들어왔습니다: {}", errorMessage);
         return ResponseEntity.status(BAD_REQUEST)
                 .body(new ExceptionResponse(errorMessage));
     }
@@ -37,7 +37,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     ResponseEntity<ExceptionResponse> handleMissingParams(MissingServletRequestParameterException e) {
         String errorMessage = e.getParameterName() + " 값이 누락 되었습니다.";
-        log.warn("[ERROR] 잘못된 요청이 들어왔습니다: {}", errorMessage);
+        log.warn("[WARN] 잘못된 요청이 들어왔습니다: {}", errorMessage);
         return ResponseEntity.status(BAD_REQUEST)
                 .body(new ExceptionResponse(errorMessage));
     }
