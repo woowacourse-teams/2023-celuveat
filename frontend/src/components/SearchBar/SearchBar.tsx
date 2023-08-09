@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import SearchIcon from '../../assets/icons/search.svg';
 import useMapState from '~/hooks/store/useMapState';
 import { FONT_SIZE } from '~/styles/common';
@@ -14,6 +14,8 @@ function SearchBar() {
 
     const autocomplete = new google.maps.places.Autocomplete(inputRef.current);
     autocomplete.setFields(['name', 'geometry', 'types']);
+    autocomplete.setTypes(['(regions)']);
+    autocomplete.setComponentRestrictions({ country: ['kr'] });
 
     setWidget(autocomplete);
 
@@ -23,15 +25,13 @@ function SearchBar() {
       if (!place.geometry) return;
 
       setCenter({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
-
-      inputRef.current.innerHTML = place.name;
     });
   }, []);
 
   return (
     <StyledContainer>
       <StyledInput placeholder="지역으로 검색하기" ref={inputRef} />
-      <StyledButton type="submit">
+      <StyledButton type="button">
         <SearchIcon />
       </StyledButton>
     </StyledContainer>
