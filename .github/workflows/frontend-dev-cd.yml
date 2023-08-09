@@ -1,8 +1,8 @@
 name: 🍔 Celuveat frontend DEV CD 🍔
 
 env:
-  PROFILE: prod
-  IMAGE_TAG: front-prod-${{ secrets.APP_VERSION_TAG }}
+  PROFILE: dev
+  IMAGE_TAG: front-dev-${{ secrets.APP_VERSION_TAG }}
   DOCKER_CONTAINER_NAME: frontend
   DOCKER_HUB_REPOSITORY: celuveat/celuveat
 
@@ -29,7 +29,7 @@ jobs:
         run: |
           touch .env
           echo GOOGLE_MAP_API_KEY=${{ secrets.GOOGLE_MAP_API_KEY }} > .env
-          echo BASE_URL=${{ secrets.PROD_BASE_URL }} >> .env
+          echo BASE_URL=${{ secrets.DEV_BASE_URL }} >> .env
 
       - name: 🍔 DockerHub에 로그인
         uses: docker/login-action@v2
