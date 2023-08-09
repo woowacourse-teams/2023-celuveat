@@ -196,7 +196,8 @@ public class RestaurantQueryRepository {
                         SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE.formatted(dist)
                                 + whereQuery
                                 + ORDER_BY_DISTANCE_ASC,
-                        RestaurantWithDistance.class)
+                        RestaurantWithDistance.class
+                )
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();

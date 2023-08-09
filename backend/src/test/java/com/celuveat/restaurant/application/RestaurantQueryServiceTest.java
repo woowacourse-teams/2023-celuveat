@@ -379,8 +379,7 @@ class RestaurantQueryServiceTest {
                 음식점_좋아요(도기2호점, 멤버),
                 음식점_좋아요(로이스2호점, 멤버)
         ));
-        List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
-        expected.addAll(List.of(
+        List<RestaurantLikeQueryResponse> expected = new ArrayList<>(List.of(
                 toRestaurantLikeQueryResponse(restaurantQueryResponse1),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse2),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse3),
