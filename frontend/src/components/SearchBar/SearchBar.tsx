@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import SearchIcon from '../../assets/icons/search.svg';
 import useMapState from '~/hooks/store/useMapState';
+import { FONT_SIZE } from '~/styles/common';
 
 function SearchBar() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -12,7 +13,7 @@ function SearchBar() {
     if (!inputRef.current) return;
 
     const autocomplete = new google.maps.places.Autocomplete(inputRef.current);
-    autocomplete.setFields(['place_id', 'geometry', 'name']);
+    autocomplete.setFields(['name', 'geometry', 'types']);
 
     setWidget(autocomplete);
 
@@ -52,7 +53,7 @@ const StyledContainer = styled.div`
   border: 1px solid var(--gray-2);
   border-radius: 40px;
   background: var(--white);
-  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%), 0 1px 2px 0 rgb(0 0 0 / 8%);
+  box-shadow: var(--shadow);
 `;
 
 const StyledInput = styled.input`
@@ -63,7 +64,7 @@ const StyledInput = styled.input`
   border: none;
   background-color: transparent;
 
-  font-size: medium;
+  font-size: ${FONT_SIZE.md};
   outline: none;
 `;
 
