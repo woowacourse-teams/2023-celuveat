@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.application.dto;
+package com.celuveat.video.application.dto;
 
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.video.domain.Video;
@@ -13,7 +13,7 @@ public record VideoWithCelebQueryResponse(
         String youtubeChannelName,
         String profileImageUrl
 ) {
-    
+
     public static VideoWithCelebQueryResponse of(Video video) {
         Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(
