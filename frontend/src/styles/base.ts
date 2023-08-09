@@ -45,6 +45,10 @@ const base = css`
     font-size: 62.5%;
   }
 
+  body {
+    position: relative;
+  }
+
   h1 {
     font-family: SUIT-Bold, sans-serif;
     font-size: 4rem;
@@ -72,6 +76,35 @@ const base = css`
 
   button {
     cursor: pointer;
+  }
+
+  .pac-icon {
+    display: none;
+  }
+
+  .pac-container {
+    display: flex;
+    flex-direction: column;
+
+    position: fixed !important;
+    top: 72px !important;
+
+    padding: 1.6rem;
+
+    border: 1px solid var(--gray-2);
+    border-radius: 40px;
+
+    box-shadow: var(--shadow);
+  }
+
+  .pac-item {
+    width: 100%;
+    height: 100%;
+
+    padding: 0.8rem;
+
+    border: none;
+    border-radius: 12px;
   }
 `;
 

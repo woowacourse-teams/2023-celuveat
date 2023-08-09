@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
+import { Wrapper } from '@googlemaps/react-wrapper';
 import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
@@ -12,17 +12,6 @@ import useBooleanState from '~/hooks/useBooleanState';
 import { isEmptyString } from '~/utils/compare';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
-import LoadingDots from '../LoadingDots';
-
-const render = (status: Status) => {
-  if (status === Status.FAILURE)
-    return <div>지도를 불러올 수 없습니다. 페이지를 새로고침 하거나 네트워크 연결을 다시 한 번 확인해주세요.</div>;
-  return (
-    <StyledMapLoadingContainer>
-      <LoadingDots />
-    </StyledMapLoadingContainer>
-  );
-};
 
 function Header() {
   const { isMobile } = useMediaQuery();
@@ -48,7 +37,7 @@ function Header() {
         <Link to="/">
           <Logo role="button" width={136} />
         </Link>
-        <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko" libraries={['places']}>
+        <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
           <SearchBar />
         </Wrapper>
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
@@ -80,14 +69,4 @@ const StyledHeader = styled.header<{ isMobile: boolean }>`
 
   background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
-`;
-
-const StyledMapLoadingContainer = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 100%;
-
-  background-color: var(--gray-2);
 `;

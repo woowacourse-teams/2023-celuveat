@@ -45,10 +45,10 @@ const StyledContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  position: relative;
+
   width: 382px;
   height: 48px;
-
-  padding: 0 1.2rem;
 
   border: 1px solid var(--gray-2);
   border-radius: 40px;
@@ -61,6 +61,8 @@ const StyledInput = styled.input`
 
   height: 100%;
 
+  padding: 0 1.2rem;
+
   border: none;
   background-color: transparent;
 
@@ -69,6 +71,9 @@ const StyledInput = styled.input`
 `;
 
 const StyledButton = styled.button`
+  position: absolute;
+  right: 0.6rem;
+
   width: 36px;
   height: 36px;
 
@@ -76,7 +81,7 @@ const StyledButton = styled.button`
 
   border: none;
   border-radius: 100%;
-  background-color: var(--red-2);
+  background-color: var(--primary-6);
 
   color: var(--white);
 `;
