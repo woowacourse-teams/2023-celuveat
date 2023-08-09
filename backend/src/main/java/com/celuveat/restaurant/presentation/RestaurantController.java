@@ -6,18 +6,20 @@ import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.common.auth.LooseAuth;
+import com.celuveat.common.optional.CustomOptional;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,12 +54,17 @@ public class RestaurantController {
             @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
-            @LooseAuth Optional<Long> memberId
+            @LooseAuth CustomOptional<Long> memberId
     ) {
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
-                searchCondRequest.toCondition(),
-                locationSearchCondRequest.toCondition(),
-                pageable
+        RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
+        LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
+        Page<RestaurantQueryResponse> result = memberId.mapIfPresentOrElse(
+                id -> restaurantQueryService.findAllWithMemberId(
+                        restaurantSearchCond,
+                        locationSearchCond,
+                        pageable,
+                        id),
+                () -> restaurantQueryService.findAll(restaurantSearchCond, locationSearchCond, pageable)
         );
         return ResponseEntity.ok(PageResponse.from(result));
     }
