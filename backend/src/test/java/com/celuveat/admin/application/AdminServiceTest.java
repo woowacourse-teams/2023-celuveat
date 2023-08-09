@@ -1,7 +1,9 @@
 package com.celuveat.admin.application;
 
-import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.요청_생성;
-import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.입력_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_입력_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_저장_요청_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_입력_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청_생성;
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
 import static com.celuveat.admin.exception.AdminExceptionType.NOT_EXISTS_CELEB;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
@@ -10,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.admin.exception.AdminException;
+import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -51,8 +54,8 @@ class AdminServiceTest {
     @Test
     void 저장되어_있지_않은_셀럽으로_데이터를_저장하면_예외가_발생한다() {
         // given
-        String input = 입력_생성("도기", "국민연금");
-        List<SaveDataRequest> 요청 = 요청_생성(input);
+        String input = 데이터_입력_생성("도기", "국민연금");
+        List<SaveDataRequest> 요청 = 데이터_저장_요청_생성(input);
 
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class,
@@ -68,7 +71,7 @@ class AdminServiceTest {
 
         // when
         String input = 잘못된_입력_생성("도기", "농민백암순대", 영상_업로드_날짜);
-        List<SaveDataRequest> 요청 = 요청_생성(input);
+        List<SaveDataRequest> 요청 = 데이터_저장_요청_생성(input);
 
         // then
         BaseExceptionType exceptionType = assertThrows(AdminException.class,
@@ -82,8 +85,8 @@ class AdminServiceTest {
         셀럽_저장(셀럽("도기"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("도기", "농민백암순대");
-        List<SaveDataRequest> 요청 = 요청_생성(input);
+        String input = 데이터_입력_생성("도기", "국민연금") + System.lineSeparator() + 데이터_입력_생성("도기", "농민백암순대");
+        List<SaveDataRequest> 요청 = 데이터_저장_요청_생성(input);
 
         // when
         adminService.saveData(요청);
@@ -102,8 +105,8 @@ class AdminServiceTest {
         셀럽_저장(셀럽("로이스"));
         음식점_저장(국민연금_구내식당);
 
-        String input = 입력_생성("도기", "국민연금") + System.lineSeparator() + 입력_생성("로이스", "국민연금");
-        List<SaveDataRequest> 요청 = 요청_생성(input);
+        String input = 데이터_입력_생성("도기", "국민연금") + System.lineSeparator() + 데이터_입력_생성("로이스", "국민연금");
+        List<SaveDataRequest> 요청 = 데이터_저장_요청_생성(input);
 
         // when
         adminService.saveData(요청);
@@ -120,8 +123,8 @@ class AdminServiceTest {
         // given
         셀럽_저장(셀럽("도기"));
 
-        String input = 입력_생성("도기", "국민연금");
-        List<SaveDataRequest> 요청 = 요청_생성(input);
+        String input = 데이터_입력_생성("도기", "국민연금");
+        List<SaveDataRequest> 요청 = 데이터_저장_요청_생성(input);
 
         // when
         adminService.saveData(요청);
@@ -153,5 +156,24 @@ class AdminServiceTest {
                 "\t음식점네이버링크" +
                 "\t12.3456" +
                 "\t12.3456";
+    }
+
+    @Test
+    void 셀럽을_저장한다() {
+        // given
+        List<Celeb> expected = List.of(셀럽("도기"), 셀럽("로이스"));
+        String input = 셀럽_입력_생성("도기")
+                + System.lineSeparator()
+                + 셀럽_입력_생성("로이스");
+        List<SaveCelebRequest> 요청 = 셀럽_저장_요청_생성(input);
+
+        // when
+        adminService.saveCelebs(요청);
+
+        // then
+        assertThat(celebRepository.count()).isEqualTo(2);
+        assertThat(celebRepository.findAll()).usingRecursiveComparison()
+                .comparingOnlyFields("name", "youtubeChannelName")
+                .isEqualTo(expected);
     }
 }

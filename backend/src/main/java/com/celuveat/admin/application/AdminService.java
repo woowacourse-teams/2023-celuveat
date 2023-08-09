@@ -4,6 +4,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMA
 import static com.celuveat.restaurant.domain.SocialMedia.YOUTUBE;
 
 import com.celuveat.admin.exception.AdminException;
+import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -61,5 +62,12 @@ public class AdminService {
         restaurantRepository.save(restaurant);
         restaurantImageRepository.save(restaurantImage);
         videoRepository.save(video);
+    }
+
+    public void saveCelebs(List<SaveCelebRequest> requests) {
+        List<Celeb> celebs = requests.stream()
+                .map(SaveCelebRequest::toCeleb)
+                .toList();
+        celebRepository.saveAll(celebs);
     }
 }
