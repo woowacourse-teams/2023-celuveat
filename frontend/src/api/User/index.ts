@@ -5,6 +5,7 @@ import getToken from '~/utils/getToken';
 
 const axiosUserApi = (url: string, options?: Record<string, string>) => {
   const token = getToken();
+  document.cookie = `JSESSIONID=${token}; domain=www.celuveat.com path=/`;
   const instance = axios.create({
     baseURL: `${process.env.BASE_URL}/api`,
     headers: {
@@ -12,6 +13,7 @@ const axiosUserApi = (url: string, options?: Record<string, string>) => {
       Cookies: `JSESSIONID=${token}`,
       ...options,
     },
+    withCredentials: true,
   });
 
   return instance;
