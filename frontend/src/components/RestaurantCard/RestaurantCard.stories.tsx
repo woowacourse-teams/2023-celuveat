@@ -16,6 +16,7 @@ export const Default: Story = {
       id: 1,
       name: '스시렌',
       category: '일식당',
+      distance: 256,
       roadAddress: '서울 강남구 선릉로146길 27-8 2F',
       lat: 37.5222779,
       lng: 127.0423149,
