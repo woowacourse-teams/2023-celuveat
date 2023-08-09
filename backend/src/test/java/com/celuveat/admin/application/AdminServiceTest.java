@@ -161,13 +161,19 @@ class AdminServiceTest {
     @Test
     void 셀럽을_저장한다() {
         // given
-        String input = 셀럽_입력_생성("도기");
+        List<Celeb> expected = List.of(셀럽("도기"), 셀럽("로이스"));
+        String input = 셀럽_입력_생성("도기")
+                + System.lineSeparator()
+                + 셀럽_입력_생성("로이스");
         List<SaveCelebRequest> 요청 = 셀럽_저장_요청_생성(input);
 
         // when
         adminService.saveCelebs(요청);
 
         // then
-        assertThat(celebRepository.count()).isEqualTo(1);
+        assertThat(celebRepository.count()).isEqualTo(2);
+        assertThat(celebRepository.findAll()).usingRecursiveComparison()
+                .comparingOnlyFields("name", "youtubeChannelName")
+                .isEqualTo(expected);
     }
 }
