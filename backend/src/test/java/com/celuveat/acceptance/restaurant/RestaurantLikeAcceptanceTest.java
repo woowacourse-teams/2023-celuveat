@@ -119,13 +119,11 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         RestaurantQueryResponse restaurantQueryResponse2 = 전체_음식점.get(3);
         RestaurantQueryResponse restaurantQueryResponse3 = 전체_음식점.get(4);
         RestaurantQueryResponse restaurantQueryResponse4 = 전체_음식점.get(7);
-        List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
-        expected.addAll(List.of(
+        return new ArrayList<>(List.of(
                 toRestaurantLikeQueryResponse(restaurantQueryResponse1),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse2),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse3),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse4)
         ));
-        return expected;
     }
 }

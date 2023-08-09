@@ -1,24 +1,30 @@
 package com.celuveat.restaurant.presentation;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
+import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
+import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +35,9 @@ public class RestaurantController {
 
     private static final int DEFAULT_SIZE = 18;
 
-    private final RestaurantQueryService restaurantQueryService;
     private final RestaurantLikeService restaurantLikeService;
+    private final RestaurantQueryService restaurantQueryService;
+    private final RestaurantCorrectionService restaurantCorrectionService;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
@@ -55,5 +62,14 @@ public class RestaurantController {
     @GetMapping("/like")
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
         return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
+    }
+
+    @PostMapping("/{restaurantId}/correction")
+    ResponseEntity<Void> suggestCorrection(
+            @PathVariable Long restaurantId,
+            @RequestBody SuggestCorrectionRequest request
+    ) {
+        restaurantCorrectionService.suggest(request.toCommand(restaurantId));
+        return ResponseEntity.status(CREATED).build();
     }
 }

@@ -3,7 +3,10 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_조회_요청;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽들;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름의_셀럽을_찾는다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.given;
+import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.예상_응답;
@@ -15,6 +18,10 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
+import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -79,6 +86,26 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             잘못된_요청_예외를_검증한다(응답);
+        }
+    }
+
+    @Nested
+    class 정보_수정_제안 {
+
+        @Test
+        void 정보_수정_제안_요청을_보낸다() {
+            // given
+            var 음식점_ID = seedData.insertSeedData().get(0).id();
+
+            // when
+            ExtractableResponse<Response> extract = given()
+                    .body(new SuggestCorrectionRequest(List.of("음식점 정보가 이상해요", "일 똑바로 하세요 셀럽잇")))
+                    .post("/api/restaurants/{id}/correction", 음식점_ID)
+                    .then().log().all()
+                    .extract();
+
+            // then
+            응답_상태를_검증한다(extract, 생성됨);
         }
     }
 }
