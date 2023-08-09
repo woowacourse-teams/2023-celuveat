@@ -3,7 +3,10 @@ package com.celuveat.restaurant.presentation;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.restaurant.application.RestaurantLikeService;
+import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
+import com.celuveat.restaurant.application.RestaurantService;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,8 +33,10 @@ public class RestaurantController {
 
     private static final int DEFAULT_SIZE = 18;
 
-    private final RestaurantQueryService restaurantQueryService;
+    private final RestaurantService restaurantService;
     private final RestaurantLikeService restaurantLikeService;
+    private final RestaurantQueryFacade restaurantQueryFacade;
+    private final RestaurantQueryService restaurantQueryService;
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
@@ -55,5 +61,13 @@ public class RestaurantController {
     @GetMapping("/like")
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
         return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
+    }
+
+    @GetMapping("/{restaurantId}")
+    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
+            @PathVariable Long restaurantId,
+            @RequestParam Long celebId
+    ) {
+        return ResponseEntity.ok(restaurantQueryFacade.findRestaurantDetailById(restaurantId, celebId));
     }
 }

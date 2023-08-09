@@ -16,9 +16,11 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.domain.RestaurantLike;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -49,7 +51,7 @@ class RestaurantQueryServiceTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantQueryService restaurantQueryService;
+    private RestaurantLikeRepository restaurantLikeRepository;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -58,7 +60,7 @@ class RestaurantQueryServiceTest {
     private OauthMemberRepository oauthMemberRepository;
 
     @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
+    private RestaurantQueryService restaurantQueryService;
 
     @BeforeEach
     void setUp() {
@@ -400,6 +402,46 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.longitude(),
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    @Test
+    void 음식점_상세_조회_테스트() {
+        // given
+        RestaurantQueryResponse restaurantQueryResponse = seed.get(0);
+        OauthMember oauthMember = 멤버("로이스");
+        oauthMemberRepository.save(oauthMember);
+        Restaurant restaurant = restaurantRepository.getById(restaurantQueryResponse.id());
+        restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
+
+        // when
+        RestaurantDetailQueryResponse result =
+                restaurantQueryService.findRestaurantDetailById(restaurant.id());
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("likeCount", "viewCount")
+                .isEqualTo(toRestaurantDetailQueryResponse(restaurantQueryResponse));
+        assertThat(result.likeCount()).isEqualTo(1);
+    }
+
+    private RestaurantDetailQueryResponse toRestaurantDetailQueryResponse(
+            RestaurantQueryResponse restaurantQueryResponse
+    ) {
+        return new RestaurantDetailQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                0, // likeCount
+                0, // viewCount
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );

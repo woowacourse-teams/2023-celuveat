@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -14,9 +16,11 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class RestaurantAcceptanceSteps {
 
@@ -136,5 +140,106 @@ public class RestaurantAcceptanceSteps {
                 && restaurantQueryResponse.latitude() <= locationSearchCond.highLatitude()
                 && locationSearchCond.lowLongitude() <= restaurantQueryResponse.longitude()
                 && restaurantQueryResponse.longitude() <= locationSearchCond.highLongitude();
+    }
+
+    public static RestaurantQueryResponse 특정_이름의_음식점을_찾는다(List<RestaurantQueryResponse> 음식점들, String 음식점_이름) {
+        return 음식점들.stream()
+                .filter(restaurantQueryResponse -> restaurantQueryResponse.name().equals(음식점_이름))
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
+    }
+
+    public static ExtractableResponse<Response> 음식점_상세_조회_요청(
+            Long restaurantId,
+            Long celebId
+    ) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebId", celebId);
+        return given()
+                .queryParams(param)
+                .when().get("/api/restaurants/{restaurantId}", restaurantId)
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 음식점_상세_조회_실패_요청(RestaurantQueryResponse 조회_음식점) {
+        음식점_상세_조회_요청(조회_음식점.id(), 12314121L);
+    }
+
+    public static RestaurantDetailQueryResponse 상세_조회_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점,
+            Long restaurantId,
+            Long celebId
+    ) {
+        RestaurantQueryResponse restaurantResponse = 전체_음식점.stream()
+                .filter(restaurant -> restaurant.id().equals(restaurantId))
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
+
+        CelebQueryResponse targetCeleb = restaurantResponse.celebs().stream()
+                .filter(celeb -> celeb.id().equals(celebId))
+                .findAny()
+                .orElseThrow(NoSuchElementException::new);
+
+        return toRestaurantDetailQueryResponse(
+                restaurantResponse,
+                셀럽_기준으로_셀럽_정렬(targetCeleb, restaurantResponse),
+                셀럽_기준으로_이미지_정렬(targetCeleb.name(), restaurantResponse));
+    }
+
+    private static List<CelebQueryResponse> 셀럽_기준으로_셀럽_정렬(
+            CelebQueryResponse targetCeleb,
+            RestaurantQueryResponse restaurantResponse
+    ) {
+        List<CelebQueryResponse> celebs = new ArrayList<>(restaurantResponse.celebs());
+        Collections.swap(celebs, 0, celebs.indexOf(targetCeleb));
+        return celebs;
+    }
+
+    private static List<RestaurantImageQueryResponse> 셀럽_기준으로_이미지_정렬(
+            String celebName, RestaurantQueryResponse restaurantResponse
+    ) {
+        List<RestaurantImageQueryResponse> images = new ArrayList<>(restaurantResponse.images());
+        RestaurantImageQueryResponse image = images.stream()
+                .filter(targetImage -> targetImage.author().equals(celebName))
+                .findFirst().orElseThrow();
+        Collections.swap(images, 0, images.indexOf(image));
+        return images;
+    }
+
+    private static RestaurantDetailQueryResponse toRestaurantDetailQueryResponse(
+            RestaurantQueryResponse restaurantQueryResponse,
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> images
+    ) {
+        return new RestaurantDetailQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                0, // likeCount
+                0, // viewCount
+                celebs,
+                images
+        );
+    }
+
+    public static void 상세_조회_결과를_검증한다(RestaurantDetailQueryResponse 예상_응답, ExtractableResponse<Response> 응답) {
+        RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
+        });
+        assertThat(response)
+                .usingRecursiveComparison()
+                .ignoringFields("likeCount", "viewCount")
+                .isEqualTo(예상_응답);
+    }
+
+    public static void 조회수를_검증한다(int 예상_조회수, ExtractableResponse<Response> 응답) {
+        RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
+        });
+        assertThat(response.viewCount()).isEqualTo(예상_조회수);
     }
 }
