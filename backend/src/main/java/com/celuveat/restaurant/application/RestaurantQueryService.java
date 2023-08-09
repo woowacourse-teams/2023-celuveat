@@ -37,11 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantQueryService {
 
     private final VideoRepository videoRepository;
-    private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
     private final RestaurantImageRepository restaurantImageRepository;
     private final RestaurantQueryRepository restaurantQueryRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
@@ -51,6 +51,13 @@ public class RestaurantQueryService {
         Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistance(
                 restaurantSearchCond, locationSearchCond, pageable
         );
+        return toRestaurantQueryResponsesPage(pageable, restaurantsWithDistance);
+    }
+
+    private Page<RestaurantQueryResponse> toRestaurantQueryResponsesPage(
+            Pageable pageable,
+            Page<RestaurantWithDistance> restaurantsWithDistance
+    ) {
         List<Long> restaurantIds = extractRestaurantIds(restaurantsWithDistance);
         List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
@@ -166,5 +173,19 @@ public class RestaurantQueryService {
                 .stream()
                 .map(Video::celeb)
                 .toList();
+    }
+
+    public Page<RestaurantQueryResponse> findAllNearByDistance(
+            int distance,
+            long restaurantId,
+            Pageable pageable
+    ) {
+        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistanceNearBy(
+                distance,
+                restaurant,
+                pageable
+        );
+        return toRestaurantQueryResponsesPage(pageable, restaurantsWithDistance);
     }
 }

@@ -5,6 +5,7 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구내식당;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +24,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -343,5 +346,27 @@ class RestaurantQueryRepositoryTest {
                 .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
                 .extracting(RestaurantWithDistance::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {10, 100, 1000, 3000, 5000})
+    void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
+        // given
+        Restaurant restaurant = 국민연금_구내식당;
+
+        // when
+        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistanceNearBy(
+                specificDistance,
+                restaurant,
+                PageRequest.of(0, 4)
+        );
+
+        // then
+        assertThat(result.getContent())
+                .extracting("distance", Double.class)
+                .allMatch(distance -> distance <= specificDistance);
+        assertThat(result.getContent())
+                .extracting("name", String.class)
+                .doesNotContain(restaurant.name());
     }
 }
