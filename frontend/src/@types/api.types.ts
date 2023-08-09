@@ -14,6 +14,7 @@ export interface RestaurantData {
   roadAddress: string;
   isLiked?: boolean;
   lat: number;
+  distance: number;
   lng: number;
   phoneNumber: string;
   naverMapUrl: string;
