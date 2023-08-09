@@ -1,8 +1,8 @@
 name: ✨ Celuveat backend DEV CD ✨
 
 env:
-  PROFILE: prod
-  IMAGE_TAG: back-prod-${{ secrets.APP_VERSION_TAG }}
+  PROFILE: dev
+  IMAGE_TAG: back-dev-${{ secrets.APP_VERSION_TAG }}
   DOCKER_CONTAINER_NAME: backend
   DOCKER_HUB_REPOSITORY: celuveat/celuveat
 
