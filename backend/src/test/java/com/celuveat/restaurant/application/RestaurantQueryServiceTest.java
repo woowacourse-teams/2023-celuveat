@@ -441,7 +441,7 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
                 0, // likeCount
-                0,
+                0, // viewCount
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
