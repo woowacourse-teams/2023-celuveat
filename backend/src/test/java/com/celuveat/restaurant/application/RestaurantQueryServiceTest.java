@@ -361,6 +361,62 @@ class RestaurantQueryServiceTest {
     }
 
     @Test
+    void 로그인_상태에서_음식점을_조회하면_좋아요한_음식점의_좋아요_여부에_참값이_반환한다() {
+        OauthMember 멤버 = 멤버("오도");
+        oauthMemberRepository.save(멤버);
+        RestaurantQueryResponse restaurantQueryResponse1 = seed.get(0);
+        RestaurantQueryResponse restaurantQueryResponse2 = seed.get(2);
+        RestaurantQueryResponse restaurantQueryResponse3 = seed.get(4);
+        RestaurantQueryResponse restaurantQueryResponse4 = seed.get(9);
+        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantQueryResponse1.id());
+        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantQueryResponse2.id());
+        Restaurant 도기2호점 = restaurantRepository.getById(restaurantQueryResponse3.id());
+        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantQueryResponse4.id());
+        restaurantLikeRepository.saveAll(List.of(
+                음식점_좋아요(말랑1호점, 멤버),
+                음식점_좋아요(말랑3호점, 멤버),
+                음식점_좋아요(도기2호점, 멤버),
+                음식점_좋아요(로이스2호점, 멤버)
+        ));
+        seed.set(0, changeIsLikedToTrue(restaurantQueryResponse1));
+        seed.set(2, changeIsLikedToTrue(restaurantQueryResponse2));
+        seed.set(4, changeIsLikedToTrue(restaurantQueryResponse3));
+        seed.set(9, changeIsLikedToTrue(restaurantQueryResponse4));
+
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllWithMemberId(
+                new RestaurantSearchCond(null, null, null),
+                전체영역_검색_범위,
+                PageRequest.of(0, 100),
+                멤버.id());
+
+        assertThat(result).isNotEmpty();
+        assertThat(result.getContent())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .ignoringCollectionOrder()
+                .isEqualTo(seed);
+    }
+
+    private RestaurantQueryResponse changeIsLikedToTrue(RestaurantQueryResponse restaurantQueryResponse) {
+        return new RestaurantQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.distance(),
+                true,
+                null,
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    @Test
     void 멤버_아이디로_음식점_좋아요를_검색한다() {
         // given
         OauthMember 멤버 = 멤버("오도");

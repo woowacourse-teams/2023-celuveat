@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -118,6 +120,58 @@ public class RestaurantQueryService {
             List<RestaurantImage> images,
             RestaurantWithDistance restaurantWithDistance
     ) {
+        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
+    }
+
+    public Page<RestaurantQueryResponse> findAllWithMemberId(
+            RestaurantSearchCond restaurantSearchCond,
+            LocationSearchCond locationSearchCond,
+            Pageable pageable,
+            Long memberId
+    ) {
+        OauthMember member = oauthMemberRepository.getById(memberId);
+        Set<Long> likedRestaurantIds = restaurantLikeRepository.findAllByMember(member).stream()
+                .map(RestaurantLike::restaurant)
+                .map(Restaurant::id)
+                .collect(Collectors.toUnmodifiableSet());
+
+        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistance(
+                restaurantSearchCond, locationSearchCond, pageable
+        );
+        List<Long> restaurantIds = extractRestaurantIds(restaurantsWithDistance);
+        List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
+        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
+        List<RestaurantQueryResponse> responseList =
+                toResponseList(restaurantsWithDistance, celebs, restaurantListMap, likedRestaurantIds);
+        return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalElements());
+    }
+
+    private List<RestaurantQueryResponse> toResponseList(
+            Page<RestaurantWithDistance> restaurants,
+            Map<Long, List<Celeb>> celebs,
+            Map<Long, List<RestaurantImage>> images,
+            Set<Long> likedRestaurantIds
+    ) {
+        return restaurants.getContent().stream()
+                .map(restaurant -> toResponse(
+                        celebs.get(restaurant.id()),
+                        images.get(restaurant.id()),
+                        restaurant,
+                        likedRestaurantIds)
+                ).toList();
+    }
+
+    private RestaurantQueryResponse toResponse(
+            List<Celeb> celebs,
+            List<RestaurantImage> images,
+            RestaurantWithDistance restaurantWithDistance,
+            Set<Long> likedRestaurantIds
+    ) {
+        if (likedRestaurantIds.contains(restaurantWithDistance.id())) {
+            return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, true);
+        }
         return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
     }
 
