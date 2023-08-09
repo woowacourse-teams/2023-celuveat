@@ -1,12 +1,12 @@
 import { styled } from 'styled-components';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SearchIcon from '../../assets/icons/search.svg';
 import useMapState from '~/hooks/store/useMapState';
 import { FONT_SIZE } from '~/styles/common';
 
 function SearchBar() {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [widget, setWidget] = useState<google.maps.places.Autocomplete | null>(null);
+  const [, setWidget] = useState<google.maps.places.Autocomplete | null>(null);
   const setCenter = useMapState(state => state.setCenter);
 
   useEffect(() => {
