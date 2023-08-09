@@ -1,9 +1,5 @@
 export const BASE_URL = `${process.env.BASE_URL}`;
 
-const PROD = process.env.NODE_ENV === 'production';
-
-export const SERVER_URL = PROD ? `${process.env.BASE_URL}/api/` : '/';
-
 export const OAUTH_LINK = {
   google: `${BASE_URL}/api/oauth/google`,
   kakao: `${BASE_URL}/api/oauth/kakao`,
