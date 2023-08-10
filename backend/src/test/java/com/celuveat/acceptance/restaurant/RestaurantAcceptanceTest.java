@@ -3,7 +3,6 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_조회_요청;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽들만_추출_한다;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름의_셀럽을_찾는다;
-import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
@@ -16,6 +15,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_실패_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_이름의_음식점을_찾는다;
@@ -24,10 +24,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -104,14 +100,10 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 음식점_ID = seedData.insertSeedData().get(0).id();
 
             // when
-            ExtractableResponse<Response> extract = given()
-                    .body(new SuggestCorrectionRequest(List.of("음식점 정보가 이상해요", "일 똑바로 하세요 셀럽잇")))
-                    .post("/api/restaurants/{id}/correction", 음식점_ID)
-                    .then().log().all()
-                    .extract();
+            var 응답 = 정보_수정_제안_요청(음식점_ID, "음식점 정보가 이상해요", "일 똑바로 하세요 셀럽잇");
 
             // then
-            응답_상태를_검증한다(extract, 생성됨);
+            응답_상태를_검증한다(응답, 생성됨);
         }
     }
 

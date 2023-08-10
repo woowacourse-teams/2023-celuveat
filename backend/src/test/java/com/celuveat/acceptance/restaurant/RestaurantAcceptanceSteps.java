@@ -12,10 +12,12 @@ import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -241,5 +243,13 @@ public class RestaurantAcceptanceSteps {
         RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
         });
         assertThat(response.viewCount()).isEqualTo(예상_조회수);
+    }
+
+    public static ExtractableResponse<Response> 정보_수정_제안_요청(Long 음식점_ID, String... 수정_내용들) {
+        return given()
+                .body(new SuggestCorrectionRequest(Arrays.asList(수정_내용들)))
+                .post("/api/restaurants/{id}/correction", 음식점_ID)
+                .then().log().all()
+                .extract();
     }
 }
