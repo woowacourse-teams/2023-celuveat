@@ -8,4 +8,6 @@ public interface OauthMemberClient {
     OauthServerType supportServer();
 
     OauthMember fetch(String code);
+
+    Long logout(String oauthServerId);
 }

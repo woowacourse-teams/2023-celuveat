@@ -17,5 +17,11 @@ public interface KakaoApiClient {
     KakaoToken fetchToken(@RequestParam MultiValueMap<String, String> params);
 
     @GetExchange("https://kapi.kakao.com/v2/user/me")
-    KakaoMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String bearerToken);
+    KakaoMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String accessToken);
+
+    @PostExchange(url = "https://kapi.kakao.com/v1/user/logout")
+    Long logoutMember(
+            @RequestHeader(name = AUTHORIZATION) String adminKey,
+            @RequestParam MultiValueMap<String, String> params
+    );
 }

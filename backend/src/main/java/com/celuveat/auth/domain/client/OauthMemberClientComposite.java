@@ -4,6 +4,7 @@ import static com.celuveat.auth.exception.AuthExceptionType.UNSUPPORTED_OAUTH_TY
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+import com.celuveat.auth.domain.OauthId;
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.exception.AuthException;
@@ -27,6 +28,10 @@ public class OauthMemberClientComposite {
 
     public OauthMember fetch(OauthServerType oauthServerType, String authCode) {
         return getClient(oauthServerType).fetch(authCode);
+    }
+
+    public Long logout(OauthServerType oauthServerType, OauthId oauthId) {
+        return getClient(oauthServerType).logout(oauthId.oauthServerId());
     }
 
     private OauthMemberClient getClient(OauthServerType oauthServerType) {

@@ -39,4 +39,9 @@ public class NaverMemberClient implements OauthMemberClient {
         params.add("state", naverOauthConfig.state());
         return params;
     }
+
+    @Override
+    public Long logout(String oauthServerId) {
+        return null;
+    }
 }

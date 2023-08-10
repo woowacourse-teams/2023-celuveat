@@ -40,4 +40,19 @@ public class KakaoMemberClient implements OauthMemberClient {
         params.add("client_secret", kakaoOauthConfig.clientSecret());
         return params;
     }
+
+    @Override
+    public Long logout(String oauthServerId) {
+        return kakaoApiClient.logoutMember(
+                "KakaoAK " + kakaoOauthConfig.adminKey(),
+                logoutRequestParams(oauthServerId)
+        );
+    }
+
+    private MultiValueMap<String, String> logoutRequestParams(String oauthServerId) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", oauthServerId);
+        return params;
+    }
 }

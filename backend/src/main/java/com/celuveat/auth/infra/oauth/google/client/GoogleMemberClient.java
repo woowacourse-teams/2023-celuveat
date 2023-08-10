@@ -40,4 +40,9 @@ public class GoogleMemberClient implements OauthMemberClient {
         params.add("redirect_uri", googleOauthConfig.redirectUri());
         return params;
     }
+
+    @Override
+    public Long logout(String oauthServerId) {
+        return null;
+    }
 }
