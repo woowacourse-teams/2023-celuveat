@@ -5,7 +5,6 @@ import type { RestaurantListData } from '~/@types/api.types';
 import { CoordinateBoundary } from '~/@types/map.types';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import getQueryString from '~/utils/getQueryString';
-import { SERVER_URL } from '~/constants/api';
 
 export interface GetRestaurantsQueryParams {
   boundary: CoordinateBoundary;
@@ -15,7 +14,14 @@ export interface GetRestaurantsQueryParams {
 }
 
 export const apiClient = axios.create({
-  baseURL: SERVER_URL,
+  baseURL: `${process.env.BASE_URL}/api`,
+  headers: {
+    'Content-type': 'application/json',
+  },
+});
+
+const apiMSWClient = axios.create({
+  baseURL: `/`,
   headers: {
     'Content-type': 'application/json',
   },
@@ -25,6 +31,14 @@ export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => 
   const queryString = getQueryString(queryParams);
 
   const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+
+  return response.data;
+};
+
+export const getMSWRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
+  const queryString = getQueryString(queryParams);
+
+  const response = await apiMSWClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
   return response.data;
 };

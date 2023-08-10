@@ -18,7 +18,7 @@ function PopUp({ text, isSuccess = false, imgUrl }: PopUpProps) {
 
   return (
     <StyledPopUpWrapper isSuccess={isSuccess} isMobile={isMobile}>
-      <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />
+      {isSuccess && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
       <StyledPopUpText>{text}</StyledPopUpText>
     </StyledPopUpWrapper>
   );
@@ -44,7 +44,8 @@ const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
   left: ${({ isMobile }) => (isMobile ? '50%' : '144px')};
   z-index: 9999;
 
-  width: 224px;
+  min-width: 224px;
+  max-width: fit-content;
   height: 64px;
 
   padding: 1rem;
