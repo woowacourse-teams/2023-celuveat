@@ -81,6 +81,16 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
+    public static void 조회_결과를_순서를_포함해서_검증한다(List<RestaurantQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
+        PageResponse<RestaurantQueryResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
+        });
+        assertThat(restaurantQueryResponse.content())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .isEqualTo(예상_응답);
+    }
+
     public static List<RestaurantQueryResponse> 예상_응답(
             List<RestaurantQueryResponse> 전체_음식점,
             Object 셀럽_ID,
@@ -146,6 +156,38 @@ public class RestaurantAcceptanceSteps {
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
+    }
+
+    public static List<RestaurantQueryResponse> 셀럽필터_적용시_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        RestaurantQueryResponse 도기1호점 = createExpectedResponse(전체_음식점.get(3), 3, true, 4);
+        RestaurantQueryResponse 도기3호점 = createExpectedResponse(전체_음식점.get(5), 5, false, 1);
+        RestaurantQueryResponse 오도1호점 = createExpectedResponse(전체_음식점.get(6), 0, true, 3);
+        RestaurantQueryResponse 오도2호점 = createExpectedResponse(전체_음식점.get(7), 0, false, 0);
+        RestaurantQueryResponse 로이스1호점 = createExpectedResponse(전체_음식점.get(8), 6, true, 3);
+
+        expected.add(changeOrder(도기1호점, 0, 1, 0, 1));
+        expected.add(changeOrder(오도1호점, 0, 0, 0, 2));
+        expected.add(changeOrder(로이스1호점, 0, 2, 0, 0));
+        expected.add(changeOrder(도기3호점, 0, 1, 0, 1));
+        expected.add(changeOrder(오도2호점, 0, 0, 0, 0));
+        return expected;
+    }
+
+    public static RestaurantQueryResponse changeOrder(
+            RestaurantQueryResponse response,
+            int celebIndex1,
+            int celebIndex2,
+            int imageIndex1,
+            int imageIndex2
+    ) {
+        List<CelebQueryResponse> celebs = new ArrayList<>(response.celebs());
+        List<RestaurantImageQueryResponse> images = new ArrayList<>(response.images());
+        Collections.swap(celebs, celebIndex1, celebIndex2);
+        Collections.swap(images, imageIndex1, imageIndex2);
+        return RestaurantQueryResponse.from(response, celebs, images);
     }
 
     public static List<Long> 음식점_아이디를_가져온다(RestaurantQueryResponse... 음식점들) {

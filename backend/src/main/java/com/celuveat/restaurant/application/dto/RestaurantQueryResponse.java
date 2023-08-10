@@ -71,4 +71,27 @@ public record RestaurantQueryResponse(
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
     }
+
+    public static RestaurantQueryResponse from(
+            RestaurantQueryResponse other,
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> restaurantImages
+    ) {
+        return new RestaurantQueryResponse(
+                other.id,
+                other.name,
+                other.category,
+                other.roadAddress,
+                other.latitude,
+                other.longitude,
+                other.phoneNumber,
+                other.naverMapUrl,
+                other.viewCount,
+                other.distance,
+                other.isLiked,
+                other.likeCount,
+                celebs,
+                restaurantImages
+        );
+    }
 }

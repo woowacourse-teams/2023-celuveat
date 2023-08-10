@@ -20,6 +20,13 @@ public class CustomOptional<T> {
         return new CustomOptional<>(Objects.requireNonNull(value));
     }
 
+    public static <T> CustomOptional<T> ofNullable(T value) {
+        if (value == null) {
+            return empty();
+        }
+        return new CustomOptional<>(value);
+    }
+
     public <R> R mapIfPresentOrElse(Function<T, R> f, Supplier<R> s) {
         if (value != null) {
             return f.apply(value);

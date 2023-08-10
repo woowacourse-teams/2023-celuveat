@@ -1,12 +1,19 @@
 package com.celuveat.restaurant.application;
 
+import com.celuveat.common.optional.CustomOptional;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +63,41 @@ public class RestaurantQueryFacade {
                 .findFirst()
                 .ifPresent(imageQueryResponse -> Collections.swap(images, 0, images.indexOf(imageQueryResponse)));
         return images;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<RestaurantQueryResponse> findAll(
+            RestaurantSearchCond restaurantSearchCond,
+            LocationSearchCond locationSearchCond,
+            Pageable pageable,
+            CustomOptional<Long> memberId
+    ) {
+        Page<RestaurantQueryResponse> result = memberId.mapIfPresentOrElse(
+                id -> restaurantQueryService.findAllWithMemberId(
+                        restaurantSearchCond,
+                        locationSearchCond,
+                        pageable,
+                        id),
+                () -> restaurantQueryService.findAll(restaurantSearchCond, locationSearchCond, pageable)
+        );
+        return CustomOptional.ofNullable(restaurantSearchCond.celebId())
+                .mapIfPresentOrElse(celebId -> relocateByCelebId(result, celebId), () -> result);
+    }
+
+    private Page<RestaurantQueryResponse> relocateByCelebId(Page<RestaurantQueryResponse> result, Long celebId) {
+        List<RestaurantQueryResponse> content = new ArrayList<>(result.getContent());
+        List<RestaurantQueryResponse> orderedContent = content.stream()
+                .map(response -> relocateResponseByCelebId(response, celebId))
+                .toList();
+        return PageableExecutionUtils.getPage(orderedContent, result.getPageable(), result::getTotalElements);
+    }
+
+    private RestaurantQueryResponse relocateResponseByCelebId(RestaurantQueryResponse response, Long celebId) {
+        List<CelebQueryResponse> celebs = response.celebs();
+        CelebQueryResponse targetCeleb = findCeleb(celebs, celebId);
+        List<CelebQueryResponse> relocatedCelebs = relocateCelebsByCelebId(targetCeleb, celebs);
+        List<RestaurantImageQueryResponse> relocatedImages =
+                relocateImagesByCelebId(targetCeleb.name(), response.images());
+        return RestaurantQueryResponse.from(response, relocatedCelebs, relocatedImages);
     }
 }

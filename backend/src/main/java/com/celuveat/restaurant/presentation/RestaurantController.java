@@ -21,7 +21,6 @@ import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -58,15 +57,9 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantQueryResponse> result = memberId.mapIfPresentOrElse(
-                id -> restaurantQueryService.findAllWithMemberId(
-                        restaurantSearchCond,
-                        locationSearchCond,
-                        pageable,
-                        id),
-                () -> restaurantQueryService.findAll(restaurantSearchCond, locationSearchCond, pageable)
-        );
-        return ResponseEntity.ok(PageResponse.from(result));
+        return ResponseEntity.ok(PageResponse.from(
+                restaurantQueryFacade.findAll(restaurantSearchCond, locationSearchCond, pageable, memberId)
+        ));
     }
 
     @PostMapping("/{restaurantId}/like")
