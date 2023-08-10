@@ -17,6 +17,7 @@
 
     <springProfile name="dev, prod">
         <property name="infoLogPath" value="logs/backend/info"/>
+        <property name="warnLogPath" value="logs/backend/warn"/>
         <property name="errorLogPath" value="logs/backend/error"/>
         <property name="fileNamePattern" value="%d{yyyy-MM-dd}_%i.log"/>
         <property name="logPattern" value="%d{HH:mm:ss.SSS} [%20thread] %-5level %-53logger{36} - %msg%n"/>
@@ -44,6 +45,23 @@
             </filter>
         </appender>
 
+        <appender name="warn-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${warnLogPath}/warn.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <maxHistory>7</maxHistory>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>100GB</totalSizeCap>
+                <fileNamePattern>${warnLogPath}/${fileNamePattern}</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${logPattern}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+        </appender>
+
         <appender name="error-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${errorLogPath}/error.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -64,6 +82,7 @@
 
         <root level="info">
             <appender-ref ref="info-file"/>
+            <appender-ref ref="warn-file"/>
             <appender-ref ref="error-file"/>
         </root>
     </springProfile>
