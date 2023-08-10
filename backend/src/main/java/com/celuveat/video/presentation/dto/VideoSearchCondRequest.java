@@ -8,9 +8,6 @@ public record VideoSearchCondRequest(
 ) {
 
     public VideoSearchCond toCondition() {
-        return new VideoSearchCond(
-                celebId,
-                restaurantId
-        );
+        return new VideoSearchCond(celebId, restaurantId);
     }
 }
