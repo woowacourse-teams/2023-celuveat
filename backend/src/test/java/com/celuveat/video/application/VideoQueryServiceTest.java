@@ -19,9 +19,9 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("영상 조회용 Repo(VideoQueryRepository) 은(는)")
+@DisplayName("영상 조회용 서비스(VideoQueryService) 은(는)")
 class VideoQueryServiceTest {
-    
+
     @Autowired
     private SeedData seedData;
 
