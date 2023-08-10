@@ -35,6 +35,14 @@ export const errorPostLike400handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
   }),
 
+  rest.get('/restaurants/like', (req, res, ctx) => {
+    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
+      return restaurantItem.isLiked;
+    });
+
+    return res(ctx.status(200), ctx.json(data));
+  }),
+
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     return res(ctx.status(400));
   }),
@@ -43,6 +51,14 @@ export const errorPostLike400handlers = [
 export const errorPostLike403Handlers = [
   rest.get('/restaurants', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
+  }),
+
+  rest.get('/restaurants/like', (req, res, ctx) => {
+    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
+      return restaurantItem.isLiked;
+    });
+
+    return res(ctx.status(200), ctx.json(data));
   }),
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
@@ -54,6 +70,14 @@ export const errorPostLike404Handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
   }),
 
+  rest.get('/restaurants/like', (req, res, ctx) => {
+    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
+      return restaurantItem.isLiked;
+    });
+
+    return res(ctx.status(200), ctx.json(data));
+  }),
+
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     return res(ctx.status(404));
   }),
@@ -62,6 +86,14 @@ export const errorPostLike404Handlers = [
 export const errorPostLike500Handlers = [
   rest.get('/restaurants', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
+  }),
+
+  rest.get('/restaurants/like', (req, res, ctx) => {
+    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
+      return restaurantItem.isLiked;
+    });
+
+    return res(ctx.status(200), ctx.json(data));
   }),
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
