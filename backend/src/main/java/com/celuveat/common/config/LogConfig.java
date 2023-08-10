@@ -18,7 +18,8 @@ public class LogConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(requestLogInterceptor)
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .order(1);
     }
 
     @Bean

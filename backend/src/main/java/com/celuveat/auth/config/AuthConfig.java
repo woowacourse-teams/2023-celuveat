@@ -23,7 +23,7 @@ public class AuthConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns(
                         "/restaurants/**/like"
-                );
+                ).order(2);
     }
 
     @Override
