@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OauthMemberClientComposite {
 
-    private final Map<OauthServerType, OauthMemberClient> mapping;
+    private final Map<OauthServerType, OauthMemberClient> clients;
 
     public OauthMemberClientComposite(Set<OauthMemberClient> clients) {
-        mapping = clients.stream()
+        this.clients = clients.stream()
                 .collect(toMap(
                         OauthMemberClient::supportServer,
                         identity()
@@ -30,7 +30,7 @@ public class OauthMemberClientComposite {
     }
 
     private OauthMemberClient getClient(OauthServerType oauthServerType) {
-        return Optional.ofNullable(mapping.get(oauthServerType))
+        return Optional.ofNullable(clients.get(oauthServerType))
                 .orElseThrow(() -> new AuthException(UNSUPPORTED_OAUTH_TYPE));
     }
 }
