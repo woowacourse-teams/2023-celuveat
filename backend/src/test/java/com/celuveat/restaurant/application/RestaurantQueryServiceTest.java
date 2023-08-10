@@ -463,10 +463,10 @@ class RestaurantQueryServiceTest {
 
         // then
         assertThat(result.getContent())
-                .extracting("distance", Integer.class)
+                .extracting(RestaurantQueryResponse::distance)
                 .allMatch(distance -> distance <= specificDistance);
         assertThat(result.getContent())
-                .extracting("name", String.class)
+                .extracting(RestaurantQueryResponse::name)
                 .doesNotContain(restaurant.name());
     }
 }

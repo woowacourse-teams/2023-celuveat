@@ -360,7 +360,7 @@ class RestaurantQueryRepositoryTest {
 
         // then
         assertThat(result.getContent())
-                .extracting("distance", Double.class)
+                .extracting(RestaurantWithDistance::distance)
                 .allMatch(distance -> distance <= specificDistance);
     }
 }

@@ -260,10 +260,10 @@ public class RestaurantAcceptanceSteps {
         });
         assertThat(pageResponse.content())
                 .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
-                .extracting("distance", Integer.class)
+                .extracting(RestaurantQueryResponse::distance)
                 .allMatch(distance -> distance <= 요청_거리);
         assertThat(pageResponse.content())
-                .extracting("id", Long.class)
+                .extracting(RestaurantQueryResponse::id)
                 .doesNotContain(기준_음식점_ID);
     }
 }
