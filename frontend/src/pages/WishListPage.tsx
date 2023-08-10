@@ -1,97 +1,59 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { RestaurantData } from '~/@types/api.types';
-import { CoordinateBoundary } from '~/@types/map.types';
-import userInstance from '~/api/RestaurantLike';
-import Footer from '~/components/@common/Footer';
 
+import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
-import Map from '~/components/@common/Map';
 import RestaurantWishList from '~/components/RestaurantWishList';
+import useTokenState from '~/hooks/store/useTokenState';
+
+import useMediaQuery from '~/hooks/useMediaQuery';
+import { isEmptyString } from '~/utils/compare';
 
 function WishListPage() {
-  const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [, setBoundary] = useState<CoordinateBoundary>();
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const { isMobile } = useMediaQuery();
 
-  const { data: restaurantData, isLoading } = useQuery<RestaurantData[]>({
-    queryKey: ['restaurants', 'like'],
-    queryFn: () => userInstance.get('restaurants/like').then(response => response.data),
-  });
+  const token = useTokenState(state => state.token);
+  const navigator = useNavigate();
 
-  const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
+  useEffect(() => {
+    if (isEmptyString(token)) {
+      navigator('/signUp');
+    }
+  }, []);
 
   return (
-    <div>
+    <>
       <Header />
-      <StyledWishListWrapper>
-        <StyledLayout isMapExpanded={isMapExpanded}>
-          <StyledLeftSide isMapExpanded={isMapExpanded}>
-            <h2>위시리스트</h2>
-            <RestaurantWishList restaurantData={restaurantData} setHoveredId={setHoveredId} />
-          </StyledLeftSide>
-          <StyledRightSide>
-            <Map
-              setBoundary={setBoundary}
-              setCurrentPage={() => {}}
-              data={restaurantData}
-              toggleMapExpand={toggleMapExpand}
-              hoveredId={hoveredId}
-              loadingData={isLoading}
-            />
-          </StyledRightSide>
-        </StyledLayout>
-      </StyledWishListWrapper>
+      <StyledMobileLayout>
+        <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
+        <RestaurantWishList />
+      </StyledMobileLayout>
       <Footer />
-    </div>
+    </>
   );
 }
 
 export default WishListPage;
 
-const StyledWishListWrapper = styled.section`
-  padding: 1.2rem 2.4rem;
-`;
+const StyledMobileLayout = styled.div`
+  display: flex;
+  flex-direction: column;
 
-const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
-  display: grid;
+  position: relative;
 
   width: 100%;
   height: 100%;
-  grid-template-columns: 63vw 37vw;
-
-  ${({ isMapExpanded }) =>
-    isMapExpanded &&
-    css`
-      grid-template-columns: 100vw;
-    `}
-
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 55vw 45vw;
-
-    ${({ isMapExpanded }) =>
-      isMapExpanded &&
-      css`
-        grid-template-columns: 100vw;
-      `}
-  }
 `;
 
-const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
-  z-index: 0;
-
-  ${({ isMapExpanded }) =>
-    isMapExpanded &&
-    css`
-      display: none;
-    `}
-`;
-
-const StyledRightSide = styled.div`
-  position: sticky;
-  top: 160px;
-
+const StyledTitle = styled.h3<{ isMobile: boolean }>`
   width: 100%;
-  height: calc(100vh - 160px);
+
+  padding: 2rem;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      margin-top: 6rem;
+    `}
 `;
