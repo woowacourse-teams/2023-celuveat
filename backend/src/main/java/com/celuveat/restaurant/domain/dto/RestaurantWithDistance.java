@@ -9,6 +9,7 @@ public record RestaurantWithDistance(
         Double longitude,
         String phoneNumber,
         String naverMapUrl,
+        Integer viewCount,
         Double distance
 ) {
 }

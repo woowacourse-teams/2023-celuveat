@@ -174,6 +174,7 @@ public class SeedData {
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
                 distance
         );
     }
