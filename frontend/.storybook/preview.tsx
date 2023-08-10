@@ -1,6 +1,7 @@
+import React from 'react';
 import type { Preview } from '@storybook/react';
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 import GlobalStyles from '../src/styles/GlobalStyles';
+import { BrowserRouter } from 'react-router-dom';
 
 const preview: Preview = {
   parameters: {
@@ -14,6 +15,15 @@ const preview: Preview = {
   },
 };
 
-export const decorators = [withThemeFromJSXProvider({ GlobalStyles })];
+export const decorators = [
+  Story => (
+    <>
+      <GlobalStyles />
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    </>
+  ),
+];
 
 export default preview;
