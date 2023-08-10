@@ -1,8 +1,16 @@
 /* eslint-disable no-param-reassign */
 
 import axios, { InternalAxiosRequestConfig, AxiosInstance, AxiosError, AxiosResponse } from 'axios';
+import getToken from '~/utils/getToken';
 
-const onRequest = (config: InternalAxiosRequestConfig) => config;
+const onRequest = (config: InternalAxiosRequestConfig) => {
+  const token = getToken();
+
+  document.cookie = `JSESSIONID=${token}; domain=www.celuveat.com path=/`;
+  config.headers.Cookies = `JSESSIONID=${token}`;
+
+  return config;
+};
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => Promise.reject(error);
 
