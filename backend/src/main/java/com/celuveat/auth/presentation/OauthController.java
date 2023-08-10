@@ -4,6 +4,7 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthServerType;
+import com.celuveat.auth.presentation.dto.SessionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
