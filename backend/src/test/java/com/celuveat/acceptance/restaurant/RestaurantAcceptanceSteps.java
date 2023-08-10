@@ -109,6 +109,51 @@ public class RestaurantAcceptanceSteps {
         return 예상_응답;
     }
 
+    public static List<RestaurantQueryResponse> 음식점_좋아요_조회수_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(0, createExpectedResponse(전체_음식점.get(0), 0, true, 2));
+        expected.set(1, createExpectedResponse(전체_음식점.get(1), 2, false, 2));
+        expected.set(3, createExpectedResponse(전체_음식점.get(3), 3, true, 4));
+        expected.set(4, createExpectedResponse(전체_음식점.get(4), 4, true, 2));
+        expected.set(5, createExpectedResponse(전체_음식점.get(5), 5, false, 1));
+        expected.set(6, createExpectedResponse(전체_음식점.get(6), 0, true, 3));
+        expected.set(8, createExpectedResponse(전체_음식점.get(8), 6, true, 3));
+        expected.set(9, createExpectedResponse(전체_음식점.get(9), 7, false, 1));
+        return expected;
+    }
+
+    private static RestaurantQueryResponse createExpectedResponse(
+            RestaurantQueryResponse restaurantQueryResponse,
+            int viewCountValue,
+            boolean isLiked,
+            int likeCountValue
+    ) {
+        return new RestaurantQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount() + viewCountValue,
+                restaurantQueryResponse.distance(),
+                isLiked,
+                restaurantQueryResponse.likeCount() + likeCountValue,
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    public static List<Long> 음식점_아이디를_가져온다(RestaurantQueryResponse... 음식점들) {
+        return Arrays.stream(음식점들)
+                .map(RestaurantQueryResponse::id)
+                .toList();
+    }
+
     private static boolean 음식점_이름_조건(String restaurantName, RestaurantQueryResponse restaurantQueryResponse) {
         if (restaurantName == null) {
             return true;

@@ -124,10 +124,6 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private void 멤버를_저장한다(OauthMember 멤버) {
-        oauthMemberRepository.save(멤버);
-    }
-
     private void 음식점을_저장한다(Restaurant 음식점) {
         restaurantRepository.save(음식점);
     }
