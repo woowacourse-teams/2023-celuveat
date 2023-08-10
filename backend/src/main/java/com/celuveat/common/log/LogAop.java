@@ -1,5 +1,6 @@
 package com.celuveat.common.log;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -7,6 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Slf4j
 @Aspect
@@ -30,6 +32,9 @@ public class LogAop {
 
     @Around("restControllerAnnotatedClass() || serviceAnnotatedClass() || repositoryClass()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (isNotRequestScope()) {
+            return joinPoint.proceed();
+        }
         String methodName = getMethodName(joinPoint);
         String className = getClassSimpleName(joinPoint);
         logger.methodCall(className, methodName);
@@ -41,6 +46,10 @@ public class LogAop {
             logger.throwException(className, methodName, e);
             throw e;
         }
+    }
+
+    private boolean isNotRequestScope() {
+        return Objects.isNull(RequestContextHolder.getRequestAttributes());
     }
 
     private String getClassSimpleName(ProceedingJoinPoint joinPoint) {

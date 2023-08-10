@@ -1,8 +1,8 @@
-package com.celuveat.common.log.request.logid;
+package com.celuveat.common.log.context;
 
 import java.util.UUID;
 
-public class AnonymousLogId extends RequestLogId {
+public class AnonymousLogId implements LogId {
 
     private final String id;
 

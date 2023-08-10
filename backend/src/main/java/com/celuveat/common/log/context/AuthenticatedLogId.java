@@ -1,6 +1,8 @@
-package com.celuveat.common.log.request.logid;
+package com.celuveat.common.log.context;
 
-public class AuthenticatedLogId extends RequestLogId {
+import com.celuveat.common.log.context.LogId;
+
+public class AuthenticatedLogId implements LogId {
 
     private final String memberId;
 

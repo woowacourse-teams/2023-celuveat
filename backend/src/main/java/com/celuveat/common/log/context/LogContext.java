@@ -23,10 +23,6 @@ public class LogContext {
         return logId.logId();
     }
 
-    public boolean isFinal() {
-        return methodDepth == 0;
-    }
-
     public String depthPrefix(String prefixString) {
         if (methodDepth == 1) {
             return "|" + prefixString;

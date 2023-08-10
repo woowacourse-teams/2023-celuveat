@@ -18,7 +18,7 @@ public class Logger {
     private final LogContextHolder logContextHolder;
 
     public void methodCall(String className, String methodName) {
-        LogContext logContext = logContextHolder.getOrCreate();
+        LogContext logContext = logContextHolder.get();
         logContextHolder.increaseCall();
         log.info("[{}]  {}",
                 formattedLogInfo(logContext.logId()),
@@ -27,7 +27,7 @@ public class Logger {
     }
 
     public void methodReturn(String className, String methodName) {
-        LogContext logContext = logContextHolder.getOrCreate();
+        LogContext logContext = logContextHolder.get();
         log.info("[{}]  {}   time={}ms  ",
                 formattedLogInfo(logContext.logId()),
                 formattedClassAndMethod(logContext.depthPrefix(RETURN_PREFIX), className, methodName),
@@ -37,7 +37,7 @@ public class Logger {
     }
 
     public void throwException(String className, String methodName, Throwable exception) {
-        LogContext logContext = logContextHolder.getOrCreate();
+        LogContext logContext = logContextHolder.get();
         log.warn("[{}]  {}   time={}ms,  throws {}  ",
                 formattedLogInfo(logContext.logId()),
                 formattedClassAndMethod(logContext.depthPrefix(EX_PREFIX), className, methodName),

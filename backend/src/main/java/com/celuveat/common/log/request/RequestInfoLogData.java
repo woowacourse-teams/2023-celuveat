@@ -45,7 +45,7 @@ public class RequestInfoLogData {
                 .collect(Collectors.joining("\n", "\n", "\n\t"));
     }
 
-    private static String headers(HttpServletRequest request, String header) {
+    private String headers(HttpServletRequest request, String header) {
         return String.join(", ", Collections.list(request.getHeaders(header)));
     }
 

@@ -1,35 +1,27 @@
 package com.celuveat.common.log.context;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
+@RequestScope
 public class LogContextHolder {
 
-    private final ThreadLocal<LogContext> holder = new ThreadLocal<>();
+    private LogContext logContext;
 
     public void setLogContext(LogContext logContext) {
-        holder.set(logContext);
+        this.logContext = logContext;
     }
 
-    public LogContext getOrCreate() {
-        LogContext logContext = holder.get();
-        if (logContext == null) {
-            logContext = new LogContext(LogId.defaultId());
-            setLogContext(logContext);
-        }
+    public LogContext get() {
         return logContext;
     }
 
     public void increaseCall() {
-        LogContext logContext = holder.get();
         logContext.increaseCall();
     }
 
     public void decreaseCall() {
-        LogContext logContext = getOrCreate();
         logContext.decreaseCall();
-        if (logContext.isFinal()) {
-            holder.remove();
-        }
     }
 }

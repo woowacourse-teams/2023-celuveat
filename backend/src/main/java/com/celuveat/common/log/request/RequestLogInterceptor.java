@@ -2,8 +2,7 @@ package com.celuveat.common.log.request;
 
 import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
-import com.celuveat.common.log.request.logid.RequestLogId;
-import com.celuveat.common.log.request.logid.RequestLogIdHolder;
+import com.celuveat.common.log.context.LogId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +16,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class RequestLogInterceptor implements HandlerInterceptor {
 
     private final LogContextHolder logContextHolder;
-    private final RequestLogIdHolder requestLogIdHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        RequestLogId logId = RequestLogId.fromRequest(request);
-        requestLogIdHolder.setLogId(logId);
+        LogId logId = LogId.fromRequest(request);
         LogContext logContext = new LogContext(logId);
         logContextHolder.setLogContext(logContext);
         log.info("[Web Request START] : [\n{}]", new RequestInfoLogData(logContext.logId(), request));
@@ -36,7 +33,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Object handler,
             Exception ex
     ) {
-        RequestLogId requestLogId = requestLogIdHolder.get();
-        log.info("[Web Request END] : [\n{}]", new ResponseInfoLogData(requestLogId.logId(), response));
+        LogContext logContext = logContextHolder.get();
+        log.info("[Web Request END] : [\n{}]", new ResponseInfoLogData(logContext.logId(), response));
     }
 }
