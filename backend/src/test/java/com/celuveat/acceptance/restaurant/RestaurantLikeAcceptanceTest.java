@@ -180,10 +180,10 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantQueryResponse.longitude(),
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.distance(),
                 true,
                 restaurantQueryResponse.likeCount(),
-                null,
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
@@ -199,10 +199,10 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantQueryResponse.longitude(),
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.distance(),
                 restaurantQueryResponse.isLiked(),
                 restaurantQueryResponse.likeCount() + 1,
-                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );

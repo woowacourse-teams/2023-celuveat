@@ -63,6 +63,9 @@ class RestaurantQueryServiceTest {
     private OauthMemberRepository oauthMemberRepository;
 
     @Autowired
+    private RestaurantService restaurantService;
+
+    @Autowired
     private RestaurantQueryService restaurantQueryService;
 
     @BeforeEach
@@ -409,10 +412,10 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.longitude(),
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.distance(),
                 true,
                 restaurantQueryResponse.likeCount(),
-                null,
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
@@ -428,10 +431,10 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.longitude(),
                 restaurantQueryResponse.phoneNumber(),
                 restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.distance(),
                 restaurantQueryResponse.isLiked(),
                 restaurantQueryResponse.likeCount() + value,
-                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
@@ -710,6 +713,85 @@ class RestaurantQueryServiceTest {
 
             // then
             결과를_검증한다(result, seed);
+        }
+    }
+
+    @Nested
+    class 조회수_테스트 {
+
+        private RestaurantQueryResponse restaurantQueryResponse1;
+        private RestaurantQueryResponse restaurantQueryResponse2;
+        private RestaurantQueryResponse restaurantQueryResponse3;
+        private RestaurantQueryResponse restaurantQueryResponse4;
+
+        @BeforeEach
+        void setUp() {
+            restaurantQueryResponse1 = seed.get(0);
+            restaurantQueryResponse2 = seed.get(2);
+            restaurantQueryResponse3 = seed.get(4);
+            restaurantQueryResponse4 = seed.get(9);
+        }
+
+        @Test
+        void 음식점을_조회하면_조회수를_함께_반환한다() {
+            // given
+            음식점들의_조회수를_높인다();
+            seed.set(0, increaseViewCount(restaurantQueryResponse1, 4));
+            seed.set(2, increaseViewCount(restaurantQueryResponse2, 2));
+            seed.set(4, increaseViewCount(restaurantQueryResponse3, 1));
+            seed.set(9, increaseViewCount(restaurantQueryResponse4, 5));
+
+            // when
+            Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                    new RestaurantSearchCond(null, null, null),
+                    전체영역_검색_범위,
+                    PageRequest.of(0, 100));
+
+            // then
+            assertThat(result).isNotEmpty();
+            assertThat(result.getContent())
+                    .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                    .usingRecursiveComparison()
+                    .ignoringFields("distance")
+                    .ignoringCollectionOrder()
+                    .isEqualTo(seed);
+        }
+
+        private void 음식점들의_조회수를_높인다() {
+            restaurantService.increaseViewCount(restaurantQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse1.id());
+
+            restaurantService.increaseViewCount(restaurantQueryResponse2.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse2.id());
+
+            restaurantService.increaseViewCount(restaurantQueryResponse3.id());
+
+            restaurantService.increaseViewCount(restaurantQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantQueryResponse4.id());
+        }
+
+        private RestaurantQueryResponse increaseViewCount(RestaurantQueryResponse restaurantQueryResponse, int value) {
+            return new RestaurantQueryResponse(
+                    restaurantQueryResponse.id(),
+                    restaurantQueryResponse.name(),
+                    restaurantQueryResponse.category(),
+                    restaurantQueryResponse.roadAddress(),
+                    restaurantQueryResponse.latitude(),
+                    restaurantQueryResponse.longitude(),
+                    restaurantQueryResponse.phoneNumber(),
+                    restaurantQueryResponse.naverMapUrl(),
+                    restaurantQueryResponse.viewCount() + value,
+                    restaurantQueryResponse.distance(),
+                    restaurantQueryResponse.isLiked(),
+                    restaurantQueryResponse.likeCount(),
+                    restaurantQueryResponse.celebs(),
+                    restaurantQueryResponse.images()
+            );
         }
     }
 }

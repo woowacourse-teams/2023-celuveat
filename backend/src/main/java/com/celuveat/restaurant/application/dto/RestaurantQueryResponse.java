@@ -15,10 +15,10 @@ public record RestaurantQueryResponse(
         @JsonProperty("lng") Double longitude,
         String phoneNumber,
         String naverMapUrl,
+        Integer viewCount,
         Integer distance,
         Boolean isLiked,
         Integer likeCount,
-        Integer viewCount,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -38,10 +38,10 @@ public record RestaurantQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
                 restaurant.distance().intValue(),
                 false,
                 likeCount,
-                null,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
@@ -63,10 +63,10 @@ public record RestaurantQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
                 restaurant.distance().intValue(),
                 isLiked,
                 likeCount,
-                null,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
