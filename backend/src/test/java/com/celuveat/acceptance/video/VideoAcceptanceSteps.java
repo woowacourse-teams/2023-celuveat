@@ -1,11 +1,15 @@
 package com.celuveat.acceptance.video;
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
+import static com.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
+import static com.celuveat.restaurant.exception.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.exception.CelebException;
 import com.celuveat.common.PageResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
@@ -15,7 +19,6 @@ import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class VideoAcceptanceSteps {
 
@@ -37,7 +40,7 @@ public class VideoAcceptanceSteps {
                 .map(Video::restaurant)
                 .filter(restaurant -> restaurant.name().equals(음식점_이름))
                 .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new RestaurantException(NOT_FOUND_RESTAURANT));
     }
 
     public static List<Video> 특정_음식점의_영상을_추출한다(List<Video> 영상들, Restaurant 음식점) {
@@ -51,7 +54,7 @@ public class VideoAcceptanceSteps {
                 .map(Video::celeb)
                 .filter(celeb -> celeb.name().equals(셀럽_이름))
                 .findAny()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new CelebException(NOT_FOUND_CELEB));
     }
 
     public static List<Video> 특정_셀럽의_영상을_추출한다(List<Video> 영상들, Celeb 셀럽) {

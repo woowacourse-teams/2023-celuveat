@@ -21,7 +21,7 @@ public class VideoAcceptanceTest extends AcceptanceTest {
     private SeedData seedData;
 
     @Test
-    void 영상을_전쳬_조회한다() {
+    void 영상을_전체_조회한다() {
         // given
         var 전체_영상 = seedData.insertVideoSeedData();
         var 예상_응답 = 영상_조회_예상_응답(전체_영상);
