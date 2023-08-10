@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - develop-backend*
-      - 302*
       - main
-#     paths:
-#       - 'backend/**'
+    paths:
+      - 'backend/**'
 
   pull_request:
     branches:
