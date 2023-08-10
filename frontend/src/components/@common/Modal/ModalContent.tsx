@@ -14,7 +14,7 @@ function ModalContent({ isShow = false, title, closeModal, children }: ModalCont
       <StyledModalOverlay onClick={closeModal} />
       <StyledModalContent isShow={isShow}>
         <StyledModalHeader>
-          <Exit onClick={closeModal} />
+          <StyledExitButton onClick={closeModal} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
         </StyledModalHeader>
         <StyledModalBody>{children}</StyledModalBody>
@@ -24,6 +24,10 @@ function ModalContent({ isShow = false, title, closeModal, children }: ModalCont
 }
 
 export default ModalContent;
+
+const StyledExitButton = styled(Exit)`
+  cursor: pointer;
+`;
 
 const StyledModalContentWrapper = styled.div<{ isShow: boolean }>`
   display: flex;

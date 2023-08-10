@@ -171,9 +171,9 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
   width: 100%;
   height: 0;
 
-  transition: height 0.8s ease-in-out;
-
   background: var(--white);
+
+  transition: height 0.8s ease-in-out;
 
   overflow: hidden;
 
