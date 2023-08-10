@@ -183,6 +183,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantQueryResponse.distance(),
                 true,
                 null,
+                null,
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );

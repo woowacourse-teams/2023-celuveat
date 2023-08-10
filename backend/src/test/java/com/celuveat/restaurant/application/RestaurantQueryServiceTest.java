@@ -411,6 +411,7 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.distance(),
                 true,
                 null,
+                null,
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
