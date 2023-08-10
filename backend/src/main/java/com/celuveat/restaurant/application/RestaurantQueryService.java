@@ -29,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -177,7 +176,7 @@ public class RestaurantQueryService {
                 .toList();
     }
 
-    public Page<RestaurantQueryResponse> findAllNearByDistance(
+    public Page<RestaurantQueryResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
             Pageable pageable
@@ -202,6 +201,6 @@ public class RestaurantQueryService {
                 .filter(restaurantWithDistance -> restaurantWithDistance.name().equals(restaurant.name()))
                 .findFirst()
                 .ifPresent(newContent::remove);
-        return PageableExecutionUtils.getPage(newContent, pageable, restaurantsWithDistance::getTotalElements);
+        return new PageImpl<>(newContent, pageable, restaurantsWithDistance.getTotalElements());
     }
 }

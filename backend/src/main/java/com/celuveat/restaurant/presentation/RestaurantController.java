@@ -77,7 +77,7 @@ public class RestaurantController {
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = DEFAULT_DISTANCE) Integer distance
     ) {
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistance(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 distance,
                 restaurantId,
                 pageable

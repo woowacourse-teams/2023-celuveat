@@ -455,7 +455,7 @@ class RestaurantQueryServiceTest {
         RestaurantQueryResponse restaurant = seed.get(0);
 
         // when
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistance(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 specificDistance,
                 restaurant.id(),
                 PageRequest.of(0, 4)
