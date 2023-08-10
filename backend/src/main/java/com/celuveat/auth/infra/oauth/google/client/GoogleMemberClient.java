@@ -1,9 +1,9 @@
-package com.celuveat.auth.infra.oauth.google;
+package com.celuveat.auth.infra.oauth.google.client;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.infra.oauth.google.client.GoogleApiClient;
+import com.celuveat.auth.infra.oauth.google.GoogleOauthConfig;
 import com.celuveat.auth.infra.oauth.google.dto.GoogleMemberResponse;
 import com.celuveat.auth.infra.oauth.google.dto.GoogleToken;
 import lombok.RequiredArgsConstructor;

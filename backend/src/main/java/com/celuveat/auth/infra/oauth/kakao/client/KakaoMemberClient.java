@@ -1,9 +1,9 @@
-package com.celuveat.auth.infra.oauth.kakao;
+package com.celuveat.auth.infra.oauth.kakao.client;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.infra.oauth.kakao.client.KakaoApiClient;
+import com.celuveat.auth.infra.oauth.kakao.KakaoOauthConfig;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoMemberResponse;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoToken;
 import lombok.RequiredArgsConstructor;
