@@ -2,6 +2,8 @@ package com.celuveat.common.log.request;
 
 import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
+import com.celuveat.common.log.request.logid.RequestLogId;
+import com.celuveat.common.log.request.logid.RequestLogIdHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

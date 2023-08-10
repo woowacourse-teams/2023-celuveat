@@ -1,4 +1,4 @@
-package com.celuveat.common.log.request;
+package com.celuveat.common.log.request.messagebody;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.ReadListener;

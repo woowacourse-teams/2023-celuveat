@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
+import com.celuveat.common.log.request.messagebody.MessageBodyReader;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -53,7 +54,7 @@ public class RequestInfoLogData {
     }
 
     public String parseBody(HttpServletRequest request) {
-        String body = RequestBodyReader.readBody(request);
+        String body = MessageBodyReader.readBody(request);
         String contentType = request.getContentType();
         if (!StringUtils.hasText(contentType)) {
             return body;
@@ -65,8 +66,8 @@ public class RequestInfoLogData {
             return Arrays.stream(body.split("\\n"))
                     .collect(Collectors.joining("\n\t\t", "\n\t\t", "\n\t"));
         }
-        if (contentType.contains(APPLICATION_FORM_URLENCODED_VALUE) || contentType.contains(
-                MULTIPART_FORM_DATA_VALUE)) {
+        if (contentType.contains(APPLICATION_FORM_URLENCODED_VALUE)
+                || contentType.contains(MULTIPART_FORM_DATA_VALUE)) {
             return Arrays.stream(body.split("&"))
                     .map(it -> {
                         String[] split = it.split("=");

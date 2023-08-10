@@ -1,4 +1,4 @@
-package com.celuveat.common.log.request;
+package com.celuveat.common.log.request.messagebody;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-public class RequestChangeFilter implements Filter {
+public class RequestResponseChangeFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

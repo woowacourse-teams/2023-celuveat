@@ -9,7 +9,6 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 
 public class RestaurantLikeAcceptanceSteps {
 

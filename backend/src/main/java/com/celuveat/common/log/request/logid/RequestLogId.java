@@ -1,4 +1,4 @@
-package com.celuveat.common.log.request;
+package com.celuveat.common.log.request.logid;
 
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 

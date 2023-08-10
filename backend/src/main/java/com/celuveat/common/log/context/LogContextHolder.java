@@ -11,7 +11,7 @@ public class LogContextHolder {
         holder.set(logContext);
     }
 
-    public LogContext get() {
+    public LogContext getOrCreate() {
         LogContext logContext = holder.get();
         if (logContext == null) {
             logContext = new LogContext(LogId.defaultId());
@@ -26,7 +26,7 @@ public class LogContextHolder {
     }
 
     public void decreaseCall() {
-        LogContext logContext = get();
+        LogContext logContext = getOrCreate();
         logContext.decreaseCall();
         if (logContext.isFinal()) {
             holder.remove();

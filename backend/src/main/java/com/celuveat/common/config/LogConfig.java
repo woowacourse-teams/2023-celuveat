@@ -1,7 +1,7 @@
 package com.celuveat.common.config;
 
-import com.celuveat.common.log.request.RequestChangeFilter;
 import com.celuveat.common.log.request.RequestLogInterceptor;
+import com.celuveat.common.log.request.messagebody.RequestResponseChangeFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +22,9 @@ public class LogConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<RequestChangeFilter> requestChangeFilter() {
-        FilterRegistrationBean<RequestChangeFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new RequestChangeFilter());
+    public FilterRegistrationBean<RequestResponseChangeFilter> requestChangeFilter() {
+        FilterRegistrationBean<RequestResponseChangeFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RequestResponseChangeFilter());
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }

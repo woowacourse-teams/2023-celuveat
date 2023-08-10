@@ -2,6 +2,7 @@ package com.celuveat.common.log.request;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import com.celuveat.common.log.request.messagebody.MessageBodyReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ public class ResponseInfoLogData {
     }
 
     public String parseBody(HttpServletResponse response) {
-        String body = RequestBodyReader.readBody(response);
+        String body = MessageBodyReader.readBody(response);
         if (!APPLICATION_JSON_VALUE.equals(response.getContentType())) {
             return body;
         }
