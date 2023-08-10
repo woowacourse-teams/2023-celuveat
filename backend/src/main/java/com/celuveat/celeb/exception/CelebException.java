@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CelebException extends BaseException {
 
-    private final BaseExceptionType exceptionType;
+    private final CelebExceptionType exceptionType;
 
     @Override
     public BaseExceptionType exceptionType() {
