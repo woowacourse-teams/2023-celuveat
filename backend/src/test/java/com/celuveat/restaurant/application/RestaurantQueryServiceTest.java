@@ -32,6 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -378,10 +379,10 @@ class RestaurantQueryServiceTest {
                 음식점_좋아요(도기2호점, 멤버),
                 음식점_좋아요(로이스2호점, 멤버)
         ));
-        seed.set(0, changeIsLikedToTrue(restaurantQueryResponse1));
-        seed.set(2, changeIsLikedToTrue(restaurantQueryResponse2));
-        seed.set(4, changeIsLikedToTrue(restaurantQueryResponse3));
-        seed.set(9, changeIsLikedToTrue(restaurantQueryResponse4));
+        seed.set(0, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse1), 1));
+        seed.set(2, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse2), 1));
+        seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse3), 1));
+        seed.set(9, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4), 1));
 
         Page<RestaurantQueryResponse> result = restaurantQueryService.findAllWithMemberId(
                 new RestaurantSearchCond(null, null, null),
@@ -410,8 +411,27 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.naverMapUrl(),
                 restaurantQueryResponse.distance(),
                 true,
+                restaurantQueryResponse.likeCount(),
                 null,
-                null,
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    private RestaurantQueryResponse increaseLikeCount(RestaurantQueryResponse restaurantQueryResponse, int value) {
+        return new RestaurantQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.distance(),
+                restaurantQueryResponse.isLiked(),
+                restaurantQueryResponse.likeCount() + value,
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
@@ -525,5 +545,171 @@ class RestaurantQueryServiceTest {
         assertThat(result.getContent())
                 .extracting(RestaurantQueryResponse::name)
                 .doesNotContain(restaurant.name());
+    }
+
+    @Nested
+    class 좋아요수_테스트 {
+
+        private Long 오도_아이디;
+        private Long 로이스_아이디;
+        private Long 도기_아이디;
+        private Long 말랑_아이디;
+        private RestaurantQueryResponse restaurantQueryResponse1;
+        private RestaurantQueryResponse restaurantQueryResponse2;
+        private RestaurantQueryResponse restaurantQueryResponse3;
+        private RestaurantQueryResponse restaurantQueryResponse4;
+        private RestaurantQueryResponse restaurantQueryResponse5;
+        private RestaurantQueryResponse restaurantQueryResponse6;
+
+        @BeforeEach
+        void setUp() {
+            OauthMember 오도 = 멤버("오도");
+            OauthMember 로이스 = 멤버("로이스");
+            OauthMember 도기 = 멤버("도기");
+            OauthMember 말랑 = 멤버("말랑");
+            oauthMemberRepository.save(오도);
+            oauthMemberRepository.save(로이스);
+            oauthMemberRepository.save(도기);
+            oauthMemberRepository.save(말랑);
+            오도_아이디 = 오도.id();
+            로이스_아이디 = 로이스.id();
+            도기_아이디 = 도기.id();
+            말랑_아이디 = 말랑.id();
+            restaurantQueryResponse1 = seed.get(0);
+            restaurantQueryResponse2 = seed.get(2);
+            restaurantQueryResponse3 = seed.get(3);
+            restaurantQueryResponse4 = seed.get(4);
+            restaurantQueryResponse5 = seed.get(8);
+            restaurantQueryResponse6 = seed.get(9);
+            Restaurant 말랑1호점 = restaurantRepository.getById(restaurantQueryResponse1.id());
+            Restaurant 말랑3호점 = restaurantRepository.getById(restaurantQueryResponse2.id());
+            Restaurant 도기1호점 = restaurantRepository.getById(restaurantQueryResponse3.id());
+            Restaurant 도기2호점 = restaurantRepository.getById(restaurantQueryResponse4.id());
+            Restaurant 로이스1호점 = restaurantRepository.getById(restaurantQueryResponse5.id());
+            Restaurant 로이스2호점 = restaurantRepository.getById(restaurantQueryResponse6.id());
+            restaurantLikeRepository.saveAll(List.of(
+                    음식점_좋아요(말랑1호점, 오도),
+                    음식점_좋아요(말랑3호점, 오도),
+                    음식점_좋아요(도기2호점, 오도),
+                    음식점_좋아요(로이스2호점, 오도),
+
+                    음식점_좋아요(말랑1호점, 로이스),
+                    음식점_좋아요(도기1호점, 로이스),
+                    음식점_좋아요(도기2호점, 로이스),
+                    음식점_좋아요(로이스1호점, 로이스),
+
+                    음식점_좋아요(도기2호점, 도기),
+                    음식점_좋아요(로이스1호점, 도기),
+
+                    음식점_좋아요(말랑3호점, 말랑),
+                    음식점_좋아요(로이스1호점, 말랑)
+            ));
+        }
+
+        @Test
+        void 비회원으로_음식점을_조회하면_음식점의_좋아요여부에_모두_거짓이_반환되고_모두의_좋아요수가_함께_반환된다() {
+            // given
+            seed.set(0, increaseLikeCount(restaurantQueryResponse1, 2));
+            seed.set(2, increaseLikeCount(restaurantQueryResponse2, 2));
+            seed.set(3, increaseLikeCount(restaurantQueryResponse3, 1));
+            seed.set(4, increaseLikeCount(restaurantQueryResponse4, 3));
+            seed.set(8, increaseLikeCount(restaurantQueryResponse5, 3));
+            seed.set(9, increaseLikeCount(restaurantQueryResponse6, 1));
+
+            // when
+            Page<RestaurantQueryResponse> result = restaurantQueryService.findAll(
+                    new RestaurantSearchCond(null, null, null),
+                    전체영역_검색_범위,
+                    PageRequest.of(0, 100));
+
+            // then
+            결과를_검증한다(result, seed);
+        }
+
+        private void 결과를_검증한다(Page<RestaurantQueryResponse> result, List<RestaurantQueryResponse> expected) {
+            assertThat(result).isNotEmpty();
+            assertThat(result.getContent())
+                    .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                    .usingRecursiveComparison()
+                    .ignoringFields("distance")
+                    .ignoringCollectionOrder()
+                    .isEqualTo(expected);
+        }
+
+        @Test
+        void 오도로_음식점을_조회하면_오도가_좋아요한_음식점의_좋아요여부에_참이_반환되고_모두의_좋아요수가_함께_반환된다() {
+            // given
+            seed.set(0, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse1), 2));
+            seed.set(2, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse2), 2));
+            seed.set(3, increaseLikeCount(restaurantQueryResponse3, 1));
+            seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4), 3));
+            seed.set(8, increaseLikeCount(restaurantQueryResponse5, 3));
+            seed.set(9, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse6), 1));
+
+            // when
+            Page<RestaurantQueryResponse> result = 음식점을_조회한다(오도_아이디);
+
+            // then
+            결과를_검증한다(result, seed);
+        }
+
+        private Page<RestaurantQueryResponse> 음식점을_조회한다(Long memberId) {
+            return restaurantQueryService.findAllWithMemberId(
+                    new RestaurantSearchCond(null, null, null),
+                    전체영역_검색_범위,
+                    PageRequest.of(0, 100),
+                    memberId);
+        }
+
+        @Test
+        void 로이스로_음식점을_조회하면_로이스가_좋아요한_음식점의_좋아요여부에_참이_반환되고_모두의_좋아요수가_함께_반환된다() {
+            // given
+            seed.set(0, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse1), 2));
+            seed.set(2, increaseLikeCount(restaurantQueryResponse2, 2));
+            seed.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse3), 1));
+            seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4), 3));
+            seed.set(8, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse5), 3));
+            seed.set(9, increaseLikeCount(restaurantQueryResponse6, 1));
+
+            // when
+            Page<RestaurantQueryResponse> result = 음식점을_조회한다(로이스_아이디);
+
+            // then
+            결과를_검증한다(result, seed);
+        }
+
+        @Test
+        void 도기로_음식점을_조회하면_도기가_좋아요한_음식점의_좋아요여부에_참이_반환되고_모두의_좋아요수가_함께_반환된다() {
+            // given
+            seed.set(0, increaseLikeCount(restaurantQueryResponse1, 2));
+            seed.set(2, increaseLikeCount(restaurantQueryResponse2, 2));
+            seed.set(3, increaseLikeCount(restaurantQueryResponse3, 1));
+            seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4), 3));
+            seed.set(8, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse5), 3));
+            seed.set(9, increaseLikeCount(restaurantQueryResponse6, 1));
+
+            // when
+            Page<RestaurantQueryResponse> result = 음식점을_조회한다(도기_아이디);
+
+            // then
+            결과를_검증한다(result, seed);
+        }
+
+        @Test
+        void 말랑으로_음식점을_조회하면_말랑이_좋아요한_음식점의_좋아요여부에_참이_반환되고_모두의_좋아요수가_함께_반환된다() {
+            // given
+            seed.set(0, increaseLikeCount(restaurantQueryResponse1, 2));
+            seed.set(2, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse2), 2));
+            seed.set(3, increaseLikeCount(restaurantQueryResponse3, 1));
+            seed.set(4, increaseLikeCount(restaurantQueryResponse4, 3));
+            seed.set(8, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse5), 3));
+            seed.set(9, increaseLikeCount(restaurantQueryResponse6, 1));
+
+            // when
+            Page<RestaurantQueryResponse> result = 음식점을_조회한다(말랑_아이디);
+
+            // then
+            결과를_검증한다(result, seed);
+        }
     }
 }

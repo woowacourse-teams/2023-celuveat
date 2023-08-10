@@ -26,7 +26,8 @@ public record RestaurantQueryResponse(
     public static RestaurantQueryResponse from(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages
+            List<RestaurantImage> restaurantImages,
+            Integer likeCount
     ) {
         return new RestaurantQueryResponse(
                 restaurant.id(),
@@ -39,7 +40,7 @@ public record RestaurantQueryResponse(
                 restaurant.naverMapUrl(),
                 restaurant.distance().intValue(),
                 false,
-                null,
+                likeCount,
                 null,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
@@ -50,7 +51,8 @@ public record RestaurantQueryResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
-            boolean isLiked
+            boolean isLiked,
+            Integer likeCount
     ) {
         return new RestaurantQueryResponse(
                 restaurant.id(),
@@ -63,7 +65,7 @@ public record RestaurantQueryResponse(
                 restaurant.naverMapUrl(),
                 restaurant.distance().intValue(),
                 isLiked,
-                null,
+                likeCount,
                 null,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()

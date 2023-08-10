@@ -163,10 +163,10 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         RestaurantQueryResponse restaurantQueryResponse3 = 전체_음식점.get(4);
         RestaurantQueryResponse restaurantQueryResponse4 = 전체_음식점.get(7);
         List<RestaurantQueryResponse> expected = new ArrayList<>(전체_음식점);
-        expected.set(1, changeIsLikedToTrue(restaurantQueryResponse1));
-        expected.set(3, changeIsLikedToTrue(restaurantQueryResponse2));
-        expected.set(4, changeIsLikedToTrue(restaurantQueryResponse3));
-        expected.set(7, changeIsLikedToTrue(restaurantQueryResponse4));
+        expected.set(1, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse1)));
+        expected.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse2)));
+        expected.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse3)));
+        expected.set(7, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4)));
         return expected;
     }
 
@@ -182,8 +182,27 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantQueryResponse.naverMapUrl(),
                 restaurantQueryResponse.distance(),
                 true,
+                restaurantQueryResponse.likeCount(),
                 null,
-                null,
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    private RestaurantQueryResponse increaseLikeCount(RestaurantQueryResponse restaurantQueryResponse) {
+        return new RestaurantQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.distance(),
+                restaurantQueryResponse.isLiked(),
+                restaurantQueryResponse.likeCount() + 1,
+                restaurantQueryResponse.viewCount(),
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );

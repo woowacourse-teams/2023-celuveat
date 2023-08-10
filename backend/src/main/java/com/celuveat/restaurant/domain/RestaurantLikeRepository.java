@@ -4,6 +4,8 @@ import com.celuveat.auth.domain.OauthMember;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, Long> {
 
@@ -12,4 +14,12 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
     List<RestaurantLike> findAllByMember(OauthMember member);
 
     Integer countByRestaurant(Restaurant restaurant);
+
+    @Query("""
+            SELECT rl.restaurant.id, count(rl)
+            FROM RestaurantLike rl
+            WHERE rl.restaurant.id IN :restaurantIds
+            GROUP BY rl.restaurant.id
+            """)
+    List<Object[]> countLikesByRestaurantIds(@Param("restaurantIds") List<Long> restaurantIds);
 }
