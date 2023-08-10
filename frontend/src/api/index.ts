@@ -32,3 +32,8 @@ export const getCelebs = async () => {
   const response = await apiClient.get<Celeb[]>('/celebs');
   return response.data;
 };
+
+export const postRevisedInfo = async ({ restaurantId, data }: { restaurantId: number; data: string[] }) => {
+  const response = await apiClient.post(`/restaurants/${restaurantId}/correction`, data);
+  return response.data;
+};
