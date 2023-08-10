@@ -42,7 +42,7 @@ public class AdminAcceptanceSteps {
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
                 .when().post("/api/admin/data")
-                .then().log().all()
+                .then()
                 .extract();
     }
 
@@ -65,7 +65,7 @@ public class AdminAcceptanceSteps {
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
                 .when().post("/api/admin/celebs")
-                .then().log().all()
+                .then()
                 .extract();
     }
 }

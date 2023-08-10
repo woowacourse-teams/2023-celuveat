@@ -2,7 +2,6 @@ package com.celuveat.common.log.request;
 
 import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
-import com.celuveat.common.log.context.RequestLogId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         requestLogIdHolder.setLogId(logId);
         LogContext logContext = new LogContext(logId);
         logContextHolder.setLogContext(logContext);
-        log.info("[Web Request START] : [\n{}]", new RequestInfoMap(logContext.logId(), request));
+        log.info("[Web Request START] : [\n{}]", new RequestInfoLogData(logContext.logId(), request));
         return true;
     }
 
@@ -36,6 +35,6 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Exception ex
     ) {
         RequestLogId requestLogId = requestLogIdHolder.get();
-        log.info("[Web Request END]  ID: {}", requestLogId.logId());
+        log.info("[Web Request END] : [\n{}]", new ResponseInfoLogData(requestLogId.logId(), response));
     }
 }

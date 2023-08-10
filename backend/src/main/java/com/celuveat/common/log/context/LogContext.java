@@ -6,7 +6,6 @@ public class LogContext {
     private final long startTimeMillis;
     private int methodDepth = 0;
 
-
     public LogContext(LogId logId) {
         this.logId = logId;
         this.startTimeMillis = System.currentTimeMillis();

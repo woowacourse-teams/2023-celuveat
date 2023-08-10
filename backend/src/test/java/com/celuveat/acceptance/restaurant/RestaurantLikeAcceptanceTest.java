@@ -1,13 +1,14 @@
 package com.celuveat.acceptance.restaurant;
 
+import static com.celuveat.acceptance.common.AcceptanceSteps.값이_존재한다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.toRestaurantLikeQueryResponse;
-import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
-import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요한_음식점_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요한_음식점_조회_요청_결과를_검증한다;
 import static com.celuveat.auth.domain.OauthServerType.KAKAO;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
@@ -54,11 +55,11 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
 
         // when
         var 좋아요_응답 = 좋아요_요청을_보낸다(맛집.id(), 세션_아이디);
-        var 결과 = 음식점_좋아요를_조회한다(맛집, 오도);
+        var 좋아요 = 음식점_좋아요를_조회한다(맛집, 오도);
 
         // then
         응답_상태를_검증한다(좋아요_응답, 정상_처리);
-        결과를_검증한다(결과);
+        값이_존재한다(좋아요);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
 
         // then
         응답_상태를_검증한다(응답, 정상_처리);
-        결과를_검증한다(응답, 예상_응답);
+        좋아요한_음식점_조회_요청_결과를_검증한다(응답, 예상_응답);
     }
 
     private List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantQueryResponse> 전체_음식점) {

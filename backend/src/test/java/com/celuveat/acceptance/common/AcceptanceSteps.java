@@ -11,6 +11,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 
 public class AcceptanceSteps {
@@ -30,13 +31,13 @@ public class AcceptanceSteps {
 
     public static RequestSpecification given() {
         return RestAssured
-                .given().log().all()
+                .given()
                 .contentType(JSON);
     }
 
     public static RequestSpecification given(String 세션_ID) {
         return RestAssured
-                .given().log().all()
+                .given()
                 .cookie(JSESSION_ID, 세션_ID)
                 .contentType(JSON);
     }
@@ -54,8 +55,16 @@ public class AcceptanceSteps {
         assertThat(잘못된_요청_응답.statusCode()).isEqualTo(잘못된_요청.value());
     }
 
+    public static <T> void 값이_존재한다(Optional<T> t) {
+        assertThat(t).isPresent();
+    }
+
     public static <T> void 값이_존재한다(T t) {
         assertThat(t).isNotNull();
+    }
+
+    public static void 응답_상태를_검증한다(ExtractableResponse<Response> 응답, HttpStatus 상태) {
+        assertThat(응답.statusCode()).isEqualTo(상태.value());
     }
 
     public static <T> void 두_값이_같다(T 첫번째_값, T 두번째_값) {

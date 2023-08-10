@@ -1,7 +1,8 @@
-package com.celuveat.common.log.context;
+package com.celuveat.common.log.request;
 
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
+import com.celuveat.common.log.context.LogId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

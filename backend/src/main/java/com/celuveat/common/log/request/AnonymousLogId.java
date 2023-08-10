@@ -1,4 +1,4 @@
-package com.celuveat.common.log.context;
+package com.celuveat.common.log.request;
 
 import java.util.UUID;
 

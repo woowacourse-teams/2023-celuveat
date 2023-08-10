@@ -1,4 +1,4 @@
-package com.celuveat.common.log.context;
+package com.celuveat.common.log.request;
 
 public class AuthenticatedLogId extends RequestLogId {
 
