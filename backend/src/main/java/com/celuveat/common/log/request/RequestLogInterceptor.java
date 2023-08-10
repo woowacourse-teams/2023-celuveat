@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class RequestLogInterceptor implements HandlerInterceptor {
 
     private static final int QUERY_COUNT_WARNING_STANDARD = 5;
+    private static final int TOTAL_TIME_WARNING_STANDARD_MS = 2500;
 
     private final QueryCounter queryCounter;
     private final LogContextHolder logContextHolder;
@@ -49,12 +50,21 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         LogContext logContext = logContextHolder.get();
         ResponseInfoLogData responseInfoLogData = new ResponseInfoLogData(logContext.logId(), response);
         responseInfoLogData.put("Query Count", queryCounter.count());
+        long totalTime = logContext.totalTakenTime();
+        responseInfoLogData.put("Total Time", totalTime + "ms");
         log.info("[Web Request END] : [\n{}]", responseInfoLogData);
         if (queryCounter.count() >= QUERY_COUNT_WARNING_STANDARD) {
             log.warn("[{}] : 쿼리가 {}번 이상 실행되었습니다. (총 {}번)",
                     logContext.logId(),
                     QUERY_COUNT_WARNING_STANDARD,
                     queryCounter.count()
+            );
+        }
+        if (totalTime >= TOTAL_TIME_WARNING_STANDARD_MS) {
+            log.warn("[{}] : 요청을 처리하는데 {}ms 이상 소요되었습니다. (총 {}ms)",
+                    logContext.logId(),
+                    TOTAL_TIME_WARNING_STANDARD_MS,
+                    totalTime
             );
         }
     }
