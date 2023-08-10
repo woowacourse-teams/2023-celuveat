@@ -10,4 +10,6 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
     Optional<RestaurantLike> findByRestaurantAndMember(Restaurant restaurant, OauthMember member);
 
     List<RestaurantLike> findAllByMember(OauthMember member);
+
+    Integer countByRestaurant(Restaurant restaurant);
 }

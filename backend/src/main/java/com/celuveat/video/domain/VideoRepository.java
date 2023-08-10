@@ -8,5 +8,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     List<Video> findAllByRestaurantIdIn(List<Long> restaurantIds);
 
+    List<Video> findAllByRestaurant(Restaurant restaurant);
+
     List<Video> findAllByRestaurantIn(List<Restaurant> restaurants);
 }

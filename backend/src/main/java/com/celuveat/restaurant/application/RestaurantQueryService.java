@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
@@ -16,6 +17,7 @@ import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
@@ -34,11 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RestaurantQueryService {
 
-    private final RestaurantQueryRepository restaurantQueryRepository;
-    private final RestaurantImageRepository restaurantImageRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
-    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final OauthMemberRepository oauthMemberRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantQueryRepository restaurantQueryRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
@@ -143,5 +146,25 @@ public class RestaurantQueryService {
             Restaurant restaurant
     ) {
         return RestaurantLikeQueryResponse.from(restaurant, celebs, images);
+    }
+
+    public RestaurantDetailQueryResponse findRestaurantDetailById(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
+        int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
+        List<Celeb> celebs = getCelebsByRestaurant(restaurant);
+        return RestaurantDetailQueryResponse.from(
+                restaurant,
+                celebs,
+                restaurantImages,
+                likeCount
+        );
+    }
+
+    private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
+        return videoRepository.findAllByRestaurant(restaurant)
+                .stream()
+                .map(Video::celeb)
+                .toList();
     }
 }
