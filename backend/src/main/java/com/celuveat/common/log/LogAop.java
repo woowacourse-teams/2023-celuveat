@@ -24,7 +24,7 @@ public class LogAop {
     public void serviceAnnotatedClass() {
     }
 
-    @Pointcut("execution(* com.celuveat..*Repository.*(..))")
+    @Pointcut("execution(* com.celuveat..*Repository+.*(..))")
     public void repositoryClass() {
     }
 
