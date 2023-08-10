@@ -1,26 +1,29 @@
-import { styled, css } from 'styled-components';
 import React from 'react';
+import { styled, css } from 'styled-components';
 
-import RestaurantCard from '../RestaurantCard';
+import { useQuery } from '@tanstack/react-query';
 import { FONT_SIZE } from '~/styles/common';
 
-import type { RestaurantData } from '~/@types/api.types';
+import RestaurantWishItem from '~/components/RestaurantWishItem/RestaurantWishItem';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import { userMSWInstance } from '~/api/User';
 
-interface RestaurantWishListProps {
-  restaurantData: RestaurantData[];
-  setHoveredId: React.Dispatch<React.SetStateAction<number>>;
-}
+import type { RestaurantData } from '~/@types/api.types';
 
-function RestaurantWishList({ restaurantData, setHoveredId }: RestaurantWishListProps) {
+function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
+
+  const { data: restaurantData } = useQuery<RestaurantData[]>({
+    queryKey: ['restaurants', 'like'],
+    queryFn: () => userMSWInstance.get('restaurants/like').then(response => response.data),
+  });
 
   return (
     <StyledRestaurantCardListContainer>
       {restaurantData?.length !== 0 ? (
         <StyledRestaurantCardList isMobile={isMobile}>
           {restaurantData?.map(({ celebs, ...restaurant }) => (
-            <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
+            <RestaurantWishItem restaurant={restaurant} celebs={celebs} />
           ))}
         </StyledRestaurantCardList>
       ) : (
@@ -37,10 +40,6 @@ function RestaurantWishList({ restaurantData, setHoveredId }: RestaurantWishList
 
 export default React.memo(RestaurantWishList);
 
-// const StyledSkeleton = styled.div`
-//   padding-bottom: 3.2rem;
-// `;
-
 const StyledRestaurantCardListContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,21 +52,16 @@ const StyledDescription = styled.div`
   font-size: ${FONT_SIZE.md};
 `;
 
-// const StyledCardListHeader = styled.p`
-//   font-size: ${FONT_SIZE.md};
-//   font-weight: 700;
-// `;
-
 const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
   display: grid;
   gap: 4rem 2.4rem;
 
   height: 100%;
 
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
   @media screen and (width <= 1240px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   ${({ isMobile }) =>
