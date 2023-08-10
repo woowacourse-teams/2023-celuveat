@@ -9,7 +9,7 @@ public class AuthenticatedLogId extends RequestLogId {
     }
 
     @Override
-    protected String requestLogId() {
-        return "Member ID = " + memberId;
+    public String logId() {
+        return memberId + "(memberId)";
     }
 }

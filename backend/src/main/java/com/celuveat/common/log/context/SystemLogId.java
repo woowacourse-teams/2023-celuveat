@@ -16,6 +16,6 @@ public class SystemLogId implements LogId {
 
     @Override
     public String logId() {
-        return "System ID = "+id;
+        return id + "(system)";
     }
 }

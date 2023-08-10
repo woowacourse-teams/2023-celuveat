@@ -1,6 +1,6 @@
 package com.celuveat.common.config;
 
-import com.celuveat.common.log.LogInterceptor;
+import com.celuveat.common.log.RequestLogInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,11 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class LogConfig implements WebMvcConfigurer {
 
-    private final LogInterceptor logInterceptor;
+    private final RequestLogInterceptor requestLogInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(logInterceptor)
+        registry.addInterceptor(requestLogInterceptor)
                 .addPathPatterns("/**");
     }
 }

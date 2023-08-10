@@ -15,7 +15,7 @@ public class AnonymousLogId extends RequestLogId {
     }
 
     @Override
-    protected String requestLogId() {
-        return "Anonymous ID = " + id;
+    public String logId() {
+        return id + "(anonymous)";
     }
 }

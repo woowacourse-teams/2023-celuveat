@@ -14,11 +14,4 @@ public abstract class RequestLogId implements LogId {
         }
         return new AuthenticatedLogId(session.getAttribute(JSESSION_ID));
     }
-
-    @Override
-    public String logId() {
-        return "Web Request - " + requestLogId();
-    }
-
-    protected abstract String requestLogId();
 }

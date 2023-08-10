@@ -48,7 +48,7 @@ public class Logger {
     }
 
     private String formattedLogInfo(String prefix) {
-        return "%26s".formatted(prefix);
+        return "%19s".formatted(prefix);
     }
 
     private String formattedClassAndMethod(String prefix, String className, String methodName) {
