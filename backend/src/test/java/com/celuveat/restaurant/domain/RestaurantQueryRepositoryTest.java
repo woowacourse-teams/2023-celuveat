@@ -349,15 +349,12 @@ class RestaurantQueryRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 100, 1000, 3000, 5000})
+    @ValueSource(ints = {10, 100, 1000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
-        // given
-        Restaurant restaurant = 국민연금_구내식당;
-
         // when
         Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistanceNearBy(
                 specificDistance,
-                restaurant,
+                국민연금_구내식당,
                 PageRequest.of(0, 4)
         );
 
@@ -365,8 +362,5 @@ class RestaurantQueryRepositoryTest {
         assertThat(result.getContent())
                 .extracting("distance", Double.class)
                 .allMatch(distance -> distance <= specificDistance);
-        assertThat(result.getContent())
-                .extracting("name", String.class)
-                .doesNotContain(restaurant.name());
     }
 }

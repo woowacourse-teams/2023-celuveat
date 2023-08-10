@@ -89,8 +89,8 @@ public class RestaurantQueryRepository {
             FROM Restaurant r
             """;
 
-    private static final String WHERE_MIN_OR_EQUAL_DISTANCE_AND_NOT_SAME_RESTAURANT = """
-            WHERE %s <= %d AND id != %d
+    private static final String WHERE_MIN_OR_EQUAL_DISTANCE = """
+            WHERE %s <= %d
             """;
 
     private static final String COUNT_QUERY_NEARBY_DISTANCE = """
@@ -191,7 +191,7 @@ public class RestaurantQueryRepository {
             Pageable pageable
     ) {
         String dist = getDistanceColumn(restaurant.latitude(), restaurant.longitude());
-        String whereQuery = WHERE_MIN_OR_EQUAL_DISTANCE_AND_NOT_SAME_RESTAURANT.formatted(dist, distance, restaurant.id());
+        String whereQuery = WHERE_MIN_OR_EQUAL_DISTANCE.formatted(dist, distance);
         List<RestaurantWithDistance> result = em.createQuery(
                         SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE.formatted(dist)
                                 + whereQuery

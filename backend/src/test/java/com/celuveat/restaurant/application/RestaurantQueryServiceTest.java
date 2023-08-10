@@ -449,7 +449,7 @@ class RestaurantQueryServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 50, 100, 500, 1000, 2000, 3000, 5000})
+    @ValueSource(ints = {10, 50, 100, 500, 1000, 2000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // given
         RestaurantQueryResponse restaurant = seed.get(0);

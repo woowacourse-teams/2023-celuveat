@@ -21,6 +21,7 @@ import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -180,12 +182,26 @@ public class RestaurantQueryService {
             long restaurantId,
             Pageable pageable
     ) {
-        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        Restaurant specificRestaurant = restaurantRepository.getById(restaurantId);
         Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistanceNearBy(
                 distance,
-                restaurant,
+                specificRestaurant,
                 pageable
         );
-        return toRestaurantQueryResponsesPage(pageable, restaurantsWithDistance);
+        Page<RestaurantWithDistance> result = removeSpecificRestaurant(pageable, restaurantsWithDistance, specificRestaurant);
+        return toRestaurantQueryResponsesPage(pageable, result);
+    }
+
+    private Page<RestaurantWithDistance> removeSpecificRestaurant(
+            Pageable pageable,
+            Page<RestaurantWithDistance> restaurantsWithDistance,
+            Restaurant restaurant
+    ) {
+        List<RestaurantWithDistance> newContent = new ArrayList<>(restaurantsWithDistance.getContent());
+        newContent.stream()
+                .filter(restaurantWithDistance -> restaurantWithDistance.name().equals(restaurant.name()))
+                .findFirst()
+                .ifPresent(newContent::remove);
+        return PageableExecutionUtils.getPage(newContent, pageable, restaurantsWithDistance::getTotalElements);
     }
 }
