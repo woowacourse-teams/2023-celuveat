@@ -23,6 +23,10 @@ public class ResponseInfoLogData {
         params.put("Body", parseBody(response));
     }
 
+    public void put(String key, Object value) {
+        params.put(key, value);
+    }
+
     public String parseHeaders(HttpServletResponse response) {
         Collection<String> headerNames = response.getHeaderNames();
         return headerNames.stream().map(header -> "\t\t[%s] = [%s]".formatted(header, response.getHeaders(header)))

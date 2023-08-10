@@ -35,6 +35,10 @@ public class RequestInfoLogData {
         params.put("Body", parseBody(request));
     }
 
+    public void put(String key, Object value) {
+        params.put(key, value);
+    }
+
     public String parseHeaders(HttpServletRequest request) {
         Enumeration<String> parameterNames = request.getHeaderNames();
         Stream<String> parameterStream = StreamSupport.stream(
