@@ -1,5 +1,6 @@
-package com.celuveat.common.log.context;
+package com.celuveat.common.log.request;
 
+import com.celuveat.common.log.context.RequestLogId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
