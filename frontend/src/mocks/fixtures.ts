@@ -1,4 +1,4 @@
-import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import type { RestaurantListData } from '~/@types/api.types';
 
 export let restaurantListData: RestaurantListData = {
   content: [
@@ -156,5 +156,3 @@ export let restaurantListData: RestaurantListData = {
   totalElementsCount: 5,
   currentElementsCount: 5,
 };
-
-export let restaurantWishList: RestaurantData[] = [];
