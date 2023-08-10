@@ -8,6 +8,7 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 import com.celuveat.common.log.request.messagebody.MessageBodyReader;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,9 +40,13 @@ public class RequestInfoLogData {
         Stream<String> parameterStream = StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(parameterNames.asIterator(), Spliterator.ORDERED), false
         );
-        return parameterStream.map(header -> "\t\t[%s] = [%s]".formatted(header, request.getHeaders(header)))
+        return parameterStream.map(header -> "\t\t[%s] = [%s]".formatted(header, headers(request, header)))
                 .distinct()
                 .collect(Collectors.joining("\n", "\n", "\n\t"));
+    }
+
+    private static String headers(HttpServletRequest request, String header) {
+        return String.join(", ", Collections.list(request.getHeaders(header)));
     }
 
     public String parseParams(HttpServletRequest request) {
