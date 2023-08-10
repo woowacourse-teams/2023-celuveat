@@ -65,7 +65,7 @@ public class VideoAcceptanceSteps {
 
     public static List<VideoWithCelebQueryResponse> 영상_조회_예상_응답(List<Video> 영상들) {
         return 영상들.stream()
-                .map(VideoWithCelebQueryResponse::of)
+                .map(VideoAcceptanceSteps::toVideoWithCelebQueryResponse)
                 .toList();
     }
 
@@ -75,5 +75,18 @@ public class VideoAcceptanceSteps {
         assertThat(response.content())
                 .usingRecursiveComparison()
                 .isEqualTo(예상_응답);
+    }
+
+    private static VideoWithCelebQueryResponse toVideoWithCelebQueryResponse(Video video) {
+        Celeb celeb = video.celeb();
+        return new VideoWithCelebQueryResponse(
+                video.id(),
+                video.youtubeUrl(),
+                video.uploadDate(),
+                celeb.id(),
+                celeb.name(),
+                celeb.youtubeChannelName(),
+                celeb.profileImageUrl()
+        );
     }
 }

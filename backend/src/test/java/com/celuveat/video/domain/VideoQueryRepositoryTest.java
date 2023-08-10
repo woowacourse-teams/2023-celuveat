@@ -2,6 +2,7 @@ package com.celuveat.video.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
@@ -35,7 +36,7 @@ class VideoQueryRepositoryTest {
             // given
             List<Video> videos = seedData.insertVideoSeedData();
             List<VideoWithCelebQueryResponse> expected = videos.stream()
-                    .map(VideoWithCelebQueryResponse::of)
+                    .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
@@ -57,7 +58,7 @@ class VideoQueryRepositoryTest {
             Long expectedRestaurantId = 1L;
             List<VideoWithCelebQueryResponse> expected = videos.stream()
                     .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
-                    .map(VideoWithCelebQueryResponse::of)
+                    .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
@@ -79,7 +80,7 @@ class VideoQueryRepositoryTest {
             Long expectedCelebId = 1L;
             List<VideoWithCelebQueryResponse> expected = videos.stream()
                     .filter(video -> video.celeb().id().equals(expectedCelebId))
-                    .map(VideoWithCelebQueryResponse::of)
+                    .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
@@ -103,7 +104,7 @@ class VideoQueryRepositoryTest {
             List<VideoWithCelebQueryResponse> expected = videos.stream()
                     .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
                     .filter(video -> video.celeb().id().equals(expectedCelebId))
-                    .map(VideoWithCelebQueryResponse::of)
+                    .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
@@ -116,6 +117,19 @@ class VideoQueryRepositoryTest {
             assertThat(result.getContent())
                     .usingRecursiveComparison()
                     .isEqualTo(expected);
+        }
+
+        private VideoWithCelebQueryResponse toVideoWithCelebQueryResponse(Video video) {
+            Celeb celeb = video.celeb();
+            return new VideoWithCelebQueryResponse(
+                    video.id(),
+                    video.youtubeUrl(),
+                    video.uploadDate(),
+                    celeb.id(),
+                    celeb.name(),
+                    celeb.youtubeChannelName(),
+                    celeb.profileImageUrl()
+            );
         }
     }
 }
