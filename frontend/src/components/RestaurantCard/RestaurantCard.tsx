@@ -123,7 +123,7 @@ const LikeButton = styled.button`
   position: absolute;
   top: 12px;
   right: 12px;
-  z-index: 999;
+  z-index: 8;
 
   border: none;
   background-color: transparent;
