@@ -13,6 +13,11 @@ export interface GetRestaurantsQueryParams {
   page: number;
 }
 
+export interface GetRestaurantDetailQueryParams {
+  restaurantId: string;
+  celebId: string;
+}
+
 export const apiClient = axios.create({
   baseURL: `${process.env.BASE_URL}/api`,
   headers: {
@@ -30,5 +35,10 @@ export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => 
 
 export const getCelebs = async () => {
   const response = await apiClient.get<Celeb[]>('/celebs');
+  return response.data;
+};
+
+export const getRestaurantDetail = async (queryParams: GetRestaurantDetailQueryParams) => {
+  const response = await apiClient.get(`/restaurants/${queryParams.restaurantId}?celebId=${queryParams.celebId}`);
   return response.data;
 };
