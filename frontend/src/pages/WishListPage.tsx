@@ -23,18 +23,29 @@ function WishListPage() {
   }, []);
 
   return (
-    <>
-      <Header />
-      <StyledMobileLayout>
-        <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
-        <RestaurantWishList />
-      </StyledMobileLayout>
+    <StyledWishListPageWrapper>
+      <div>
+        <Header />
+        <StyledMobileLayout>
+          <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
+          <RestaurantWishList />
+        </StyledMobileLayout>
+      </div>
       <Footer />
-    </>
+    </StyledWishListPageWrapper>
   );
 }
 
 export default WishListPage;
+
+const StyledWishListPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 100dvh;
+`;
 
 const StyledMobileLayout = styled.div`
   display: flex;
