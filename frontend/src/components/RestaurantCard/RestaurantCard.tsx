@@ -30,13 +30,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
     window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
   };
 
-  const toggle: MouseEventHandler = e => {
-    e.stopPropagation();
-
-    toggleRestaurantLike();
-  };
-
-  const toggle: MouseEventHandler = e => {
+  const toggle: MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
 
     toggleRestaurantLike();
