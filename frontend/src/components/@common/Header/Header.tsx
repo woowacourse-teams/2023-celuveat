@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Wrapper } from '@googlemaps/react-wrapper';
 import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
@@ -9,6 +11,7 @@ import useTokenStore from '~/hooks/store/useTokenState';
 import useBooleanState from '~/hooks/useBooleanState';
 import { isEmptyString } from '~/utils/compare';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import SearchBar from '~/components/SearchBar';
 
 function Header() {
   const { isMobile } = useMediaQuery();
@@ -31,7 +34,12 @@ function Header() {
   return (
     <>
       <StyledHeader isMobile={isMobile}>
-        <Logo width={124} />
+        <Link to="/">
+          <Logo role="button" width={136} />
+        </Link>
+        <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
+          <SearchBar />
+        </Wrapper>
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal>
