@@ -198,7 +198,7 @@ function RestaurantDetail() {
             <StyledMapSection>
               <h5>위치 확인하기</h5>
               <div>
-                <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko">
+                <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
                   <MapContent
                     center={{ lat, lng }}
                     zoom={17}
