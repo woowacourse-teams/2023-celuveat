@@ -48,3 +48,12 @@ const colorChange = keyframes`
 export const paintSkeleton = css`
   animation: ${colorChange} 1s ease-in-out infinite alternate;
 `;
+
+export const hideScrollBar = css`
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;

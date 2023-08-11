@@ -14,21 +14,23 @@ import LoginModalContent from '~/components/LoginModalContent';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
-  celebs?: Celeb[];
+  celebs: Celeb[];
   size?: string;
   type?: 'list' | 'map';
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
-  const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
+  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
-  const openDetail = () => window.open(naverMapUrl, '_blank');
+  const onClick = () => {
+    window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+  };
 
-  const toggle: MouseEventHandler = e => {
+  const toggle: MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
 
     toggleRestaurantLike();
@@ -36,11 +38,11 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
   return (
     <>
-      <StyledContainer onClick={openDetail} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <StyledImageViewer>
           <ImageCarousel images={images} type={type} />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+            <Love width={20} fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
         <section>
@@ -67,7 +69,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
 export default RestaurantCard;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: start;
