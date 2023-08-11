@@ -38,6 +38,7 @@ public class RestaurantQueryRepository {
                 r.longitude,
                 r.phoneNumber,
                 r.naverMapUrl,
+                r.viewCount,
                 %s AS dist
             )
             FROM Restaurant r
@@ -72,6 +73,31 @@ public class RestaurantQueryRepository {
             ON v.restaurant = r
             JOIN Celeb c
             ON c = v.celeb
+            """;
+
+    private static final String SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE = """
+            SELECT new com.celuveat.restaurant.domain.dto.RestaurantWithDistance(
+                r.id,
+                r.name,
+                r.category,
+                r.roadAddress,
+                r.latitude,
+                r.longitude,
+                r.phoneNumber,
+                r.naverMapUrl,
+                r.viewCount,
+                %s AS dist
+            )
+            FROM Restaurant r
+            """;
+
+    private static final String WHERE_MIN_OR_EQUAL_DISTANCE = """
+            WHERE %s <= %d
+            """;
+
+    private static final String COUNT_QUERY_NEARBY_DISTANCE = """
+            SELECT count(r)
+            FROM Restaurant r
             """;
 
     private final EntityManager em;
@@ -159,5 +185,28 @@ public class RestaurantQueryRepository {
             Double lowLongitude,
             Double highLongitude
     ) {
+    }
+
+    public Page<RestaurantWithDistance> getRestaurantsWithDistanceNearBy(
+            int distance,
+            Restaurant restaurant,
+            Pageable pageable
+    ) {
+        String dist = getDistanceColumn(restaurant.latitude(), restaurant.longitude());
+        String whereQuery = WHERE_MIN_OR_EQUAL_DISTANCE.formatted(dist, distance);
+        List<RestaurantWithDistance> result = em.createQuery(
+                        SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE.formatted(dist)
+                                + whereQuery
+                                + ORDER_BY_DISTANCE_ASC,
+                        RestaurantWithDistance.class
+                )
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+        return PageableExecutionUtils.getPage(
+                result,
+                pageable,
+                () -> (Long) em.createQuery(COUNT_QUERY_NEARBY_DISTANCE + whereQuery).getSingleResult()
+        );
     }
 }

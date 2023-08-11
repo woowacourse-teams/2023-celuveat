@@ -1,7 +1,9 @@
 package com.celuveat.acceptance.common;
 
+import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.CelebRepository;
+import com.celuveat.restaurant.application.RestaurantService;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
@@ -33,11 +35,17 @@ public abstract class AcceptanceTest {
     protected OauthMemberRepository oauthMemberRepository;
     @Autowired
     protected RestaurantLikeRepository restaurantLikeRepository;
+    @Autowired
+    protected RestaurantService restaurantService;
     @LocalServerPort
     private int port;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+    }
+
+    protected void 멤버를_저장한다(OauthMember 멤버) {
+        oauthMemberRepository.save(멤버);
     }
 }

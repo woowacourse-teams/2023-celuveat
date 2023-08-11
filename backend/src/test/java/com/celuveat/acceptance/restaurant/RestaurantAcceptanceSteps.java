@@ -12,10 +12,12 @@ import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +81,16 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
+    public static void 조회_결과를_순서를_포함해서_검증한다(List<RestaurantQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
+        PageResponse<RestaurantQueryResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
+        });
+        assertThat(restaurantQueryResponse.content())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .usingRecursiveComparison()
+                .ignoringFields("distance")
+                .isEqualTo(예상_응답);
+    }
+
     public static List<RestaurantQueryResponse> 예상_응답(
             List<RestaurantQueryResponse> 전체_음식점,
             Object 셀럽_ID,
@@ -92,19 +104,111 @@ public class RestaurantAcceptanceSteps {
         String restaurantName = (String) 음식점_이름;
         LocationSearchCond locationSearchCond = (LocationSearchCond) 검색_영역;
         for (RestaurantQueryResponse restaurantQueryResponse : 전체_음식점) {
-            List<Long> list = restaurantQueryResponse.celebs()
+            List<Long> celebIds = restaurantQueryResponse.celebs()
                     .stream()
                     .map(CelebQueryResponse::id)
                     .toList();
 
             if (음식점_이름_조건(restaurantName, restaurantQueryResponse)
                     && 카테고리_조건(category, restaurantQueryResponse)
-                    && 셀럽_조건(celebId, list)
+                    && 셀럽_조건(celebId, celebIds)
                     && 영역_조건(locationSearchCond, restaurantQueryResponse)) {
                 예상_응답.add(restaurantQueryResponse);
             }
         }
         return 예상_응답;
+    }
+
+    public static List<RestaurantQueryResponse> 비회원_음식점_좋아요_조회수_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(0, createExpectedResponse(전체_음식점.get(0), 0, false, 2));
+        expected.set(1, createExpectedResponse(전체_음식점.get(1), 2, false, 2));
+        expected.set(3, createExpectedResponse(전체_음식점.get(3), 3, false, 4));
+        expected.set(4, createExpectedResponse(전체_음식점.get(4), 4, false, 2));
+        expected.set(5, createExpectedResponse(전체_음식점.get(5), 5, false, 1));
+        expected.set(6, createExpectedResponse(전체_음식점.get(6), 0, false, 3));
+        expected.set(8, createExpectedResponse(전체_음식점.get(8), 6, false, 3));
+        expected.set(9, createExpectedResponse(전체_음식점.get(9), 7, false, 1));
+        return expected;
+    }
+
+    public static List<RestaurantQueryResponse> 음식점_좋아요_조회수_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(0, createExpectedResponse(전체_음식점.get(0), 0, true, 2));
+        expected.set(1, createExpectedResponse(전체_음식점.get(1), 2, false, 2));
+        expected.set(3, createExpectedResponse(전체_음식점.get(3), 3, true, 4));
+        expected.set(4, createExpectedResponse(전체_음식점.get(4), 4, true, 2));
+        expected.set(5, createExpectedResponse(전체_음식점.get(5), 5, false, 1));
+        expected.set(6, createExpectedResponse(전체_음식점.get(6), 0, true, 3));
+        expected.set(8, createExpectedResponse(전체_음식점.get(8), 6, true, 3));
+        expected.set(9, createExpectedResponse(전체_음식점.get(9), 7, false, 1));
+        return expected;
+    }
+
+    private static RestaurantQueryResponse createExpectedResponse(
+            RestaurantQueryResponse restaurantQueryResponse,
+            int viewCountValue,
+            boolean isLiked,
+            int likeCountValue
+    ) {
+        return new RestaurantQueryResponse(
+                restaurantQueryResponse.id(),
+                restaurantQueryResponse.name(),
+                restaurantQueryResponse.category(),
+                restaurantQueryResponse.roadAddress(),
+                restaurantQueryResponse.latitude(),
+                restaurantQueryResponse.longitude(),
+                restaurantQueryResponse.phoneNumber(),
+                restaurantQueryResponse.naverMapUrl(),
+                restaurantQueryResponse.viewCount() + viewCountValue,
+                restaurantQueryResponse.distance(),
+                isLiked,
+                restaurantQueryResponse.likeCount() + likeCountValue,
+                restaurantQueryResponse.celebs(),
+                restaurantQueryResponse.images()
+        );
+    }
+
+    public static List<RestaurantQueryResponse> 셀럽필터_적용시_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>();
+        RestaurantQueryResponse 도기1호점 = createExpectedResponse(전체_음식점.get(3), 3, true, 4);
+        RestaurantQueryResponse 도기3호점 = createExpectedResponse(전체_음식점.get(5), 5, false, 1);
+        RestaurantQueryResponse 오도1호점 = createExpectedResponse(전체_음식점.get(6), 0, true, 3);
+        RestaurantQueryResponse 오도2호점 = createExpectedResponse(전체_음식점.get(7), 0, false, 0);
+        RestaurantQueryResponse 로이스1호점 = createExpectedResponse(전체_음식점.get(8), 6, true, 3);
+
+        expected.add(changeOrder(도기1호점, 0, 1, 0, 1));
+        expected.add(changeOrder(오도1호점, 0, 0, 0, 2));
+        expected.add(changeOrder(로이스1호점, 0, 2, 0, 0));
+        expected.add(changeOrder(도기3호점, 0, 1, 0, 1));
+        expected.add(changeOrder(오도2호점, 0, 0, 0, 0));
+        return expected;
+    }
+
+    public static RestaurantQueryResponse changeOrder(
+            RestaurantQueryResponse response,
+            int celebIndex1,
+            int celebIndex2,
+            int imageIndex1,
+            int imageIndex2
+    ) {
+        List<CelebQueryResponse> celebs = new ArrayList<>(response.celebs());
+        List<RestaurantImageQueryResponse> images = new ArrayList<>(response.images());
+        Collections.swap(celebs, celebIndex1, celebIndex2);
+        Collections.swap(images, imageIndex1, imageIndex2);
+        return RestaurantQueryResponse.from(response, celebs, images);
+    }
+
+    public static List<Long> 음식점_아이디를_가져온다(RestaurantQueryResponse... 음식점들) {
+        return Arrays.stream(음식점들)
+                .map(RestaurantQueryResponse::id)
+                .toList();
     }
 
     private static boolean 음식점_이름_조건(String restaurantName, RestaurantQueryResponse restaurantQueryResponse) {
@@ -241,5 +345,38 @@ public class RestaurantAcceptanceSteps {
         RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
         });
         assertThat(response.viewCount()).isEqualTo(예상_조회수);
+    }
+
+
+    public static ExtractableResponse<Response> 정보_수정_제안_요청(Long 음식점_ID, String... 수정_내용들) {
+        return given()
+                .body(new SuggestCorrectionRequest(Arrays.asList(수정_내용들)))
+                .post("/api/restaurants/{id}/correction", 음식점_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리) {
+        return given()
+                .queryParams("distance", 요청_거리)
+                .when().get("/api/restaurants/{restaurantId}/nearby", 특정_음식점_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다(
+            ExtractableResponse<Response> 요청_결과,
+            int 요청_거리,
+            long 기준_음식점_ID
+    ) {
+        PageResponse<RestaurantQueryResponse> pageResponse = 요청_결과.as(new TypeRef<>() {
+        });
+        assertThat(pageResponse.content())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .extracting(RestaurantQueryResponse::distance)
+                .allMatch(distance -> distance <= 요청_거리);
+        assertThat(pageResponse.content())
+                .extracting(RestaurantQueryResponse::id)
+                .doesNotContain(기준_음식점_ID);
     }
 }

@@ -9,7 +9,7 @@ public class OauthMemberFixture {
 
     public static OauthMember 멤버(String name) {
         return OauthMember.builder()
-                .oauthId(new OauthId("123", KAKAO))
+                .oauthId(new OauthId(name, KAKAO))
                 .nickname(name)
                 .profileImageUrl("abc")
                 .build();

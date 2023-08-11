@@ -42,6 +42,13 @@ public class AcceptanceSteps {
                 .contentType(JSON);
     }
 
+    public static void 응답_상태를_검증한다(
+            ExtractableResponse<Response> 응답,
+            HttpStatus 예상_상태
+    ) {
+        assertThat(응답.statusCode()).isEqualTo(예상_상태.value());
+    }
+
     public static void 발생한_예외를_검증한다(
             ExtractableResponse<Response> 응답,
             BaseExceptionType 예외_타입

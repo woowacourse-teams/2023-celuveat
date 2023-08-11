@@ -7,16 +7,15 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
 import static com.celuveat.video.fixture.VideoFixture.영상;
 
-import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
-import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,6 @@ public class SeedData {
     private final CelebRepository celebRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
-    private final OauthMemberRepository oauthMemberRepository;
     private final VideoRepository videoRepository;
 
     public List<RestaurantQueryResponse> insertSeedData() {
@@ -76,18 +73,18 @@ public class SeedData {
                 음식점사진("말랑3호점 - 2", 말랑3호점, "말랑"),
                 음식점사진("말랑3호점 - 3", 말랑3호점, "말랑"),
                 음식점사진("도기1호점 - 1", 도기1호점, "도기"),
-                음식점사진("도기1호점 - 2", 도기1호점, "도기"),
+                음식점사진("도기1호점 - 2", 도기1호점, "오도"),
                 음식점사진("도기2호점 - 1", 도기2호점, "도기"),
                 음식점사진("도기2호점 - 2", 도기2호점, "도기"),
                 음식점사진("도기3호점 - 1", 도기3호점, "도기"),
-                음식점사진("도기3호점 - 2", 도기3호점, "도기"),
-                음식점사진("오도1호점 - 1", 오도1호점, "오도"),
-                음식점사진("오도1호점 - 2", 오도1호점, "오도"),
+                음식점사진("도기3호점 - 2", 도기3호점, "오도"),
+                음식점사진("오도1호점 - 1", 오도1호점, "말랑"),
+                음식점사진("오도1호점 - 2", 오도1호점, "도기"),
                 음식점사진("오도1호점 - 3", 오도1호점, "오도"),
                 음식점사진("오도2호점 - 1", 오도2호점, "오도"),
                 음식점사진("오도2호점 - 2", 오도2호점, "오도"),
                 음식점사진("로이스1호점 - 1", 로이스1호점, "로이스"),
-                음식점사진("로이스2호점 - 1", 로이스2호점, "로이스"),
+                음식점사진("로이스2호점 - 1", 로이스2호점, "오도"),
                 음식점사진("로이스2호점 - 2", 로이스2호점, "로이스")
         ));
         RestaurantImage 말랑1호점_1 = images.get(0);
@@ -135,34 +132,34 @@ public class SeedData {
 
         return List.of(
                 RestaurantQueryResponse.from(
-                        withDistance(말랑1호점, 12.3), List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2)
+                        withDistance(말랑1호점, 12.3), List.of(말랑, 도기), List.of(말랑1호점_1, 말랑1호점_2), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(말랑2호점, 9.3), List.of(말랑), List.of(말랑2호점_1)
+                        withDistance(말랑2호점, 9.3), List.of(말랑), List.of(말랑2호점_1), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(말랑3호점, 4.2), List.of(말랑), List.of(말랑3호점_1, 말랑3호점_2, 말랑3호점_3)
+                        withDistance(말랑3호점, 4.2), List.of(말랑), List.of(말랑3호점_1, 말랑3호점_2, 말랑3호점_3), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(도기1호점, 121.3), List.of(도기, 오도, 로이스), List.of(도기1호점_1, 도기1호점_2)
+                        withDistance(도기1호점, 121.3), List.of(도기, 오도, 로이스), List.of(도기1호점_1, 도기1호점_2), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(도기2호점, 2.3), List.of(도기), List.of(도기2호점_1, 도기2호점_2)
+                        withDistance(도기2호점, 2.3), List.of(도기), List.of(도기2호점_1, 도기2호점_2), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(도기3호점, 12.1152), List.of(도기, 오도), List.of(도기3호점_1, 도기3호점_2)
+                        withDistance(도기3호점, 12.1152), List.of(도기, 오도), List.of(도기3호점_1, 도기3호점_2), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(오도1호점, 2.34), List.of(오도, 로이스, 말랑), List.of(오도1호점_1, 오도1호점_2, 오도1호점_3)
+                        withDistance(오도1호점, 2.34), List.of(오도, 로이스, 말랑), List.of(오도1호점_1, 오도1호점_2, 오도1호점_3), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(오도2호점, 1123.3), List.of(오도), List.of(오도2호점_1, 오도2호점_2)
+                        withDistance(오도2호점, 1123.3), List.of(오도), List.of(오도2호점_1, 오도2호점_2), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(로이스1호점, 11112.3), List.of(말랑, 도기, 오도, 로이스), List.of(로이스1호점_1)
+                        withDistance(로이스1호점, 11112.3), List.of(말랑, 도기, 오도, 로이스), List.of(로이스1호점_1), false, 0
                 ),
                 RestaurantQueryResponse.from(
-                        withDistance(로이스2호점, 1852.4), List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2)
+                        withDistance(로이스2호점, 1852.4), List.of(로이스), List.of(로이스2호점_1, 로이스2호점_2), false, 0
                 )
         );
     }
@@ -177,7 +174,25 @@ public class SeedData {
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
                 distance
+        );
+    }
+
+    public List<Video> insertVideoSeedData() {
+        Restaurant 로이스1호점 = restaurantRepository.save(음식점("로이스1호점"));
+        Restaurant 로이스2호점 = restaurantRepository.save(음식점("로이스2호점"));
+        Celeb 로이스 = 셀럽("로이스");
+        Celeb 도기 = 셀럽("도기");
+        Celeb 말랑 = 셀럽("말랑");
+        Celeb 오도 = 셀럽("오도");
+        celebRepository.saveAll(List.of(로이스, 도기, 말랑, 오도));
+        return videoRepository.saveAll(List.of(
+                        영상("ww.comA", 로이스1호점, 로이스),
+                        영상("ww.comB", 로이스1호점, 도기),
+                        영상("ww.comC", 로이스2호점, 말랑),
+                        영상("ww.comD", 로이스2호점, 오도)
+                )
         );
     }
 }
