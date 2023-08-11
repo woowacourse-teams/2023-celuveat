@@ -1,7 +1,7 @@
 /* eslint-disable no-new */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
-import { Coordinate } from '~/@types/map.types';
+import type { Coordinate } from '~/@types/map.types';
 
 interface UseDrawMapProps {
   zoom: number;
