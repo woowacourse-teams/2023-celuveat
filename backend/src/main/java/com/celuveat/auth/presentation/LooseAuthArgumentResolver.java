@@ -1,7 +1,7 @@
 package com.celuveat.auth.presentation;
 
 import static com.celuveat.auth.exception.AuthExceptionType.REQUEST_EMPTY;
-import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
+import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.exception.AuthException;
 import com.celuveat.common.auth.LooseAuth;

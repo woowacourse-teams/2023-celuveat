@@ -1,6 +1,6 @@
 package com.celuveat.auth.presentation;
 
-import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
+import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthServerType;

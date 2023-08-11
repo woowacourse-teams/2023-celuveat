@@ -41,7 +41,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/api/restaurants")
-                .then().log().all()
+                .then()
                 .extract();
     }
 
@@ -262,7 +262,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/api/restaurants/{restaurantId}", restaurantId)
-                .then().log().all()
+                .then()
                 .extract();
     }
 

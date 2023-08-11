@@ -25,7 +25,7 @@ public class CelebAcceptanceSteps {
         return given()
                 .when()
                 .get("/api/celebs")
-                .then().log().all()
+                .then()
                 .extract();
     }
 
