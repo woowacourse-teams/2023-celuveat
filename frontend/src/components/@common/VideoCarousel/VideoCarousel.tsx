@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
 import { BORDER_RADIUS, hideScrollBar } from '~/styles/common';
+import type { Video } from '~/@types/api.types';
 
 interface VideoCarouselProps {
   title: string;
-  videos: { videoId: number; youtubeUrl: string; uploadDate: string; name: string }[];
+  videos: Video[];
 }
 
 function VideoCarousel({ title, videos }: VideoCarouselProps) {
@@ -11,11 +12,11 @@ function VideoCarousel({ title, videos }: VideoCarouselProps) {
     <StyledVideoCarouselContainer>
       <h5>{title}</h5>
       <ul>
-        {videos.map(({ name, youtubeUrl }) => (
+        {videos.map(({ name, youtubeVideoKey }) => (
           <li>
             <StyledVideo
               title={`${name}의 영상`}
-              src={youtubeUrl}
+              src={`https://www.youtube.com/embed/${youtubeVideoKey}`}
               allow="encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

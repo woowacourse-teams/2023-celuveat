@@ -22,7 +22,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   const onMouseLeave = () => setHoveredId(null);
 
   const onClick = () => {
-    window.open(`restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+    window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
   };
 
   return (
