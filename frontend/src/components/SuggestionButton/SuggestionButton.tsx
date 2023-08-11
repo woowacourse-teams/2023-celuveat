@@ -19,7 +19,7 @@ function SuggestionButton() {
   const { params } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
-  const [textareaValue, setTextareaValue] = useState<string>('');
+  const [textareaValue, setTextareaValue] = useState('');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -29,8 +29,9 @@ function SuggestionButton() {
   };
 
   const clickCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) setCheckedItems(prev => [...prev, e.target.value]);
-    if (!e.target.checked) setCheckedItems(prev => prev.filter(item => item !== e.target.value));
+    const { checked, value } = e.target;
+
+    setCheckedItems(prev => (checked ? [...prev, value] : prev.filter(item => item !== value)));
   };
 
   const onChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
