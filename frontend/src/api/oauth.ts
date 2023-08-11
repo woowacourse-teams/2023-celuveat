@@ -10,7 +10,7 @@ const getAccessToken = async (type: Oauth, code: string) => {
 };
 
 export const getLogout = async (type: Oauth) => {
-  const response = await userInstance.get(`${BASE_URL}/api/oauth/logout/${type}`);
+  const response = await userInstance.post(`${BASE_URL}/api/oauth/logout/${type}`);
 
   return response.data;
 };
