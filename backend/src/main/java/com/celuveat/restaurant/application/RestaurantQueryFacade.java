@@ -1,6 +1,5 @@
 package com.celuveat.restaurant.application;
 
-import com.celuveat.common.optional.CustomOptional;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
@@ -10,6 +9,7 @@ import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearch
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,18 +70,19 @@ public class RestaurantQueryFacade {
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
             Pageable pageable,
-            CustomOptional<Long> memberId
+            Optional<Long> memberId
     ) {
-        Page<RestaurantQueryResponse> result = memberId.mapIfPresentOrElse(
+        Page<RestaurantQueryResponse> restaurantQueryResponse = memberId.map(
                 id -> restaurantQueryService.findAllWithMemberId(
                         restaurantSearchCond,
                         locationSearchCond,
                         pageable,
-                        id),
-                () -> restaurantQueryService.findAll(restaurantSearchCond, locationSearchCond, pageable)
-        );
-        return CustomOptional.ofNullable(restaurantSearchCond.celebId())
-                .mapIfPresentOrElse(celebId -> relocateByCelebId(result, celebId), () -> result);
+                        id
+                )).orElseGet(() -> restaurantQueryService.findAll(restaurantSearchCond, locationSearchCond, pageable));
+
+        return Optional.ofNullable(restaurantSearchCond.celebId())
+                .map(celebId -> relocateByCelebId(restaurantQueryResponse, celebId))
+                .orElse(restaurantQueryResponse);
     }
 
     private Page<RestaurantQueryResponse> relocateByCelebId(Page<RestaurantQueryResponse> result, Long celebId) {
