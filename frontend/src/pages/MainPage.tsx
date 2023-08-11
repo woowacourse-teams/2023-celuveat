@@ -11,7 +11,7 @@ import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import BottomSheet from '~/components/@common/BottomSheet';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import { getCelebs, getMSWRestaurants } from '~/api';
+import { getCelebs, getRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
@@ -36,7 +36,7 @@ function MainPage() {
     refetch,
   } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
-    queryFn: () => getMSWRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
   const celebOptionsMutation = useMutation({
