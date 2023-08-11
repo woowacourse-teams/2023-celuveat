@@ -24,3 +24,21 @@ export interface RestaurantDetailData extends RestaurantData {
   likeCount: number;
   viewCount: number;
 }
+
+export interface Video {
+  videoId: number;
+  youtubeVideoKey: string;
+  uploadDate: string;
+  celebId: number;
+  name: string;
+  youtubeChannelName: string;
+  profileImageUrl: string;
+}
+export interface VideoList {
+  content: Video[];
+  totalPage: number;
+  currentPage: number;
+  pageSize: number;
+  totalElementsCount: number;
+  currentElementsCount: number;
+}
