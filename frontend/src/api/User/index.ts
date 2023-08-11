@@ -36,7 +36,7 @@ const axiosUserApi2 = (options?: Record<string, string>) => {
     baseURL: `${process.env.BASE_URL}/api`,
     headers: {
       'Content-type': 'application/json',
-      Cookies: `JSESSIONID=${token}`,
+      Cookie: `JSESSIONID=${token}`,
       ...options,
     },
   });
