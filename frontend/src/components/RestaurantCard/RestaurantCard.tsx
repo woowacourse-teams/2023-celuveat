@@ -36,6 +36,12 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
     toggleRestaurantLike();
   };
 
+  const toggle: MouseEventHandler = e => {
+    e.stopPropagation();
+
+    toggleRestaurantLike();
+  };
+
   return (
     <>
       <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
