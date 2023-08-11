@@ -3,7 +3,9 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_조회_요청;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽들만_추출_한다;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름의_셀럽을_찾는다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.근처_음식점_조회_요청;
@@ -14,6 +16,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_실패_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다;
@@ -102,6 +105,22 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다(요청_결과, 요청_거리, 음식점_ID);
+        }
+    }
+
+    @Nested
+    class 정보_수정_제안 {
+
+        @Test
+        void 정보_수정_제안_요청을_보낸다() {
+            // given
+            var 음식점_ID = seedData.insertSeedData().get(0).id();
+
+            // when
+            var 응답 = 정보_수정_제안_요청(음식점_ID, "음식점 정보가 이상해요", "일 똑바로 하세요 셀럽잇");
+
+            // then
+            응답_상태를_검증한다(응답, 생성됨);
         }
     }
 
