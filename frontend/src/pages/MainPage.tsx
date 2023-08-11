@@ -14,21 +14,21 @@ import RestaurantCardList from '~/components/RestaurantCardList';
 import { getCelebs, getMSWRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
-import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
+import useMapState from '~/hooks/store/useMapState';
 
 function MainPage() {
   const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
   const { isMobile } = useMediaQuery();
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [currentPage, setCurrentPage] = useState(0);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
+  const boundary = useMapState(state => state.boundary);
 
   const {
     data: restaurantListData,
@@ -82,7 +82,6 @@ function MainPage() {
         <StyledMobileLayout>
           <StyledLayer isMobile={isMobile}>
             <Map
-              setBoundary={setBoundary}
               setCurrentPage={setCurrentPage}
               data={restaurantListData?.content}
               toggleMapExpand={toggleMapExpand}
@@ -113,7 +112,6 @@ function MainPage() {
             </StyledLeftSide>
             <StyledRightSide>
               <Map
-                setBoundary={setBoundary}
                 setCurrentPage={setCurrentPage}
                 data={restaurantListData?.content}
                 toggleMapExpand={toggleMapExpand}
