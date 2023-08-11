@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from '~/api/User/HttpUserInterceptor';
 
 import getToken from '~/utils/getToken';
 
-const axiosUserApi = (url: string, options?: Record<string, string>) => {
+const axiosUserApi = (options?: Record<string, string>) => {
   const instance = axios.create({
     baseURL: `${process.env.BASE_URL}/api`,
     headers: {
@@ -16,7 +16,7 @@ const axiosUserApi = (url: string, options?: Record<string, string>) => {
   return instance;
 };
 
-const mswUserApi = (url: string, options?: Record<string, string>) => {
+const mswUserApi = (options?: Record<string, string>) => {
   const token = getToken();
   const instance = axios.create({
     baseURL: '/',
@@ -30,6 +30,6 @@ const mswUserApi = (url: string, options?: Record<string, string>) => {
   return instance;
 };
 
-export const userInstance = setupInterceptorsTo(axiosUserApi(`${process.env.BASE_URL}/api`));
+export const userInstance = setupInterceptorsTo(axiosUserApi());
 
-export const userMSWInstance = setupInterceptorsTo(mswUserApi('/'));
+export const userMSWInstance = setupInterceptorsTo(mswUserApi());
