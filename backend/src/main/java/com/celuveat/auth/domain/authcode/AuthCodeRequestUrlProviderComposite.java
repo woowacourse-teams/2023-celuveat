@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthCodeRequestUrlProviderComposite {
 
-    private final Map<OauthServerType, AuthCodeRequestUrlProvider> mapping;
+    private final Map<OauthServerType, AuthCodeRequestUrlProvider> providers;
 
     public AuthCodeRequestUrlProviderComposite(Set<AuthCodeRequestUrlProvider> providers) {
-        mapping = providers.stream()
+        this.providers = providers.stream()
                 .collect(toMap(
                         AuthCodeRequestUrlProvider::supportServer,
                         identity()
@@ -28,8 +28,8 @@ public class AuthCodeRequestUrlProviderComposite {
         return getProvider(oauthServerType).provide();
     }
 
-    public AuthCodeRequestUrlProvider getProvider(OauthServerType oauthServerType) {
-        return Optional.ofNullable(mapping.get(oauthServerType))
+    private AuthCodeRequestUrlProvider getProvider(OauthServerType oauthServerType) {
+        return Optional.ofNullable(providers.get(oauthServerType))
                 .orElseThrow(() -> new AuthException(UNSUPPORTED_OAUTH_TYPE));
     }
 }

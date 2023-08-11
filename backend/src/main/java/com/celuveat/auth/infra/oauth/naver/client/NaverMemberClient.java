@@ -1,9 +1,9 @@
-package com.celuveat.auth.infra.oauth.naver;
+package com.celuveat.auth.infra.oauth.naver.client;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.infra.oauth.naver.client.NaverApiClient;
+import com.celuveat.auth.infra.oauth.naver.NaverOauthConfig;
 import com.celuveat.auth.infra.oauth.naver.dto.NaverMemberResponse;
 import com.celuveat.auth.infra.oauth.naver.dto.NaverToken;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +38,9 @@ public class NaverMemberClient implements OauthMemberClient {
         params.add("code", authCode);
         params.add("state", naverOauthConfig.state());
         return params;
+    }
+
+    @Override
+    public void logout(String oauthServerId) {
     }
 }

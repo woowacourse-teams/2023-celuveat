@@ -3,9 +3,11 @@ package com.celuveat.auth.infra.oauth.kakao.client;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
+import com.celuveat.auth.infra.oauth.kakao.dto.KakaoLogoutResponse;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoMemberResponse;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoToken;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
@@ -17,5 +19,11 @@ public interface KakaoApiClient {
     KakaoToken fetchToken(@RequestParam MultiValueMap<String, String> params);
 
     @GetExchange("https://kapi.kakao.com/v2/user/me")
-    KakaoMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String bearerToken);
+    KakaoMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String accessToken);
+
+    @PostExchange(url = "https://kapi.kakao.com/v1/user/logout")
+    KakaoLogoutResponse logoutMember(
+            @RequestHeader(name = AUTHORIZATION) String adminKey,
+            @RequestBody MultiValueMap<String, String> params
+    );
 }

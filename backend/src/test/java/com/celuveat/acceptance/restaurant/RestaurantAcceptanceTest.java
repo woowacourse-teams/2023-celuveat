@@ -18,9 +18,9 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_실패_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_아이디를_가져온다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_조회수_예상_응답;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_순서를_포함해서_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
@@ -37,7 +37,7 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.presentation.SessionResponse;
+import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import io.restassured.response.ExtractableResponse;

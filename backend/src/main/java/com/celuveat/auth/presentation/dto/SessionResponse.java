@@ -1,4 +1,4 @@
-package com.celuveat.auth.presentation;
+package com.celuveat.auth.presentation.dto;
 
 public record SessionResponse(
         String jsessionId

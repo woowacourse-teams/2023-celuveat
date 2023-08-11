@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -28,10 +29,18 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         LogId logId = LogId.fromRequest(request);
         LogContext logContext = new LogContext(logId);
         logContextHolder.setLogContext(logContext);
+        if (isPreflight(request)) {
+            log.info("[Preflight Request] : [\n{}]", logId);
+            return true;
+        }
         RequestInfoLogData requestInfoLogData = new RequestInfoLogData(logContext.logId(), request);
         requestInfoLogData.put("Controller Method", handlerMethod((HandlerMethod) handler));
         log.info("[Web Request START] : [\n{}]", requestInfoLogData);
         return true;
+    }
+
+    private boolean isPreflight(HttpServletRequest request) {
+        return request.getMethod().equals(HttpMethod.OPTIONS.name());
     }
 
     private String handlerMethod(HandlerMethod handler) {
@@ -48,6 +57,10 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Exception ex
     ) {
         LogContext logContext = logContextHolder.get();
+        if (isPreflight(request)) {
+            log.info("[Preflight Request] : [\n{}]", logContext.logId());
+            return;
+        }
         ResponseInfoLogData responseInfoLogData = new ResponseInfoLogData(logContext.logId(), response);
         responseInfoLogData.put("Query Count", queryCounter.count());
         long totalTime = logContext.totalTakenTime();
