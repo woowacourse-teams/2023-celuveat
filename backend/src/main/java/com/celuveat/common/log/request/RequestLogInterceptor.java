@@ -4,6 +4,7 @@ import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
 import com.celuveat.common.log.context.LogId;
 import com.celuveat.common.log.query.QueryCounter;
+import com.celuveat.common.util.CorsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,10 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        LogId logId = LogId.fromRequest(request);
-        LogContext logContext = new LogContext(logId);
+        if (CorsUtil.isPreflightRequest(request)) {
+            return true;
+        }
+        LogContext logContext = new LogContext(LogId.fromRequest(request));
         logContextHolder.setLogContext(logContext);
         if (isPreflight(request)) {
             log.info("[Preflight Request] : [\n{}]", logId);
@@ -56,16 +59,23 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Object handler,
             Exception ex
     ) {
+        if (CorsUtil.isPreflightRequest(request)) {
+            return;
+        }
         LogContext logContext = logContextHolder.get();
         if (isPreflight(request)) {
             log.info("[Preflight Request] : [\n{}]", logContext.logId());
             return;
         }
         ResponseInfoLogData responseInfoLogData = new ResponseInfoLogData(logContext.logId(), response);
-        responseInfoLogData.put("Query Count", queryCounter.count());
         long totalTime = logContext.totalTakenTime();
+        responseInfoLogData.put("Query Count", queryCounter.count());
         responseInfoLogData.put("Total Time", totalTime + "ms");
         log.info("[Web Request END] : [\n{}]", responseInfoLogData);
+        logWarning(logContext, totalTime);
+    }
+
+    private void logWarning(LogContext logContext, long totalTime) {
         if (queryCounter.count() >= QUERY_COUNT_WARNING_STANDARD) {
             log.warn("[{}] : 쿼리가 {}번 이상 실행되었습니다. (총 {}번)",
                     logContext.logId(),
