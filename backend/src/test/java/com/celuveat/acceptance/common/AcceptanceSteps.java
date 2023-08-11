@@ -70,10 +70,6 @@ public class AcceptanceSteps {
         assertThat(t).isNotNull();
     }
 
-    public static void 응답_상태를_검증한다(ExtractableResponse<Response> 응답, HttpStatus 상태) {
-        assertThat(응답.statusCode()).isEqualTo(상태.value());
-    }
-
     public static <T> void 두_값이_같다(T 첫번째_값, T 두번째_값) {
         assertThat(첫번째_값).isEqualTo(두번째_값);
     }
