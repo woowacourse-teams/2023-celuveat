@@ -7,8 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -70,7 +70,8 @@ public class RestaurantAcceptanceSteps {
         );
     }
 
-    public static void 조회_결과를_검증한다(List<RestaurantWithCelebAndImagesSimpleResponse> 예상_응답, ExtractableResponse<Response> 응답) {
+    public static void 조회_결과를_검증한다(List<RestaurantWithCelebAndImagesSimpleResponse> 예상_응답,
+                                   ExtractableResponse<Response> 응답) {
         PageResponse<RestaurantWithCelebAndImagesSimpleResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
         assertThat(restaurantQueryResponse.content())
@@ -81,7 +82,8 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    public static void 조회_결과를_순서를_포함해서_검증한다(List<RestaurantWithCelebAndImagesSimpleResponse> 예상_응답, ExtractableResponse<Response> 응답) {
+    public static void 조회_결과를_순서를_포함해서_검증한다(List<RestaurantWithCelebAndImagesSimpleResponse> 예상_응답,
+                                            ExtractableResponse<Response> 응답) {
         PageResponse<RestaurantWithCelebAndImagesSimpleResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
         assertThat(restaurantQueryResponse.content())
@@ -211,14 +213,16 @@ public class RestaurantAcceptanceSteps {
                 .toList();
     }
 
-    private static boolean 음식점_이름_조건(String restaurantName, RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse) {
+    private static boolean 음식점_이름_조건(String restaurantName,
+                                     RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse) {
         if (restaurantName == null) {
             return true;
         }
         return restaurantWithCelebAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName));
     }
 
-    private static boolean 카테고리_조건(String category, RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse) {
+    private static boolean 카테고리_조건(String category,
+                                   RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse) {
         if (category == null) {
             return true;
         }
@@ -246,7 +250,8 @@ public class RestaurantAcceptanceSteps {
                 && restaurantWithCelebAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
     }
 
-    public static RestaurantWithCelebAndImagesSimpleResponse 특정_이름의_음식점을_찾는다(List<RestaurantWithCelebAndImagesSimpleResponse> 음식점들, String 음식점_이름) {
+    public static RestaurantWithCelebAndImagesSimpleResponse 특정_이름의_음식점을_찾는다(
+            List<RestaurantWithCelebAndImagesSimpleResponse> 음식점들, String 음식점_이름) {
         return 음식점들.stream()
                 .filter(restaurantQueryResponse -> restaurantQueryResponse.name().equals(음식점_이름))
                 .findAny()
@@ -332,7 +337,8 @@ public class RestaurantAcceptanceSteps {
         );
     }
 
-    public static void 상세_조회_결과를_검증한다(RestaurantWithCelebAndImagesDetailResponse 예상_응답, ExtractableResponse<Response> 응답) {
+    public static void 상세_조회_결과를_검증한다(RestaurantWithCelebAndImagesDetailResponse 예상_응답,
+                                      ExtractableResponse<Response> 응답) {
         RestaurantWithCelebAndImagesDetailResponse response = 응답.as(new TypeRef<>() {
         });
         assertThat(response)

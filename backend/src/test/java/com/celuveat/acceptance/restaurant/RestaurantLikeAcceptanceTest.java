@@ -154,7 +154,8 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         ));
     }
 
-    private List<RestaurantWithCelebAndImagesSimpleResponse> 좋아요_포함된_예상_응답(List<RestaurantWithCelebAndImagesSimpleResponse> 전체_음식점) {
+    private List<RestaurantWithCelebAndImagesSimpleResponse> 좋아요_포함된_예상_응답(
+            List<RestaurantWithCelebAndImagesSimpleResponse> 전체_음식점) {
         RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse1 = 전체_음식점.get(1);
         RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse2 = 전체_음식점.get(3);
         RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse3 = 전체_음식점.get(4);
