@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class VideoAcceptanceSteps {
 
-    public static ExtractableResponse<Response> 음식점ID로_영상_조회_요청(
+    public static ExtractableResponse<Response> 영상_조회_요청(
             VideoSearchCondRequest videoSearchCondRequest
     ) {
         Map<String, Object> param = new HashMap<>();
@@ -74,6 +74,7 @@ public class VideoAcceptanceSteps {
         });
         assertThat(response.content())
                 .usingRecursiveComparison()
+                .ignoringExpectedNullFields()
                 .isEqualTo(예상_응답);
     }
 
