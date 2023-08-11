@@ -4,8 +4,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
-import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.common.auth.LooseAuth;
+import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
@@ -21,9 +21,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -72,7 +72,7 @@ public class RestaurantController {
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
         return ResponseEntity.ok(restaurantQueryService.findAllByMemberId(memberId));
     }
-  
+
     @GetMapping("/{restaurantId}")
     ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
             @PathVariable Long restaurantId,
@@ -80,7 +80,7 @@ public class RestaurantController {
     ) {
         return ResponseEntity.ok(restaurantQueryFacade.findRestaurantDetailById(restaurantId, celebId));
     }
-  
+
     @PostMapping("/{restaurantId}/correction")
     ResponseEntity<Void> suggestCorrection(
             @PathVariable Long restaurantId,
@@ -89,7 +89,7 @@ public class RestaurantController {
         restaurantCorrectionService.suggest(request.toCommand(restaurantId));
         return ResponseEntity.status(CREATED).build();
     }
-  
+
     @GetMapping("/{restaurantId}/nearby")
     ResponseEntity<PageResponse<RestaurantQueryResponse>> findAllNearbyDistance(
             @PageableDefault(size = NEARBY_DEFAULT_SIZE) Pageable pageable,

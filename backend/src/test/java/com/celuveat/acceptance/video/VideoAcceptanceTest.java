@@ -12,9 +12,11 @@ import static com.celuveat.acceptance.video.VideoAcceptanceSteps.특정_이름�
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@DisplayName("영상 인수 테스트")
 public class VideoAcceptanceTest extends AcceptanceTest {
 
     @Autowired
