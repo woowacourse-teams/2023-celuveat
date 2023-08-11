@@ -21,6 +21,7 @@ import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +38,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantQueryService {
 
     private final VideoRepository videoRepository;
-    private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
     private final RestaurantImageRepository restaurantImageRepository;
     private final RestaurantQueryRepository restaurantQueryRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
@@ -51,6 +52,13 @@ public class RestaurantQueryService {
         Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistance(
                 restaurantSearchCond, locationSearchCond, pageable
         );
+        return toRestaurantQueryResponsesPage(pageable, restaurantsWithDistance);
+    }
+
+    private Page<RestaurantQueryResponse> toRestaurantQueryResponsesPage(
+            Pageable pageable,
+            Page<RestaurantWithDistance> restaurantsWithDistance
+    ) {
         List<Long> restaurantIds = extractRestaurantIds(restaurantsWithDistance);
         List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
@@ -166,5 +174,33 @@ public class RestaurantQueryService {
                 .stream()
                 .map(Video::celeb)
                 .toList();
+    }
+
+    public Page<RestaurantQueryResponse> findAllNearByDistanceWithoutSpecificRestaurant(
+            int distance,
+            long restaurantId,
+            Pageable pageable
+    ) {
+        Restaurant specificRestaurant = restaurantRepository.getById(restaurantId);
+        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistanceNearBy(
+                distance,
+                specificRestaurant,
+                pageable
+        );
+        Page<RestaurantWithDistance> result = removeSpecificRestaurant(pageable, restaurantsWithDistance, specificRestaurant);
+        return toRestaurantQueryResponsesPage(pageable, result);
+    }
+
+    private Page<RestaurantWithDistance> removeSpecificRestaurant(
+            Pageable pageable,
+            Page<RestaurantWithDistance> restaurantsWithDistance,
+            Restaurant restaurant
+    ) {
+        List<RestaurantWithDistance> newContent = new ArrayList<>(restaurantsWithDistance.getContent());
+        newContent.stream()
+                .filter(restaurantWithDistance -> restaurantWithDistance.name().equals(restaurant.name()))
+                .findFirst()
+                .ifPresent(newContent::remove);
+        return new PageImpl<>(newContent, pageable, restaurantsWithDistance.getTotalElements());
     }
 }

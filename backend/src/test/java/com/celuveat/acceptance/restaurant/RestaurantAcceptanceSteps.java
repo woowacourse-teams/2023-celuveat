@@ -94,14 +94,14 @@ public class RestaurantAcceptanceSteps {
         String restaurantName = (String) 음식점_이름;
         LocationSearchCond locationSearchCond = (LocationSearchCond) 검색_영역;
         for (RestaurantQueryResponse restaurantQueryResponse : 전체_음식점) {
-            List<Long> list = restaurantQueryResponse.celebs()
+            List<Long> celebIds = restaurantQueryResponse.celebs()
                     .stream()
                     .map(CelebQueryResponse::id)
                     .toList();
 
             if (음식점_이름_조건(restaurantName, restaurantQueryResponse)
                     && 카테고리_조건(category, restaurantQueryResponse)
-                    && 셀럽_조건(celebId, list)
+                    && 셀럽_조건(celebId, celebIds)
                     && 영역_조건(locationSearchCond, restaurantQueryResponse)) {
                 예상_응답.add(restaurantQueryResponse);
             }
@@ -245,11 +245,36 @@ public class RestaurantAcceptanceSteps {
         assertThat(response.viewCount()).isEqualTo(예상_조회수);
     }
 
+
     public static ExtractableResponse<Response> 정보_수정_제안_요청(Long 음식점_ID, String... 수정_내용들) {
         return given()
                 .body(new SuggestCorrectionRequest(Arrays.asList(수정_내용들)))
                 .post("/api/restaurants/{id}/correction", 음식점_ID)
                 .then().log().all()
                 .extract();
+    }
+
+    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리) {
+        return given()
+                .queryParams("distance", 요청_거리)
+                .when().get("/api/restaurants/{restaurantId}/nearby", 특정_음식점_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다(
+            ExtractableResponse<Response> 요청_결과,
+            int 요청_거리,
+            long 기준_음식점_ID
+    ) {
+        PageResponse<RestaurantQueryResponse> pageResponse = 요청_결과.as(new TypeRef<>() {
+        });
+        assertThat(pageResponse.content())
+                .isSortedAccordingTo(comparing(RestaurantQueryResponse::distance))
+                .extracting(RestaurantQueryResponse::distance)
+                .allMatch(distance -> distance <= 요청_거리);
+        assertThat(pageResponse.content())
+                .extracting(RestaurantQueryResponse::id)
+                .doesNotContain(기준_음식점_ID);
     }
 }

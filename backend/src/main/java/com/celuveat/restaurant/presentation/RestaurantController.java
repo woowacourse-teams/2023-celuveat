@@ -8,7 +8,6 @@ import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
-import com.celuveat.restaurant.application.RestaurantService;
 import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
@@ -38,6 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController {
 
     private static final int DEFAULT_SIZE = 18;
+    private static final int NEARBY_DEFAULT_SIZE = 4;
+    private static final String DEFAULT_DISTANCE = "3000";
 
     private final RestaurantLikeService restaurantLikeService;
     private final RestaurantQueryFacade restaurantQueryFacade;
@@ -84,5 +85,19 @@ public class RestaurantController {
     ) {
         restaurantCorrectionService.suggest(request.toCommand(restaurantId));
         return ResponseEntity.status(CREATED).build();
+    }
+  
+    @GetMapping("/{restaurantId}/nearby")
+    ResponseEntity<PageResponse<RestaurantQueryResponse>> findAllNearbyDistance(
+            @PageableDefault(size = NEARBY_DEFAULT_SIZE) Pageable pageable,
+            @PathVariable Long restaurantId,
+            @RequestParam(required = false, defaultValue = DEFAULT_DISTANCE) Integer distance
+    ) {
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+                distance,
+                restaurantId,
+                pageable
+        );
+        return ResponseEntity.ok(PageResponse.from(result));
     }
 }
