@@ -26,4 +26,9 @@ public class OauthService {
                 .orElseGet(() -> oauthMemberRepository.save(oauthMember));
         return saved.id();
     }
+
+    public void logout(OauthServerType oauthServerType, Long oauthServerId) {
+        OauthMember oauthMember = oauthMemberRepository.getById(oauthServerId);
+        oauthMemberClientComposite.logout(oauthServerType, oauthMember.oauthId());
+    }
 }

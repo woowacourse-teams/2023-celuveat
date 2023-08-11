@@ -1,9 +1,11 @@
 package com.celuveat.auth.presentation;
 
+import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST;
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthServerType;
+import com.celuveat.auth.exception.AuthException;
 import com.celuveat.auth.presentation.dto.SessionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,9 +43,24 @@ public class OauthController {
             @RequestParam("code") String code,
             HttpServletRequest request
     ) {
-        Long memberId = oauthService.login(oauthServerType, code);
+        Long oauthMemberId = oauthService.login(oauthServerType, code);
         HttpSession session = request.getSession(true);
-        session.setAttribute(JSESSION_ID, memberId);
+        session.setAttribute(JSESSION_ID, oauthMemberId);
         return ResponseEntity.ok(new SessionResponse(session.getId()));
+    }
+
+    @GetMapping("/logout/{oauthServerType}")
+    ResponseEntity<Void> logout(
+            @PathVariable OauthServerType oauthServerType,
+            HttpServletRequest request
+    ) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            throw new AuthException(UNAUTHORIZED_REQUEST);
+        }
+        Long oauthMemberId = (Long) session.getAttribute(JSESSION_ID);
+        oauthService.logout(oauthServerType, oauthMemberId);
+        session.invalidate();
+        return ResponseEntity.noContent().build();
     }
 }
