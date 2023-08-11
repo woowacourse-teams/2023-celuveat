@@ -28,6 +28,35 @@ function SearchBar() {
     });
   }, []);
 
+  useEffect(() => {
+    const input = inputRef.current;
+    const originalAddEventListener = input.addEventListener;
+    const addEventListenerWrapper = (type: string, listener: EventListenerOrEventListenerObject) => {
+      if (type !== 'keydown') originalAddEventListener.call(input, type, listener);
+      if (type === 'keydown') {
+        const newListener = (event: KeyboardEvent) => {
+          if (event.key === 'Enter' && !document.querySelector('.pac-item-selected')) {
+            const simulatedDownArrow = new KeyboardEvent('keydown', {
+              key: 'ArrowDown',
+              code: 'ArrowDown',
+              keyCode: 40,
+              which: 40,
+            });
+            if (typeof listener === 'function') listener.call(input, simulatedDownArrow);
+          }
+          if (typeof listener === 'function') listener.call(input, event);
+        };
+        originalAddEventListener.call(input, type, newListener);
+      }
+    };
+
+    input.addEventListener = addEventListenerWrapper;
+
+    return () => {
+      input.addEventListener = originalAddEventListener;
+    };
+  }, []);
+
   return (
     <StyledContainer>
       <StyledInput placeholder="지역으로 검색하기" ref={inputRef} />
