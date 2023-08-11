@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
@@ -38,7 +38,9 @@ function Header() {
   return (
     <>
       <StyledHeader isMobile={isMobile}>
-        <Logo width={124} />
+        <Link to="/">
+          <Logo width={124} />
+        </Link>
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal>
