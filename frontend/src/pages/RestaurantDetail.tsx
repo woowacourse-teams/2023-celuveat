@@ -10,7 +10,6 @@ import WhiteLove from '~/assets/icons/love.svg';
 import Love from '~/assets/icons/black-love.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
-import Share from '~/assets/icons/external-link.svg';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -51,19 +50,16 @@ function RestaurantDetail() {
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
     queryKey: ['nearByRestaurant', restaurantId],
     queryFn: async () => getNearByRestaurant(restaurantId),
-    onSuccess: data => console.log('detail', data),
-  });
-
-  const { data: restaurantVideo, isSuccess: isSuccessRestaurantVideo } = useQuery<VideoList>({
-    queryKey: ['restaurantVideo', restaurantId],
-    queryFn: async () => getRestaurantVideo(restaurantId),
-    onSuccess: data => console.log('restaurantVideo', data),
   });
 
   const { data: celebVideo, isSuccess: isSuccessCelebVideo } = useQuery<VideoList>({
     queryKey: ['celebVideo', celebId],
     queryFn: async () => getCelebVideo(celebId),
-    onSuccess: data => console.log('celebVideo', data),
+  });
+
+  const { data: restaurantVideo, isSuccess: isSuccessRestaurantVideo } = useQuery<VideoList>({
+    queryKey: ['restaurantVideo', restaurantId],
+    queryFn: async () => getRestaurantVideo(restaurantId),
   });
 
   const openNewWindow =
