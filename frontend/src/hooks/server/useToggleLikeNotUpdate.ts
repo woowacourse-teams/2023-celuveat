@@ -32,9 +32,10 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
 
     onSuccess: () => {
       const message = `위시리스트에 ${!isLiked ? '저장' : '삭제'}됨.`;
+      const imgUrl = restaurant.images[0].name;
 
       toggleIsLiked();
-      onSuccess(message);
+      onSuccess(message, imgUrl);
     },
   });
 

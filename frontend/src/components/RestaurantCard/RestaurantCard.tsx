@@ -40,7 +40,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
         <StyledImageViewer>
           <ImageCarousel images={images} type={type} />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.5} aria-hidden="true" />
+            <Love fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
         <section>
@@ -53,7 +53,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size={size} />}
           </StyledProfileImageSection>
-          <PopUpContainer imgUrl={restaurant.images[0].name} />
+          <PopUpContainer />
         </section>
       </StyledContainer>
       <Modal>

@@ -49,7 +49,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
-          <PopUpContainer imgUrl={restaurant.images[0].name} />
+          <PopUpContainer />
         </section>
       </StyledContainer>
       <Modal>
