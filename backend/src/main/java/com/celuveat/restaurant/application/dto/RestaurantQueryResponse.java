@@ -27,30 +27,6 @@ public record RestaurantQueryResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
-            Integer likeCount
-    ) {
-        return new RestaurantQueryResponse(
-                restaurant.id(),
-                restaurant.name(),
-                restaurant.category(),
-                restaurant.roadAddress(),
-                restaurant.latitude(),
-                restaurant.longitude(),
-                restaurant.phoneNumber(),
-                restaurant.naverMapUrl(),
-                restaurant.viewCount(),
-                restaurant.distance().intValue(),
-                false,
-                likeCount,
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
-        );
-    }
-
-    public static RestaurantQueryResponse from(
-            RestaurantWithDistance restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages,
             boolean isLiked,
             Integer likeCount
     ) {

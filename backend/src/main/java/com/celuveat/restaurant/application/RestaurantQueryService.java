@@ -145,7 +145,7 @@ public class RestaurantQueryService {
             RestaurantWithDistance restaurantWithDistance,
             Integer likeCount
     ) {
-        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, likeCount);
+        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
     }
 
     public Page<RestaurantQueryResponse> findAllWithMemberId(
@@ -203,7 +203,7 @@ public class RestaurantQueryService {
         if (likedRestaurantIds.contains(restaurantWithDistance.id())) {
             return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, true, likeCount);
         }
-        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, likeCount);
+        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
     }
 
     public List<RestaurantLikeQueryResponse> findAllByMemberId(Long memberId) {
