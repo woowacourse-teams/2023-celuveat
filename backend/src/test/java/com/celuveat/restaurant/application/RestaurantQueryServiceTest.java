@@ -33,6 +33,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -377,8 +379,7 @@ class RestaurantQueryServiceTest {
                 음식점_좋아요(도기2호점, 멤버),
                 음식점_좋아요(로이스2호점, 멤버)
         ));
-        List<RestaurantLikeQueryResponse> expected = new ArrayList<>();
-        expected.addAll(List.of(
+        List<RestaurantLikeQueryResponse> expected = new ArrayList<>(List.of(
                 toRestaurantLikeQueryResponse(restaurantQueryResponse1),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse2),
                 toRestaurantLikeQueryResponse(restaurantQueryResponse3),
@@ -445,5 +446,27 @@ class RestaurantQueryServiceTest {
                 restaurantQueryResponse.celebs(),
                 restaurantQueryResponse.images()
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {10, 50, 100, 500, 1000, 2000, 3000, 5000, 30000})
+    void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
+        // given
+        RestaurantQueryResponse restaurant = seed.get(0);
+
+        // when
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+                specificDistance,
+                restaurant.id(),
+                PageRequest.of(0, 4)
+        );
+
+        // then
+        assertThat(result.getContent())
+                .extracting(RestaurantQueryResponse::distance)
+                .allMatch(distance -> distance <= specificDistance);
+        assertThat(result.getContent())
+                .extracting(RestaurantQueryResponse::name)
+                .doesNotContain(restaurant.name());
     }
 }

@@ -6,6 +6,7 @@ import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름�
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.근처_음식점_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.예상_응답;
@@ -15,6 +16,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_이름의_음식점을_찾는다;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
@@ -85,6 +87,21 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             잘못된_요청_예외를_검증한다(응답);
+        }
+
+        @Test
+        void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점을_조회한다() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 음식점 = 전체_음식점.get(0);
+            Long 음식점_ID = 음식점.id();
+            int 요청_거리 = 2000;
+
+            // when
+            var 요청_결과 = 근처_음식점_조회_요청(음식점_ID, 요청_거리);
+
+            // then
+            특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다(요청_결과, 요청_거리, 음식점_ID);
         }
     }
 
