@@ -7,16 +7,31 @@ interface ImageGridProps {
 }
 
 function ImageGrid({ images }: ImageGridProps) {
+  const makeAdditionalImage = () => {
+    const additionalImages = images.slice(1);
+    const imagesLength = additionalImages.length;
+
+    if (imagesLength < 4) {
+      const noImages = Array.from({ length: 4 - imagesLength }, () => ({ waterMark: '', url: '' }));
+      return [...additionalImages, ...noImages];
+    }
+
+    return additionalImages.slice(1, 4);
+  };
+
   return (
     <StyledImageGridContainer>
       <StyledMainImage>
         <WaterMarkImage type="list" imageUrl={images[0].url} waterMark={images[0].waterMark} />
       </StyledMainImage>
       <StyledAdditionalImage>
-        <WaterMarkImage type="list" imageUrl={images[1]?.url} waterMark={images[1]?.waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[2]?.url} waterMark={images[2]?.waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[3]?.url} waterMark={images[3]?.waterMark} />
-        <WaterMarkImage type="list" imageUrl={images[4]?.url} waterMark={images[4]?.waterMark} />
+        {makeAdditionalImage().map(({ url, waterMark }) =>
+          url ? (
+            <WaterMarkImage type="list" imageUrl={url} waterMark={waterMark} />
+          ) : (
+            <StyledNoImage>🥺사진이 더이상 없어요🥺</StyledNoImage>
+          ),
+        )}
       </StyledAdditionalImage>
     </StyledImageGridContainer>
   );
@@ -45,4 +60,17 @@ const StyledAdditionalImage = styled.div`
   grid-template-rows: 1fr 1fr;
 
   gap: 0.8rem;
+`;
+
+const StyledNoImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: var(--gray-1);
+
+  font-size: ${BORDER_RADIUS.lg};
 `;
