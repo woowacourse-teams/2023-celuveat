@@ -119,6 +119,21 @@ public class RestaurantAcceptanceSteps {
         return 예상_응답;
     }
 
+    public static List<RestaurantQueryResponse> 비회원_음식점_좋아요_조회수_예상_응답(
+            List<RestaurantQueryResponse> 전체_음식점
+    ) {
+        List<RestaurantQueryResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(0, createExpectedResponse(전체_음식점.get(0), 0, false, 2));
+        expected.set(1, createExpectedResponse(전체_음식점.get(1), 2, false, 2));
+        expected.set(3, createExpectedResponse(전체_음식점.get(3), 3, false, 4));
+        expected.set(4, createExpectedResponse(전체_음식점.get(4), 4, false, 2));
+        expected.set(5, createExpectedResponse(전체_음식점.get(5), 5, false, 1));
+        expected.set(6, createExpectedResponse(전체_음식점.get(6), 0, false, 3));
+        expected.set(8, createExpectedResponse(전체_음식점.get(8), 6, false, 3));
+        expected.set(9, createExpectedResponse(전체_음식점.get(9), 7, false, 1));
+        return expected;
+    }
+
     public static List<RestaurantQueryResponse> 음식점_좋아요_조회수_예상_응답(
             List<RestaurantQueryResponse> 전체_음식점
     ) {
