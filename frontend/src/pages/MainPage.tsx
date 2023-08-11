@@ -77,6 +77,7 @@ function MainPage() {
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
+
       {isMobile ? (
         <StyledMobileLayout>
           <StyledLayer isMobile={isMobile}>
