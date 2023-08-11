@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.domain.dto;
 
-public record RestaurantIdWithCount(
+public record RestaurantIdWithLikeCount(
         Long restaurantId,
         Long count
 ) {

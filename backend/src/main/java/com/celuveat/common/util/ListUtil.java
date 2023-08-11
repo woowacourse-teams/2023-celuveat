@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ListUtil {
 
-    public static <T> List<T> moveTargetToFirst(T target, List<T> list) {
+    public static <T> List<T> relocateTargetToFirst(T target, List<T> list) {
         List<T> result = new ArrayList<>(list);
         Collections.swap(result, 0, result.indexOf(target));
         return result;

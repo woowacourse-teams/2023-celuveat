@@ -7,7 +7,5 @@ public interface RestaurantImageRepository extends JpaRepository<RestaurantImage
 
     List<RestaurantImage> findAllByRestaurantIdIn(List<Long> restaurantIds);
 
-    List<RestaurantImage> findAllByRestaurantIn(List<Restaurant> restaurants);
-
     List<RestaurantImage> findAllByRestaurant(Restaurant restaurant);
 }

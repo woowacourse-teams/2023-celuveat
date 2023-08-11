@@ -5,8 +5,9 @@ import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Builder;
 
-public record RestaurantQueryResponse(
+public record RestaurantWithCelebAndImagesSimpleResponse(
         Long id,
         String name,
         String category,
@@ -18,19 +19,20 @@ public record RestaurantQueryResponse(
         Integer viewCount,
         Integer distance,
         Boolean isLiked,
-        Integer likeCount,
+        Long likeCount,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantQueryResponse of(
+    @Builder
+    public RestaurantWithCelebAndImagesSimpleResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
             boolean isLiked,
-            Integer likeCount
+            Long likeCount
     ) {
-        return new RestaurantQueryResponse(
+        this(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -42,18 +44,18 @@ public record RestaurantQueryResponse(
                 restaurant.viewCount(),
                 restaurant.distance().intValue(),
                 isLiked,
-                likeCount,
+                (likeCount == null) ? 0 : likeCount,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
     }
 
-    public static RestaurantQueryResponse of(
-            RestaurantQueryResponse other,
+    public static RestaurantWithCelebAndImagesSimpleResponse of(
+            RestaurantWithCelebAndImagesSimpleResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages
     ) {
-        return new RestaurantQueryResponse(
+        return new RestaurantWithCelebAndImagesSimpleResponse(
                 other.id,
                 other.name,
                 other.category,

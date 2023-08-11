@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
 import com.celuveat.common.IntegrationTest;
-import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
@@ -59,7 +59,7 @@ class RestaurantQueryFacadeTest {
         Celeb targetCeleb = celebs.get(1);
 
         // when
-        RestaurantDetailQueryResponse result =
+        RestaurantWithCelebAndImagesDetailResponse result =
                 restaurantQueryFacade.findRestaurantDetailById(로이스2호점.id(), targetCeleb.id());
 
         // then

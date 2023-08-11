@@ -5,8 +5,9 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Builder;
 
-public record RestaurantDetailQueryResponse(
+public record RestaurantWithCelebAndImagesDetailResponse(
         Long id,
         String name,
         String category,
@@ -21,13 +22,34 @@ public record RestaurantDetailQueryResponse(
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantDetailQueryResponse of(
+    @Builder
+    public RestaurantWithCelebAndImagesDetailResponse(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
             int likeCount
     ) {
-        return new RestaurantDetailQueryResponse(
+        this(restaurant.id(),
+                restaurant.name(),
+                restaurant.category(),
+                restaurant.roadAddress(),
+                restaurant.latitude(),
+                restaurant.longitude(),
+                restaurant.phoneNumber(),
+                restaurant.naverMapUrl(),
+                likeCount,
+                restaurant.viewCount(),
+                celebs.stream().map(CelebQueryResponse::of).toList(),
+                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList());
+    }
+
+    public static RestaurantWithCelebAndImagesDetailResponse of(
+            Restaurant restaurant,
+            List<Celeb> celebs,
+            List<RestaurantImage> restaurantImages,
+            int likeCount
+    ) {
+        return new RestaurantWithCelebAndImagesDetailResponse(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -43,12 +65,12 @@ public record RestaurantDetailQueryResponse(
         );
     }
 
-    public static RestaurantDetailQueryResponse of(
-            RestaurantDetailQueryResponse other,
+    public static RestaurantWithCelebAndImagesDetailResponse of(
+            RestaurantWithCelebAndImagesDetailResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages
     ) {
-        return new RestaurantDetailQueryResponse(
+        return new RestaurantWithCelebAndImagesDetailResponse(
                 other.id(),
                 other.name(),
                 other.category(),

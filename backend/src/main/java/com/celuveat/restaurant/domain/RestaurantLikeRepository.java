@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.domain;
 
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.restaurant.domain.dto.RestaurantIdWithCount;
+import com.celuveat.restaurant.domain.dto.RestaurantIdWithLikeCount;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,12 +12,12 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
 
     Optional<RestaurantLike> findByRestaurantAndMember(Restaurant restaurant, OauthMember member);
 
-    List<RestaurantLike> findAllByMember(OauthMember member);
+    List<RestaurantLike> findAllByMemberId(Long memberId);
 
     Integer countByRestaurant(Restaurant restaurant);
 
     @Query("""
-            SELECT new com.celuveat.restaurant.domain.dto.RestaurantIdWithCount(
+            SELECT new com.celuveat.restaurant.domain.dto.RestaurantIdWithLikeCount(
                 rl.restaurant.id,
                 count(rl)
             )
@@ -25,5 +25,5 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
             WHERE rl.restaurant.id IN :restaurantIds
             GROUP BY rl.restaurant.id
             """)
-    List<RestaurantIdWithCount> countLikesByRestaurantIds(@Param("restaurantIds") List<Long> restaurantIds);
+    List<RestaurantIdWithLikeCount> likeCountGroupByRestaurantsId(@Param("restaurantIds") List<Long> restaurantIds);
 }

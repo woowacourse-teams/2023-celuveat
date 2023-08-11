@@ -1,8 +1,8 @@
 package com.celuveat.restaurant.application;
 
-import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import com.celuveat.restaurant.application.mapper.RestaurantMapper;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.mapper.RestaurantRelocator;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import java.util.Optional;
@@ -20,35 +20,27 @@ public class RestaurantQueryFacade {
     private final RestaurantQueryService restaurantQueryService;
 
     @Transactional
-    public RestaurantDetailQueryResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
+    public RestaurantWithCelebAndImagesDetailResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
         restaurantService.increaseViewCount(restaurantId);
-        RestaurantDetailQueryResponse response = restaurantQueryService.findRestaurantDetailById(restaurantId);
-        return RestaurantMapper.moveCelebDataFirstByCelebId(celebId, response);
+        RestaurantWithCelebAndImagesDetailResponse response = restaurantQueryService.findRestaurantDetailById(
+                restaurantId
+        );
+        return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 
     @Transactional(readOnly = true)
-    public Page<RestaurantQueryResponse> findAll(
+    public Page<RestaurantWithCelebAndImagesSimpleResponse> findAll(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
             Optional<Long> memberId
     ) {
-        Page<RestaurantQueryResponse> response = dispatchFindAll(restaurantCond, locationCond, pageable, memberId);
+        Page<RestaurantWithCelebAndImagesSimpleResponse> response = restaurantQueryService.findAllWithMemberLiked(
+                restaurantCond, locationCond, pageable, memberId.orElse(null)
+        );
         if (restaurantCond.celebId() == null) {
             return response;
         }
-        return RestaurantMapper.movedCelebDataFirstResponsesByCelebId(response, restaurantCond.celebId());
-    }
-
-    private Page<RestaurantQueryResponse> dispatchFindAll(
-            RestaurantSearchCond restaurantCond,
-            LocationSearchCond locationCond,
-            Pageable pageable,
-            Optional<Long> memberId
-    ) {
-        if (memberId.isEmpty()) {
-            return restaurantQueryService.findAll(restaurantCond, locationCond, pageable);
-        }
-        return restaurantQueryService.findAllWithMemberLiked(restaurantCond, locationCond, pageable, memberId.get());
+        return RestaurantRelocator.relocateCelebDataFirstResponsesByCelebId(response, restaurantCond.celebId());
     }
 }

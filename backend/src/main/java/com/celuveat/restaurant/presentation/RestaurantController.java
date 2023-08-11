@@ -9,9 +9,9 @@ import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
-import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -45,16 +45,17 @@ public class RestaurantController {
     private final RestaurantCorrectionService restaurantCorrectionService;
 
     @GetMapping("/{restaurantId}")
-    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
+    ResponseEntity<RestaurantWithCelebAndImagesDetailResponse> getRestaurantDetail(
             @PathVariable Long restaurantId,
             @RequestParam Long celebId
     ) {
-        RestaurantDetailQueryResponse result = restaurantQueryFacade.findRestaurantDetailById(restaurantId, celebId);
+        RestaurantWithCelebAndImagesDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(restaurantId,
+                celebId);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    ResponseEntity<PageResponse<RestaurantQueryResponse>> findAll(
+    ResponseEntity<PageResponse<RestaurantWithCelebAndImagesSimpleResponse>> findAll(
             @LooseAuth Optional<Long> memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
@@ -62,7 +63,7 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantQueryResponse> result = restaurantQueryFacade.findAll(
+        Page<RestaurantWithCelebAndImagesSimpleResponse> result = restaurantQueryFacade.findAll(
                 restaurantSearchCond, locationSearchCond, pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
@@ -70,7 +71,8 @@ public class RestaurantController {
 
     @GetMapping("/like")
     ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<RestaurantLikeQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(memberId);
+        List<RestaurantLikeQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
+                memberId);
         return ResponseEntity.ok(result);
     }
 
@@ -81,12 +83,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}/nearby")
-    ResponseEntity<PageResponse<RestaurantQueryResponse>> findAllNearbyDistance(
+    ResponseEntity<PageResponse<RestaurantWithCelebAndImagesSimpleResponse>> findAllNearbyDistance(
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
             @PageableDefault(size = 4) Pageable pageable
     ) {
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+        Page<RestaurantWithCelebAndImagesSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 distance, restaurantId, pageable
         );
         return ResponseEntity.ok(PageResponse.from(result));
