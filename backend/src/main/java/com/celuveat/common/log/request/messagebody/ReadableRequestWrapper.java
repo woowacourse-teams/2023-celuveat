@@ -1,5 +1,7 @@
 package com.celuveat.common.log.request.messagebody;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
@@ -11,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 public class ReadableRequestWrapper extends HttpServletRequestWrapper {
 
@@ -20,10 +21,10 @@ public class ReadableRequestWrapper extends HttpServletRequestWrapper {
 
     public ReadableRequestWrapper(HttpServletRequest request) {
         super(request);
-
         String charEncoding = request.getCharacterEncoding();
-        this.encoding = StringUtils.isBlank(charEncoding) ? StandardCharsets.UTF_8 : Charset.forName(charEncoding);
-
+        this.encoding = StringUtils.isBlank(charEncoding)
+                ? UTF_8
+                : Charset.forName(charEncoding);
         try {
             InputStream is = request.getInputStream();
             this.rawData = is.readAllBytes();

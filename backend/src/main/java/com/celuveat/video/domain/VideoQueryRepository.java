@@ -42,7 +42,6 @@ public class VideoQueryRepository {
     private static final String CELEB_ID_EQUAL = "c.id = %d";
     private static final String RESTAURANT_ID_EQUAL = "r.id = %d";
 
-
     private final EntityManager em;
 
     public Page<VideoWithCelebQueryResponse> getVideosWithCeleb(

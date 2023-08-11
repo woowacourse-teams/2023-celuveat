@@ -1,9 +1,8 @@
 package com.celuveat.acceptance.restaurant;
 
-
 import static com.celuveat.acceptance.common.AcceptanceSteps.값이_존재한다;
-import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;

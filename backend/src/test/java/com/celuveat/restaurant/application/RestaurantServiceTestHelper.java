@@ -19,13 +19,13 @@ public class RestaurantServiceTestHelper {
 
     public Long 음식점을_저장한다(String 이름) {
         return restaurantRepository.save(Restaurant.builder()
-                        .name(이름)
-                        .category(이름)
-                        .roadAddress(이름)
-                        .latitude(1.1)
-                        .longitude(1.1)
-                        .naverMapUrl("naver" + 이름)
-                        .phoneNumber("010-" + 이름)
+                .name(이름)
+                .category(이름)
+                .roadAddress(이름)
+                .latitude(1.1)
+                .longitude(1.1)
+                .naverMapUrl("naver" + 이름)
+                .phoneNumber("010-" + 이름)
                 .build()).id();
     }
 

@@ -26,12 +26,10 @@ import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -272,7 +270,8 @@ public class RestaurantQueryService {
                 specificRestaurant,
                 pageable
         );
-        Page<RestaurantWithDistance> result = removeSpecificRestaurant(pageable, restaurantsWithDistance, specificRestaurant);
+        Page<RestaurantWithDistance> result
+                = removeSpecificRestaurant(pageable, restaurantsWithDistance, specificRestaurant);
         return toRestaurantQueryResponsesPage(pageable, result);
     }
 

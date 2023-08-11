@@ -347,7 +347,6 @@ public class RestaurantAcceptanceSteps {
         assertThat(response.viewCount()).isEqualTo(예상_조회수);
     }
 
-
     public static ExtractableResponse<Response> 정보_수정_제안_요청(Long 음식점_ID, String... 수정_내용들) {
         return given()
                 .body(new SuggestCorrectionRequest(Arrays.asList(수정_내용들)))

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import com.celuveat.restaurant.domain.RestaurantLike;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import io.restassured.common.mapper.TypeRef;
@@ -14,8 +13,6 @@ import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.springframework.http.HttpStatus;
 
 public class RestaurantLikeAcceptanceSteps {
 

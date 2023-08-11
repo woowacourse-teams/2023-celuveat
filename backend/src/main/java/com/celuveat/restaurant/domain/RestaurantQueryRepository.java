@@ -172,21 +172,6 @@ public class RestaurantQueryRepository {
                 .build();
     }
 
-    public record RestaurantSearchCond(
-            Long celebId,
-            String category,
-            String restaurantName
-    ) {
-    }
-
-    public record LocationSearchCond(
-            Double lowLatitude,
-            Double highLatitude,
-            Double lowLongitude,
-            Double highLongitude
-    ) {
-    }
-
     public Page<RestaurantWithDistance> getRestaurantsWithDistanceNearBy(
             int distance,
             Restaurant restaurant,
@@ -208,5 +193,20 @@ public class RestaurantQueryRepository {
                 pageable,
                 () -> (Long) em.createQuery(COUNT_QUERY_NEARBY_DISTANCE + whereQuery).getSingleResult()
         );
+    }
+
+    public record RestaurantSearchCond(
+            Long celebId,
+            String category,
+            String restaurantName
+    ) {
+    }
+
+    public record LocationSearchCond(
+            Double lowLatitude,
+            Double highLatitude,
+            Double lowLongitude,
+            Double highLongitude
+    ) {
     }
 }
