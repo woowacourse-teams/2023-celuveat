@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled, css } from 'styled-components';
 
 import { useQuery } from '@tanstack/react-query';
@@ -38,7 +37,7 @@ function RestaurantWishList() {
   );
 }
 
-export default React.memo(RestaurantWishList);
+export default RestaurantWishList;
 
 const StyledRestaurantCardListContainer = styled.div`
   display: flex;
