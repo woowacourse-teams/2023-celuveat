@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS } from '~/styles/common';
+import { BORDER_RADIUS, hideScrollBar } from '~/styles/common';
 
 interface VideoCarouselProps {
   title: string;
@@ -34,6 +34,7 @@ const StyledVideoCarouselContainer = styled.section`
   gap: 2rem 0;
 
   & > ul {
+    ${hideScrollBar}
     display: flex;
     gap: 0 2rem;
     overflow-x: scroll;
