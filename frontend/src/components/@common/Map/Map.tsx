@@ -83,6 +83,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
       setMyPosition({ lat: position.coords.latitude, lng: position.coords.longitude });
       setLoading(false);
       setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
+      setZoom(16);
     });
   };
 
