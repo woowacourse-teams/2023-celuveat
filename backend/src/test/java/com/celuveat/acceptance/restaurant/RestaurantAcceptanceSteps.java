@@ -202,7 +202,7 @@ public class RestaurantAcceptanceSteps {
         List<RestaurantImageQueryResponse> images = new ArrayList<>(response.images());
         Collections.swap(celebs, celebIndex1, celebIndex2);
         Collections.swap(images, imageIndex1, imageIndex2);
-        return RestaurantQueryResponse.from(response, celebs, images);
+        return RestaurantQueryResponse.of(response, celebs, images);
     }
 
     public static List<Long> 음식점_아이디를_가져온다(RestaurantQueryResponse... 음식점들) {

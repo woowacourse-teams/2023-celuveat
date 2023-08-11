@@ -387,7 +387,7 @@ class RestaurantQueryServiceTest {
         seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse3), 1));
         seed.set(9, increaseLikeCount(changeIsLikedToTrue(restaurantQueryResponse4), 1));
 
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllWithMemberId(
+        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
@@ -467,7 +467,7 @@ class RestaurantQueryServiceTest {
         ));
 
         // when
-        List<RestaurantLikeQueryResponse> restaurantLikes = restaurantQueryService.findAllByMemberId(멤버.id());
+        List<RestaurantLikeQueryResponse> restaurantLikes = restaurantQueryService.findAllWithMemberLiked(멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);
@@ -657,7 +657,7 @@ class RestaurantQueryServiceTest {
         }
 
         private Page<RestaurantQueryResponse> 음식점을_조회한다(Long memberId) {
-            return restaurantQueryService.findAllWithMemberId(
+            return restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),

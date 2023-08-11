@@ -21,7 +21,7 @@ public record RestaurantDetailQueryResponse(
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantDetailQueryResponse from(
+    public static RestaurantDetailQueryResponse of(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
@@ -43,7 +43,7 @@ public record RestaurantDetailQueryResponse(
         );
     }
 
-    public static RestaurantDetailQueryResponse from(
+    public static RestaurantDetailQueryResponse of(
             RestaurantDetailQueryResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages

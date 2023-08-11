@@ -23,8 +23,7 @@ public class RestaurantLikeService {
     public void like(Long restaurantId, Long memberId) {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         OauthMember member = oauthMemberRepository.getById(memberId);
-        Optional<RestaurantLike> restaurantLike =
-                restaurantLikeRepository.findByRestaurantAndMember(restaurant, member);
+        Optional<RestaurantLike> restaurantLike = restaurantLikeRepository.findByRestaurantAndMember(restaurant, member);
         restaurantLike.ifPresentOrElse(
                 restaurantLikeRepository::delete,
                 () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member))

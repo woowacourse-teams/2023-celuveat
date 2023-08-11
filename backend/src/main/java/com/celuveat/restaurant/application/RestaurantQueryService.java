@@ -143,10 +143,10 @@ public class RestaurantQueryService {
             RestaurantWithDistance restaurantWithDistance,
             Integer likeCount
     ) {
-        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
+        return RestaurantQueryResponse.of(restaurantWithDistance, celebs, images, false, likeCount);
     }
 
-    public Page<RestaurantQueryResponse> findAllWithMemberId(
+    public Page<RestaurantQueryResponse> findAllWithMemberLiked(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
             Pageable pageable,
@@ -199,12 +199,12 @@ public class RestaurantQueryService {
             Integer likeCount
     ) {
         if (likedRestaurantIds.contains(restaurantWithDistance.id())) {
-            return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, true, likeCount);
+            return RestaurantQueryResponse.of(restaurantWithDistance, celebs, images, true, likeCount);
         }
-        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
+        return RestaurantQueryResponse.of(restaurantWithDistance, celebs, images, false, likeCount);
     }
 
-    public List<RestaurantLikeQueryResponse> findAllByMemberId(Long memberId) {
+    public List<RestaurantLikeQueryResponse> findAllWithMemberLiked(Long memberId) {
         OauthMember member = oauthMemberRepository.getById(memberId);
         List<RestaurantLike> restaurantLikes = restaurantLikeRepository.findAllByMember(member);
         List<Restaurant> restaurants = extractRestaurants(restaurantLikes);
@@ -244,7 +244,7 @@ public class RestaurantQueryService {
         List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
         int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
-        return RestaurantDetailQueryResponse.from(
+        return RestaurantDetailQueryResponse.of(
                 restaurant,
                 celebs,
                 restaurantImages,
