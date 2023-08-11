@@ -3,7 +3,7 @@ import useBooleanState from '~/hooks/useBooleanState';
 
 interface InfoDropDownOptionProps {
   value: string;
-  onClick: React.MouseEventHandler;
+  onClick: React.MouseEventHandler<HTMLLIElement>;
 }
 
 function InfoDropDownOption({ value, onClick }: InfoDropDownOptionProps) {
