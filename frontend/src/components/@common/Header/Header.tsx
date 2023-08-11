@@ -25,13 +25,11 @@ function Header() {
 
     if (currentOption === '로그인') openModal();
 
-    if (currentOption === '위시리스트') {
-      navigator('/restaurants/like');
-    }
+    if (currentOption === '위시리스트') navigator('/restaurants/like');
 
     if (currentOption === '로그아웃') {
       clearToken();
-      window.location.reload();
+      window.location.href = '/';
     }
   };
 
