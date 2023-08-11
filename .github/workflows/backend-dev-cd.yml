@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop-backend
+      - develop-backend*
     paths:
       - "backend/**"
 
