@@ -5,30 +5,24 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import type { Celeb } from '~/@types/celeb.types';
-import type { Restaurant } from '~/@types/restaurant.types';
-import useToggleRestaurantLike from '~/hooks/server/useToggleRestaurantLike';
 import PopUpContainer from '~/components/PopUpContainer';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
+import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
-interface RestaurantCardProps {
+import type { Celeb } from '~/@types/celeb.types';
+import type { Restaurant } from '~/@types/restaurant.types';
+
+interface RestaurantWishItemProps {
   restaurant: Restaurant;
-  celebs: Celeb[];
-  size?: string;
-  type?: 'list' | 'map';
-  setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
+  celebs?: Celeb[];
 }
 
-function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
-  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
+function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
+  const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
+  const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
-  const onMouseEnter = () => setHoveredId(restaurant.id);
-  const onMouseLeave = () => setHoveredId(null);
-  const onClick = () => {
-    window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
-  };
+  const openDetail = () => window.open(naverMapUrl, '_blank');
 
   const toggle: MouseEventHandler = e => {
     e.stopPropagation();
@@ -38,11 +32,11 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
   return (
     <>
-      <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <StyledContainer onClick={openDetail}>
         <StyledImageViewer>
-          <ImageCarousel images={images} type={type} />
+          <ImageCarousel images={images} type="list" />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+            <Love fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
         <section>
@@ -53,7 +47,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
             <StyledAddress>{phoneNumber}</StyledAddress>
           </StyledInfo>
           <StyledProfileImageSection>
-            {celebs && <ProfileImageList celebs={celebs} size={size} />}
+            {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
           <PopUpContainer />
         </section>
@@ -67,9 +61,9 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   );
 }
 
-export default RestaurantCard;
+export default RestaurantWishItem;
 
-const StyledContainer = styled.li`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;

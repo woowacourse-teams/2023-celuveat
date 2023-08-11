@@ -13,14 +13,14 @@ import Plus from '~/assets/icons/plus.svg';
 import getQuadrant from '~/utils/getQuadrant';
 import OverlayMarker from './OverlayMarker';
 
-import type { Coordinate, CoordinateBoundary } from '~/@types/map.types';
+import type { Coordinate } from '~/@types/map.types';
 import type { RestaurantData } from '~/@types/api.types';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import useMapState from '~/hooks/store/useMapState';
 
 interface MapProps {
   data: RestaurantData[];
   hoveredId: number | null;
-  setBoundary: React.Dispatch<React.SetStateAction<CoordinateBoundary>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   toggleMapExpand: () => void;
   loadingData: boolean;
@@ -46,17 +46,20 @@ const StyledMapLoadingContainer = styled.section`
   background-color: var(--gray-2);
 `;
 
-const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
-
-function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
+function Map({ data, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
+  const [center, setCenter, zoom, setZoom, setBoundary] = useMapState(state => [
+    state.center,
+    state.setCenter,
+    state.zoom,
+    state.setZoom,
+    state.setBoundary,
+  ]);
   const { isMobile } = useMediaQuery();
-  const [center, setCenter] = useState<Coordinate>({ lat: 37.5057482, lng: 127.050727 });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
-  const [zoom, setZoom] = useState(16);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currentCenter, setCurrentCenter] = useState<Coordinate>(JamsilCampus);
+  const [currentCenter, setCurrentCenter] = useState<Coordinate>(center);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -90,7 +93,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
   const clickZoom =
     (number: number): React.MouseEventHandler<HTMLButtonElement> =>
     () => {
-      setZoom(prev => prev + number);
+      setZoom(zoom + number);
     };
 
   const clickMapExpand = () => {
@@ -99,7 +102,7 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
   };
 
   return (
-    <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko">
+    <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko" libraries={['places']}>
       <MapContent
         onClick={onClick}
         onIdle={onIdle}
@@ -107,17 +110,14 @@ function Map({ data, setBoundary, toggleMapExpand, loadingData, hoveredId, setCu
         zoom={zoom}
         center={center}
       >
-        {data?.map(({ celebs, ...restaurant }) => {
-          const { lat, lng } = restaurant;
-          return (
-            <OverlayMarker
-              restaurant={restaurant}
-              celeb={celebs[0]}
-              quadrant={getQuadrant(currentCenter, { lat, lng })}
-              isRestaurantHovered={restaurant.id === hoveredId}
-            />
-          );
-        })}
+        {data?.map(({ celebs, ...restaurant }) => (
+          <OverlayMarker
+            restaurant={restaurant}
+            celeb={celebs[0]}
+            quadrant={getQuadrant(currentCenter, { lat: restaurant.lat, lng: restaurant.lng })}
+            isRestaurantHovered={restaurant.id === hoveredId}
+          />
+        ))}
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {(loadingData || loading) && (
           <LoadingUI>

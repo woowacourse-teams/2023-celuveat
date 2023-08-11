@@ -5,6 +5,8 @@ import Overlay from './Overlay/Overlay';
 import RestaurantCard from '~/components/RestaurantCard';
 import useOnClickOutside from '~/hooks/useOnClickOutside';
 
+import Love from '~/assets/icons/love.svg';
+
 import type { Quadrant } from '~/utils/getQuadrant';
 import type { Restaurant } from '~/@types/restaurant.types';
 import type { Celeb } from '~/@types/celeb.types';
@@ -37,6 +39,11 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
         <StyledMarkerContainer ref={ref}>
           <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered}>
             <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
+            {restaurant.isLiked && (
+              <LikeButton aria-label="좋아요" type="button">
+                {restaurant.isLiked && <Love fill="red" fillOpacity={0.5} aria-hidden="true" />}
+              </LikeButton>
+            )}
           </StyledMarker>
           {isClicked && (
             <StyledModal quadrant={quadrant} onClick={clickModal}>
@@ -68,6 +75,8 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: relative;
 
   width: 36px;
   height: 36px;
@@ -111,4 +120,13 @@ const StyledModal = styled.div<{ quadrant: Quadrant }>`
 
   animation: ${fadeInAnimation} 100ms ease-in;
   box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
+`;
+
+const LikeButton = styled.button`
+  position: absolute;
+  right: -12px;
+  bottom: -12px;
+
+  border: none;
+  background-color: transparent;
 `;

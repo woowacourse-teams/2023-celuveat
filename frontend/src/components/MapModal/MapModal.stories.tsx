@@ -20,6 +20,7 @@ export const Default: Story = {
       name: '김천재의육회반한연어 신논현본점',
       category: '요리주점',
       roadAddress: '서울 강남구 강남대로118길 47 2층',
+      distance: 256,
       phoneNumber: '0507-1415-1113',
       naverMapUrl:
         'https://map.naver.com/v5/entry/place/38252334?lng=127.02682069999999&lat=37.50750299999999&placePath=%2Fhome&entry=plt',

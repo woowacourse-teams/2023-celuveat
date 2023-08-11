@@ -25,10 +25,25 @@ export const apiClient = axios.create({
   },
 });
 
+const apiMSWClient = axios.create({
+  baseURL: `/`,
+  headers: {
+    'Content-type': 'application/json',
+  },
+});
+
 export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
   const queryString = getQueryString(queryParams);
 
   const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+
+  return response.data;
+};
+
+export const getMSWRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
+  const queryString = getQueryString(queryParams);
+
+  const response = await apiMSWClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
   return response.data;
 };
