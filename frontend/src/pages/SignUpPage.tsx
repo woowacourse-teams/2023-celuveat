@@ -57,5 +57,5 @@ const StyledContent = styled.div`
 
   border: 1px solid var(--gray-3);
   border-radius: 12px;
-  background: #fff;
+  background: var(--white);
 `;
