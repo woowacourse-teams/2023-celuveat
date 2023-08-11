@@ -1,10 +1,11 @@
 package com.celuveat.auth.presentation;
 
+import static com.celuveat.auth.exception.AuthExceptionType.REQUEST_EMPTY;
 import static com.celuveat.auth.presentation.AuthConstant.JSESSION_ID;
 
+import com.celuveat.auth.exception.AuthException;
 import com.celuveat.common.auth.LooseAuth;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -29,11 +30,12 @@ public class LooseAuthArgumentResolver implements HandlerMethodArgumentResolver 
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return Optional.empty();
+        HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+        if (httpServletRequest == null) {
+            throw new AuthException(REQUEST_EMPTY);
         }
-        return Optional.of(session.getAttribute(JSESSION_ID));
+        return Optional.of(httpServletRequest)
+                .map(request -> request.getSession(false))
+                .map(session -> session.getAttribute(JSESSION_ID));
     }
 }
