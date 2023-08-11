@@ -38,6 +38,7 @@ public class RestaurantQueryRepository {
                 r.longitude,
                 r.phoneNumber,
                 r.naverMapUrl,
+                r.viewCount,
                 %s AS dist
             )
             FROM Restaurant r
@@ -84,6 +85,7 @@ public class RestaurantQueryRepository {
                 r.longitude,
                 r.phoneNumber,
                 r.naverMapUrl,
+                r.viewCount,
                 %s AS dist
             )
             FROM Restaurant r

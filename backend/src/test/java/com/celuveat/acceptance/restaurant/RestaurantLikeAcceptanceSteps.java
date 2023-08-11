@@ -6,10 +6,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
+import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 
@@ -36,6 +40,26 @@ public class RestaurantLikeAcceptanceSteps {
     public static ExtractableResponse<Response> 좋아요한_음식점_조회_요청(String 세션_아이디) {
         return given(세션_아이디)
                 .when().get("/api/restaurants/like")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 회원으로_음식점_검색_요청(
+            RestaurantSearchCond 음식점_검색_조건,
+            LocationSearchCond 위치_검색_조건,
+            String 세션_아이디
+    ) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebId", 음식점_검색_조건.celebId());
+        param.put("category", 음식점_검색_조건.category());
+        param.put("restaurantName", 음식점_검색_조건.restaurantName());
+        param.put("lowLatitude", 위치_검색_조건.lowLatitude());
+        param.put("highLatitude", 위치_검색_조건.highLatitude());
+        param.put("lowLongitude", 위치_검색_조건.lowLongitude());
+        param.put("highLongitude", 위치_검색_조건.highLongitude());
+        return given(세션_아이디)
+                .queryParams(param)
+                .when().get("/api/restaurants")
                 .then().log().all()
                 .extract();
     }

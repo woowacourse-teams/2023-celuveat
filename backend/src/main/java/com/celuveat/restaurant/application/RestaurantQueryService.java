@@ -1,7 +1,10 @@
 package com.celuveat.restaurant.application;
 
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
@@ -18,13 +21,17 @@ import com.celuveat.restaurant.domain.RestaurantQueryRepository;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.domain.RestaurantRepository;
+import com.celuveat.restaurant.domain.dto.RestaurantIdWithCount;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,11 +45,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantQueryService {
 
     private final VideoRepository videoRepository;
+    private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
     private final RestaurantImageRepository restaurantImageRepository;
     private final RestaurantQueryRepository restaurantQueryRepository;
-    private final RestaurantRepository restaurantRepository;
 
     public Page<RestaurantQueryResponse> findAll(
             RestaurantSearchCond restaurantSearchCond,
@@ -64,7 +71,11 @@ public class RestaurantQueryService {
         Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
         List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
-        List<RestaurantQueryResponse> responseList = toResponseList(restaurantsWithDistance, celebs, restaurantListMap);
+        List<RestaurantIdWithCount> restaurantIdsWithCount =
+                restaurantLikeRepository.countLikesByRestaurantIds(restaurantIds);
+        Map<Long, Integer> likeCounts = groupingLikeCountByRestaurant(restaurantIdsWithCount, restaurantIds);
+        List<RestaurantQueryResponse> responseList =
+                toResponseList(restaurantsWithDistance, celebs, restaurantListMap, likeCounts);
         return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalElements());
     }
 
@@ -103,22 +114,96 @@ public class RestaurantQueryService {
                 ));
     }
 
+    private Map<Long, Integer> groupingLikeCountByRestaurant(
+            List<RestaurantIdWithCount> restaurantIdsWithCount,
+            List<Long> restaurantIds
+    ) {
+        Map<Long, Integer> likeCountByRestaurantId = restaurantIds.stream()
+                .collect(toMap(identity(), likeCount -> 0));
+        restaurantIdsWithCount.forEach(it -> likeCountByRestaurantId.put(it.restaurantId(), it.count().intValue()));
+        return likeCountByRestaurantId;
+    }
+
     private List<RestaurantQueryResponse> toResponseList(
             Page<RestaurantWithDistance> restaurants,
             Map<Long, List<Celeb>> celebs,
-            Map<Long, List<RestaurantImage>> images
+            Map<Long, List<RestaurantImage>> images,
+            Map<Long, Integer> likeCounts
     ) {
         return restaurants.getContent().stream()
-                .map(restaurant -> toResponse(celebs.get(restaurant.id()), images.get(restaurant.id()), restaurant))
-                .toList();
+                .map(restaurant -> toResponse(
+                        celebs.get(restaurant.id()),
+                        images.get(restaurant.id()),
+                        restaurant,
+                        likeCounts.get(restaurant.id())
+                )).toList();
     }
 
     private RestaurantQueryResponse toResponse(
             List<Celeb> celebs,
             List<RestaurantImage> images,
-            RestaurantWithDistance restaurantWithDistance
+            RestaurantWithDistance restaurantWithDistance,
+            Integer likeCount
     ) {
-        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images);
+        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
+    }
+
+    public Page<RestaurantQueryResponse> findAllWithMemberId(
+            RestaurantSearchCond restaurantSearchCond,
+            LocationSearchCond locationSearchCond,
+            Pageable pageable,
+            Long memberId
+    ) {
+        OauthMember member = oauthMemberRepository.getById(memberId);
+        Set<Long> likedRestaurantIds = restaurantLikeRepository.findAllByMember(member).stream()
+                .map(RestaurantLike::restaurant)
+                .map(Restaurant::id)
+                .collect(toUnmodifiableSet());
+
+        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsWithDistance(
+                restaurantSearchCond, locationSearchCond, pageable
+        );
+        List<Long> restaurantIds = extractRestaurantIds(restaurantsWithDistance);
+        List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<Celeb>> celebs = mapVideoToCeleb(groupingVideoByRestaurant(videos));
+        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<RestaurantImage>> restaurantListMap = groupingImageByRestaurant(images);
+        List<RestaurantIdWithCount> restaurantIdWithCounts =
+                restaurantLikeRepository.countLikesByRestaurantIds(restaurantIds);
+        Map<Long, Integer> likeCounts = groupingLikeCountByRestaurant(restaurantIdWithCounts, restaurantIds);
+        List<RestaurantQueryResponse> responseList =
+                toResponseList(restaurantsWithDistance, celebs, restaurantListMap, likedRestaurantIds, likeCounts);
+        return new PageImpl<>(responseList, pageable, restaurantsWithDistance.getTotalElements());
+    }
+
+    private List<RestaurantQueryResponse> toResponseList(
+            Page<RestaurantWithDistance> restaurants,
+            Map<Long, List<Celeb>> celebs,
+            Map<Long, List<RestaurantImage>> images,
+            Set<Long> likedRestaurantIds,
+            Map<Long, Integer> likeCounts
+    ) {
+        return restaurants.getContent().stream()
+                .map(restaurant -> toResponse(
+                        celebs.get(restaurant.id()),
+                        images.get(restaurant.id()),
+                        restaurant,
+                        likedRestaurantIds,
+                        likeCounts.get(restaurant.id())
+                )).toList();
+    }
+
+    private RestaurantQueryResponse toResponse(
+            List<Celeb> celebs,
+            List<RestaurantImage> images,
+            RestaurantWithDistance restaurantWithDistance,
+            Set<Long> likedRestaurantIds,
+            Integer likeCount
+    ) {
+        if (likedRestaurantIds.contains(restaurantWithDistance.id())) {
+            return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, true, likeCount);
+        }
+        return RestaurantQueryResponse.from(restaurantWithDistance, celebs, images, false, likeCount);
     }
 
     public List<RestaurantLikeQueryResponse> findAllByMemberId(Long memberId) {
