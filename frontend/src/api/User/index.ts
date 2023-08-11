@@ -30,6 +30,21 @@ const mswUserApi = (options?: Record<string, string>) => {
   return instance;
 };
 
+const axiosUserApi2 = (options?: Record<string, string>) => {
+  const token = getToken();
+  const instance = axios.create({
+    baseURL: `${process.env.BASE_URL}/api`,
+    headers: {
+      'Content-type': 'application/json',
+      Cookies: `JSESSIONID=${token}`,
+      ...options,
+    },
+  });
+
+  return instance;
+};
+
 export const userInstance = setupInterceptorsTo(axiosUserApi());
+export const userInstance2 = setupInterceptorsTo(axiosUserApi2());
 
 export const userMSWInstance = setupInterceptorsTo(mswUserApi());
