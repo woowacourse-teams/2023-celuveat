@@ -9,5 +9,5 @@ public interface OauthMemberClient {
 
     OauthMember fetch(String code);
 
-    Long logout(String oauthServerId);
+    void logout(String oauthServerId);
 }

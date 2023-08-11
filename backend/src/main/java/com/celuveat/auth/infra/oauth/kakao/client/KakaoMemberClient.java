@@ -42,8 +42,8 @@ public class KakaoMemberClient implements OauthMemberClient {
     }
 
     @Override
-    public Long logout(String oauthServerId) {
-        return kakaoApiClient.logoutMember(
+    public void logout(String oauthServerId) {
+        kakaoApiClient.logoutMember(
                 "KakaoAK " + kakaoOauthConfig.adminKey(),
                 logoutRequestParams(oauthServerId)
         );

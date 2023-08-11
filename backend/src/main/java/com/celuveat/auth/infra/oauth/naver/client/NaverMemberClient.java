@@ -41,7 +41,6 @@ public class NaverMemberClient implements OauthMemberClient {
     }
 
     @Override
-    public Long logout(String oauthServerId) {
-        return null;
+    public void logout(String oauthServerId) {
     }
 }

@@ -30,8 +30,8 @@ public class OauthMemberClientComposite {
         return getClient(oauthServerType).fetch(authCode);
     }
 
-    public Long logout(OauthServerType oauthServerType, OauthId oauthId) {
-        return getClient(oauthServerType).logout(oauthId.oauthServerId());
+    public void logout(OauthServerType oauthServerType, OauthId oauthId) {
+        getClient(oauthServerType).logout(oauthId.oauthServerId());
     }
 
     private OauthMemberClient getClient(OauthServerType oauthServerType) {
