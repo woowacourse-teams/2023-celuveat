@@ -22,7 +22,7 @@ public class VideoQueryRepository {
     private static final String SELECT_VIDEO = """
             SELECT new com.celuveat.video.application.dto.VideoWithCelebQueryResponse(
                 v.id,
-                v.youtubeUrl,
+                v.youtubeUrl as youtubeVideoKey,
                 v.uploadDate,
                 c.id,
                 c.name,
