@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ModalContentProps {
   isShow?: boolean;
@@ -9,10 +10,12 @@ interface ModalContentProps {
 }
 
 function ModalContent({ isShow = false, title, closeModal, children }: ModalContentProps) {
+  const { isMobile } = useMediaQuery();
+
   return (
-    <StyledModalContentWrapper isShow={isShow}>
+    <StyledModalContentWrapper isShow={isShow} isMobile={isMobile}>
       <StyledModalOverlay onClick={closeModal} />
-      <StyledModalContent isShow={isShow}>
+      <StyledModalContent isShow={isShow} isMobile={isMobile}>
         <StyledModalHeader>
           <StyledExitButton onClick={closeModal} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
@@ -29,7 +32,7 @@ const StyledExitButton = styled(Exit)`
   cursor: pointer;
 `;
 
-const StyledModalContentWrapper = styled.div<{ isShow: boolean }>`
+const StyledModalContentWrapper = styled.div<{ isShow: boolean; isMobile: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,6 +47,13 @@ const StyledModalContentWrapper = styled.div<{ isShow: boolean }>`
 
   opacity: 0;
   visibility: hidden;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      flex-direction: column;
+      justify-content: flex-end;
+    `}
 
   ${({ isShow }) =>
     isShow &&
@@ -67,7 +77,7 @@ const StyledModalOverlay = styled.div`
   background: rgb(0 0 0 / 50%);
 `;
 
-const StyledModalContent = styled.div<{ isShow: boolean }>`
+const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
@@ -88,6 +98,14 @@ const StyledModalContent = styled.div<{ isShow: boolean }>`
   transform: translateY(80px);
 
   overflow-y: auto;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+    `}
 
   ${({ isShow }) =>
     isShow &&
