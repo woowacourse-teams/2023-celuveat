@@ -14,7 +14,7 @@ interface LoginButtonProps {
 }
 
 const LoginIcon: Record<string, React.ReactNode> = {
-  naver: <Naver />,
+  naver: <Naver width={14} />,
   kakao: <KaKao />,
   google: <Google />,
 };

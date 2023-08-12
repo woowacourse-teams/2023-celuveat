@@ -1,11 +1,14 @@
+/* eslint-disable no-new */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
+import type { Coordinate } from '~/@types/map.types';
 
 interface UseDrawMapProps {
   zoom: number;
   center: google.maps.LatLngLiteral;
   onIdle?: (map: google.maps.Map) => void;
   onClick?: (e: google.maps.MapMouseEvent) => void;
+  markers?: Coordinate[];
 }
 
 const styles = [
@@ -158,7 +161,7 @@ const styles = [
   },
 ];
 
-const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
+const useMap = ({ center, zoom, onClick, onIdle, markers }: UseDrawMapProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map>(null);
 
@@ -171,6 +174,16 @@ const useMap = ({ center, zoom, onClick, onIdle }: UseDrawMapProps) => {
         gestureHandling: 'greedy',
         styles,
       });
+
+      markers?.forEach(
+        latLng =>
+          new window.google.maps.Marker({
+            position: latLng,
+            map: newMap,
+            title: 'Hello World!',
+          }),
+      );
+
       setMap(newMap);
     }
   }, [ref]);

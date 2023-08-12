@@ -15,7 +15,7 @@ function ProfileImageList({ celebs, size }: ProfileImageListProps) {
   return (
     <StyledProfileImageList onMouseEnter={setTrue} onMouseLeave={setFalse} size={size}>
       {celebs.map((celeb, index) => (
-        <StyledProfileImageWrapper key={celeb.id} index={index} hover={hover}>
+        <StyledProfileImageWrapper key={celeb.id} index={index} hover={hover} length={celebs.length}>
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={size} />
         </StyledProfileImageWrapper>
       ))}
@@ -32,9 +32,9 @@ const StyledProfileImageList = styled.div<{ size: string }>`
   height: ${({ size }) => `${size}`};
 `;
 
-const StyledProfileImageWrapper = styled.div<{ index: number; hover: boolean }>`
+const StyledProfileImageWrapper = styled.div<{ index: number; hover: boolean; length: number }>`
   position: absolute;
-  z-index: ${({ index }) => 100 - index};
+  z-index: ${({ length, index }) => 10 + length - index};
 
   transition: 0.4s ease-in-out;
 
