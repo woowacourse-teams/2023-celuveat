@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
@@ -7,6 +7,7 @@ import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
 import { Oauth } from '~/@types/oauth.types';
+import useTokenState from '~/hooks/store/useTokenState';
 
 interface LoginButtonProps {
   type: Oauth;
@@ -19,8 +20,18 @@ const LoginIcon: Record<string, React.ReactNode> = {
 };
 
 function LoginButton({ type }: LoginButtonProps) {
+  const navigator = useNavigate();
+  const updateOauth = useTokenState(state => state.updateOauth);
+
+  const onClick = () => {
+    window.open(OAUTH_LINK[type]);
+
+    updateOauth(type);
+    navigator('/');
+  };
+
   return (
-    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]} target="_blank">
+    <StyledLoginButtonWrapper type={type} onClick={onClick}>
       <div>{LoginIcon[type]}</div>
       <StyledLoginButtonText>{OAUTH_BUTTON_MESSAGE[type]}</StyledLoginButtonText>
     </StyledLoginButtonWrapper>
@@ -29,7 +40,7 @@ function LoginButton({ type }: LoginButtonProps) {
 
 export default LoginButton;
 
-const StyledLoginButtonWrapper = styled(Link)<LoginButtonProps>`
+const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
   display: flex;
 
   width: 100%;

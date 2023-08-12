@@ -22,6 +22,12 @@ export interface RestaurantData {
   images: { id: number; name: string; author: string; sns: string }[];
 }
 
+
+export interface ProfileData {
+  nickname: string;
+  profileImageUrl: string;
+}
+
 export interface RestaurantDetailData extends RestaurantData {
   likeCount: number;
   viewCount: number;
@@ -36,6 +42,7 @@ export interface Video {
   youtubeChannelName: string;
   profileImageUrl: string;
 }
+
 export interface VideoList {
   content: Video[];
   totalPage: number;
@@ -44,3 +51,4 @@ export interface VideoList {
   totalElementsCount: number;
   currentElementsCount: number;
 }
+

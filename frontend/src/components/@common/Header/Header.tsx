@@ -12,13 +12,13 @@ import useBooleanState from '~/hooks/useBooleanState';
 import { isEmptyString } from '~/utils/compare';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
+import { getLogout } from '~/api/oauth';
 
 function Header() {
   const { isMobile } = useMediaQuery();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const navigator = useNavigate();
-  const token = useTokenStore(state => state.token);
-  const clearToken = useTokenStore(state => state.clearToken);
+  const [token, clearToken, oauth] = useTokenStore(state => [state.token, state.clearToken, state.oauth]);
 
   const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
 
@@ -30,8 +30,12 @@ function Header() {
     if (currentOption === '위시리스트') navigator('/restaurants/like');
 
     if (currentOption === '로그아웃') {
+      if (oauth !== '') {
+        getLogout(oauth);
+      }
+
       clearToken();
-      window.location.href = '/';
+      // window.location.href = '/';
     }
   };
 

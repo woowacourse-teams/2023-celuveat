@@ -5,7 +5,7 @@ import { FONT_SIZE } from '~/styles/common';
 
 import RestaurantWishItem from '~/components/RestaurantWishItem/RestaurantWishItem';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { userInstance } from '~/api/User';
+import { getRestaurantWishList } from '~/api/oauth';
 
 import type { RestaurantData } from '~/@types/api.types';
 
@@ -14,7 +14,7 @@ function RestaurantWishList() {
 
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['restaurants', 'like'],
-    queryFn: () => userInstance.get('restaurants/like').then(response => response.data),
+    queryFn: () => getRestaurantWishList(),
   });
 
   return (

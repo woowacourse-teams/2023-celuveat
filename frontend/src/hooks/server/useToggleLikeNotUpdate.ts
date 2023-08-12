@@ -2,10 +2,10 @@ import { shallow } from 'zustand/shallow';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { AxiosError } from 'axios';
-import { userMSWInstance } from '~/api/User';
 import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
+import { postRestaurantLike } from '~/api/oauth';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -20,7 +20,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   );
 
   const toggleLike = useMutation({
-    mutationFn: async (restaurantId: number) => userMSWInstance.post(`/restaurants/${restaurantId}/like`),
+    mutationFn: postRestaurantLike,
 
     onError: (error: AxiosError) => {
       if (error.response.status < 500) {
