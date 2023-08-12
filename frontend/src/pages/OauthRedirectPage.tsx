@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import getAccessToken from '~/api/oauth';
+import { getAccessToken } from '~/api/oauth';
 import useTokenState from '~/hooks/store/useTokenState';
 
 interface OauthRedirectProps {

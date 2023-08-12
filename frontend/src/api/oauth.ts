@@ -1,32 +1,48 @@
-import { BASE_URL } from '../constants/api';
-
 import type { Oauth } from '~/@types/oauth.types';
 import { apiClient } from '~/api';
 import { userInstance, userMSWInstance } from '~/api/User';
 
-const getAccessToken = async (type: Oauth, code: string) => {
-  const response = await apiClient.get(`${BASE_URL}/api/oauth/login/${type}?code=${code}`);
+export const getAccessToken = async (type: Oauth, code: string) => {
+  const response = await apiClient.get(`/oauth/login/${type}?code=${code}`);
   return response.data;
 };
 
 export const getLogout = async (type: Oauth) => {
-  const response = await userInstance.post(`${BASE_URL}/api/oauth/logout/${type}`);
+  const response = await userInstance.post(`/oauth/logout/${type}`);
   return response.data;
 };
 
 export const getMSWLogout = async (type: Oauth) => {
-  const response = await userMSWInstance.post(`${BASE_URL}/api/oauth/logout/${type}`);
+  const response = await userMSWInstance.post(`/oauth/logout/${type}`);
   return response.data;
 };
 
 export const getProfile = async () => {
-  const response = await userInstance.get('profile');
+  const response = await userInstance.get('/profile');
   return response.data;
 };
 
 export const getMSWProfile = async () => {
-  const response = await userMSWInstance.get('profile');
+  const response = await userMSWInstance.get('/profile');
   return response.data;
 };
 
-export default getAccessToken;
+export const getRestaurantWishList = async () => {
+  const response = await userInstance.get('/restaurants/like');
+  return response.data;
+};
+
+export const getMSWRestaurantWishList = async () => {
+  const response = await userMSWInstance.get('/restaurants/like');
+  return response.data;
+};
+
+export const postRestaurantLike = async (restaurantId: number) => {
+  const response = await userInstance.post(`/restaurants/${restaurantId}/like`);
+  return response.data;
+};
+
+export const postMSWRestaurantLike = async (restaurantId: number) => {
+  const response = await userMSWInstance.post(`/restaurants/${restaurantId}/like`);
+  return response.data;
+};

@@ -3,11 +3,11 @@ import { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import useToastState from '~/hooks/store/useToastState';
+import useBooleanState from '~/hooks/useBooleanState';
+import { postRestaurantLike } from '~/api/oauth';
 
 import type { Restaurant } from '../../@types/restaurant.types';
 import type { RestaurantListData } from '../../@types/api.types';
-import useBooleanState from '~/hooks/useBooleanState';
-import { userInstance } from '~/api/User';
 
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
   );
 
   const toggleLike = useMutation({
-    mutationFn: async (restaurantId: number) => userInstance.post(`/restaurants/${restaurantId}/like`),
+    mutationFn: postRestaurantLike,
     onMutate: () => {
       const previousRestaurantListData: RestaurantListData = queryClient.getQueryData(['restaurants']);
       const newRestaurantListData = previousRestaurantListData?.content.map(restaurantItem =>
