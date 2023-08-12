@@ -1,4 +1,4 @@
-import type { RestaurantListData } from '~/@types/api.types';
+import type { ProfileData, RestaurantListData } from '~/@types/api.types';
 
 export let restaurantListData: RestaurantListData = {
   content: [
@@ -155,4 +155,9 @@ export let restaurantListData: RestaurantListData = {
   pageSize: 18,
   totalElementsCount: 5,
   currentElementsCount: 5,
+};
+
+export const profileData: ProfileData = {
+  nickname: '푸만능',
+  profileImageUrl: 'https://blog.kakaocdn.net/dn/bqPYzR/btraWSj02cT/HnIasx6vc09IszobY6Fwe0/img.jpg ',
 };

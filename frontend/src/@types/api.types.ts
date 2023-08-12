@@ -21,3 +21,8 @@ export interface RestaurantData {
   celebs: { id: number; name: string; youtubeChannelName: string; profileImageUrl: string }[];
   images: { id: number; name: string; author: string; sns: string }[];
 }
+
+export interface ProfileData {
+  nickname: string;
+  profileImageUrl: string;
+}
