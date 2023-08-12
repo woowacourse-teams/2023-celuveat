@@ -8,12 +8,12 @@ export const getAccessToken = async (type: Oauth, code: string) => {
 };
 
 export const getLogout = async (type: Oauth) => {
-  const response = await userInstance.post(`/oauth/logout/${type}`);
+  const response = await userInstance.get(`/oauth/logout/${type}`);
   return response.data;
 };
 
 export const getMSWLogout = async (type: Oauth) => {
-  const response = await userMSWInstance.post(`/oauth/logout/${type}`);
+  const response = await userMSWInstance.get(`/oauth/logout/${type}`);
   return response.data;
 };
 
