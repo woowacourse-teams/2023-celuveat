@@ -50,17 +50,18 @@ public class OauthController {
     }
 
     @GetMapping("/logout/{oauthServerType}")
-    ResponseEntity<Void> logout(
-            @PathVariable OauthServerType oauthServerType,
-            HttpServletRequest request
-    ) {
+    ResponseEntity<Void> logout(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            throw new AuthException(UNAUTHORIZED_REQUEST);
-        }
-        Long oauthMemberId = (Long) session.getAttribute(JSESSION_ID);
+        Long oauthMemberId = getOauthMemberId(session);
         oauthService.logout(oauthServerType, oauthMemberId);
         session.invalidate();
         return ResponseEntity.noContent().build();
+    }
+
+    private Long getOauthMemberId(HttpSession session) {
+        if (session == null) {
+            throw new AuthException(UNAUTHORIZED_REQUEST);
+        }
+        return (Long) session.getAttribute(JSESSION_ID);
     }
 }

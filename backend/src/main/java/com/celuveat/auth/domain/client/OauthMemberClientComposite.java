@@ -20,10 +20,7 @@ public class OauthMemberClientComposite {
 
     public OauthMemberClientComposite(Set<OauthMemberClient> clients) {
         this.clients = clients.stream()
-                .collect(toMap(
-                        OauthMemberClient::supportServer,
-                        identity()
-                ));
+                .collect(toMap(OauthMemberClient::supportServer, identity()));
     }
 
     public OauthMember fetch(OauthServerType oauthServerType, String authCode) {
