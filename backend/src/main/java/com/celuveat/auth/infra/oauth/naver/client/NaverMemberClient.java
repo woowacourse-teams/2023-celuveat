@@ -43,4 +43,8 @@ public class NaverMemberClient implements OauthMemberClient {
     @Override
     public void logout(String oauthServerId) {
     }
+
+    @Override
+    public void withDraw(String oauthServerId) {
+    }
 }

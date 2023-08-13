@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +55,15 @@ public class OauthController {
         HttpSession session = request.getSession(false);
         Long oauthMemberId = getOauthMemberId(session);
         oauthService.logout(oauthServerType, oauthMemberId);
+        session.invalidate();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/withdraw/{oauthServerType}")
+    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long oauthMemberId = getOauthMemberId(session);
+        oauthService.withDraw(oauthServerType, oauthMemberId);
         session.invalidate();
         return ResponseEntity.noContent().build();
     }

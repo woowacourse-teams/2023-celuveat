@@ -31,4 +31,9 @@ public class OauthService {
         OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
         oauthMemberClientComposite.logout(oauthServerType, oauthMember.oauthId());
     }
+
+    public void withDraw(OauthServerType oauthServerType, Long oauthMemberId) {
+        OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
+        oauthMemberClientComposite.withDraw(oauthServerType, oauthMember.oauthId());
+    }
 }

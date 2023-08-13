@@ -10,4 +10,6 @@ public interface OauthMemberClient {
     OauthMember fetch(String code);
 
     void logout(String oauthServerId);
+
+    void withDraw(String oauthServerId);
 }

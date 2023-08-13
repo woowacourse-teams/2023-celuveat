@@ -31,6 +31,10 @@ public class OauthMemberClientComposite {
         getClient(oauthServerType).logout(oauthId.oauthServerId());
     }
 
+    public void withDraw(OauthServerType oauthServerType, OauthId oauthId) {
+        getClient(oauthServerType).withDraw(oauthId.oauthServerId());
+    }
+
     private OauthMemberClient getClient(OauthServerType oauthServerType) {
         return Optional.ofNullable(clients.get(oauthServerType))
                 .orElseThrow(() -> new AuthException(UNSUPPORTED_OAUTH_TYPE));

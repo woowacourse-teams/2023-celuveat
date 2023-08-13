@@ -25,4 +25,10 @@ public interface KakaoApiClient {
             @RequestHeader(name = AUTHORIZATION) String adminKey,
             @RequestBody MultiValueMap<String, String> params
     );
+
+    @PostExchange(url = "https://kapi.kakao.com/v1/user/unlink")
+    void withDrawMember(
+            @RequestHeader(name = AUTHORIZATION) String adminKey,
+            @RequestBody MultiValueMap<String, String> params
+    );
 }
