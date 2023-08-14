@@ -64,7 +64,7 @@ public record SaveDataRequest(
                 .build();
     }
 
-    public RestaurantImage toRestaurantImage(SocialMedia socialMedia, Restaurant restaurant) {
+    public RestaurantImage toRestaurantImage(String imageName, SocialMedia socialMedia, Restaurant restaurant) {
         return RestaurantImage.builder()
                 .name(imageName)
                 .author(youtubeChannelName)
