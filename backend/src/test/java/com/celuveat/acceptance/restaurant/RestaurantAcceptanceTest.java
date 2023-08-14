@@ -29,14 +29,11 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
-import static com.celuveat.auth.domain.OauthServerType.KAKAO;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.auth.application.OauthService;
-import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import io.restassured.response.ExtractableResponse;
@@ -45,15 +42,10 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("음식점 인수테스트")
 public class RestaurantAcceptanceTest extends AcceptanceTest {
-
-    @MockBean
-    private OauthService oauthService;
 
     @Autowired
     private SeedData seedData;
