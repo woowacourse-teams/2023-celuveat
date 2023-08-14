@@ -4,7 +4,6 @@ import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_�
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽들만_추출_한다;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름의_셀럽을_찾는다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
-import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
@@ -27,7 +26,6 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_이름의_음식점을_찾는다;
-import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
@@ -154,26 +152,14 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 로이스 = 멤버("로이스");
             var 도기 = 멤버("도기");
             var 말랑 = 멤버("말랑");
-            멤버를_저장한다(오도);
-            멤버를_저장한다(로이스);
-            멤버를_저장한다(도기);
-            멤버를_저장한다(말랑);
 
             var 셀럽들 = 셀럽들만_추출_한다(셀럽_전체_조회_요청());
             var 셀럽_오도 = 특정_이름의_셀럽을_찾는다(셀럽들, "오도");
 
-            OAuth_응답을_설정한다(오도);
-            var 오도_로그인_응답 = 로그인을_요청한다();
-            var 오도_세션_아이디 = 세션_아이디를_가져온다(오도_로그인_응답);
-            OAuth_응답을_설정한다(로이스);
-            var 로이스_로그인_응답 = 로그인을_요청한다();
-            var 로이스_세션_아이디 = 세션_아이디를_가져온다(로이스_로그인_응답);
-            OAuth_응답을_설정한다(도기);
-            var 도기_로그인_응답 = 로그인을_요청한다();
-            var 도기_세션_아이디 = 세션_아이디를_가져온다(도기_로그인_응답);
-            OAuth_응답을_설정한다(말랑);
-            var 말랑_로그인_응답 = 로그인을_요청한다();
-            var 말랑_세션_아이디 = 세션_아이디를_가져온다(말랑_로그인_응답);
+            var 오도_세션_아이디 = 회원가입하고_로그인한다(오도);
+            var 로이스_세션_아이디 = 회원가입하고_로그인한다(로이스);
+            var 도기_세션_아이디 = 회원가입하고_로그인한다(도기);
+            var 말랑_세션_아이디 = 회원가입하고_로그인한다(말랑);
 
             var 말랑1호점 = 전체_음식점.get(0);
             var 말랑2호점 = 전체_음식점.get(1);
