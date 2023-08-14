@@ -1,3 +1,5 @@
+import { DateSplitHyphen } from '~/@types/date.types';
+
 export interface RestaurantListData {
   content: RestaurantData[];
   currentElementsCount: number;
@@ -21,7 +23,6 @@ export interface RestaurantData {
   celebs: { id: number; name: string; youtubeChannelName: string; profileImageUrl: string }[];
   images: { id: number; name: string; author: string; sns: string }[];
 }
-
 
 export interface ProfileData {
   nickname: string;
@@ -52,3 +53,10 @@ export interface VideoList {
   currentElementsCount: number;
 }
 
+export interface RestaurantReview {
+  id: number;
+  nickname: string;
+  profileImageUrl: string;
+  content: string;
+  createdDate: DateSplitHyphen;
+}

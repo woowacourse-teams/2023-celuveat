@@ -77,3 +77,13 @@ export const postRevisedInfo = async ({ restaurantId, data }: { restaurantId: nu
   const response = await apiClient.post(`/restaurants/${restaurantId}/correction`, data);
   return response.data;
 };
+
+export const getRestaurantReview = async (restaurantId: string) => {
+  const response = await apiClient.get(`/restaurants/${restaurantId}/reviews`);
+  return response.data;
+};
+
+export const getMSWRestaurantReview = async (restaurantId: string) => {
+  const response = await apiMSWClient.get(`/restaurants/${restaurantId}/reviews`);
+  return response.data;
+};
