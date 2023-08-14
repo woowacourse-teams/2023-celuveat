@@ -1,3 +1,4 @@
+import { cloneElement, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';
 import useMediaQuery from '~/hooks/useMediaQuery';
@@ -6,21 +7,22 @@ interface ModalContentProps {
   isShow?: boolean;
   title: string;
   closeModal: () => void;
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 function ModalContent({ isShow = false, title, closeModal, children }: ModalContentProps) {
+  const modalContentRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useMediaQuery();
 
   return (
     <StyledModalContentWrapper isShow={isShow} isMobile={isMobile}>
       <StyledModalOverlay onClick={closeModal} />
-      <StyledModalContent isShow={isShow} isMobile={isMobile}>
+      <StyledModalContent ref={modalContentRef} isShow={isShow} isMobile={isMobile}>
         <StyledModalHeader>
           <StyledExitButton onClick={closeModal} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
         </StyledModalHeader>
-        <StyledModalBody>{children}</StyledModalBody>
+        <StyledModalBody>{cloneElement(children, { modalContentRef })}</StyledModalBody>
       </StyledModalContent>
     </StyledModalContentWrapper>
   );
@@ -88,6 +90,7 @@ const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
   min-width: 500px;
   max-width: 600px;
   min-height: 100px;
+  max-height: 600px;
 
   padding: 2rem;
 
