@@ -44,28 +44,6 @@ public record RestaurantWithCelebAndImagesDetailResponse(
     }
 
     public static RestaurantWithCelebAndImagesDetailResponse of(
-            Restaurant restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages,
-            int likeCount
-    ) {
-        return new RestaurantWithCelebAndImagesDetailResponse(
-                restaurant.id(),
-                restaurant.name(),
-                restaurant.category(),
-                restaurant.roadAddress(),
-                restaurant.latitude(),
-                restaurant.longitude(),
-                restaurant.phoneNumber(),
-                restaurant.naverMapUrl(),
-                likeCount,
-                restaurant.viewCount(),
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
-        );
-    }
-
-    public static RestaurantWithCelebAndImagesDetailResponse of(
             RestaurantWithCelebAndImagesDetailResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages

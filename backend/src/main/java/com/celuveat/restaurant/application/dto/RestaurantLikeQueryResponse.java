@@ -39,23 +39,4 @@ public record RestaurantLikeQueryResponse(
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
         );
     }
-
-    public static RestaurantLikeQueryResponse of(
-            Restaurant restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages
-    ) {
-        return new RestaurantLikeQueryResponse(
-                restaurant.id(),
-                restaurant.name(),
-                restaurant.category(),
-                restaurant.roadAddress(),
-                restaurant.latitude(),
-                restaurant.longitude(),
-                restaurant.phoneNumber(),
-                restaurant.naverMapUrl(),
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
-        );
-    }
 }
