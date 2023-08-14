@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ import Youtube from '~/assets/icons/youtube.svg';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import ImageGrid from '~/components/@common/ImageGrid';
-import { BORDER_RADIUS, FONT_SIZE, hideScrollBar } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
 import VideoCarousel from '~/components/@common/VideoCarousel';
 import RestaurantCard from '~/components/RestaurantCard';
 import MapContent from '~/components/@common/Map/MapContent';
@@ -22,8 +22,11 @@ import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@typ
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import SuggestionButton from '~/components/SuggestionButton';
 import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import ImageCarousel from '~/components/@common/ImageCarousel';
 
 function RestaurantDetail() {
+  const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
@@ -85,7 +88,7 @@ function RestaurantDetail() {
     <>
       <Header />
       <>
-        <StyledMainRestaurantDetail>
+        <StyledMainRestaurantDetail isMobile={isMobile}>
           {isSuccessRestaurantDetail && (
             <>
               <StyledDetailHeader>
@@ -99,9 +102,13 @@ function RestaurantDetail() {
                   </div>
                 </div>
               </StyledDetailHeader>
-              <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
-              <StyledDetailAndLink>
-                <StyledDetailInfo>
+              {isMobile ? (
+                <ImageCarousel type="list" images={images} />
+              ) : (
+                <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
+              )}
+              <StyledDetailAndLink isMobile={isMobile}>
+                <StyledDetailInfo isMobile={isMobile}>
                   <div>
                     <div>
                       <h4>셀럽, {celebs[0].name} 이(가) 다녀간 맛집</h4>
@@ -148,8 +155,8 @@ function RestaurantDetail() {
                     </StyledMainVideo>
                   )}
                 </StyledDetailInfo>
-                <StyledLinkContainer>
-                  <StyledMainLinkContainer>
+                <StyledLinkContainer isMobile={isMobile}>
+                  <StyledMainLinkContainer isMobile={isMobile}>
                     <button type="button" onClick={openNewWindow(naverMapUrl)}>
                       <Naver width={32} />
                       <div>네이버 지도로 보기</div>
@@ -207,7 +214,7 @@ function RestaurantDetail() {
                   <MapContent
                     center={{ lat, lng }}
                     zoom={17}
-                    style={{ width: '100%', height: '600px' }}
+                    style={{ width: '100%', height: isMobile ? '300px' : '600px' }}
                     markers={[{ lat, lng }]}
                   />
                 </Wrapper>
@@ -217,23 +224,57 @@ function RestaurantDetail() {
         </StyledMainRestaurantDetail>
         <Footer />
       </>
+      {isMobile && (
+        <StyledMobileBottomSheet>
+          <StyledMainLinkContainer isMobile={isMobile}>
+            <button type="button" onClick={openNewWindow(naverMapUrl)}>
+              <Naver width={32} />
+              <div>네이버 지도로 보기</div>
+            </button>
+            <RestaurantDetailLikeButton
+              restaurant={{
+                id,
+                distance,
+                name,
+                images,
+                roadAddress,
+                category,
+                phoneNumber,
+                naverMapUrl,
+                lat,
+                lng,
+              }}
+            />
+            <SuggestionButton />
+          </StyledMainLinkContainer>
+        </StyledMobileBottomSheet>
+      )}
     </>
   );
 }
 
 export default RestaurantDetail;
 
-const StyledMainRestaurantDetail = styled.main`
+const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          position: sticky;
+          top: 60px;
 
-  max-width: 1240px;
+          margin: 0 1.2rem 24rem;
+        `
+      : css`
+          max-width: 1240px;
 
-  margin: 0 auto;
+          margin: 0 auto;
 
-  @media screen and (width <= 1340px) {
-    margin: 0 5rem;
-  }
+          @media screen and (width <= 1340px) {
+            margin: 0 5rem;
+          }
+        `}
 `;
 
 const StyledDetailHeader = styled.section`
@@ -258,10 +299,16 @@ const StyledDetailHeader = styled.section`
   }
 `;
 
-const StyledDetailAndLink = styled.div`
+const StyledDetailAndLink = styled.div<{ isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3.2rem;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      flex-direction: column;
+    `}
 `;
 
 const StyledVideoSection = styled.section`
@@ -281,6 +328,7 @@ const StyledMainVideo = styled.div`
   border-bottom: 1px solid var(--gray-2);
 
   & > iframe {
+    ${paintSkeleton}
     width: 100%;
     aspect-ratio: 1 / 0.556;
 
@@ -288,11 +336,11 @@ const StyledMainVideo = styled.div`
   }
 `;
 
-const StyledDetailInfo = styled.section`
+const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
-  width: 58%;
+  width: ${({ isMobile }) => (isMobile ? '100%' : '58%')};
 
   padding-top: 2.4rem;
 
@@ -356,15 +404,23 @@ const StyledDetailInfo = styled.section`
   }
 `;
 
-const StyledLinkContainer = styled.section`
+const StyledLinkContainer = styled.section<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
-  position: sticky;
-  top: 80px;
-
-  width: 33%;
   height: 100%;
+
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          display: none;
+        `
+      : css`
+          position: sticky;
+          top: 80px;
+
+          width: 33%;
+        `}
 
   & > button:last-child {
     display: flex;
@@ -385,7 +441,7 @@ const StyledLinkContainer = styled.section`
   }
 `;
 
-const StyledMainLinkContainer = styled.div`
+const StyledMainLinkContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -394,10 +450,19 @@ const StyledMainLinkContainer = styled.div`
 
   padding: 2.4rem;
 
-  border: 1px solid var(--gray-2);
-  border-radius: ${BORDER_RADIUS.md};
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          border-radius: ${BORDER_RADIUS.md} ${BORDER_RADIUS.md} 0 0;
+          background: var(--white);
+        `
+      : css`
+          margin-top: 4.8rem;
 
-  margin-top: 4.8rem;
+          border: 1px solid var(--gray-2);
+          border-radius: ${BORDER_RADIUS.md};
+        `}
+
   box-shadow: var(--shadow);
 
   & > button {
@@ -459,4 +524,13 @@ const StyledMapSection = styled.section`
     border-radius: ${BORDER_RADIUS.md};
     overflow: hidden;
   }
+`;
+
+const StyledMobileBottomSheet = styled.section`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
 `;

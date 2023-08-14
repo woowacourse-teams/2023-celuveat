@@ -6,7 +6,6 @@ import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
 import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
-import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
@@ -14,7 +13,6 @@ interface ImageCarouselProps {
 }
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
-  const { isMobile } = useMediaQuery();
   const ref = useRef();
   const { movingDirection } = useTouchMoveDirection(ref);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -40,12 +38,12 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
           <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} />
         ))}
       </StyledCarouselSlide>
-      {!isMobile && currentIndex !== 0 && (
+      {currentIndex !== 0 && (
         <StyledLeftButton type="button" onClick={goToPrevious}>
           <LeftBracket width={10} height={10} />
         </StyledLeftButton>
       )}
-      {!isMobile && currentIndex !== images.length - 1 && (
+      {currentIndex !== images.length - 1 && (
         <StyledRightButton type="button" onClick={goToNext}>
           <RightBracket width={10} height={10} />
         </StyledRightButton>
