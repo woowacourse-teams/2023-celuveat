@@ -9,9 +9,12 @@ import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.celeb.domain.CelebRepository;
 import com.celuveat.restaurant.application.RestaurantService;
+import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
+import com.celuveat.restaurant.domain.review.RestaurantReview;
+import com.celuveat.restaurant.domain.review.RestaurantReviewRepository;
 import com.celuveat.video.domain.VideoRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -49,6 +52,8 @@ public abstract class AcceptanceTest {
     protected RestaurantLikeRepository restaurantLikeRepository;
     @Autowired
     protected RestaurantService restaurantService;
+    @Autowired
+    protected RestaurantReviewRepository restaurantReviewRepository;
     @LocalServerPort
     private int port;
 
@@ -64,8 +69,16 @@ public abstract class AcceptanceTest {
         return 세션_아이디를_가져온다(로그인_응답);
     }
 
-    private void 멤버를_저장한다(OauthMember 멤버) {
+    protected void 멤버를_저장한다(OauthMember 멤버) {
         oauthMemberRepository.save(멤버);
+    }
+
+    protected void 음식점을_저장한다(Restaurant 음식점) {
+        restaurantRepository.save(음식점);
+    }
+
+    protected Long 음식점_리뷰를_저장한다(RestaurantReview 음식점_리뷰) {
+        return restaurantReviewRepository.save(음식점_리뷰).id();
     }
 
     private void OAuth_응답을_설정한다(OauthMember member) {

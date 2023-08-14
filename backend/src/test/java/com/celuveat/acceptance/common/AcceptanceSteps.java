@@ -23,6 +23,7 @@ public class AcceptanceSteps {
     public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
     public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;
+    public static final HttpStatus 내용_없음 = HttpStatus.NO_CONTENT;
 
     public static final Object 없음 = null;
 

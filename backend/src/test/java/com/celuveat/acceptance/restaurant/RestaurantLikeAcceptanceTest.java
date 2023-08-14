@@ -103,10 +103,6 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private void 음식점을_저장한다(Restaurant 음식점) {
-        restaurantRepository.save(음식점);
-    }
-
     private Optional<RestaurantLike> 음식점_좋아요를_조회한다(Restaurant 음식점, OauthMember 멤버) {
         return restaurantLikeRepository.findByRestaurantAndMember(음식점, 멤버);
     }

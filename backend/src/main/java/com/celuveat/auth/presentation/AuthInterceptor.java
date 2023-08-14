@@ -17,11 +17,16 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
+    private static final String REVIEW_URI_REGEX = "^/api/restaurants/[^/]+/reviews$";
+
     private final AuthContext authContext;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (CorsUtil.isPreflightRequest(request)) {
+            return true;
+        }
+        if (isAllowedQueryRequest(request)) {
             return true;
         }
         HttpSession session = getSession(request);
@@ -30,6 +35,15 @@ public class AuthInterceptor implements HandlerInterceptor {
                 .orElseThrow(() -> new AuthException(UNAUTHORIZED_REQUEST));
         authContext.setMemberId(memberId);
         return true;
+    }
+
+    private boolean isPreflight(HttpServletRequest request) {
+        return request.getMethod().equals(HttpMethod.OPTIONS.name());
+    }
+
+    private boolean isAllowedQueryRequest(HttpServletRequest request) {
+        return request.getMethod().equals(HttpMethod.GET.name())
+                && request.getRequestURI().matches(REVIEW_URI_REGEX);
     }
 
     private HttpSession getSession(HttpServletRequest request) {
