@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
 import styled from 'styled-components';
-import { getMSWRestaurantReview } from '~/api';
+import { getRestaurantReview } from '~/api';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 
@@ -20,7 +20,7 @@ function RestaurantReviewWrapper() {
   const { id } = useParams();
   const { data: restaurantReviews, isLoading } = useQuery<RestaurantReview[]>({
     queryKey: ['restaurantReview'],
-    queryFn: () => getMSWRestaurantReview(id),
+    queryFn: () => getRestaurantReview(id),
   });
   const [isModalOpen, close, open, setId] = useModalState(
     state => [state.isModalOpen, state.close, state.open, state.setId],
