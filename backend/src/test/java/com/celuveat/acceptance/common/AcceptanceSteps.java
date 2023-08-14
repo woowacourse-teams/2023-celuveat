@@ -4,6 +4,7 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.common.exception.ExceptionResponse;
 import io.restassured.RestAssured;
@@ -40,6 +41,10 @@ public class AcceptanceSteps {
                 .given()
                 .cookie(JSESSION_ID, 세션_ID)
                 .contentType(JSON);
+    }
+
+    public static String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
+        return 응답.as(SessionResponse.class).jsessionId();
     }
 
     public static void 응답_상태를_검증한다(

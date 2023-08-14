@@ -37,7 +37,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import io.restassured.response.ExtractableResponse;
@@ -211,10 +210,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
         private void OAuth_응답을_설정한다(OauthMember member) {
             Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
-        }
-
-        private String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-            return 응답.as(SessionResponse.class).jsessionId();
         }
 
         private void 음식점_상세페이지를_여러번_방문한다(RestaurantSimpleResponse 음식점, int 횟수) {
