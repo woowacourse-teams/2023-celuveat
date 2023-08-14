@@ -1,6 +1,6 @@
 package com.celuveat.auth.application.dto;
 
-public record ProfileResponse(
+public record MemberQueryResponse(
         String nickname,
         String profileImageUrl
 ) {

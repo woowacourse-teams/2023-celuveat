@@ -1,7 +1,7 @@
 package com.celuveat.auth.presentation;
 
-import com.celuveat.auth.application.ProfileService;
-import com.celuveat.auth.application.dto.ProfileResponse;
+import com.celuveat.auth.application.MemberQueryService;
+import com.celuveat.auth.application.dto.MemberQueryResponse;
 import com.celuveat.common.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private final ProfileService profileService;
+    private final MemberQueryService memberQueryService;
 
     @GetMapping
-    public ResponseEntity<ProfileResponse> getProfile(@Auth Long memberId) {
-        return ResponseEntity.ok(profileService.getProfile(memberId));
+    public ResponseEntity<MemberQueryResponse> getProfile(@Auth Long memberId) {
+        return ResponseEntity.ok(memberQueryService.getProfile(memberId));
     }
 }
