@@ -21,6 +21,7 @@ import MapContent from '~/components/@common/Map/MapContent';
 import ProfileImageList from '~/components/@common/ProfileImageList';
 import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
+import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 
 function RestaurantDetail() {
   const { id: restaurantId } = useParams();
@@ -192,6 +193,9 @@ function RestaurantDetail() {
               </ul>
             </StyledNearByRestaurant>
           )}
+
+          <RestaurantReviewWrapper />
+
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
               <h5>위치 확인하기</h5>
