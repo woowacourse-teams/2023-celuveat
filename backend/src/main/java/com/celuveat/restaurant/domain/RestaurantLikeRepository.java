@@ -12,9 +12,9 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
 
     Optional<RestaurantLike> findByRestaurantAndMember(Restaurant restaurant, OauthMember member);
 
-    List<RestaurantLike> findByMemberId(Long memberId);
+    List<RestaurantLike> findAllByMemberId(Long memberId);
 
-    List<RestaurantLike> findByMemberIdOrderByCreatedDateDesc(Long memberId);
+    List<RestaurantLike> findAllByMemberIdOrderByCreatedDateDesc(Long memberId);
 
     Integer countByRestaurant(Restaurant restaurant);
 
