@@ -22,9 +22,8 @@ public class RestaurantQueryFacade {
     @Transactional
     public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
         restaurantService.increaseViewCount(restaurantId);
-        RestaurantDetailResponse response = restaurantQueryService.findRestaurantDetailById(
-                restaurantId
-        );
+        RestaurantDetailResponse response =
+                restaurantQueryService.findRestaurantDetailById(restaurantId);
         return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 
