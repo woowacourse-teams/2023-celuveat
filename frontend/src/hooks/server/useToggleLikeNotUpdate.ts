@@ -9,7 +9,7 @@ import { postRestaurantLike } from '~/api/oauth';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const { value: isLiked, toggle: toggleIsLiked } = useBooleanState(restaurant.isLiked);
+  const { value: isLiked, toggle: toggleIsLiked } = useBooleanState(true);
   const { onSuccess, onFailure, close } = useToastState(
     state => ({
       onSuccess: state.onSuccess,
