@@ -195,7 +195,7 @@ function RestaurantDetail() {
               />
             )}
           </StyledVideoSection>
-          {isSuccessNearByRestaurant && (
+          {isSuccessNearByRestaurant && nearByRestaurant.totalElementsCount > 0 && (
             <StyledNearByRestaurant>
               <h5>주변 다른 식당</h5>
               <ul>
