@@ -17,8 +17,8 @@ public class RestaurantRelocator {
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
-        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb,
-                response.images());
+        List<RestaurantImageQueryResponse> relocatedImages =
+                relocateImageToFirstByCeleb(targetCeleb, response.images());
         return RestaurantWithCelebAndImagesDetailResponse.of(response, relocatedCelebs, relocatedImages);
     }
 
@@ -67,8 +67,8 @@ public class RestaurantRelocator {
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
-        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb,
-                response.images());
+        List<RestaurantImageQueryResponse> relocatedImages =
+                relocateImageToFirstByCeleb(targetCeleb, response.images());
         return RestaurantWithCelebAndImagesSimpleResponse.of(response, relocatedCelebs, relocatedImages);
     }
 }

@@ -49,8 +49,9 @@ public class RestaurantController {
             @PathVariable Long restaurantId,
             @RequestParam Long celebId
     ) {
-        RestaurantWithCelebAndImagesDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(restaurantId,
-                celebId);
+        RestaurantWithCelebAndImagesDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(
+                restaurantId, celebId
+        );
         return ResponseEntity.ok(result);
     }
 
@@ -88,9 +89,10 @@ public class RestaurantController {
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
             @PageableDefault(size = 4) Pageable pageable
     ) {
-        Page<RestaurantWithCelebAndImagesSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                distance, restaurantId, pageable
-        );
+        Page<RestaurantWithCelebAndImagesSimpleResponse> result =
+                restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+                        distance, restaurantId, pageable
+                );
         return ResponseEntity.ok(PageResponse.from(result));
     }
 

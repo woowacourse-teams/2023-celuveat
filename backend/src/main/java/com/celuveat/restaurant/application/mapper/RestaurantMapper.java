@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.application.mapper;
 
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -22,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -96,9 +96,11 @@ public class RestaurantMapper {
         Map<Long, List<Celeb>> celebsMap = toCelebsGroupByRestaurantId(videos);
         Map<Long, List<RestaurantImage>> restaurantMap = groupingImageByRestaurant(images);
         return new RestaurantsIdWithCelebsAndImagesGroupByRestaurantId(restaurantIds.stream()
-                .collect(toMap(Function.identity(),
-                        it -> new RestaurantsIdWithCelebsAndImages(it, celebsMap.get(it), restaurantMap.get(it)))
-                ));
+                .collect(toMap(identity(),
+                        it -> new RestaurantsIdWithCelebsAndImages(
+                                it, celebsMap.get(it), restaurantMap.get(it))
+                ))
+        );
     }
 
     private Map<Long, List<Celeb>> toCelebsGroupByRestaurantId(List<Video> videos) {
