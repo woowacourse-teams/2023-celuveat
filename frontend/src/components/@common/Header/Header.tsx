@@ -35,7 +35,7 @@ function Header() {
       }
 
       clearToken();
-      // window.location.href = '/';
+      window.location.href = '/';
     }
   };
 

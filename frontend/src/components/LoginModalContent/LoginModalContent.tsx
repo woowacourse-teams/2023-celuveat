@@ -14,7 +14,7 @@ function LoginModalContent() {
 export default LoginModalContent;
 
 const StyledLoginModalContent = styled.div`
-  a + a {
+  div + div {
     margin-top: 1.6rem;
   }
 `;
