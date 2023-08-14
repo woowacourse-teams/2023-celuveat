@@ -37,22 +37,24 @@ function RestaurantReviewWrapper() {
   };
 
   return (
-    <StyledRestaurantReviewWrapper>
-      {isLoading && <div>로딩중입니다.</div>}
-      <StyledReviewCountText>{`후기 ${reviewCount}개`}</StyledReviewCountText>
-      <RestaurantReviewList reviews={previewReviews} />
-      {isMoreReviews && (
-        <StyledAllReviewsButton
-          type="button"
-          onClick={openAllReviews}
-        >{`후기 ${reviewCount}개 모두 보기`}</StyledAllReviewsButton>
-      )}
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="후기 모두 보기" closeModal={close}>
-          <RestaurantReviewList reviews={restaurantReviews} isModal />
-        </ModalContent>
-      </Modal>
-    </StyledRestaurantReviewWrapper>
+    reviewCount && (
+      <StyledRestaurantReviewWrapper>
+        {isLoading && <div>로딩중입니다.</div>}
+        <StyledReviewCountText>{`후기 ${reviewCount}개`}</StyledReviewCountText>
+        <RestaurantReviewList reviews={previewReviews} />
+        {isMoreReviews && (
+          <StyledAllReviewsButton
+            type="button"
+            onClick={openAllReviews}
+          >{`후기 ${reviewCount}개 모두 보기`}</StyledAllReviewsButton>
+        )}
+        <Modal>
+          <ModalContent isShow={isModalOpen} title="후기 모두 보기" closeModal={close}>
+            <RestaurantReviewList reviews={restaurantReviews} isModal />
+          </ModalContent>
+        </Modal>
+      </StyledRestaurantReviewWrapper>
+    )
   );
 }
 

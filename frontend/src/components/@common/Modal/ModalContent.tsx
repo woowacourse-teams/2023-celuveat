@@ -2,6 +2,7 @@ import { cloneElement, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import { hideScrollBar } from '~/styles/common';
 
 interface ModalContentProps {
   isShow?: boolean;
@@ -80,6 +81,7 @@ const StyledModalOverlay = styled.div`
 `;
 
 const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
+  ${hideScrollBar}
   display: flex;
   flex-direction: column;
 

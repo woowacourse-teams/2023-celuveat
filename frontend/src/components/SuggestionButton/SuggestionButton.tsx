@@ -5,6 +5,7 @@ import useBooleanState from '~/hooks/useBooleanState';
 import { Modal, ModalContent } from '../@common/Modal';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
+import Pencil from '~/assets/icons/pencil.svg';
 import { postRevisedInfo } from '~/api';
 
 const labels = [
@@ -16,7 +17,7 @@ const labels = [
 ];
 
 function SuggestionButton() {
-  const { params } = useParams();
+  const { id } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [textareaValue, setTextareaValue] = useState('');
@@ -25,7 +26,7 @@ function SuggestionButton() {
     e.preventDefault();
 
     const requestData = textareaValue ? [...checkedItems, textareaValue] : checkedItems;
-    postRevisedInfo({ restaurantId: Number(params), data: requestData });
+    postRevisedInfo({ restaurantId: Number(id), data: requestData });
   };
 
   const clickCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +42,8 @@ function SuggestionButton() {
   return (
     <>
       <button type="button" onClick={openModal}>
-        SuggestionButton
+        <Pencil width={16} />
+        <div>정보 수정 제안하기</div>
       </button>
       <Modal>
         <ModalContent isShow={isModalOpen} title="정보 수정 제안" closeModal={closeModal}>
@@ -60,7 +62,7 @@ function SuggestionButton() {
             <TextButton
               type="submit"
               text="등록하기"
-              onClick={() => {}}
+              onClick={handleSubmit}
               colorType="light"
               disabled={!checkedItems.length && !textareaValue}
             />

@@ -5,8 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { MouseEventHandler } from 'react';
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
-import Pencil from '~/assets/icons/pencil.svg';
-import WhiteLove from '~/assets/icons/love.svg';
 import Love from '~/assets/icons/black-love.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
@@ -22,6 +20,8 @@ import ProfileImageList from '~/components/@common/ProfileImageList';
 import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
+import SuggestionButton from '~/components/SuggestionButton';
+import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 
 function RestaurantDetail() {
   const { id: restaurantId } = useParams();
@@ -30,6 +30,8 @@ function RestaurantDetail() {
 
   const {
     data: {
+      id,
+      distance,
       name,
       viewCount,
       likeCount,
@@ -97,7 +99,6 @@ function RestaurantDetail() {
                   </div>
                 </div>
               </StyledDetailHeader>
-
               <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
               <StyledDetailAndLink>
                 <StyledDetailInfo>
@@ -135,7 +136,6 @@ function RestaurantDetail() {
                     </div>
                     <div>카테고리 : {category}</div>
                   </div>
-
                   {isSuccessRestaurantVideo && (
                     <StyledMainVideo>
                       <h5>영상으로 보기</h5>
@@ -154,20 +154,26 @@ function RestaurantDetail() {
                       <Naver width={32} />
                       <div>네이버 지도로 보기</div>
                     </button>
-                    <button type="button" onClick={openNewWindow(naverMapUrl)}>
-                      <WhiteLove width={30} />
-                      <div>위시리스트에 저장하기</div>
-                    </button>
+                    <RestaurantDetailLikeButton
+                      restaurant={{
+                        id,
+                        distance,
+                        name,
+                        images,
+                        roadAddress,
+                        category,
+                        phoneNumber,
+                        naverMapUrl,
+                        lat,
+                        lng,
+                      }}
+                    />
                   </StyledMainLinkContainer>
-                  <button type="button" onClick={openNewWindow(naverMapUrl)}>
-                    <Pencil width={16} />
-                    <div>정보 수정 제안하기</div>
-                  </button>
+                  <SuggestionButton />
                 </StyledLinkContainer>
               </StyledDetailAndLink>
             </>
           )}
-
           <StyledVideoSection>
             {isSuccessRestaurantVideo && restaurantVideo.totalElementsCount > 1 && (
               <VideoCarousel
@@ -182,7 +188,6 @@ function RestaurantDetail() {
               />
             )}
           </StyledVideoSection>
-
           {isSuccessNearByRestaurant && (
             <StyledNearByRestaurant>
               <h5>주변 다른 식당</h5>
@@ -193,9 +198,7 @@ function RestaurantDetail() {
               </ul>
             </StyledNearByRestaurant>
           )}
-
           <RestaurantReviewWrapper />
-
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
               <h5>위치 확인하기</h5>
