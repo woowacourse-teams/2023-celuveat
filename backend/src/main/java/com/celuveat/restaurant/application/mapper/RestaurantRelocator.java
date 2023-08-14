@@ -2,8 +2,8 @@ package com.celuveat.restaurant.application.mapper;
 
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +12,14 @@ import org.springframework.data.domain.Page;
 
 public class RestaurantRelocator {
 
-    public static RestaurantWithCelebAndImagesDetailResponse relocateCelebDataFirstByCelebId(
-            Long celebId, RestaurantWithCelebAndImagesDetailResponse response
+    public static RestaurantDetailResponse relocateCelebDataFirstByCelebId(
+            Long celebId, RestaurantDetailResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
         List<RestaurantImageQueryResponse> relocatedImages =
                 relocateImageToFirstByCeleb(targetCeleb, response.images());
-        return RestaurantWithCelebAndImagesDetailResponse.of(response, relocatedCelebs, relocatedImages);
+        return RestaurantDetailResponse.of(response, relocatedCelebs, relocatedImages);
     }
 
     private static CelebQueryResponse findCelebById(Long celebId, List<CelebQueryResponse> celebQueryResponses) {
@@ -56,19 +56,19 @@ public class RestaurantRelocator {
                 .findAny();
     }
 
-    public static Page<RestaurantWithCelebAndImagesSimpleResponse> relocateCelebDataFirstInResponsesByCelebId(
-            Long celebId, Page<RestaurantWithCelebAndImagesSimpleResponse> result
+    public static Page<RestaurantSimpleResponse> relocateCelebDataFirstInResponsesByCelebId(
+            Long celebId, Page<RestaurantSimpleResponse> result
     ) {
         return result.map(it -> relocatedCelebDataFirstResponseByCelebId(celebId, it));
     }
 
-    private static RestaurantWithCelebAndImagesSimpleResponse relocatedCelebDataFirstResponseByCelebId(
-            Long celebId, RestaurantWithCelebAndImagesSimpleResponse response
+    private static RestaurantSimpleResponse relocatedCelebDataFirstResponseByCelebId(
+            Long celebId, RestaurantSimpleResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
         List<RestaurantImageQueryResponse> relocatedImages =
                 relocateImageToFirstByCeleb(targetCeleb, response.images());
-        return RestaurantWithCelebAndImagesSimpleResponse.of(response, relocatedCelebs, relocatedImages);
+        return RestaurantSimpleResponse.of(response, relocatedCelebs, relocatedImages);
     }
 }

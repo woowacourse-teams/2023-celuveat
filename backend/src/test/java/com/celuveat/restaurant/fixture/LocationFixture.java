@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 
 public class LocationFixture {
@@ -15,12 +15,12 @@ public class LocationFixture {
 
     public static boolean isRestaurantInArea(
             LocationSearchCond locationSearchCond,
-            RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse
+            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse
     ) {
-        return locationSearchCond.lowLatitude() <= restaurantWithCelebAndImagesSimpleResponse.latitude()
-                && restaurantWithCelebAndImagesSimpleResponse.latitude() <= locationSearchCond.highLatitude()
-                && locationSearchCond.lowLongitude() <= restaurantWithCelebAndImagesSimpleResponse.longitude()
-                && restaurantWithCelebAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
+        return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.latitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.latitude() <= locationSearchCond.highLatitude()
+                && locationSearchCond.lowLongitude() <= restaurantWithCelebsAndImagesSimpleResponse.longitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
     }
 
     public record Point(

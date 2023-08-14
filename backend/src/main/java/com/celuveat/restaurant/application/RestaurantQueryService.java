@@ -7,9 +7,9 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
@@ -44,18 +44,18 @@ public class RestaurantQueryService {
     private final VideoRepository videoRepository;
     private final RestaurantImageRepository restaurantImageRepository;
 
-    public RestaurantWithCelebAndImagesDetailResponse findRestaurantDetailById(Long restaurantId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant);
     }
 
-    private RestaurantWithCelebAndImagesDetailResponse mapToRestaurantWithCelebAndImagesDetailResponse(
+    private RestaurantDetailResponse mapToRestaurantWithCelebAndImagesDetailResponse(
             Restaurant restaurant
     ) {
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
         List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
         int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
-        return RestaurantWithCelebAndImagesDetailResponse.builder()
+        return RestaurantDetailResponse.builder()
                 .restaurant(restaurant)
                 .celebs(celebs)
                 .restaurantImages(restaurantImages)
@@ -69,7 +69,7 @@ public class RestaurantQueryService {
                 .toList();
     }
 
-    public Page<RestaurantWithCelebAndImagesSimpleResponse> findAllWithMemberLiked(
+    public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
@@ -81,7 +81,7 @@ public class RestaurantQueryService {
         return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, memberId);
     }
 
-    private Page<RestaurantWithCelebAndImagesSimpleResponse> mapToRestaurantWithCelebAndImagesSimpleResponse(
+    private Page<RestaurantSimpleResponse> mapToRestaurantWithCelebAndImagesSimpleResponse(
             Page<RestaurantWithDistance> restaurants, Long memberId
     ) {
         List<Long> restaurantIds = extractRestaurantIds(restaurants);
@@ -90,7 +90,7 @@ public class RestaurantQueryService {
         Set<Long> likedRestaurantIds = getRestaurantIds(memberId);
         Map<Long, Long> likeCountsGroupById = likeCountGroupByRestaurantIds(restaurantIds);
         return restaurants.map(restaurant ->
-                RestaurantWithCelebAndImagesSimpleResponse.builder()
+                RestaurantSimpleResponse.builder()
                         .restaurant(restaurant)
                         .celebs(restaurantDatasGroup.get(restaurant.id()).celebs())
                         .restaurantImages(restaurantDatasGroup.get(restaurant.id()).restaurantImages())
@@ -167,7 +167,7 @@ public class RestaurantQueryService {
                 ));
     }
 
-    public Page<RestaurantWithCelebAndImagesSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
+    public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
             Pageable pageable

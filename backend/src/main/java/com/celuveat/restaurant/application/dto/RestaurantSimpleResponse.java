@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Builder;
 
-public record RestaurantWithCelebAndImagesSimpleResponse(
+public record RestaurantSimpleResponse(
         Long id,
         String name,
         String category,
@@ -25,7 +25,7 @@ public record RestaurantWithCelebAndImagesSimpleResponse(
 ) {
 
     @Builder
-    public RestaurantWithCelebAndImagesSimpleResponse(
+    public RestaurantSimpleResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
@@ -50,12 +50,12 @@ public record RestaurantWithCelebAndImagesSimpleResponse(
         );
     }
 
-    public static RestaurantWithCelebAndImagesSimpleResponse of(
-            RestaurantWithCelebAndImagesSimpleResponse other,
+    public static RestaurantSimpleResponse of(
+            RestaurantSimpleResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages
     ) {
-        return new RestaurantWithCelebAndImagesSimpleResponse(
+        return new RestaurantSimpleResponse(
                 other.id,
                 other.name,
                 other.category,

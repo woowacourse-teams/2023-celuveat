@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.application;
 
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.application.mapper.RestaurantRelocator;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
@@ -20,22 +20,22 @@ public class RestaurantQueryFacade {
     private final RestaurantQueryService restaurantQueryService;
 
     @Transactional
-    public RestaurantWithCelebAndImagesDetailResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
         restaurantService.increaseViewCount(restaurantId);
-        RestaurantWithCelebAndImagesDetailResponse response = restaurantQueryService.findRestaurantDetailById(
+        RestaurantDetailResponse response = restaurantQueryService.findRestaurantDetailById(
                 restaurantId
         );
         return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 
     @Transactional(readOnly = true)
-    public Page<RestaurantWithCelebAndImagesSimpleResponse> findAll(
+    public Page<RestaurantSimpleResponse> findAll(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
             Optional<Long> memberId
     ) {
-        Page<RestaurantWithCelebAndImagesSimpleResponse> response = restaurantQueryService.findAllWithMemberLiked(
+        Page<RestaurantSimpleResponse> response = restaurantQueryService.findAllWithMemberLiked(
                 restaurantCond, locationCond, pageable, memberId.orElse(null)
         );
         Long celebId = restaurantCond.celebId();

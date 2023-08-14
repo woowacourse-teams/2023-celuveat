@@ -4,7 +4,7 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import io.restassured.common.mapper.TypeRef;
@@ -62,19 +62,19 @@ public class RestaurantLikeAcceptanceSteps {
     }
 
     public static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
-            RestaurantWithCelebAndImagesSimpleResponse restaurantWithCelebAndImagesSimpleResponse
+            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse
     ) {
         return new RestaurantLikeQueryResponse(
-                restaurantWithCelebAndImagesSimpleResponse.id(),
-                restaurantWithCelebAndImagesSimpleResponse.name(),
-                restaurantWithCelebAndImagesSimpleResponse.category(),
-                restaurantWithCelebAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebAndImagesSimpleResponse.images()
+                restaurantWithCelebsAndImagesSimpleResponse.id(),
+                restaurantWithCelebsAndImagesSimpleResponse.name(),
+                restaurantWithCelebsAndImagesSimpleResponse.category(),
+                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
+                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
+                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
+                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
+                restaurantWithCelebsAndImagesSimpleResponse.images()
         );
     }
 
