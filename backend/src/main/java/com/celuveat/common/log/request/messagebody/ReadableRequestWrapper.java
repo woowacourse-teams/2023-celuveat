@@ -22,15 +22,20 @@ public class ReadableRequestWrapper extends HttpServletRequestWrapper {
     public ReadableRequestWrapper(HttpServletRequest request) {
         super(request);
         String charEncoding = request.getCharacterEncoding();
-        this.encoding = StringUtils.isBlank(charEncoding)
-                ? UTF_8
-                : Charset.forName(charEncoding);
+        this.encoding = getEncoding(charEncoding);
         try {
             InputStream is = request.getInputStream();
             this.rawData = is.readAllBytes();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Charset getEncoding(String charEncoding) {
+        if (StringUtils.isBlank(charEncoding)) {
+            return UTF_8;
+        }
+        return Charset.forName(charEncoding);
     }
 
     @Override
