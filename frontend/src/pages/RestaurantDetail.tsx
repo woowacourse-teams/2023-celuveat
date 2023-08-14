@@ -96,6 +96,7 @@ function RestaurantDetail() {
                   </div>
                 </div>
               </StyledDetailHeader>
+
               <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
               <StyledDetailAndLink>
                 <StyledDetailInfo>
@@ -133,6 +134,7 @@ function RestaurantDetail() {
                     </div>
                     <div>카테고리 : {category}</div>
                   </div>
+
                   {isSuccessRestaurantVideo && (
                     <StyledMainVideo>
                       <h5>영상으로 보기</h5>
@@ -175,7 +177,7 @@ function RestaurantDetail() {
             {isSuccessCelebVideo && isSuccessCelebVideo && (
               <VideoCarousel
                 title="이 셀럽의 다른 음식점 영상"
-                videos={celebVideo.content.filter(({ videoId }) => videoId !== restaurantVideo.content[0].videoId)}
+                videos={celebVideo.content.filter(({ videoId }) => videoId !== restaurantVideo?.content[0].videoId)}
               />
             )}
           </StyledVideoSection>
@@ -369,7 +371,7 @@ const StyledLinkContainer = styled.section`
 
     & > div {
       color: var(--gray-3);
-      font-family: SUIT-Medium;
+      font-family: SUIT-Medium, sans-serif;
       font-size: 1.4rem;
       text-decoration-line: underline;
     }
@@ -401,7 +403,7 @@ const StyledMainLinkContainer = styled.div`
     border: none;
     border-radius: ${BORDER_RADIUS.md};
 
-    font-family: SUIT-Medium;
+    font-family: SUIT-Medium, sans-serif;
     font-size: ${FONT_SIZE.md};
 
     & > div {
