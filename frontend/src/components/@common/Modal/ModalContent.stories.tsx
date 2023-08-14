@@ -15,6 +15,6 @@ export const LoginModal: Story = {
     isShow: true,
     title: '로그인 또는 회원가입',
     closeModal: () => {},
-    children: '모달 내용',
+    children: <span>모달 내용</span>,
   },
 };
