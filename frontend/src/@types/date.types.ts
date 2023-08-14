@@ -8,4 +8,4 @@ type Month = `0${FromOneToNine}` | `1${0 | 1 | 2}`;
 
 type Day = `0${FromOneToNine}` | `${1 | 2}${Digit}` | `3${0 | 1}`;
 
-export type DateSplitHyphen = `${Year}-${Month}-${Day}`;
+export type HyphenatedDate = `${Year}-${Month}-${Day}`;

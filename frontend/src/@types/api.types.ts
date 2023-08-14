@@ -1,4 +1,4 @@
-import { DateSplitHyphen } from '~/@types/date.types';
+import { HyphenatedDate } from '~/@types/date.types';
 
 export interface RestaurantListData {
   content: RestaurantData[];
@@ -58,5 +58,5 @@ export interface RestaurantReview {
   nickname: string;
   profileImageUrl: string;
   content: string;
-  createdDate: DateSplitHyphen;
+  createdDate: HyphenatedDate;
 }
