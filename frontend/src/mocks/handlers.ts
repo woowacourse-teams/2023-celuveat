@@ -19,6 +19,10 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(data));
   }),
 
+  rest.get('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
+  }),
+
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     const { restaurantId } = req.params;
 
