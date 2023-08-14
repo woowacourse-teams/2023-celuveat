@@ -7,22 +7,14 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
-import static com.celuveat.auth.domain.OauthServerType.KAKAO;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.auth.application.OauthService;
-import com.celuveat.auth.domain.OauthMember;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("프로필 인수테스트")
 public class ProfileAcceptanceTest extends AcceptanceTest {
-
-    @MockBean
-    private OauthService oauthService;
 
     @Test
     void 회원정보를_조회한다() {
@@ -40,9 +32,5 @@ public class ProfileAcceptanceTest extends AcceptanceTest {
         // then
         응답_상태를_검증한다(응답, 정상_처리);
         응답을_검증한다(응답, 예상_응답);
-    }
-
-    private void OAuth_응답을_설정한다(OauthMember member) {
-        Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
     }
 }
