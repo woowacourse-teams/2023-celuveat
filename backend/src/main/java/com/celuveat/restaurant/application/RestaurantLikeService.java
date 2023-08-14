@@ -6,7 +6,6 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
-import java.util.Optional;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ public class RestaurantLikeService {
     public void like(Long restaurantId, Long memberId) {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         OauthMember member = oauthMemberRepository.getById(memberId);
-        Optional<RestaurantLike> like = restaurantLikeRepository.findByRestaurantAndMember(restaurant, member);
-        like.ifPresentOrElse(cancelLike(), clickLike(restaurant, member));
+        restaurantLikeRepository.findByRestaurantAndMember(restaurant, member)
+                .ifPresentOrElse(cancelLike(), clickLike(restaurant, member));
     }
 
     private Consumer<RestaurantLike> cancelLike() {
