@@ -226,6 +226,7 @@ function RestaurantDetail() {
       </>
       {isMobile && (
         <StyledMobileBottomSheet>
+          <SuggestionButton />
           <StyledMainLinkContainer isMobile={isMobile}>
             <button type="button" onClick={openNewWindow(naverMapUrl)}>
               <Naver width={32} />
@@ -245,7 +246,6 @@ function RestaurantDetail() {
                 lng,
               }}
             />
-            <SuggestionButton />
           </StyledMainLinkContainer>
         </StyledMobileBottomSheet>
       )}
@@ -533,4 +533,27 @@ const StyledMobileBottomSheet = styled.section`
   z-index: 100;
 
   width: 100%;
+
+  & > *:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 1.2rem;
+
+    position: absolute;
+    top: -30px;
+    right: calc(50% - 80px);
+
+    width: 160px;
+    height: 24px;
+
+    box-shadow: var(--shadow);
+
+    border: none;
+    border-radius: ${BORDER_RADIUS.sm};
+    background: var(--white);
+
+    color: var(--gray-2);
+    font-size: ${FONT_SIZE.sm};
+  }
 `;
