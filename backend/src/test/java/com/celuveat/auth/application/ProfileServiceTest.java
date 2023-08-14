@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("프로필서비스(ProfileService) 은(는)")
+@DisplayNameGeneration(ReplaceUnderscores.class)
 class ProfileServiceTest {
 
     @Autowired
