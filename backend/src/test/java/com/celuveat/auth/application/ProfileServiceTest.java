@@ -34,7 +34,7 @@ class ProfileServiceTest {
         // when
         ProfileResponse result = profileService.getProfile(오도.id());
 
-        // then]
+        // then
         assertThat(result).isEqualTo(expected);
     }
 }
