@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import ProfileImage from '~/components/@common/ProfileImage';
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 
-import { FONT_SIZE } from '~/styles/common';
+import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import { RestaurantReview } from '~/@types/api.types';
 
@@ -67,19 +67,11 @@ const StyledProfileInfoWrapper = styled.div`
 `;
 
 const StyledReviewContent = styled.div<{ isModal: boolean }>`
-  display: -webkit-box;
-
   margin: 1.2rem 0;
 
   color: #222;
   font-size: ${FONT_SIZE.md};
-  ${({ isModal }) =>
-    !isModal &&
-    css`
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-      overflow: hidden;
-    `};
+  ${({ isModal }) => !isModal && truncateText(3)}
   line-height: 2.4rem;
 `;
 
