@@ -56,8 +56,8 @@ public class RestaurantRelocator {
                 .findAny();
     }
 
-    public static Page<RestaurantWithCelebAndImagesSimpleResponse> relocateCelebDataFirstResponsesByCelebId(
-            Page<RestaurantWithCelebAndImagesSimpleResponse> result, Long celebId
+    public static Page<RestaurantWithCelebAndImagesSimpleResponse> relocateCelebDataFirstInResponsesByCelebId(
+            Long celebId, Page<RestaurantWithCelebAndImagesSimpleResponse> result
     ) {
         return result.map(it -> relocatedCelebDataFirstResponseByCelebId(celebId, it));
     }

@@ -38,9 +38,10 @@ public class RestaurantQueryFacade {
         Page<RestaurantWithCelebAndImagesSimpleResponse> response = restaurantQueryService.findAllWithMemberLiked(
                 restaurantCond, locationCond, pageable, memberId.orElse(null)
         );
-        if (restaurantCond.celebId() == null) {
+        Long celebId = restaurantCond.celebId();
+        if (celebId == null) {
             return response;
         }
-        return RestaurantRelocator.relocateCelebDataFirstResponsesByCelebId(response, restaurantCond.celebId());
+        return RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 }
