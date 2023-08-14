@@ -1,10 +1,11 @@
 package com.celuveat.restaurant.application.mapper;
 
-import com.celuveat.common.util.ListUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantWithCelebAndImagesSimpleResponse;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -15,8 +16,9 @@ public class RestaurantRelocator {
             Long celebId, RestaurantWithCelebAndImagesDetailResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
-        List<CelebQueryResponse> relocatedCelebs = ListUtil.relocateTargetToFirst(targetCeleb, response.celebs());
-        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb, response.images());
+        List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
+        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb,
+                response.images());
         return RestaurantWithCelebAndImagesDetailResponse.of(response, relocatedCelebs, relocatedImages);
     }
 
@@ -27,12 +29,21 @@ public class RestaurantRelocator {
                 .orElseThrow();
     }
 
+    private static <T> List<T> relocateTargetToFirst(T target, List<T> list) {
+        if (!list.contains(target)) {
+            return list;
+        }
+        List<T> result = new ArrayList<>(list);
+        Collections.swap(result, 0, result.indexOf(target));
+        return result;
+    }
+
     private static List<RestaurantImageQueryResponse> relocateImageToFirstByCeleb(
             CelebQueryResponse targetCeleb,
             List<RestaurantImageQueryResponse> images
     ) {
         return findImageByCeleb(targetCeleb, images)
-                .map(targetImage -> ListUtil.relocateTargetToFirst(targetImage, images))
+                .map(targetImage -> relocateTargetToFirst(targetImage, images))
                 .orElse(images);
     }
 
@@ -55,8 +66,9 @@ public class RestaurantRelocator {
             Long celebId, RestaurantWithCelebAndImagesSimpleResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
-        List<CelebQueryResponse> relocatedCelebs = ListUtil.relocateTargetToFirst(targetCeleb, response.celebs());
-        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb, response.images());
+        List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
+        List<RestaurantImageQueryResponse> relocatedImages = relocateImageToFirstByCeleb(targetCeleb,
+                response.images());
         return RestaurantWithCelebAndImagesSimpleResponse.of(response, relocatedCelebs, relocatedImages);
     }
 }
