@@ -3,6 +3,7 @@ package com.celuveat.acceptance.auth;
 import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.응답을_검증한다;
 import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.회원정보_조회를_요청한다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.로그인을_요청한다;
@@ -12,9 +13,6 @@ import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.presentation.dto.SessionResponse;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -46,9 +44,5 @@ public class ProfileAcceptanceTest extends AcceptanceTest {
 
     private void OAuth_응답을_설정한다(OauthMember member) {
         Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
-    }
-
-    private String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-        return 응답.as(SessionResponse.class).jsessionId();
     }
 }

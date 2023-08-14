@@ -4,6 +4,7 @@ import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_�
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽들만_추출_한다;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.특정_이름의_셀럽을_찾는다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
+import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
@@ -37,11 +38,8 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -211,10 +209,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
         private void OAuth_응답을_설정한다(OauthMember member) {
             Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
-        }
-
-        private String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-            return 응답.as(SessionResponse.class).jsessionId();
         }
 
         private void 음식점_상세페이지를_여러번_방문한다(RestaurantQueryResponse 음식점, int 횟수) {

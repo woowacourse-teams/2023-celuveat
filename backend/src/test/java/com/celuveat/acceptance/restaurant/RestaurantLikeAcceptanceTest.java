@@ -2,8 +2,9 @@ package com.celuveat.acceptance.restaurant;
 
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.값이_존재한다;
-import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
@@ -23,14 +24,11 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -132,10 +130,6 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
 
     private void OAuth_응답을_설정한다(OauthMember member) {
         Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
-    }
-
-    private String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-        return 응답.as(SessionResponse.class).jsessionId();
     }
 
     private Optional<RestaurantLike> 음식점_좋아요를_조회한다(Restaurant 음식점, OauthMember 멤버) {
