@@ -124,12 +124,7 @@ const StyledNavbarSection = styled.section`
 
   position: sticky;
   top: 80px;
-
-  /* grid-template-columns: 63vw 37vw;
-
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 55vw 45vw;
-  } */
+  z-index: 10;
 
   & > *:first-child {
     border-right: 1px solid var(--gray-2);
@@ -216,7 +211,7 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
 
 const StyledRightSide = styled.div`
   position: sticky;
-  top: 160px;
+  top: 240px;
 
   width: 100%;
   height: calc(100vh - 160px);
