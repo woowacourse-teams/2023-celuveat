@@ -1,5 +1,5 @@
 describe('리스트 상호작용 테스트', () => {
-  it('현재 지도 바운더리 내의 음식점이 리스트에 생성된다.', () => {
+  beforeEach(() => {
     cy.intercept(
       'GET',
       `${Cypress.env(
@@ -11,7 +11,9 @@ describe('리스트 상호작용 테스트', () => {
     );
 
     cy.visit(Cypress.config().baseUrl);
+  });
 
+  it('현재 지도 바운더리 내의 음식점이 리스트에 생성된다.', () => {
     const restaurantNames = [
       '바이킹스워프',
       '소피텔',
@@ -23,8 +25,22 @@ describe('리스트 상호작용 테스트', () => {
       '산과바다',
     ];
 
-    restaurantNames.forEach(name => {
-      cy.getBySel('음식점 리스트').should('contain', name);
+    cy.shouldBeList(restaurantNames);
+  });
+
+  it('선택한 카테고리에 해당하는 음식점이 리스트에 생성된다.', () => {
+    const categoryToExpectedRestaurants = [
+      [
+        '일식당',
+        ['동양', '냠냠물고기 2호점', '스시이도 오코노미', '스시아오마츠', '텐지몽', '숙성회장', '스시한다', '스시렌'],
+      ],
+      ['한식', ['식도원', '맛좋은순대국', '고흥선어회맛집', '7th Door', '산과바다']],
+      ['와인', ['우오보 파스타 바']],
+    ];
+
+    cy.wrap(categoryToExpectedRestaurants).each((item: [string, string[]]) => {
+      cy.get(`[data-label='${item[0]}']`).click();
+      cy.shouldBeList(item[1]);
     });
   });
 });
