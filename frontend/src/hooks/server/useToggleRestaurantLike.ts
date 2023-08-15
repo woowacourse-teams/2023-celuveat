@@ -12,7 +12,6 @@ import type { RestaurantListData } from '../../@types/api.types';
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const { value: isLiked, toggle: toggleLikeState } = useBooleanState(false);
   const { onSuccess, onFailure, close } = useToastState(
     state => ({
       onSuccess: state.onSuccess,
@@ -52,7 +51,6 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
       const imgUrl = restaurant.images[0].name;
 
       onSuccess(message, imgUrl);
-      toggleLikeState();
     },
 
     onSettled: () => {
@@ -65,7 +63,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     close();
   }, []);
 
-  return { isModalOpen, isLiked, closeModal, toggleRestaurantLike };
+  return { isModalOpen, closeModal, toggleRestaurantLike };
 };
 
 export default useToggleRestaurantLike;

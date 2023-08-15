@@ -1,7 +1,7 @@
 import type { Restaurant } from '~/@types/restaurant.types';
 import { Modal, ModalContent } from '../@common/Modal';
+import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import LoginModalContent from '../LoginModalContent';
-import useToggleRestaurantLike from '~/hooks/server/useToggleRestaurantLike';
 import WhiteLove from '~/assets/icons/love.svg';
 
 interface RestaurantDetailLikeButtonProps {
@@ -9,7 +9,7 @@ interface RestaurantDetailLikeButtonProps {
 }
 
 function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonProps) {
-  const { isModalOpen, isLiked, closeModal, toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
+  const { isModalOpen, isLiked, closeModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   return (
     <>
