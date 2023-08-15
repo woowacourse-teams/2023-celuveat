@@ -6,13 +6,14 @@ import styled from 'styled-components';
 import { getMSWRestaurantReview } from '~/api';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
-
-import type { RestaurantReview } from '~/@types/api.types';
+import ReviewForm from '~/components/ReviewForm/ReviewForm';
+import DeleteButton from '~/components/ReviewForm/DeleteButton';
 import { Modal, ModalContent } from '~/components/@common/Modal';
+
 import useModalState from '~/hooks/store/useModalState';
 import { FONT_SIZE } from '~/styles/common';
-import FormTest from '~/components/ReviewForm/ReviewForm';
-import DeleteButton from '~/components/ReviewForm/DeleteButton';
+
+import type { RestaurantReview } from '~/@types/api.types';
 
 const REVIEW_SHOW_COUNT = 6;
 
@@ -66,12 +67,12 @@ function RestaurantReviewWrapper() {
         )}
         {content === '리뷰 작성 하기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
-            <FormTest type="create" />
+            <ReviewForm type="create" />
           </ModalContent>
         )}
         {content === '리뷰 수정 하기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
-            <FormTest type="update" />
+            <ReviewForm type="update" />
           </ModalContent>
         )}
         {content === '리뷰 삭제 하기' && (

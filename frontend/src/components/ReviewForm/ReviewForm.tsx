@@ -5,11 +5,11 @@ import { RestaurantReview } from '~/@types/api.types';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import useModalState from '~/hooks/store/useModalState';
 
-interface FormTestProps {
+interface ReviewFormProps {
   type: 'create' | 'update';
 }
 
-function FormTest({ type }: FormTestProps) {
+function ReviewForm({ type }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
   const qc = useQueryClient();
 
@@ -58,4 +58,4 @@ function FormTest({ type }: FormTestProps) {
   );
 }
 
-export default FormTest;
+export default ReviewForm;
