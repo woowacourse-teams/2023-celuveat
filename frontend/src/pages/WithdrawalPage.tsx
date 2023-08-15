@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import LoginPageUI from '~/components/LoginPageUI';
+import PopUpContainer from '~/components/PopUpContainer';
 import WithdrawalModalContent from '~/components/WithdrawalModalContent';
 import useTokenState from '~/hooks/store/useTokenState';
 
@@ -18,9 +19,12 @@ function WithdrawalPage() {
   }, []);
 
   return (
-    <LoginPageUI title="회원 탈퇴하기">
-      <WithdrawalModalContent />
-    </LoginPageUI>
+    <>
+      <LoginPageUI title="회원 탈퇴하기">
+        <WithdrawalModalContent />
+      </LoginPageUI>
+      <PopUpContainer />
+    </>
   );
 }
 
