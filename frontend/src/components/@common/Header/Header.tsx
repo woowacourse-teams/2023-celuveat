@@ -25,9 +25,13 @@ function Header() {
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
 
-    if (currentOption === '로그인') openModal();
+    if (currentOption === '로그인') {
+      openModal();
+    }
 
     if (currentOption === '위시리스트') navigator('/restaurants/like');
+
+    if (currentOption === '회원 탈퇴') navigator('/withdrawal');
 
     if (currentOption === '로그아웃') {
       if (oauth !== '') {
