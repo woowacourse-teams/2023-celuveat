@@ -37,7 +37,12 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
         <StyledMarkerContainer ref={ref}>
-          <StyledMarker onClick={clickMarker} isClicked={isClicked} isRestaurantHovered={isRestaurantHovered}>
+          <StyledMarker
+            onClick={clickMarker}
+            isClicked={isClicked}
+            isRestaurantHovered={isRestaurantHovered}
+            data-cy={`${restaurant.name} 마커`}
+          >
             <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
             {restaurant.isLiked && (
               <LikeButton aria-label="좋아요" type="button">

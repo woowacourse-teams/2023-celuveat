@@ -38,7 +38,12 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
   return (
     <>
-      <StyledContainer onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <StyledContainer
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        data-cy={`${name} 카드`}
+      >
         <StyledImageViewer>
           <ImageCarousel images={images} type={type} />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
