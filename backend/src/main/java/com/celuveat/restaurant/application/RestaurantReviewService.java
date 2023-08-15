@@ -2,6 +2,7 @@ package com.celuveat.restaurant.application;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
+import com.celuveat.restaurant.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.application.dto.SaveReviewRequestCommand;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequestCommand;
 import com.celuveat.restaurant.domain.Restaurant;
@@ -33,9 +34,9 @@ public class RestaurantReviewService {
         review.updateContent(command.content(), command.memberId(), command.restaurantId());
     }
 
-    public void deleteReview(Long reviewId, Long memberId, Long restaurantId) {
-        RestaurantReview review = restaurantReviewRepository.getById(reviewId);
-        review.checkMemberAndRestaurantMatched(memberId, restaurantId);
+    public void delete(DeleteReviewCommand command) {
+        RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
+        review.checkMemberAndRestaurantMatched(command.memberId(), command.restaurantId());
         restaurantReviewRepository.delete(review);
     }
 }

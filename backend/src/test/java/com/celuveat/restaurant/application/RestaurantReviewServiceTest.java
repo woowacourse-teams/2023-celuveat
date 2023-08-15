@@ -12,6 +12,7 @@ import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseException;
 import com.celuveat.common.exception.BaseExceptionType;
+import com.celuveat.restaurant.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.application.dto.SaveReviewRequestCommand;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequestCommand;
 import com.celuveat.restaurant.domain.Restaurant;
@@ -132,12 +133,13 @@ class RestaurantReviewServiceTest {
     @Test
     void 다른_사람의_리뷰를_삭제하려하면_예외가_발생한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, otherMember.id(), restaurant.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.deleteReview(reviewId, otherMember.id(), restaurant.id())
+                restaurantReviewService.delete(deleteCommand)
         ).exceptionType();
 
         // then
@@ -147,12 +149,13 @@ class RestaurantReviewServiceTest {
     @Test
     void 잘못된_음식점아이디로_요청을_보내_삭제하려하면_예외가_발생한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id(), otherRestaurant.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.deleteReview(reviewId, member.id(), otherRestaurant.id())
+                restaurantReviewService.delete(deleteCommand)
         ).exceptionType();
 
         // then
@@ -162,11 +165,12 @@ class RestaurantReviewServiceTest {
     @Test
     void 리뷰를_삭제한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id(), restaurant.id());
 
         // when
-        restaurantReviewService.deleteReview(reviewId, member.id(), restaurant.id());
+        restaurantReviewService.delete(deleteCommand);
         Optional<RestaurantReview> result = restaurantReviewRepository.findById(reviewId);
 
         // then

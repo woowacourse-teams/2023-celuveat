@@ -11,6 +11,8 @@ import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.RestaurantReviewQueryService;
 import com.celuveat.restaurant.application.RestaurantReviewService;
+import com.celuveat.restaurant.application.dto.DeleteReviewCommand;
+import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
@@ -160,7 +162,7 @@ public class RestaurantController {
             @PathVariable Long reviewId,
             @Auth Long memberId
     ) {
-        restaurantReviewService.deleteReview(reviewId, memberId, restaurantId);
+        restaurantReviewService.delete(new DeleteReviewCommand(reviewId, memberId, restaurantId));
         return ResponseEntity.noContent().build();
     }
 }
