@@ -35,7 +35,7 @@ function FormTest({ type }: FormTestProps) {
   };
 
   useEffect(() => {
-    if (reviews) {
+    if (type === 'update' && !!reviews) {
       const targetReview = reviews.find(review => review.id === reviewId);
       setText(targetReview.content);
     }
