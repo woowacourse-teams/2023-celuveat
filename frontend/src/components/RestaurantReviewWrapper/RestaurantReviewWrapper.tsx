@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
 import styled from 'styled-components';
-import { getRestaurantReview } from '~/api';
+import { getMSWRestaurantReview } from '~/api';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 
@@ -11,6 +11,8 @@ import type { RestaurantReview } from '~/@types/api.types';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import useModalState from '~/hooks/store/useModalState';
 import { FONT_SIZE } from '~/styles/common';
+import FormTest from '~/components/ReviewForm/ReviewForm';
+import DeleteButton from '~/components/ReviewForm/DeleteButton';
 
 const REVIEW_SHOW_COUNT = 6;
 
@@ -20,10 +22,10 @@ function RestaurantReviewWrapper() {
   const { id } = useParams();
   const { data: restaurantReviews, isLoading } = useQuery<RestaurantReview[]>({
     queryKey: ['restaurantReview'],
-    queryFn: () => getRestaurantReview(id),
+    queryFn: () => getMSWRestaurantReview(id),
   });
-  const [isModalOpen, close, open, setId] = useModalState(
-    state => [state.isModalOpen, state.close, state.open, state.setId],
+  const [content, isModalOpen, close, open, setId, setContent] = useModalState(
+    state => [state.content, state.isModalOpen, state.close, state.open, state.setId, state.setContent],
     shallow,
   );
 
@@ -32,8 +34,14 @@ function RestaurantReviewWrapper() {
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
 
   const openAllReviews = () => {
-    open();
+    setContent('후기 모두 보기');
     setId(0);
+    open();
+  };
+
+  const openFormModal = () => {
+    setContent('리뷰 작성 하기');
+    open();
   };
 
   return (
@@ -47,10 +55,30 @@ function RestaurantReviewWrapper() {
           onClick={openAllReviews}
         >{`후기 ${reviewCount}개 모두 보기`}</StyledAllReviewsButton>
       )}
+      <button type="button" onClick={openFormModal}>
+        리뷰 작성하기
+      </button>
       <Modal>
-        <ModalContent isShow={isModalOpen} title="후기 모두 보기" closeModal={close}>
-          <RestaurantReviewList reviews={restaurantReviews} isModal />
-        </ModalContent>
+        {content === '후기 모두 보기' && (
+          <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
+            <RestaurantReviewList reviews={restaurantReviews} isModal />
+          </ModalContent>
+        )}
+        {content === '리뷰 작성 하기' && (
+          <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
+            <FormTest type="create" />
+          </ModalContent>
+        )}
+        {content === '리뷰 수정 하기' && (
+          <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
+            <FormTest type="update" />
+          </ModalContent>
+        )}
+        {content === '리뷰 삭제 하기' && (
+          <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
+            <DeleteButton />
+          </ModalContent>
+        )}
       </Modal>
     </StyledRestaurantReviewWrapper>
   );

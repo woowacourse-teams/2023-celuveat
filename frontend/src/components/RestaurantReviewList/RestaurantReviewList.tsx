@@ -16,8 +16,8 @@ interface RestaurantReviewListProps {
 function RestaurantReviewList({ reviews, modalContentRef, isModal = false }: RestaurantReviewListProps) {
   const targets = useRef<Record<number, HTMLDivElement>>({});
   const { isMobile } = useMediaQuery();
-  const [isModalOpen, targetId, open, setId] = useModalState(
-    state => [state.isModalOpen, state.targetId, state.open, state.setId],
+  const [isModalOpen, targetId, open, setId, setContent] = useModalState(
+    state => [state.isModalOpen, state.targetId, state.open, state.setId, state.setContent],
     shallow,
   );
 
@@ -35,9 +35,9 @@ function RestaurantReviewList({ reviews, modalContentRef, isModal = false }: Res
   }, [isModalOpen]);
 
   const modalOpen: React.MouseEventHandler<HTMLDivElement> = e => {
-    open();
-
+    setContent('후기 모두 보기');
     setId(Number(e.currentTarget.dataset.id));
+    open();
   };
 
   return (
