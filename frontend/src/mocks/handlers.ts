@@ -36,6 +36,18 @@ export const handlers = [
 
     return res(ctx.status(200));
   }),
+
+  rest.post('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
+  rest.patch('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
+  rest.delete('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
 ];
 
 export const errorPostLike400handlers = [
@@ -56,6 +68,28 @@ export const errorPostLike400handlers = [
   }),
 ];
 
+export const error401handlers = [
+  rest.get('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
+  }),
+
+  rest.post('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.patch('/restaurants/:restaurantId/like/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.patch('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.delete('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+];
+
 export const errorPostLike403Handlers = [
   rest.get('/restaurants', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
@@ -73,6 +107,7 @@ export const errorPostLike403Handlers = [
     return res(ctx.status(403));
   }),
 ];
+
 export const errorPostLike404Handlers = [
   rest.get('/restaurants', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
