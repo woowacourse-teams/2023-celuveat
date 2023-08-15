@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { styled, css } from 'styled-components';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import CategoryNavbar from '~/components/CategoryNavbar';
-import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import BottomSheet from '~/components/@common/BottomSheet';
 import RestaurantCardList from '~/components/RestaurantCardList';
@@ -18,6 +16,7 @@ import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 import useMapState from '~/hooks/store/useMapState';
+import CelebNavbar from '~/components/CelebNavbar';
 
 function MainPage() {
   const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
@@ -27,7 +26,6 @@ function MainPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [celebOptions, setCelebOptions] = useState<Celeb[]>();
   const boundary = useMapState(state => state.boundary);
 
   const {
@@ -39,16 +37,10 @@ function MainPage() {
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
-  const celebOptionsMutation = useMutation({
-    mutationFn: () => getCelebs(),
-    onSuccess: (data: Celeb[]) => {
-      setCelebOptions([OPTION_FOR_CELEB_ALL, ...data]);
-    },
+  const { data: celebs, isSuccess: isSuccessCelebs } = useQuery({
+    queryKey: ['celebs'],
+    queryFn: () => getCelebs(),
   });
-
-  useEffect(() => {
-    celebOptionsMutation.mutate();
-  }, []);
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
@@ -59,7 +51,7 @@ function MainPage() {
   };
 
   const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCelebId = Number(e.currentTarget.dataset.id);
+    const currentCelebId = Number(e.currentTarget.dataset.label);
 
     setCelebId(currentCelebId);
     setCurrentPage(0);
@@ -72,12 +64,10 @@ function MainPage() {
   return (
     <>
       <Header />
-      <StyledNavBar isMobile={isMobile}>
-        <CelebDropDown celebs={celebOptions} externalOnClick={clickCeleb} />
-        <StyledLine />
+      <StyledNavbarSection>
+        {isSuccessCelebs && <CelebNavbar celebs={celebs} externalOnClick={clickCeleb} />}
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
-      </StyledNavBar>
-
+      </StyledNavbarSection>
       {isMobile ? (
         <StyledMobileLayout>
           <StyledLayer isMobile={isMobile}>
@@ -129,26 +119,21 @@ function MainPage() {
 
 export default MainPage;
 
-const StyledNavBar = styled.div<{ isMobile: boolean }>`
-  display: flex;
-  align-items: center;
+const StyledNavbarSection = styled.section`
+  display: grid;
 
-  position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
-  top: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
-  z-index: 11;
+  position: sticky;
+  top: 80px;
 
-  width: 100%;
-  height: 80px;
+  /* grid-template-columns: 63vw 37vw;
 
-  background-color: var(--white);
-  border-bottom: 1px solid var(--gray-1);
-`;
+  @media screen and (width <= 1240px) {
+    grid-template-columns: 55vw 45vw;
+  } */
 
-const StyledLine = styled.div`
-  width: 1px;
-  height: 46px;
-
-  background-color: var(--gray-3);
+  & > *:first-child {
+    border-right: 1px solid var(--gray-2);
+  }
 `;
 
 const StyledLayer = styled.div<{ isMobile: boolean }>`
