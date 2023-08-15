@@ -8,7 +8,6 @@ import Pub from '~/assets/icons/restaurantCategory/pub.svg';
 import Sashimi from '~/assets/icons/restaurantCategory/sashimi.svg';
 import Sushi from '~/assets/icons/restaurantCategory/sushi.svg';
 import Wine from '~/assets/icons/restaurantCategory/wine.svg';
-import All from '~/assets/icons/restaurantCategory/all.svg';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface Category {
@@ -18,48 +17,44 @@ interface Category {
 
 const RESTAURANT_CATEGORY: Category[] = [
   {
-    label: '전체',
-    icon: <All />,
-  },
-  {
     label: '일식당',
-    icon: <Japanese />,
+    icon: <Japanese width={24} />,
   },
   {
     label: '한식',
-    icon: <Korean />,
+    icon: <Korean width={24} />,
   },
   {
     label: '초밥,롤',
-    icon: <Sushi />,
+    icon: <Sushi width={24} />,
   },
   {
     label: '생선회',
-    icon: <Sashimi />,
+    icon: <Sashimi width={24} />,
   },
   {
     label: '양식',
-    icon: <Pasta />,
+    icon: <Pasta width={24} />,
   },
   {
     label: '와인',
-    icon: <Wine />,
+    icon: <Wine width={24} />,
   },
   {
     label: '육류,고기요리',
-    icon: <Meat />,
+    icon: <Meat width={24} />,
   },
   {
     label: '이자카야',
-    icon: <Ijakaya />,
+    icon: <Ijakaya width={24} />,
   },
   {
     label: '돼지고기구이',
-    icon: <Pig />,
+    icon: <Pig width={24} />,
   },
   {
     label: '요리주점',
-    icon: <Pub />,
+    icon: <Pub width={24} />,
   },
 ];
 
