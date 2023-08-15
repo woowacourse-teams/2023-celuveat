@@ -1,7 +1,6 @@
 package com.celuveat.restaurant.domain.review;
 
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PERMISSION_DENIED;
-import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.RESTAURANT_REVIEW_MISMATCH;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -30,17 +29,14 @@ public class RestaurantReview extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public void updateContent(String content, Long memberId, Long restaurantId) {
-        checkMemberAndRestaurantMatched(memberId, restaurantId);
+    public void updateContent(String content, Long memberId) {
+        checkOwner(memberId);
         this.content = content;
     }
 
-    public void checkMemberAndRestaurantMatched(Long memberId, Long restaurantId) {
+    public void checkOwner(Long memberId) {
         if (!oauthMember.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
-        }
-        if (!restaurant.id().equals(restaurantId)) {
-            throw new RestaurantReviewException(RESTAURANT_REVIEW_MISMATCH);
         }
     }
 

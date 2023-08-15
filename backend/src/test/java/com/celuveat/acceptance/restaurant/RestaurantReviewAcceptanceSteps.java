@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RestaurantReviewAcceptanceSteps {
 
-    public static SaveReviewRequest 리뷰_요청(String 내용) {
-        return new SaveReviewRequest(내용);
+    public static SaveReviewRequest 리뷰_요청(String 내용, Long 음식점_아이디) {
+        return new SaveReviewRequest(내용, 음식점_아이디);
     }
 
     public static UpdateReviewRequest 리뷰_수정_요청(String 내용) {
@@ -30,17 +30,18 @@ public class RestaurantReviewAcceptanceSteps {
         ));
     }
 
-    public static ExtractableResponse<Response> 리뷰_작성_요청을_보낸다(SaveReviewRequest 요청, String 세션_아이디, Long 음식점_아이디) {
+    public static ExtractableResponse<Response> 리뷰_작성_요청을_보낸다(SaveReviewRequest 요청, String 세션_아이디) {
         return given(세션_아이디)
                 .body(요청)
-                .when().post("/api/restaurants/" + 음식점_아이디 + "/reviews")
+                .when().post("/api/reviews")
                 .then().log().all()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디) {
         return given()
-                .when().get("/api/restaurants/" + 음식점_아이디 + "/reviews")
+                .queryParam("restaurantId", 음식점_아이디)
+                .when().get("/api/reviews")
                 .then().log().all()
                 .extract();
     }
@@ -48,23 +49,21 @@ public class RestaurantReviewAcceptanceSteps {
     public static ExtractableResponse<Response> 리뷰_수정_요청을_보낸다(
             UpdateReviewRequest 요청,
             String 세션_아이디,
-            Long 음식점_아이디,
             Long 리뷰_아이디
     ) {
         return given(세션_아이디)
                 .body(요청)
-                .when().patch("/api/restaurants/" + 음식점_아이디 + "/reviews/" + 리뷰_아이디)
+                .when().patch("/api/reviews/" + 리뷰_아이디)
                 .then().log().all()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 리뷰_삭제_요청을_보낸다(
             String 세션_아이디,
-            Long 음식점_아이디,
             Long 리뷰_아이디
     ) {
         return given(세션_아이디)
-                .when().delete("/api/restaurants/" + 음식점_아이디 + "/reviews/" + 리뷰_아이디)
+                .when().delete("/api/reviews/" + 리뷰_아이디)
                 .then().log().all()
                 .extract();
     }

@@ -2,7 +2,6 @@ package com.celuveat.restaurant.application;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PERMISSION_DENIED;
-import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.RESTAURANT_REVIEW_MISMATCH;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,7 +82,7 @@ class RestaurantReviewServiceTest {
         SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
         Long reviewId = restaurantReviewService.create(saveCommand);
         UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, otherMember.id(), restaurant.id());
+                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, otherMember.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
@@ -95,29 +94,12 @@ class RestaurantReviewServiceTest {
     }
 
     @Test
-    void 잘못된_음식점아이디로_요청을_보내_수정하려하면_예외가_발생한다() {
-        // given
-        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, member.id(), otherRestaurant.id());
-
-        // when
-        BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.update(updateCommand)
-        ).exceptionType();
-
-        // then
-        assertThat(result).isEqualTo(RESTAURANT_REVIEW_MISMATCH);
-    }
-
-    @Test
     void 리뷰를_수정한다() {
         // given
         SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
         Long reviewId = restaurantReviewService.create(saveCommand);
         UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), restaurant.id());
+                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id());
         RestaurantReview expected = new RestaurantReview("사장님이 초심을 잃었어요!", member, restaurant);
 
         // when
@@ -135,7 +117,7 @@ class RestaurantReviewServiceTest {
         // given
         SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
         Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, otherMember.id(), restaurant.id());
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, otherMember.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
@@ -147,27 +129,11 @@ class RestaurantReviewServiceTest {
     }
 
     @Test
-    void 잘못된_음식점아이디로_요청을_보내_삭제하려하면_예외가_발생한다() {
-        // given
-        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id(), otherRestaurant.id());
-
-        // when
-        BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.delete(deleteCommand)
-        ).exceptionType();
-
-        // then
-        assertThat(result).isEqualTo(RESTAURANT_REVIEW_MISMATCH);
-    }
-
-    @Test
     void 리뷰를_삭제한다() {
         // given
         SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
         Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id(), restaurant.id());
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
 
         // when
         restaurantReviewService.delete(deleteCommand);

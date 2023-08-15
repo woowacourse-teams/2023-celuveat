@@ -31,12 +31,12 @@ public class RestaurantReviewService {
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.updateContent(command.content(), command.memberId(), command.restaurantId());
+        review.updateContent(command.content(), command.memberId());
     }
 
     public void delete(DeleteReviewCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.checkMemberAndRestaurantMatched(command.memberId(), command.restaurantId());
+        review.checkOwner(command.memberId());
         restaurantReviewRepository.delete(review);
     }
 }

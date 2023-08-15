@@ -6,7 +6,7 @@ public record UpdateReviewRequest(
         String content
 ) {
 
-    public UpdateReviewRequestCommand toCommand(Long reviewId, Long memberId, Long restaurantId) {
-        return new UpdateReviewRequestCommand(content, reviewId, memberId, restaurantId);
+    public UpdateReviewRequestCommand toCommand(Long reviewId, Long memberId) {
+        return new UpdateReviewRequestCommand(content, reviewId, memberId);
     }
 }

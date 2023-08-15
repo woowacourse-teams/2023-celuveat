@@ -17,7 +17,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private static final String REVIEW_URI_REGEX = "^/api/restaurants/[^/]+/reviews$";
+    private static final String REVIEW_URI_REGEX = "^\\/api\\/reviews.*";
 
     private final AuthContext authContext;
 
