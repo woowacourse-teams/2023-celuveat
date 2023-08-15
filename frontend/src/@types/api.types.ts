@@ -60,3 +60,7 @@ export interface RestaurantReview {
   content: string;
   createdDate: HyphenatedDate;
 }
+
+export interface RestaurantReviewReqBody {
+  content: string;
+}
