@@ -19,6 +19,10 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
   }),
 
+  rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     const { restaurantId } = req.params;
 
@@ -49,6 +53,12 @@ export const errorPostLike400handlers = [
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     return res(ctx.status(400));
+  }),
+];
+
+export const error401handlers = [
+  rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
+    return res(ctx.status(401));
   }),
 ];
 
