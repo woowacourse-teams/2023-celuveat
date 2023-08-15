@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantReviewSingleResponse;
-import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
+import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

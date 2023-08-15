@@ -11,9 +11,7 @@ import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
 import com.celuveat.restaurant.application.RestaurantReviewQueryService;
 import com.celuveat.restaurant.application.RestaurantReviewService;
-import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
@@ -152,7 +150,7 @@ public class RestaurantController {
             @PathVariable Long reviewId,
             @Auth Long memberId
     ) {
-        restaurantReviewService.updateReview(request, reviewId, memberId, restaurantId);
+        restaurantReviewService.update(request.toCommand(reviewId, memberId, restaurantId));
         return ResponseEntity.noContent().build();
     }
 

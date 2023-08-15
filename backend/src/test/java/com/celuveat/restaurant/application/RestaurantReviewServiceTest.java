@@ -13,7 +13,7 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseException;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.restaurant.application.dto.SaveReviewRequestCommand;
-import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
+import com.celuveat.restaurant.application.dto.UpdateReviewRequestCommand;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.review.RestaurantReview;
@@ -79,13 +79,14 @@ class RestaurantReviewServiceTest {
     @Test
     void 다른_사람의_리뷰를_수정하려하면_예외가_발생한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
-        UpdateReviewRequest updateRequest = new UpdateReviewRequest("더 맛있어졌어요");
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        UpdateReviewRequestCommand updateCommand =
+                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, otherMember.id(), restaurant.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.updateReview(updateRequest, reviewId, otherMember.id(), restaurant.id())
+                restaurantReviewService.update(updateCommand)
         ).exceptionType();
 
         // then
@@ -95,13 +96,14 @@ class RestaurantReviewServiceTest {
     @Test
     void 잘못된_음식점아이디로_요청을_보내_수정하려하면_예외가_발생한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
-        UpdateReviewRequest updateRequest = new UpdateReviewRequest("더 맛있어졌어요");
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        UpdateReviewRequestCommand updateCommand =
+                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, member.id(), otherRestaurant.id());
 
         // when
         BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.updateReview(updateRequest, reviewId, member.id(), otherRestaurant.id())
+                restaurantReviewService.update(updateCommand)
         ).exceptionType();
 
         // then
@@ -111,13 +113,14 @@ class RestaurantReviewServiceTest {
     @Test
     void 리뷰를_수정한다() {
         // given
-        SaveReviewRequestCommand command = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
-        Long reviewId = restaurantReviewService.create(command);
-        UpdateReviewRequest updateRequest = new UpdateReviewRequest("사장님이 초심을 잃었어요!");
+        SaveReviewRequestCommand saveCommand = new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id());
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        UpdateReviewRequestCommand updateCommand =
+                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), restaurant.id());
         RestaurantReview expected = new RestaurantReview("사장님이 초심을 잃었어요!", member, restaurant);
 
         // when
-        restaurantReviewService.updateReview(updateRequest, reviewId, member.id(), restaurant.id());
+        restaurantReviewService.update(updateCommand);
         RestaurantReview result = restaurantReviewRepository.getById(reviewId);
 
         // then
