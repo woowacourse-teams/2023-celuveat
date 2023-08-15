@@ -56,6 +56,7 @@ function RestaurantDetail() {
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
     queryKey: ['nearByRestaurant', restaurantId],
     queryFn: async () => getNearByRestaurant(restaurantId),
+    onSuccess: data => console.log(data),
   });
 
   const { data: celebVideo, isSuccess: isSuccessCelebVideo } = useQuery<VideoList>({
@@ -188,14 +189,14 @@ function RestaurantDetail() {
                 videos={restaurantVideo.content.slice(1)}
               />
             )}
-            {isSuccessCelebVideo && isSuccessCelebVideo && (
+            {isSuccessCelebVideo && (
               <VideoCarousel
                 title="이 셀럽의 다른 음식점 영상"
                 videos={celebVideo.content.filter(({ videoId }) => videoId !== restaurantVideo?.content[0].videoId)}
               />
             )}
           </StyledVideoSection>
-          {isSuccessNearByRestaurant && nearByRestaurant.totalElementsCount > 0 && (
+          {isSuccessNearByRestaurant && nearByRestaurant.content.length > 0 && (
             <StyledNearByRestaurant>
               <h5>주변 다른 식당</h5>
               <ul>
