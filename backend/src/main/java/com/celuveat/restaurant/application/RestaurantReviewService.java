@@ -30,8 +30,7 @@ public class RestaurantReviewService {
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.checkMemberAndRestaurantMatched(command.memberId(), command.restaurantId());
-        review.updateContent(command.content());
+        review.updateContent(command.content(), command.memberId(), command.restaurantId());
     }
 
     public void deleteReview(Long reviewId, Long memberId, Long restaurantId) {

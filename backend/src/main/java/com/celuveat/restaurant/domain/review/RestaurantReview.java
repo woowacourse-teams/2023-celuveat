@@ -30,7 +30,8 @@ public class RestaurantReview extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public void updateContent(String content) {
+    public void updateContent(String content, Long memberId, Long restaurantId) {
+        checkMemberAndRestaurantMatched(memberId, restaurantId);
         this.content = content;
     }
 
