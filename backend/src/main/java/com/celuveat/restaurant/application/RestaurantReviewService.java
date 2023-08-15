@@ -5,7 +5,7 @@ import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.RE
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
-import com.celuveat.restaurant.application.dto.SaveReviewRequest;
+import com.celuveat.restaurant.application.dto.SaveReviewRequestCommand;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantRepository;
@@ -25,10 +25,10 @@ public class RestaurantReviewService {
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
 
-    public Long saveReview(SaveReviewRequest request, Long memberId, Long restaurantId) {
-        Restaurant restaurant = restaurantRepository.getById(restaurantId);
-        OauthMember member = oauthMemberRepository.getById(memberId);
-        RestaurantReview restaurantReview = new RestaurantReview(request.content(), member, restaurant);
+    public Long create(SaveReviewRequestCommand command) {
+        OauthMember member = oauthMemberRepository.getById(command.memberId());
+        Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
+        RestaurantReview restaurantReview = new RestaurantReview(command.content(), member, restaurant);
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 

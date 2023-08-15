@@ -15,7 +15,6 @@ import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
-import com.celuveat.restaurant.application.dto.SaveReviewRequest;
 import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
@@ -23,6 +22,7 @@ import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCo
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
+import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -141,7 +141,7 @@ public class RestaurantController {
             @PathVariable Long restaurantId,
             @Auth Long memberId
     ) {
-        restaurantReviewService.saveReview(request, memberId, restaurantId);
+        restaurantReviewService.create(request.toCommand(memberId, restaurantId));
         return ResponseEntity.status(CREATED).build();
     }
 
