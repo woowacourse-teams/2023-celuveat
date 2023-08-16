@@ -14,6 +14,6 @@ public class MemberQueryService {
 
     public MemberQueryResponse getProfile(Long memberId) {
         OauthMember member = oauthMemberRepository.getById(memberId);
-        return new MemberQueryResponse(member.nickname(), member.profileImageUrl());
+        return new MemberQueryResponse(member.id(), member.nickname(), member.profileImageUrl());
     }
 }
