@@ -140,11 +140,15 @@ const StyledNavBar = styled.div<{ isMobile: boolean }>`
   width: 100%;
   height: 80px;
 
+  padding-left: 1.2rem;
+
   background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
 `;
 
 const StyledLine = styled.div`
+  margin-left: 1.2rem;
+
   width: 1px;
   height: 46px;
 

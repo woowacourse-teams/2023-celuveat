@@ -26,14 +26,18 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.8rem 0;
 
-  width: 80px;
+  width: 68px;
 
   border: none;
   background: none;
 
   font-size: ${FONT_SIZE.sm};
+
+  & > div:first-child {
+    width: 40px;
+    height: 40px;
+  }
 
   & > *:first-child > svg {
     fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
