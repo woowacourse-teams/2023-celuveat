@@ -27,5 +27,9 @@ const config: StorybookConfig = {
 
     return config;
   },
+  previewBody: body => `
+    ${body}
+    <div id="modal"></div>
+  `,
 };
 export default config;
