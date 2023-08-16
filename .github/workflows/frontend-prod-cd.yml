@@ -71,5 +71,6 @@ jobs:
           docker run \
             -d \
             --name ${{ env.DOCKER_CONTAINER_NAME }} \
+            -v ~/front-public/images-data/:/app/public/images-data \
             -p 3000:3000 \
             ${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.IMAGE_TAG }}
