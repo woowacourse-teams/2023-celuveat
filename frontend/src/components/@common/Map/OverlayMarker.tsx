@@ -36,7 +36,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
   return (
     map && (
       <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
-        <StyledMarkerContainer ref={ref}>
+        <StyledMarkerContainer ref={ref} data-cy={`${restaurant.name} 오버레이`}>
           <StyledMarker
             onClick={clickMarker}
             isClicked={isClicked}
