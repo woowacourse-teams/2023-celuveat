@@ -46,15 +46,12 @@ function RestaurantReviewWrapper() {
       <StyledReviewCountText>후기 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
       {isLoading && <div>로딩중입니다.</div>}
       <RestaurantReviewList reviews={previewReviews} />
-      {isMoreReviews && (
-        <StyledAllReviewsButton
-          type="button"
-          onClick={openAllReviews}
-        >{`후기 ${reviewCount}개 모두 보기`}</StyledAllReviewsButton>
-      )}
-      <button type="button" onClick={openFormModal}>
-        리뷰 작성하기
-      </button>
+      <StyledButtonContainer>
+        <button type="button" onClick={openFormModal}>
+          리뷰 작성하기
+        </button>
+        {isMoreReviews && <button type="button" onClick={openAllReviews}>{`후기 ${reviewCount}개 모두 보기`}</button>}
+      </StyledButtonContainer>
       <Modal>
         {content === '후기 모두 보기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
@@ -91,17 +88,22 @@ const StyledReviewCountText = styled.h5`
   margin-bottom: 2rem;
 `;
 
-const StyledAllReviewsButton = styled.button`
-  padding: 1.3rem 2.3rem;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 
-  border: 1px solid #222;
-  border-radius: 8px;
-  background: transparent;
+  & > button {
+    padding: 1.3rem 2.3rem;
 
-  font-size: ${FONT_SIZE.md};
-  outline: none;
+    border: 1px solid #222;
+    border-radius: 8px;
+    background: transparent;
 
-  &:hover {
-    background: var(--gray-1);
+    font-size: ${FONT_SIZE.md};
+    outline: none;
+
+    &:hover {
+      background: var(--gray-1);
+    }
   }
 `;

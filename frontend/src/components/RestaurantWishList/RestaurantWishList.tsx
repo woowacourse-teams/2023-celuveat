@@ -27,9 +27,9 @@ function RestaurantWishList() {
         </StyledRestaurantCardList>
       ) : (
         <>
-          <h3>일치하는 음식점이 없어요.</h3>
+          <h3>아직 좋아요를 누른 음식점이 없어요.</h3>
           <StyledDescription>
-            더 많은 음식점을 둘러보려면 필터링 옵션 살펴보거나 지도를 움직여 주세요!
+            위시리스트에 음식점을 추가하려면 음식점 카드의 좋아요 버튼을 눌러주세요!
           </StyledDescription>
         </>
       )}

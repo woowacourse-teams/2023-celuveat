@@ -1,9 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { RestaurantReviewData } from '~/@types/api.types';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import useModalState from '~/hooks/store/useModalState';
+import TextButton from '../@common/Button';
+import { FONT_SIZE } from '~/styles/common';
 
 interface ReviewFormProps {
   type: 'create' | 'update';
@@ -30,7 +33,7 @@ function ReviewForm({ type }: ReviewFormProps) {
     updateReview({ reviewId, body: { content: text } });
   };
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+  const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
     setText(e.target.value);
   };
 
@@ -42,20 +45,44 @@ function ReviewForm({ type }: ReviewFormProps) {
   }, [reviewData]);
 
   return (
-    <form>
-      <input type="textarea" value={text} onChange={onChange} />
+    <StyledReviewFormContainer>
+      <textarea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
       {type === 'create' && (
-        <button type="submit" onClick={onCreateReview}>
-          제출
-        </button>
+        <TextButton
+          type="submit"
+          onClick={onCreateReview}
+          text="등록하기"
+          colorType="dark"
+          disabled={text.length === 0}
+        />
       )}
       {type === 'update' && (
-        <button type="submit" onClick={onUpdateReview}>
-          수정하기
-        </button>
+        <TextButton
+          type="submit"
+          onClick={onUpdateReview}
+          text="수정하기"
+          colorType="dark"
+          disabled={text.length === 0}
+        />
       )}
-    </form>
+    </StyledReviewFormContainer>
   );
 }
 
 export default ReviewForm;
+
+const StyledReviewFormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem 0;
+
+  width: 100%;
+
+  & > textarea {
+    height: 30vh;
+    resize: vertical;
+
+    font-size: ${FONT_SIZE.md};
+    text-align: start;
+  }
+`;
