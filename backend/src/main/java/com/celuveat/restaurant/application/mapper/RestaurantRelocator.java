@@ -1,8 +1,8 @@
 package com.celuveat.restaurant.application.mapper;
 
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import java.util.ArrayList;
 import java.util.Collections;

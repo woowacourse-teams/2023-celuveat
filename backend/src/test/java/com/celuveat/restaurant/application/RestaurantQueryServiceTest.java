@@ -16,8 +16,8 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
@@ -160,7 +160,8 @@ class RestaurantQueryServiceTest {
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
         for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
+            if (restaurantWithCelebsAndImagesSimpleResponse.name()
+                    .contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }

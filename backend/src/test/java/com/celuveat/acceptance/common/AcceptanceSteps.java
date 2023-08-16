@@ -4,6 +4,7 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.common.exception.ExceptionResponse;
 import io.restassured.RestAssured;
@@ -22,6 +23,7 @@ public class AcceptanceSteps {
     public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
     public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;
+    public static final HttpStatus 내용_없음 = HttpStatus.NO_CONTENT;
 
     public static final Object 없음 = null;
 
@@ -40,6 +42,17 @@ public class AcceptanceSteps {
                 .given()
                 .cookie(JSESSION_ID, 세션_ID)
                 .contentType(JSON);
+    }
+
+    public static ExtractableResponse<Response> 로그인을_요청한다() {
+        return given()
+                .when().get("/api/oauth/login/kakao?code=abcd")
+                .then()
+                .extract();
+    }
+
+    public static String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
+        return 응답.as(SessionResponse.class).jsessionId();
     }
 
     public static void 응답_상태를_검증한다(

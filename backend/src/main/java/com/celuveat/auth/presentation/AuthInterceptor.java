@@ -10,12 +10,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
+
+    private static final String REVIEW_URI_REGEX = "^\\/api\\/reviews.*";
 
     private final AuthContext authContext;
 
@@ -24,12 +27,20 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (CorsUtil.isPreflightRequest(request)) {
             return true;
         }
+        if (isAllowedQueryRequest(request)) {
+            return true;
+        }
         HttpSession session = getSession(request);
         Long memberId = Optional.ofNullable(session.getAttribute(JSESSION_ID))
                 .map(id -> (Long) id)
                 .orElseThrow(() -> new AuthException(UNAUTHORIZED_REQUEST));
         authContext.setMemberId(memberId);
         return true;
+    }
+
+    private boolean isAllowedQueryRequest(HttpServletRequest request) {
+        return request.getMethod().equals(HttpMethod.GET.name())
+                && request.getRequestURI().matches(REVIEW_URI_REGEX);
     }
 
     private HttpSession getSession(HttpServletRequest request) {
