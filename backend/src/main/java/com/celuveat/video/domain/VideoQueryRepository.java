@@ -33,15 +33,16 @@ public class VideoQueryRepository {
             JOIN Celeb c ON c = v.celeb
             JOIN Restaurant r ON r = v.restaurant
             """;
+
     private static final String COUNT_QUERY = """
             SELECT COUNT(DISTINCT v.id)
             FROM Video v
             JOIN Celeb c ON c = v.celeb
             JOIN Restaurant r ON r = v.restaurant
             """;
+
     private static final String CELEB_ID_EQUAL = "c.id = %d";
     private static final String RESTAURANT_ID_EQUAL = "r.id = %d";
-
 
     private final EntityManager em;
 

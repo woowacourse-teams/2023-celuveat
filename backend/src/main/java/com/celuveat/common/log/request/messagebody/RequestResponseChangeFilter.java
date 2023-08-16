@@ -15,8 +15,8 @@ public class RequestResponseChangeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(
-                (HttpServletResponse) response);
+        ContentCachingResponseWrapper wrappingResponse
+                = new ContentCachingResponseWrapper((HttpServletResponse) response);
         chain.doFilter(new ReadableRequestWrapper((HttpServletRequest) request), wrappingResponse);
         wrappingResponse.copyBodyToResponse();
     }

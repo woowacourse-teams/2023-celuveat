@@ -6,7 +6,7 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLike;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
-import java.util.Optional;
+import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +23,15 @@ public class RestaurantLikeService {
     public void like(Long restaurantId, Long memberId) {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
         OauthMember member = oauthMemberRepository.getById(memberId);
-        Optional<RestaurantLike> restaurantLike =
-                restaurantLikeRepository.findByRestaurantAndMember(restaurant, member);
-        restaurantLike.ifPresentOrElse(
-                restaurantLikeRepository::delete,
-                () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member))
-        );
+        restaurantLikeRepository.findByRestaurantAndMember(restaurant, member)
+                .ifPresentOrElse(cancelLike(), clickLike(restaurant, member));
+    }
+
+    private Consumer<RestaurantLike> cancelLike() {
+        return restaurantLikeRepository::delete;
+    }
+
+    private Runnable clickLike(Restaurant restaurant, OauthMember member) {
+        return () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member));
     }
 }

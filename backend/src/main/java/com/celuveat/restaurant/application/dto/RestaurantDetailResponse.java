@@ -5,8 +5,9 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Builder;
 
-public record RestaurantDetailQueryResponse(
+public record RestaurantDetailResponse(
         Long id,
         String name,
         String category,
@@ -21,14 +22,14 @@ public record RestaurantDetailQueryResponse(
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantDetailQueryResponse from(
+    @Builder
+    public RestaurantDetailResponse(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
             int likeCount
     ) {
-        return new RestaurantDetailQueryResponse(
-                restaurant.id(),
+        this(restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
                 restaurant.roadAddress(),
@@ -39,16 +40,15 @@ public record RestaurantDetailQueryResponse(
                 likeCount,
                 restaurant.viewCount(),
                 celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
-        );
+                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList());
     }
 
-    public static RestaurantDetailQueryResponse from(
-            RestaurantDetailQueryResponse other,
+    public static RestaurantDetailResponse of(
+            RestaurantDetailResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages
     ) {
-        return new RestaurantDetailQueryResponse(
+        return new RestaurantDetailResponse(
                 other.id(),
                 other.name(),
                 other.category(),

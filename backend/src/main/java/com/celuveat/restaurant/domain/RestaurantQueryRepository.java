@@ -66,7 +66,7 @@ public class RestaurantQueryRepository {
             ORDER BY dist ASC
             """;
 
-    private static final String COUNT_QUERY = """
+    private static final String COUNT_QUERY_JOIN_VIDEO_AND_CELEB = """
             SELECT count(DISTINCT r)
             FROM Restaurant r
             JOIN Video v
@@ -91,8 +91,12 @@ public class RestaurantQueryRepository {
             FROM Restaurant r
             """;
 
-    private static final String WHERE_MIN_OR_EQUAL_DISTANCE = """
-            WHERE %s <= %d
+    private static final String DISTANCE_MIN_OR_EQUAL = """
+            %s <= %d
+            """;
+
+    private static final String RESTAURANT_ID_NOT_EQUAL = """
+            r.id != %d
             """;
 
     private static final String COUNT_QUERY_NEARBY_DISTANCE = """
@@ -127,7 +131,7 @@ public class RestaurantQueryRepository {
         return PageableExecutionUtils.getPage(
                 resultList,
                 pageable,
-                () -> (Long) em.createQuery(COUNT_QUERY + whereQuery).getSingleResult()
+                () -> (Long) em.createQuery(COUNT_QUERY_JOIN_VIDEO_AND_CELEB + whereQuery).getSingleResult()
         );
     }
 
@@ -172,28 +176,15 @@ public class RestaurantQueryRepository {
                 .build();
     }
 
-    public record RestaurantSearchCond(
-            Long celebId,
-            String category,
-            String restaurantName
+    public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
+            int distance, Long restaurantId, Pageable pageable
     ) {
-    }
-
-    public record LocationSearchCond(
-            Double lowLatitude,
-            Double highLatitude,
-            Double lowLongitude,
-            Double highLongitude
-    ) {
-    }
-
-    public Page<RestaurantWithDistance> getRestaurantsWithDistanceNearBy(
-            int distance,
-            Restaurant restaurant,
-            Pageable pageable
-    ) {
+        Restaurant restaurant = em.find(Restaurant.class, restaurantId);
         String dist = getDistanceColumn(restaurant.latitude(), restaurant.longitude());
-        String whereQuery = WHERE_MIN_OR_EQUAL_DISTANCE.formatted(dist, distance);
+        String whereQuery = DynamicQueryAssembler.assemble(
+                distanceMinOrEqual(dist, distance),
+                restaurantIdNotEqual(restaurant.id())
+        );
         List<RestaurantWithDistance> result = em.createQuery(
                         SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE.formatted(dist)
                                 + whereQuery
@@ -208,5 +199,36 @@ public class RestaurantQueryRepository {
                 pageable,
                 () -> (Long) em.createQuery(COUNT_QUERY_NEARBY_DISTANCE + whereQuery).getSingleResult()
         );
+    }
+
+    private DynamicQuery distanceMinOrEqual(String distColumn, int distance) {
+        return DynamicQuery.builder()
+                .query(DISTANCE_MIN_OR_EQUAL)
+                .params(distColumn, distance)
+                .condition(true)
+                .build();
+    }
+
+    private DynamicQuery restaurantIdNotEqual(Long id) {
+        return DynamicQuery.builder()
+                .query(RESTAURANT_ID_NOT_EQUAL)
+                .params(id)
+                .condition(true)
+                .build();
+    }
+
+    public record RestaurantSearchCond(
+            Long celebId,
+            String category,
+            String restaurantName
+    ) {
+    }
+
+    public record LocationSearchCond(
+            Double lowLatitude,
+            Double highLatitude,
+            Double lowLongitude,
+            Double highLongitude
+    ) {
     }
 }
