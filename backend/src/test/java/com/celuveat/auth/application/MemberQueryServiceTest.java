@@ -29,7 +29,7 @@ class MemberQueryServiceTest {
         // given
         OauthMember 오도 = 멤버("오도");
         oauthMemberRepository.save(오도);
-        MemberQueryResponse expected = new MemberQueryResponse("오도", "abc");
+        MemberQueryResponse expected = new MemberQueryResponse(오도.id(), "오도", "abc");
 
         // when
         MemberQueryResponse result = memberQueryService.getProfile(오도.id());

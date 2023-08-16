@@ -11,7 +11,7 @@ import io.restassured.response.Response;
 public class ProfileAcceptanceSteps {
 
     public static MemberQueryResponse 예상_응답(OauthMember 멤버) {
-        return new MemberQueryResponse(멤버.nickname(), 멤버.profileImageUrl());
+        return new MemberQueryResponse(멤버.id(), 멤버.nickname(), 멤버.profileImageUrl());
     }
 
     public static ExtractableResponse<Response> 회원정보_조회를_요청한다(String 세션_아이디) {
