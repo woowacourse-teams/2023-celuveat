@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayName("멤버 조회용 서비스(MemberQueryService) 은(는)")
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@DisplayName("멤버 조회용 서비스(MemberQueryService) 은(는)")
 class MemberQueryServiceTest {
 
     @Autowired
