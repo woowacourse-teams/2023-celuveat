@@ -5,6 +5,7 @@ import RestaurantDetail from './pages/RestaurantDetail';
 import WishListPage from '~/pages/WishListPage';
 import SignUpPage from '~/pages/SignUpPage';
 import WithdrawalPage from '~/pages/WithdrawalPage';
+import PrivacyPolicy from './pages/PrivacyPolicyPage';
 
 export const { BASE_URL } = process.env;
 
@@ -13,6 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/policy" element={<PrivacyPolicy />} />
         <Route path="/restaurants/:id" element={<RestaurantDetail />} />
         <Route path="/signUp" element={<SignUpPage />} />
         <Route path="/restaurants/like" element={<WishListPage />} />

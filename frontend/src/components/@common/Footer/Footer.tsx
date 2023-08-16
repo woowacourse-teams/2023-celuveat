@@ -12,6 +12,7 @@ function Footer() {
         <p>셀럽 기반 맛집 탐색 플랫폼, 셀럽잇입니다.</p>
       </StyledIntro>
       <StyledContact>CONTACT: celuveat@gmail.com</StyledContact>
+      <StyledPrivacyPolicy href="/policy">개인정보 처리방침</StyledPrivacyPolicy>
       <StyledLastLine>
         <div>COPYRIGHT © 2023 CELUVEAT ALL RIGHTS RESERVED</div>
         <StyledSNSLinkButtonList>
@@ -53,6 +54,10 @@ const StyledIntro = styled.div`
 `;
 
 const StyledContact = styled.div`
+  margin-bottom: 1.2rem;
+`;
+
+const StyledPrivacyPolicy = styled.a`
   margin-bottom: 1.2rem;
 `;
 
