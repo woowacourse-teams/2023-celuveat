@@ -3,7 +3,7 @@ package com.celuveat.auth.application;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.auth.application.dto.MemberQueryResponse;
+import com.celuveat.auth.application.dto.MemberProfileResponse;
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
@@ -29,10 +29,10 @@ class MemberQueryServiceTest {
         // given
         OauthMember 오도 = 멤버("오도");
         oauthMemberRepository.save(오도);
-        MemberQueryResponse expected = new MemberQueryResponse(오도.id(), "오도", "abc");
+        MemberProfileResponse expected = new MemberProfileResponse(오도.id(), "오도", "abc");
 
         // when
-        MemberQueryResponse result = memberQueryService.getProfile(오도.id());
+        MemberProfileResponse result = memberQueryService.getProfile(오도.id());
 
         // then
         assertThat(result).isEqualTo(expected);

@@ -1,7 +1,7 @@
 package com.celuveat.auth.presentation;
 
 import com.celuveat.auth.application.MemberQueryService;
-import com.celuveat.auth.application.dto.MemberQueryResponse;
+import com.celuveat.auth.application.dto.MemberProfileResponse;
 import com.celuveat.common.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ProfileController {
     private final MemberQueryService memberQueryService;
 
     @GetMapping
-    public ResponseEntity<MemberQueryResponse> getProfile(@Auth Long memberId) {
+    public ResponseEntity<MemberProfileResponse> getProfile(@Auth Long memberId) {
         return ResponseEntity.ok(memberQueryService.getProfile(memberId));
     }
 }
