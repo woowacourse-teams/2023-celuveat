@@ -62,7 +62,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         리뷰_작성_요청을_보낸다(요청3, 말랑_세션_아이디);
         리뷰_작성_요청을_보낸다(요청4, 말랑_세션_아이디);
 
-        var 예상_응답 = 예상_응답();
+        var 예상_응답 = 예상_응답(말랑.id(), 로이스.id(), 도기.id());
 
         // when
         var 응답 = 리뷰_조회_요청을_보낸다(음식점.id());

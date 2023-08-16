@@ -5,6 +5,7 @@ import com.celuveat.restaurant.domain.review.RestaurantReview;
 
 public record RestaurantReviewSingleResponse(
         Long id,
+        Long memberId,
         String nickname,
         String profileImageUrl,
         String content,
@@ -15,6 +16,7 @@ public record RestaurantReviewSingleResponse(
         OauthMember oauthMember = restaurantReview.oauthMember();
         return new RestaurantReviewSingleResponse(
                 restaurantReview.id(),
+                oauthMember.id(),
                 oauthMember.nickname(),
                 oauthMember.profileImageUrl(),
                 restaurantReview.content(),
