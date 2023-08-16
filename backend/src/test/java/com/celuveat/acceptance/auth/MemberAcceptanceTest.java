@@ -1,8 +1,8 @@
 package com.celuveat.acceptance.auth;
 
-import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.예상_응답;
-import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.응답을_검증한다;
-import static com.celuveat.acceptance.auth.ProfileAcceptanceSteps.회원정보_조회를_요청한다;
+import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.예상_응답;
+import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.응답을_검증한다;
+import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.회원정보_조회를_요청한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
@@ -11,8 +11,8 @@ import com.celuveat.acceptance.common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("프로필 인수테스트")
-public class ProfileAcceptanceTest extends AcceptanceTest {
+@DisplayName("회원 인수테스트")
+public class MemberAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 회원정보를_조회한다() {

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/profile")
-public class ProfileController {
+@RequestMapping("/members")
+public class MemberController {
 
     private final MemberQueryService memberQueryService;
 
-    @GetMapping
-    public ResponseEntity<MemberProfileResponse> getProfile(@Auth Long memberId) {
+    @GetMapping("/my")
+    public ResponseEntity<MemberProfileResponse> getMemberProfile(@Auth Long memberId) {
         return ResponseEntity.ok(memberQueryService.getProfile(memberId));
     }
 }

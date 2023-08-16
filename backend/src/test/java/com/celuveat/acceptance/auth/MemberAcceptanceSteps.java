@@ -8,7 +8,7 @@ import com.celuveat.auth.domain.OauthMember;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-public class ProfileAcceptanceSteps {
+public class MemberAcceptanceSteps {
 
     public static MemberProfileResponse 예상_응답(OauthMember 멤버) {
         return new MemberProfileResponse(멤버.id(), 멤버.nickname(), 멤버.profileImageUrl());
@@ -16,7 +16,7 @@ public class ProfileAcceptanceSteps {
 
     public static ExtractableResponse<Response> 회원정보_조회를_요청한다(String 세션_아이디) {
         return given(세션_아이디)
-                .when().get("/api/profile")
+                .when().get("/api/members/my")
                 .then().extract();
     }
 

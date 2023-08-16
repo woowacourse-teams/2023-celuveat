@@ -24,7 +24,7 @@ public class AuthConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         "/restaurants/**/like",
                         "/reviews/**",
-                        "/profile"
+                        "/members/**"
                 ).order(2);
     }
 
