@@ -13,7 +13,8 @@
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "jest"
+    "test": "jest",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@googlemaps/react-wrapper": "^1.1.35",
@@ -28,6 +29,7 @@
     "axios": "^1.4.0",
     "babel-plugin-root-import": "^6.6.0",
     "copy-webpack-plugin": "^11.0.0",
+    "cypress": "^12.17.3",
     "dotenv": "^16.3.1",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.3",
