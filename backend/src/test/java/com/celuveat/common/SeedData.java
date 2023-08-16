@@ -230,10 +230,10 @@ public class SeedData {
         Celeb 오도 = 셀럽("오도");
         celebRepository.saveAll(List.of(로이스, 도기, 말랑, 오도));
         return videoRepository.saveAll(List.of(
-                        영상("ww.comA", 로이스1호점, 로이스),
-                        영상("ww.comB", 로이스1호점, 도기),
-                        영상("ww.comC", 로이스2호점, 말랑),
-                        영상("ww.comD", 로이스2호점, 오도)
+                        영상("ww.comA?v=absa", 로이스1호점, 로이스),
+                        영상("ww.comB?v=adBwssa", 로이스1호점, 도기),
+                        영상("ww.comC?v=adsbs12a", 로이스2호점, 말랑),
+                        영상("ww.comD?v=sbsa", 로이스2호점, 오도)
                 )
         );
     }

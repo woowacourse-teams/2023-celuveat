@@ -13,6 +13,7 @@ import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
+import com.celuveat.video.utils.VideoResponseUtils;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 public class VideoAcceptanceSteps {
 
-    public static ExtractableResponse<Response> 음식점ID로_영상_조회_요청(
+    public static ExtractableResponse<Response> 영상_조회_요청(
             VideoSearchCondRequest videoSearchCondRequest
     ) {
         Map<String, Object> param = new HashMap<>();
@@ -74,6 +75,7 @@ public class VideoAcceptanceSteps {
         });
         assertThat(response.content())
                 .usingRecursiveComparison()
+                .ignoringExpectedNullFields()
                 .isEqualTo(예상_응답);
     }
 
@@ -81,7 +83,7 @@ public class VideoAcceptanceSteps {
         Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(
                 video.id(),
-                video.youtubeUrl(),
+                VideoResponseUtils.extractVideoKey(video.youtubeUrl()),
                 video.uploadDate(),
                 celeb.id(),
                 celeb.name(),
