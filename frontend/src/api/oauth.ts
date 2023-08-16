@@ -46,3 +46,13 @@ export const postMSWRestaurantLike = async (restaurantId: number) => {
   const response = await userMSWInstance.post(`/restaurants/${restaurantId}/like`);
   return response.data;
 };
+
+export const deleteUserData = async (type: Oauth) => {
+  const response = await userInstance.delete(`/oauth/withdraw/${type}`);
+  return response.data;
+};
+
+export const deleteMSWUserData = async (type: Oauth) => {
+  const response = await userMSWInstance.delete(`/oauth/withdraw/${type}`);
+  return response.data;
+};

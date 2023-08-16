@@ -29,6 +29,8 @@ function Header() {
 
     if (currentOption === '위시리스트') navigator('/restaurants/like');
 
+    if (currentOption === '회원 탈퇴') navigator('/withdrawal');
+
     if (currentOption === '로그아웃') {
       if (oauth !== '') {
         getLogout(oauth);
