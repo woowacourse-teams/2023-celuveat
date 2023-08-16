@@ -23,13 +23,11 @@ function ReviewForm({ type }: ReviewFormProps) {
 
   const { createReview, updateReview } = useRestaurantReview();
 
-  const onCreateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
-    e.preventDefault(); // 네트워크 요청 확인을 위해 사용
+  const onCreateReview: React.MouseEventHandler<HTMLButtonElement> = () => {
     createReview({ content: text, restaurantId: Number(restaurantId) });
   };
 
-  const onUpdateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
-    e.preventDefault(); // 네트워크 요청 확인을 위해 사용
+  const onUpdateReview: React.MouseEventHandler<HTMLButtonElement> = () => {
     updateReview({ reviewId, body: { content: text } });
   };
 

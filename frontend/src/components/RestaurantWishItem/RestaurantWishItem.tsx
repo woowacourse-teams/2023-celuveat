@@ -19,10 +19,10 @@ interface RestaurantWishItemProps {
 }
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
-  const { images, name, roadAddress, category, phoneNumber, naverMapUrl } = restaurant;
+  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
-  const openDetail = () => window.open(naverMapUrl, '_blank');
+  const openDetail = () => window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
 
   const toggle: MouseEventHandler = e => {
     e.stopPropagation();

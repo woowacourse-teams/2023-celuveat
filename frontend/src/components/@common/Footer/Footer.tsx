@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Instagram from '~/assets/icons/instagram.svg';
 import Github from '~/assets/icons/github.svg';
 import { FONT_SIZE } from '~/styles/common';
@@ -14,8 +15,12 @@ function Footer() {
       <StyledLastLine>
         <div>COPYRIGHT © 2023 CELUVEAT ALL RIGHTS RESERVED</div>
         <StyledSNSLinkButtonList>
-          <Instagram />
-          <Github />
+          <Link to="https://www.instagram.com/celuveat/" target="blank">
+            <Instagram />
+          </Link>
+          <Link to="https://github.com/woowacourse-teams/2023-celuveat" target="blank">
+            <Github />
+          </Link>
         </StyledSNSLinkButtonList>
       </StyledLastLine>
     </StyledFooter>

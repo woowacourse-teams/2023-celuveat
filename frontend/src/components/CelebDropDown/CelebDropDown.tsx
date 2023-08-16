@@ -92,6 +92,7 @@ const StyledDropDownWrapper = styled.ul<{ isMobile: boolean }>`
 
           width: 90vw;
           height: 60vh;
+          max-height: 440px;
         `
       : css`
           left: 18px;
