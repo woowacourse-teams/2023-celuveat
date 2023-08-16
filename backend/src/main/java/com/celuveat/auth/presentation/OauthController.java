@@ -59,19 +59,19 @@ public class OauthController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/withdraw/{oauthServerType}")
-    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Long oauthMemberId = getOauthMemberId(session);
-        oauthService.withDraw(oauthServerType, oauthMemberId);
-        session.invalidate();
-        return ResponseEntity.noContent().build();
-    }
-
     private Long getOauthMemberId(HttpSession session) {
         if (session == null) {
             throw new AuthException(UNAUTHORIZED_REQUEST);
         }
         return (Long) session.getAttribute(JSESSION_ID);
+    }
+
+    @DeleteMapping("/withdraw/{oauthServerType}")
+    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long oauthMemberId = getOauthMemberId(session);
+        oauthService.withdraw(oauthServerType, oauthMemberId);
+        session.invalidate();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -32,7 +32,7 @@ public class OauthService {
         oauthMemberClientComposite.logout(oauthServerType, oauthMember.oauthId());
     }
 
-    public void withDraw(OauthServerType oauthServerType, Long oauthMemberId) {
+    public void withdraw(OauthServerType oauthServerType, Long oauthMemberId) {
         OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
         oauthMemberClientComposite.withDraw(oauthServerType, oauthMember.oauthId());
     }
