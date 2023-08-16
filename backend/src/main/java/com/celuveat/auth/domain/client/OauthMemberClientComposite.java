@@ -28,11 +28,11 @@ public class OauthMemberClientComposite {
     }
 
     public void logout(OauthServerType oauthServerType, OauthId oauthId) {
-        getClient(oauthServerType).logout(oauthId.oauthServerId());
+        getClient(oauthServerType).logout(oauthId.oauthServerMemberId());
     }
 
     public void withDraw(OauthServerType oauthServerType, OauthId oauthId) {
-        getClient(oauthServerType).withDraw(oauthId.oauthServerId());
+        getClient(oauthServerType).withDraw(oauthId.oauthServerMemberId());
     }
 
     private OauthMemberClient getClient(OauthServerType oauthServerType) {

@@ -14,15 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class OauthId {
 
-    @Column(nullable = false, name = "oauth_server_id")
-    private String oauthServerId;
+    @Column(nullable = false, name = "oauth_server_member_id")
+    private String oauthServerMemberId;
 
     @Enumerated(STRING)
     @Column(nullable = false, name = "oauth_server")
     private OauthServerType oauthServerType;
 
-    public String oauthServerId() {
-        return oauthServerId;
+    public String oauthServerMemberId() {
+        return oauthServerMemberId;
     }
 
     public OauthServerType oauthServer() {
