@@ -13,8 +13,8 @@ on:
   push:
     branches:
       - develop-backend*
-    paths:
-      - "backend/**"
+   # paths:
+     # - "backend/**"
 
 jobs:
   backend-docker-build-and-push:
