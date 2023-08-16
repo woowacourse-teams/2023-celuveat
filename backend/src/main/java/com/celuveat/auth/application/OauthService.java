@@ -27,8 +27,13 @@ public class OauthService {
         return saved.id();
     }
 
-    public void logout(OauthServerType oauthServerType, Long oauthServerId) {
-        OauthMember oauthMember = oauthMemberRepository.getById(oauthServerId);
+    public void logout(OauthServerType oauthServerType, Long oauthMemberId) {
+        OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
         oauthMemberClientComposite.logout(oauthServerType, oauthMember.oauthId());
+    }
+
+    public void withdraw(OauthServerType oauthServerType, Long oauthMemberId) {
+        OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
+        oauthMemberClientComposite.withDraw(oauthServerType, oauthMember.oauthId());
     }
 }

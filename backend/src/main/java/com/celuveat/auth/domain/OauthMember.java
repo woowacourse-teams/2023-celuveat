@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
                 @UniqueConstraint(
                         name = "oauth_id_unique",
                         columnNames = {
-                                "oauth_server_id",
+                                "oauth_server_member_id",
                                 "oauth_server"
                         }
                 ),

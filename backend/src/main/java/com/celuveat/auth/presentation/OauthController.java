@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,16 +51,26 @@ public class OauthController {
     }
 
     @GetMapping("/logout/{oauthServerType}")
-    ResponseEntity<Void> logout(
-            @PathVariable OauthServerType oauthServerType,
-            HttpServletRequest request
-    ) {
+    ResponseEntity<Void> logout(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        Long oauthMemberId = getOauthMemberId(session);
+        oauthService.logout(oauthServerType, oauthMemberId);
+        session.invalidate();
+        return ResponseEntity.noContent().build();
+    }
+
+    private Long getOauthMemberId(HttpSession session) {
         if (session == null) {
             throw new AuthException(UNAUTHORIZED_REQUEST);
         }
-        Long oauthMemberId = (Long) session.getAttribute(JSESSION_ID);
-        oauthService.logout(oauthServerType, oauthMemberId);
+        return (Long) session.getAttribute(JSESSION_ID);
+    }
+
+    @DeleteMapping("/withdraw/{oauthServerType}")
+    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long oauthMemberId = getOauthMemberId(session);
+        oauthService.withdraw(oauthServerType, oauthMemberId);
         session.invalidate();
         return ResponseEntity.noContent().build();
     }

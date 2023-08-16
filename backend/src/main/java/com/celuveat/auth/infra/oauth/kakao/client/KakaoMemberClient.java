@@ -42,17 +42,18 @@ public class KakaoMemberClient implements OauthMemberClient {
     }
 
     @Override
-    public void logout(String oauthServerId) {
-        kakaoApiClient.logoutMember(
-                "KakaoAK " + kakaoOauthConfig.adminKey(),
-                logoutRequestParams(oauthServerId)
-        );
-    }
-
-    private MultiValueMap<String, String> logoutRequestParams(String oauthServerId) {
+    public void logout(String oauthServerMemberId) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("target_id_type", "user_id");
-        params.add("target_id", oauthServerId);
-        return params;
+        params.add("target_id", oauthServerMemberId);
+        kakaoApiClient.logoutMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
+    }
+
+    @Override
+    public void withDraw(String oauthServerMemberId) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", oauthServerMemberId);
+        kakaoApiClient.withDrawMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
     }
 }
