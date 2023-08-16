@@ -27,7 +27,7 @@ public interface KakaoApiClient {
     );
 
     @PostExchange(url = "https://kapi.kakao.com/v1/user/unlink")
-    void withDrawMember(
+    void withdrawMember(
             @RequestHeader(name = AUTHORIZATION) String adminKey,
             @RequestBody MultiValueMap<String, String> params
     );
