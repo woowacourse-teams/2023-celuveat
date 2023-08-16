@@ -10,7 +10,7 @@ interface ToastState {
 interface ToastAction {
   close: VoidFunction;
 
-  onSuccess: (text: string, imgUrl: string) => void;
+  onSuccess: (text: string, imgUrl?: string) => void;
   onFailure: (text: string) => void;
 }
 
@@ -21,7 +21,7 @@ const useToastState = create<ToastState & ToastAction>(set => ({
   imgUrl: '',
 
   close: () => set({ isOpen: false }),
-  onSuccess: (text: string, imgUrl: string) => set({ isSuccess: true, text, isOpen: true, imgUrl }),
+  onSuccess: (text: string, imgUrl?: string) => set({ isSuccess: true, text, isOpen: true, imgUrl }),
   onFailure: (text: string) => set({ isSuccess: false, text, isOpen: true, imgUrl: '' }),
 }));
 

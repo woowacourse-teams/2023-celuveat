@@ -1,6 +1,8 @@
-import type { Oauth } from '~/@types/oauth.types';
 import { apiClient } from '~/api';
 import { userInstance, userMSWInstance } from '~/api/User';
+
+import type { Oauth } from '~/@types/oauth.types';
+import type { RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
 
 export const getAccessToken = async (type: Oauth, code: string) => {
   const response = await apiClient.get(`/oauth/login/${type}?code=${code}`);
@@ -18,12 +20,12 @@ export const getMSWLogout = async (type: Oauth) => {
 };
 
 export const getProfile = async () => {
-  const response = await userInstance.get('/profile');
+  const response = await userInstance.get('/members/my');
   return response.data;
 };
 
 export const getMSWProfile = async () => {
-  const response = await userMSWInstance.get('/profile');
+  const response = await userMSWInstance.get('/members/my');
   return response.data;
 };
 
@@ -38,13 +40,54 @@ export const getMSWRestaurantWishList = async () => {
 };
 
 export const postRestaurantLike = async (restaurantId: number) => {
-  const response = await userInstance.post(`/restaurants/${restaurantId}/like`);
-  return response.data;
+  await userInstance.post(`/restaurants/${restaurantId}/like`);
 };
 
 export const postMSWRestaurantLike = async (restaurantId: number) => {
   const response = await userMSWInstance.post(`/restaurants/${restaurantId}/like`);
-  return response.data;
+  return response;
+};
+
+export const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
+  const response = await userInstance.post(`/reviews`, body);
+  return response;
+};
+
+export const postMSWRestaurantReview = async (body: RestaurantReviewPostBody) => {
+  const response = await userMSWInstance.post(`/reviews`, body);
+  return response;
+};
+
+export const patchRestaurantReview = async ({
+  reviewId,
+  body,
+}: {
+  reviewId: number;
+  body: RestaurantReviewPatchBody;
+}) => {
+  const response = await userInstance.patch(`/reviews/${reviewId}`, body);
+  return response;
+};
+
+export const patchMSWRestaurantReview = async ({
+  reviewId,
+  body,
+}: {
+  reviewId: number;
+  body: RestaurantReviewPatchBody;
+}) => {
+  const response = await userMSWInstance.patch(`/reviews/${reviewId}`, body);
+  return response;
+};
+
+export const deleteRestaurantReview = async (reviewId: number) => {
+  const response = await userInstance.delete(`/reviews/${reviewId}`);
+  return response;
+};
+
+export const deleteMSWRestaurantReview = async (reviewId: number) => {
+  const response = await userMSWInstance.delete(`/reviews/${reviewId}`);
+  return response;
 };
 
 export const deleteUserData = async (type: Oauth) => {

@@ -15,6 +15,7 @@ export const Default: Story = {
     review: {
       id: 1,
       nickname: '푸만능',
+      memberId: 2,
       profileImageUrl: 'https://a0.muscache.com/im/pictures/user/93c7d7c8-86d9-4390-ba09-a8e6f4eb7f0f.jpg?im_w=240',
       content: `꽃이 가득한 정원 사진에 반해서 예약했고 역시나 정말 만족스러운 1박이었습니다
       습한 날씨지만 숙소 안은 쾌적했고 아주 청결했어요

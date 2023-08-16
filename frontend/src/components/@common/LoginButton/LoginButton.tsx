@@ -8,15 +8,16 @@ import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
 import { Oauth } from '~/@types/oauth.types';
 import useTokenState from '~/hooks/store/useTokenState';
+import { FONT_SIZE } from '~/styles/common';
 
 interface LoginButtonProps {
   type: Oauth;
 }
 
 const LoginIcon: Record<string, React.ReactNode> = {
-  naver: <Naver width={14} />,
-  kakao: <KaKao />,
-  google: <Google />,
+  naver: <Naver width={24} />,
+  kakao: <KaKao width={24} />,
+  google: <Google width={24} />,
 };
 
 function LoginButton({ type }: LoginButtonProps) {
@@ -42,11 +43,12 @@ export default LoginButton;
 
 const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
   display: flex;
+  align-items: center;
 
   width: 100%;
   height: fit-content;
 
-  padding: 2.3rem 1.3rem;
+  padding: 2.4rem 1.6rem;
 
   border-radius: 12px;
 
@@ -82,4 +84,5 @@ const StyledLoginButtonText = styled.span`
   margin: 0 auto;
 
   color: inherit;
+  font-size: ${FONT_SIZE.md};
 `;

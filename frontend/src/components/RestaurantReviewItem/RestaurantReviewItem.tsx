@@ -1,12 +1,18 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 
+import { shallow } from 'zustand/shallow';
+import { useQueryClient } from '@tanstack/react-query';
 import ProfileImage from '~/components/@common/ProfileImage';
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import { RestaurantReview } from '~/@types/api.types';
+import useTokenState from '~/hooks/store/useTokenState';
+import { isEmptyString } from '~/utils/compare';
+import useModalState from '~/hooks/store/useModalState';
+
+import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -16,7 +22,25 @@ interface RestaurantReviewItemProps {
 
 const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(
   ({ review, isModal, reviewModalOpen }, ref) => {
+    const qc = useQueryClient();
     const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
+    const token = useTokenState(state => state.token);
+    const profileData: ProfileData = qc.getQueryData(['profile']);
+
+    const [open, setId, setContent] = useModalState(state => [state.open, state.setId, state.setContent], shallow);
+    const isUsersReview = profileData?.memberId === review.id && !isEmptyString(token);
+
+    const clickUpdateReview = () => {
+      setContent('리뷰 수정 하기');
+      setId(review.id);
+      open();
+    };
+
+    const clickDeleteReview = () => {
+      setContent('리뷰 삭제 하기');
+      setId(review.id);
+      open();
+    };
 
     return (
       <StyledRestaurantReviewItemWrapper ref={ref}>
@@ -30,6 +54,16 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
         <StyledReviewContent ref={contentRef} isModal={isModal}>
           {review.content}
         </StyledReviewContent>
+        {isUsersReview && (
+          <>
+            <button type="button" onClick={clickUpdateReview}>
+              수정
+            </button>
+            <button type="button" onClick={clickDeleteReview}>
+              삭제
+            </button>
+          </>
+        )}
         {isTextOverflow && (
           <StyledSeeMore isModal={isModal} data-id={review.id} onClick={reviewModalOpen}>
             더 보기

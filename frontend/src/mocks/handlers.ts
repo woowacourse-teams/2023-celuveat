@@ -7,16 +7,12 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
   }),
 
-  rest.get('/profile', (req, res, ctx) => {
+  rest.get('/members/my', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.profileData));
   }),
 
   rest.get('/restaurants/like', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantWishListData));
-  }),
-
-  rest.get('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
   }),
 
   rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
@@ -35,6 +31,29 @@ export const handlers = [
     Fixture.restaurantListData.content = newData;
 
     return res(ctx.status(200));
+  }),
+
+  rest.get('/reviews', (req, res, ctx) => {
+    const restaurantId = req.url.searchParams.get('restaurantId');
+    console.log(restaurantId);
+
+    return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
+  }),
+
+  rest.post('/reviews', (req, res, ctx) => {
+    return res(ctx.status(201));
+  }),
+
+  rest.patch('/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
+  rest.patch('/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
+
+  rest.delete('/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(204));
   }),
 ];
 
@@ -57,6 +76,26 @@ export const errorPostLike400handlers = [
 ];
 
 export const error401handlers = [
+  rest.get('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
+  }),
+
+  rest.post('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.patch('/restaurants/:restaurantId/like/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.patch('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.delete('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
   rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
     return res(ctx.status(401));
   }),
@@ -79,6 +118,7 @@ export const errorPostLike403Handlers = [
     return res(ctx.status(403));
   }),
 ];
+
 export const errorPostLike404Handlers = [
   rest.get('/restaurants', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));

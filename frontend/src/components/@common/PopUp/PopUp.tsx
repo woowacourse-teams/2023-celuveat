@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { FONT_SIZE } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 interface StyledPopUpProps {
   isSuccess?: boolean;
@@ -27,8 +27,10 @@ function PopUp({ text, isSuccess = false, imgUrl }: PopUpProps) {
 export default PopUp;
 
 const StyledPopUpImg = styled.img`
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
+
+  border-radius: ${BORDER_RADIUS.sm};
 `;
 
 const StyledPopUpText = styled.span`
@@ -38,25 +40,25 @@ const StyledPopUpText = styled.span`
 const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 
   position: fixed;
-  top: 95%;
-  left: ${({ isMobile }) => (isMobile ? '50%' : '144px')};
+  bottom: 0;
+  left: ${({ isMobile }) => (isMobile ? '50%' : '160px')};
   z-index: 9999;
 
-  min-width: 224px;
+  min-width: 280px;
   max-width: fit-content;
-  height: 64px;
 
-  padding: 1rem;
+  padding: 0.8rem 1.2rem 0.8rem 0.8rem;
 
   border: 1px solid var(--gray-2);
   border-radius: 8px;
   background: #fff;
 
-  font-size: ${FONT_SIZE.md};
+  font-size: ${FONT_SIZE.sm};
 
-  box-shadow: var(--shadow);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 10%);
 
   text-align: center;
 
