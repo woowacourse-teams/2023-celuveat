@@ -9,13 +9,9 @@ import com.celuveat.restaurant.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.application.RestaurantLikeService;
 import com.celuveat.restaurant.application.RestaurantQueryFacade;
 import com.celuveat.restaurant.application.RestaurantQueryService;
-import com.celuveat.restaurant.application.dto.RestaurantDetailQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
-import com.celuveat.restaurant.application.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
 import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
@@ -107,19 +103,5 @@ public class RestaurantController {
     ) {
         restaurantCorrectionService.suggest(request.toCommand(restaurantId));
         return ResponseEntity.status(CREATED).build();
-    }
-
-    @GetMapping("/{restaurantId}/nearby")
-    ResponseEntity<PageResponse<RestaurantQueryResponse>> findAllNearbyDistance(
-            @PageableDefault(size = NEARBY_DEFAULT_SIZE) Pageable pageable,
-            @PathVariable Long restaurantId,
-            @RequestParam(required = false, defaultValue = DEFAULT_DISTANCE) Integer distance
-    ) {
-        Page<RestaurantQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                distance,
-                restaurantId,
-                pageable
-        );
-        return ResponseEntity.ok(PageResponse.from(result));
     }
 }

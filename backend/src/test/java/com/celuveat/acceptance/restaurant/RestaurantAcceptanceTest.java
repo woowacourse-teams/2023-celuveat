@@ -35,8 +35,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -185,10 +183,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             음식점_상세페이지를_여러번_방문한다(로이스2호점, 7);
 
             return new TestData(전체_음식점, 오도_세션_아이디, 셀럽_오도.id());
-        }
-
-        private void OAuth_응답을_설정한다(OauthMember member) {
-            Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
         }
 
         private void 음식점_상세페이지를_여러번_방문한다(RestaurantSimpleResponse 음식점, int 횟수) {
