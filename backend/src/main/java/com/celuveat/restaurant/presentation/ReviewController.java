@@ -31,7 +31,7 @@ public class ReviewController {
 
     @GetMapping
     ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
-            @RequestParam("restaurantId") Long restaurantId
+            @RequestParam Long restaurantId
     ) {
         return ResponseEntity.ok(restaurantReviewQueryService.findAllByRestaurantId(restaurantId));
     }
