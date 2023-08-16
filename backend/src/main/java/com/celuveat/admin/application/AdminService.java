@@ -52,8 +52,9 @@ public class AdminService {
 
     private List<RestaurantImage> toRestaurantImages(SaveDataRequest request, Restaurant restaurant) {
         List<RestaurantImage> result = new ArrayList<>();
-        String[] imageNames = request.imageName().split(", ");
+        String[] imageNames = request.imageName().split(",");
         for (String imageName : imageNames) {
+            imageName = imageName.strip();
             RestaurantImage restaurantImage = request.toRestaurantImage(imageName, YOUTUBE, restaurant);
             result.add(restaurantImage);
         }
