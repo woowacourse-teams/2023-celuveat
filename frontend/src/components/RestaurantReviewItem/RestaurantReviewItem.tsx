@@ -28,7 +28,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
     const profileData: ProfileData = qc.getQueryData(['profile']);
 
     const [open, setId, setContent] = useModalState(state => [state.open, state.setId, state.setContent], shallow);
-    const isUsersReview = profileData?.memberId === review.id && !isEmptyString(token);
+    const isUsersReview = profileData?.memberId === review.memberId && !isEmptyString(token);
 
     const clickUpdateReview = () => {
       setContent('리뷰 수정 하기');

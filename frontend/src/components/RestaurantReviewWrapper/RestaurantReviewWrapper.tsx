@@ -31,7 +31,7 @@ function RestaurantReviewWrapper() {
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
 
   const openAllReviews = () => {
-    setContent('후기 모두 보기');
+    setContent('리뷰 모두 보기');
     setId(0);
     open();
   };
@@ -43,17 +43,17 @@ function RestaurantReviewWrapper() {
 
   return (
     <StyledRestaurantReviewWrapper>
-      <StyledReviewCountText>후기 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
-      {isLoading && <div>로딩중입니다.</div>}
+      <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
+      {isLoading && <h5>로딩중입니다.</h5>}
       <RestaurantReviewList reviews={previewReviews} />
       <StyledButtonContainer>
         <button type="button" onClick={openFormModal}>
           리뷰 작성하기
         </button>
-        {isMoreReviews && <button type="button" onClick={openAllReviews}>{`후기 ${reviewCount}개 모두 보기`}</button>}
+        {isMoreReviews && <button type="button" onClick={openAllReviews}>{`리뷰 ${reviewCount}개 모두 보기`}</button>}
       </StyledButtonContainer>
       <Modal>
-        {content === '후기 모두 보기' && (
+        {content === '리뷰 모두 보기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
             <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal />
           </ModalContent>
