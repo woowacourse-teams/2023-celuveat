@@ -4,6 +4,7 @@ import {
   errorPostLike403Handlers,
   errorPostLike404Handlers,
   errorPostLike500Handlers,
+  error401handlers,
   handlers,
 } from './handlers';
 
