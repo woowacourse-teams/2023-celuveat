@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { MouseEvent, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
@@ -10,6 +10,8 @@ import useBooleanState from '~/hooks/useBooleanState';
 
 import type { Celeb } from '~/@types/celeb.types';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface DropDownProps {
   celebs: Celeb[];
@@ -18,11 +20,12 @@ interface DropDownProps {
 }
 
 function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
-  const [selected, setSelected] = useState<Celeb['name']>('전체');
+  const { isMobile } = useMediaQuery();
+  const [selected, setSelected] = useState<Celeb>(OPTION_FOR_CELEB_ALL);
   const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
-  const onSelection = (celeb: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
-    setSelected(celeb);
+  const onSelection = (celebName: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
+    setSelected(celebs.find(celeb => celebName === celeb.name));
 
     if (externalOnClick) externalOnClick(event);
   };
@@ -30,22 +33,29 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
   return (
     <StyledCelebDropDown>
       <StyledNavItemWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
-        <NavItem label="셀럽" icon={<CelebIcon />} isShow={isShow} />
+        {selected.id === -1 ? (
+          <NavItem label="전체 셀럽" icon={<CelebIcon />} isShow={isShow} />
+        ) : (
+          <NavItem
+            label={selected.youtubeChannelName.replace('@', '')}
+            icon={<ProfileImage name={selected.name} imageUrl={selected.profileImageUrl} size="40px" />}
+            isShow={isShow}
+          />
+        )}
       </StyledNavItemWrapper>
 
       {isShow && (
-        <StyledDropDownWrapper>
+        <StyledDropDownWrapper isMobile={isMobile}>
           <StyledSelectContainer>
             {celebs.map(({ id, name, youtubeChannelName, profileImageUrl }) => (
               <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
                 <div>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />
+                  {id === -1 ? <CelebIcon /> : <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />}
                   <div>
                     <StyledCelebName>{name}</StyledCelebName>
                     <StyledChannelName>{youtubeChannelName}</StyledChannelName>
                   </div>
                 </div>
-                {isEqual(selected, name) && <SearchIcon width={24} />}
               </StyledDropDownOption>
             ))}
           </StyledSelectContainer>
@@ -69,17 +79,28 @@ const StyledCelebDropDown = styled.div`
   position: relative;
 `;
 
-const StyledDropDownWrapper = styled.ul`
+const StyledDropDownWrapper = styled.ul<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   align-content: center;
 
   position: absolute;
   top: calc(100% + 16px);
-  left: 18px;
 
-  width: 380px;
-  height: 440px;
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          left: 0;
+
+          width: 90vw;
+          height: 60vh;
+        `
+      : css`
+          left: 18px;
+
+          width: 380px;
+          height: 440px;
+        `}
 
   padding: 1.2rem 0;
 
