@@ -7,7 +7,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(Fixture.restaurantListData));
   }),
 
-  rest.get('/profile', (req, res, ctx) => {
+  rest.get('/members/my', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.profileData));
   }),
 

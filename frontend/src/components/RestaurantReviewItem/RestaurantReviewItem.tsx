@@ -2,15 +2,17 @@ import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 
 import { shallow } from 'zustand/shallow';
+import { useQueryClient } from '@tanstack/react-query';
 import ProfileImage from '~/components/@common/ProfileImage';
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import { RestaurantReview } from '~/@types/api.types';
 import useTokenState from '~/hooks/store/useTokenState';
 import { isEmptyString } from '~/utils/compare';
 import useModalState from '~/hooks/store/useModalState';
+
+import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -20,10 +22,13 @@ interface RestaurantReviewItemProps {
 
 const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(
   ({ review, isModal, reviewModalOpen }, ref) => {
+    const qc = useQueryClient();
     const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
     const token = useTokenState(state => state.token);
+    const profileData: ProfileData = qc.getQueryData(['profile']);
 
     const [open, setId, setContent] = useModalState(state => [state.open, state.setId, state.setContent], shallow);
+    const isUsersReview = profileData?.memberId === review.id && !isEmptyString(token);
 
     const clickUpdateReview = () => {
       setContent('리뷰 수정 하기');
@@ -49,7 +54,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
         <StyledReviewContent ref={contentRef} isModal={isModal}>
           {review.content}
         </StyledReviewContent>
-        {!isEmptyString(token) && (
+        {isUsersReview && (
           <>
             <button type="button" onClick={clickUpdateReview}>
               수정

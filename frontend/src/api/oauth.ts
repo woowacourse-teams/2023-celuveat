@@ -20,12 +20,12 @@ export const getMSWLogout = async (type: Oauth) => {
 };
 
 export const getProfile = async () => {
-  const response = await userInstance.get('/profile');
+  const response = await userInstance.get('/members/my');
   return response.data;
 };
 
 export const getMSWProfile = async () => {
-  const response = await userMSWInstance.get('/profile');
+  const response = await userMSWInstance.get('/members/my');
   return response.data;
 };
 

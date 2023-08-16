@@ -58,7 +58,7 @@ function RestaurantReviewWrapper() {
       <Modal>
         {content === '후기 모두 보기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
-            <RestaurantReviewList reviews={restaurantReviewsData?.reviews} isModal />
+            <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal />
           </ModalContent>
         )}
         {content === '리뷰 작성 하기' && (

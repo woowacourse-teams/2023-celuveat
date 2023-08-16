@@ -59,6 +59,7 @@ export interface VideoList {
 export interface RestaurantReview {
   id: number;
   nickname: string;
+  memberId: number;
   profileImageUrl: string;
   content: string;
   createdDate: HyphenatedDate;
