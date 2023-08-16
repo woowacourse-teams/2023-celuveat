@@ -41,7 +41,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
             <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
             {restaurant.isLiked && (
               <LikeButton aria-label="좋아요" type="button">
-                {restaurant.isLiked && <Love width={14} fill="red" fillOpacity={0.5} aria-hidden="true" />}
+                {restaurant.isLiked && <Love width={20} fill="red" fillOpacity={0.5} aria-hidden="true" />}
               </LikeButton>
             )}
           </StyledMarker>
