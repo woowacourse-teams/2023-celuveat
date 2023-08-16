@@ -9,25 +9,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private static final String REVIEW_URI_REGEX = "^\\/api\\/reviews.*";
-
     private final AuthContext authContext;
+    private final PathMatcher pathMatcher;
+    private final Set<UriAndMethodsCondition> authNotRequiredConditions;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (CorsUtil.isPreflightRequest(request)) {
             return true;
         }
-        if (isAllowedQueryRequest(request)) {
+        if (isAuthenticationNotRequired(request)) {
             return true;
         }
         HttpSession session = getSession(request);
@@ -38,9 +40,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean isAllowedQueryRequest(HttpServletRequest request) {
-        return request.getMethod().equals(HttpMethod.GET.name())
-                && request.getRequestURI().matches(REVIEW_URI_REGEX);
+    private boolean isAuthenticationNotRequired(HttpServletRequest request) {
+        HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
+        String requestURI = request.getRequestURI();
+        return authNotRequiredConditions.stream()
+                .anyMatch(it -> pathMatcher.match(it.uriPattern, requestURI) && it.httpMethods.contains(httpMethod));
     }
 
     private HttpSession getSession(HttpServletRequest request) {
@@ -49,5 +53,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new AuthException(UNAUTHORIZED_REQUEST);
         }
         return session;
+    }
+
+    public record UriAndMethodsCondition(
+            String uriPattern,
+            Set<HttpMethod> httpMethods
+    ) {
     }
 }
