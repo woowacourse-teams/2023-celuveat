@@ -62,19 +62,19 @@ public class RestaurantLikeAcceptanceSteps {
     }
 
     public static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
-            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse
+            RestaurantSimpleResponse restaurantSimpleResponse
     ) {
         return new RestaurantLikeQueryResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantSimpleResponse.id(),
+                restaurantSimpleResponse.name(),
+                restaurantSimpleResponse.category(),
+                restaurantSimpleResponse.roadAddress(),
+                restaurantSimpleResponse.latitude(),
+                restaurantSimpleResponse.longitude(),
+                restaurantSimpleResponse.phoneNumber(),
+                restaurantSimpleResponse.naverMapUrl(),
+                restaurantSimpleResponse.celebs(),
+                restaurantSimpleResponse.images()
         );
     }
 

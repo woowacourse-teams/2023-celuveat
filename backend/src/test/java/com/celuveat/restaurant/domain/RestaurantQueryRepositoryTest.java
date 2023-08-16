@@ -81,9 +81,9 @@ class RestaurantQueryRepositoryTest {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         Long celebId = 1L;
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (isCelebVisited(celebId, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -106,9 +106,9 @@ class RestaurantQueryRepositoryTest {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         String category = "category:오도1호점";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (restaurantSimpleResponse.category().equals(category)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -131,9 +131,9 @@ class RestaurantQueryRepositoryTest {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -158,10 +158,10 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         Long celebId = 1L;
         String category = "category:오도1호점";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)
-                    && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (isCelebVisited(celebId, restaurantSimpleResponse)
+                    && restaurantSimpleResponse.category().equals(category)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -185,10 +185,10 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -212,10 +212,10 @@ class RestaurantQueryRepositoryTest {
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSimpleResponse.category().equals(category)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -240,11 +240,11 @@ class RestaurantQueryRepositoryTest {
         Long celebId = 2L;
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)
-                    && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSimpleResponse.category().equals(category)
+                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -263,9 +263,9 @@ class RestaurantQueryRepositoryTest {
     void 위치_기준으로_일정_거리내_음식점_조회_테스트() {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1번_지점포함, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -292,9 +292,9 @@ class RestaurantQueryRepositoryTest {
     void 위치_기준으로_일정_거리내_모든_음식점_조회_테스트() {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 
@@ -322,10 +322,10 @@ class RestaurantQueryRepositoryTest {
         // given
         List<RestaurantSimpleResponse> expected = new ArrayList<>();
         Long celebId = 1L;
-        for (RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1번_지점포함, restaurantWithCelebsAndImagesSimpleResponse)
-                    && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
-                expected.add(restaurantWithCelebsAndImagesSimpleResponse);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantSimpleResponse)
+                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
+                expected.add(restaurantSimpleResponse);
             }
         }
 

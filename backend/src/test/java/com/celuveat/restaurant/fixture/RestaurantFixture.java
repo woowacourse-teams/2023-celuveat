@@ -45,9 +45,9 @@ public class RestaurantFixture {
     }
 
     public static boolean isCelebVisited(
-            Long celebId, RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse
+            Long celebId, RestaurantSimpleResponse restaurantSimpleResponse
     ) {
-        List<Long> celebIds = restaurantWithCelebsAndImagesSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+        List<Long> celebIds = restaurantSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
                 .toList();
         return celebIds.contains(celebId);
     }

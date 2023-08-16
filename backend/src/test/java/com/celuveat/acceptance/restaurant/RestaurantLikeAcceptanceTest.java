@@ -142,69 +142,69 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
     }
 
     private List<RestaurantLikeQueryResponse> 예상_응답(List<RestaurantSimpleResponse> 전체_음식점) {
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse1 = 전체_음식점.get(1);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse2 = 전체_음식점.get(3);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse3 = 전체_음식점.get(4);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse4 = 전체_음식점.get(7);
+        RestaurantSimpleResponse restaurantSimpleResponse1 = 전체_음식점.get(1);
+        RestaurantSimpleResponse restaurantSimpleResponse2 = 전체_음식점.get(3);
+        RestaurantSimpleResponse restaurantSimpleResponse3 = 전체_음식점.get(4);
+        RestaurantSimpleResponse restaurantSimpleResponse4 = 전체_음식점.get(7);
         return new ArrayList<>(List.of(
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse1),
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse2),
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse3),
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse4)
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse1),
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse2),
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse3),
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse4)
         ));
     }
 
     private List<RestaurantSimpleResponse> 좋아요_포함된_예상_응답(
             List<RestaurantSimpleResponse> 전체_음식점) {
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse1 = 전체_음식점.get(1);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse2 = 전체_음식점.get(3);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse3 = 전체_음식점.get(4);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse4 = 전체_음식점.get(7);
+        RestaurantSimpleResponse restaurantSimpleResponse1 = 전체_음식점.get(1);
+        RestaurantSimpleResponse restaurantSimpleResponse2 = 전체_음식점.get(3);
+        RestaurantSimpleResponse restaurantSimpleResponse3 = 전체_음식점.get(4);
+        RestaurantSimpleResponse restaurantSimpleResponse4 = 전체_음식점.get(7);
         List<RestaurantSimpleResponse> expected = new ArrayList<>(전체_음식점);
-        expected.set(1, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse1)));
-        expected.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse2)));
-        expected.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse3)));
-        expected.set(7, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse4)));
+        expected.set(1, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse1)));
+        expected.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse2)));
+        expected.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse3)));
+        expected.set(7, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse4)));
         return expected;
     }
 
     private RestaurantSimpleResponse changeIsLikedToTrue(
-            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse) {
+            RestaurantSimpleResponse restaurantSimpleResponse) {
         return new RestaurantSimpleResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebsAndImagesSimpleResponse.viewCount(),
-                restaurantWithCelebsAndImagesSimpleResponse.distance(),
+                restaurantSimpleResponse.id(),
+                restaurantSimpleResponse.name(),
+                restaurantSimpleResponse.category(),
+                restaurantSimpleResponse.roadAddress(),
+                restaurantSimpleResponse.latitude(),
+                restaurantSimpleResponse.longitude(),
+                restaurantSimpleResponse.phoneNumber(),
+                restaurantSimpleResponse.naverMapUrl(),
+                restaurantSimpleResponse.viewCount(),
+                restaurantSimpleResponse.distance(),
                 true,
-                restaurantWithCelebsAndImagesSimpleResponse.likeCount(),
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantSimpleResponse.likeCount(),
+                restaurantSimpleResponse.celebs(),
+                restaurantSimpleResponse.images()
         );
     }
 
     private RestaurantSimpleResponse increaseLikeCount(
-            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse) {
+            RestaurantSimpleResponse restaurantSimpleResponse) {
         return new RestaurantSimpleResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebsAndImagesSimpleResponse.viewCount(),
-                restaurantWithCelebsAndImagesSimpleResponse.distance(),
-                restaurantWithCelebsAndImagesSimpleResponse.isLiked(),
-                restaurantWithCelebsAndImagesSimpleResponse.likeCount() + 1,
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantSimpleResponse.id(),
+                restaurantSimpleResponse.name(),
+                restaurantSimpleResponse.category(),
+                restaurantSimpleResponse.roadAddress(),
+                restaurantSimpleResponse.latitude(),
+                restaurantSimpleResponse.longitude(),
+                restaurantSimpleResponse.phoneNumber(),
+                restaurantSimpleResponse.naverMapUrl(),
+                restaurantSimpleResponse.viewCount(),
+                restaurantSimpleResponse.distance(),
+                restaurantSimpleResponse.isLiked(),
+                restaurantSimpleResponse.likeCount() + 1,
+                restaurantSimpleResponse.celebs(),
+                restaurantSimpleResponse.images()
         );
     }
 }
