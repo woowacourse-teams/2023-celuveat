@@ -25,8 +25,8 @@ function WithdrawalModalContent() {
       </StyleWithdrawalDetailWrapper>
 
       <StyledButtonWrapper isMobile={isMobile}>
-        <TextButton type="button" text="취소하기" colorType="light" width="100%" onClick={onCancelDeleteUser} />
-        <TextButton type="button" text="탈퇴하기" colorType="dark" width="100%" onClick={deleteUser} />
+        <TextButton type="button" text="취소하기" colorType="dark" width="100%" onClick={onCancelDeleteUser} />
+        <TextButton type="button" text="탈퇴하기" colorType="light" width="100%" onClick={deleteUser} />
       </StyledButtonWrapper>
     </StyledWithdrawalModalContentWrapper>
   );
