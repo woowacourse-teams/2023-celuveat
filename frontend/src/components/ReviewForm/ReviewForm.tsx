@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { RestaurantReview } from '~/@types/api.types';
+import { RestaurantReviewData } from '~/@types/api.types';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import useModalState from '~/hooks/store/useModalState';
 
@@ -14,7 +14,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   const qc = useQueryClient();
 
   const reviewId = useModalState(state => state.targetId);
-  const reviews: RestaurantReview[] = qc.getQueryData(['restaurantReview', restaurantId]);
+  const reviewData: RestaurantReviewData = qc.getQueryData(['restaurantReview', restaurantId]);
 
   const [text, setText] = useState('');
 
@@ -22,7 +22,7 @@ function ReviewForm({ type }: ReviewFormProps) {
 
   const onCreateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault(); // 네트워크 요청 확인을 위해 사용
-    createReview({ content: text });
+    createReview({ content: text, restaurantId: Number(restaurantId) });
   };
 
   const onUpdateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
@@ -35,11 +35,11 @@ function ReviewForm({ type }: ReviewFormProps) {
   };
 
   useEffect(() => {
-    if (type === 'update' && !!reviews) {
-      const targetReview = reviews.find(review => review.id === reviewId);
+    if (type === 'update' && !!reviewData) {
+      const targetReview = reviewData.reviews.find(review => review.id === reviewId);
       setText(targetReview.content);
     }
-  }, [reviews]);
+  }, [reviewData]);
 
   return (
     <form>

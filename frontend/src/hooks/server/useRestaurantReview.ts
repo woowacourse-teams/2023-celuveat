@@ -2,10 +2,13 @@ import { AxiosError } from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
+
 import { patchMSWRestaurantReview, deleteMSWRestaurantReview, postMSWRestaurantReview } from '../../api/oauth';
-import { RestaurantReview, RestaurantReviewReqBody } from '~/@types/api.types';
 import { getMSWRestaurantReview } from '~/api';
+
 import useToastState from '~/hooks/store/useToastState';
+
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
@@ -29,30 +32,30 @@ const useRestaurantReview = () => {
     }
   };
 
-  const { data: restaurantReviews } = useQuery<RestaurantReview[]>({
+  const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
     queryFn: () => getMSWRestaurantReview(restaurantId),
   });
 
   const createReview = useMutation({
-    mutationFn: (body: RestaurantReviewReqBody) =>
-      postMSWRestaurantReview({ restaurantId: Number(restaurantId), body }),
+    mutationFn: (body: RestaurantReviewPostBody) => postMSWRestaurantReview(body),
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
-    mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewReqBody }) =>
-      patchMSWRestaurantReview({ restaurantId: Number(restaurantId), reviewId, body }),
+    mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
+      patchMSWRestaurantReview({ reviewId, body }),
     onError: errorHandler,
   });
 
   const deleteReview = useMutation({
-    mutationFn: (reviewId: number) => deleteMSWRestaurantReview({ restaurantId: Number(restaurantId), reviewId }),
+    mutationFn: (reviewId: number) => deleteMSWRestaurantReview(reviewId),
     onError: errorHandler,
   });
 
   return {
-    restaurantReviews,
+    restaurantReviewsData,
+    isLoading,
     createReview: createReview.mutate,
     updateReview: updateReview.mutate,
     deleteReview: deleteReview.mutate,

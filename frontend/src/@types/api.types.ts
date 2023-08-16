@@ -27,6 +27,7 @@ export interface RestaurantData {
 export type RestaurantWishData = Omit<RestaurantData, 'isLiked'>;
 
 export interface ProfileData {
+  memberId: number;
   nickname: string;
   profileImageUrl: string;
 }
@@ -63,6 +64,16 @@ export interface RestaurantReview {
   createdDate: HyphenatedDate;
 }
 
-export interface RestaurantReviewReqBody {
+export interface RestaurantReviewData {
+  totalElementsCount: number;
+  reviews: RestaurantReview[];
+}
+
+export interface RestaurantReviewPatchBody {
   content: string;
+}
+
+export interface RestaurantReviewPostBody {
+  content: string;
+  restaurantId: number;
 }
