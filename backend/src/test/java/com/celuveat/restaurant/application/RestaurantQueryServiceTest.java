@@ -483,15 +483,15 @@ class RestaurantQueryServiceTest {
                 음식점_좋아요(로이스2호점, 멤버)
         ));
         List<RestaurantLikeQueryResponse> expected = new ArrayList<>(List.of(
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse1),
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse2),
+                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse4),
                 toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse3),
-                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse4)
+                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse2),
+                toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse1)
         ));
 
         // when
-        List<RestaurantLikeQueryResponse> restaurantLikes = restaurantQueryService.findAllLikedRestaurantByMemberId(
-                멤버.id());
+        List<RestaurantLikeQueryResponse> restaurantLikes =
+                restaurantQueryService.findAllLikedRestaurantByMemberId(멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);

@@ -179,7 +179,8 @@ public class RestaurantQueryService {
     }
 
     public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
-        List<RestaurantLike> restaurantLikes = restaurantLikeRepository.findAllByMemberId(memberId);
+        List<RestaurantLike> restaurantLikes =
+                restaurantLikeRepository.findAllByMemberIdOrderByCreatedDateDesc(memberId);
         return mapToRestaurantLikeQueryResponse(restaurantLikes);
     }
 

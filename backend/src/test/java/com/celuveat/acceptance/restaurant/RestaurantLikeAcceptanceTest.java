@@ -147,10 +147,10 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         RestaurantSimpleResponse restaurantSimpleResponse3 = 전체_음식점.get(4);
         RestaurantSimpleResponse restaurantSimpleResponse4 = 전체_음식점.get(7);
         return new ArrayList<>(List.of(
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse1),
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse2),
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse4),
                 toRestaurantLikeQueryResponse(restaurantSimpleResponse3),
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse4)
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse2),
+                toRestaurantLikeQueryResponse(restaurantSimpleResponse1)
         ));
     }
 

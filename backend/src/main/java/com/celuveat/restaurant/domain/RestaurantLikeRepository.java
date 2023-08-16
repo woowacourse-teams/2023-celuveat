@@ -14,6 +14,8 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
 
     List<RestaurantLike> findAllByMemberId(Long memberId);
 
+    List<RestaurantLike> findAllByMemberIdOrderByCreatedDateDesc(Long memberId);
+
     Integer countByRestaurant(Restaurant restaurant);
 
     @Query("""
