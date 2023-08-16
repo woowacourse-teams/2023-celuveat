@@ -12,15 +12,15 @@ export const handlers = [
   }),
 
   rest.get('/restaurants/like', (req, res, ctx) => {
-    const data = Fixture.restaurantListData.content.filter(restaurantItem => {
-      return restaurantItem.isLiked;
-    });
-
-    return res(ctx.status(200), ctx.json(data));
+    return res(ctx.status(200), ctx.json(Fixture.restaurantWishListData));
   }),
 
   rest.get('/restaurants/:restaurantId/reviews', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
+  }),
+
+  rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
+    return res(ctx.status(204));
   }),
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
@@ -86,6 +86,10 @@ export const error401handlers = [
   }),
 
   rest.delete('/restaurants/:restaurantId/reviews/:reviewId', (req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
+
+  rest.delete('/oauth/withdraw/:oauthType', (req, res, ctx) => {
     return res(ctx.status(401));
   }),
 ];

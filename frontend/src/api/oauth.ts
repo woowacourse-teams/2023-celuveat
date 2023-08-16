@@ -117,3 +117,13 @@ export const deleteMSWRestaurantReview = async ({
   const response = await userMSWInstance.delete(`/restaurants/${restaurantId}/reviews/${reviewId}`);
   return response;
 };
+
+export const deleteUserData = async (type: Oauth) => {
+  const response = await userInstance.delete(`/oauth/withdraw/${type}`);
+  return response.data;
+};
+
+export const deleteMSWUserData = async (type: Oauth) => {
+  const response = await userMSWInstance.delete(`/oauth/withdraw/${type}`);
+  return response.data;
+};

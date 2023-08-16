@@ -24,6 +24,8 @@ export interface RestaurantData {
   images: { id: number; name: string; author: string; sns: string }[];
 }
 
+export type RestaurantWishData = Omit<RestaurantData, 'isLiked'>;
+
 export interface ProfileData {
   nickname: string;
   profileImageUrl: string;

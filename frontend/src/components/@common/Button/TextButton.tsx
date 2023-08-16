@@ -7,6 +7,7 @@ interface TextButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   colorType: 'dark' | 'light';
   disabled?: boolean;
+  width?: `${string}px` | `${string}%`;
 }
 
 function TextButton({ text, colorType, disabled = false, ...props }: TextButtonProps) {
@@ -19,7 +20,9 @@ function TextButton({ text, colorType, disabled = false, ...props }: TextButtonP
 
 export default TextButton;
 
-const StyledButton = styled.button<{ colorType: 'dark' | 'light' }>`
+const StyledButton = styled.button<{ colorType: 'dark' | 'light'; width?: `${string}px` | `${string}%` }>`
+  width: ${({ width }) => width};
+
   padding: 1.2rem 2.4rem;
 
   border: none;

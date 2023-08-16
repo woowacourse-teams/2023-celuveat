@@ -29,6 +29,8 @@ function Header() {
 
     if (currentOption === '위시리스트') navigator('/restaurants/like');
 
+    if (currentOption === '회원 탈퇴') navigator('/withdrawal');
+
     if (currentOption === '로그아웃') {
       if (oauth !== '') {
         getLogout(oauth);
@@ -45,9 +47,11 @@ function Header() {
         <Link to="/">
           <Logo role="button" width={136} />
         </Link>
-        <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
-          <SearchBar />
-        </Wrapper>
+        {!isMobile && (
+          <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
+            <SearchBar />
+          </Wrapper>
+        )}
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal>
