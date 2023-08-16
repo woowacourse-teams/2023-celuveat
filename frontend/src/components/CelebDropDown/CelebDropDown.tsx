@@ -2,8 +2,6 @@ import styled, { css } from 'styled-components';
 import { MouseEvent, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
-import SearchIcon from '~/assets/icons/search.svg';
-import { isEqual } from '~/utils/compare';
 import ProfileImage from '~/components/@common/ProfileImage';
 import NavItem from '~/components/@common/NavButton/NavButton';
 import useBooleanState from '~/hooks/useBooleanState';
