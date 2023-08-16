@@ -13,6 +13,7 @@ import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
+import com.celuveat.video.utils.VideoResponseUtils;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -82,7 +83,7 @@ public class VideoAcceptanceSteps {
         Celeb celeb = video.celeb();
         return new VideoWithCelebQueryResponse(
                 video.id(),
-                video.youtubeUrl(),
+                VideoResponseUtils.extractVideoKey(video.youtubeUrl()),
                 video.uploadDate(),
                 celeb.id(),
                 celeb.name(),
