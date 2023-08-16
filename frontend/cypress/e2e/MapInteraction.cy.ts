@@ -18,4 +18,18 @@ describe('지도 상호작용 테스트', () => {
       cy.getBySel(`${restaurant} 오버레이`).find(`[data-cy='${restaurant} 카드']`).should('exist');
     });
   });
+
+  it('다른 마커를 클릭하면 레스토랑 카드가 사라지고 새로운 레스토랑 카드가 생성된다', () => {
+    cy.visit(Cypress.config().baseUrl);
+    cy.getBySel('몽드샬롯 마커').click();
+    cy.getBySel('몽드샬롯 오버레이').find('[data-cy="몽드샬롯 카드"]').should('exist');
+
+    cy.getBySel('대성연탄갈비 마커').click();
+    cy.getBySel('몽드샬롯 오버레이').find('[data-cy="몽드샬롯 카드"]').should('not.exist');
+    cy.getBySel('대성연탄갈비 오버레이').find('[data-cy="대성연탄갈비 카드"]').should('exist');
+
+    cy.getBySel('씨푸드박스 마커').click();
+    cy.getBySel('대성연탄갈비 오버레이').find('[data-cy="대성연탄갈비 카드"]').should('not.exist');
+    cy.getBySel('씨푸드박스 오버레이').find('[data-cy="씨푸드박스 카드"]').should('exist');
+  });
 });
