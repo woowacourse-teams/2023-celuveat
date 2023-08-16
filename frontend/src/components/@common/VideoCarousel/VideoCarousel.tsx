@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { BORDER_RADIUS, hideScrollBar } from '~/styles/common';
+import { BORDER_RADIUS, hideScrollBar, paintSkeleton } from '~/styles/common';
 import type { Video } from '~/@types/api.types';
 
 interface VideoCarouselProps {
@@ -43,6 +43,7 @@ const StyledVideoCarouselContainer = styled.section`
 `;
 
 const StyledVideo = styled.iframe`
+  ${paintSkeleton}
   width: 352px;
   height: 196px;
 
