@@ -10,8 +10,12 @@ describe('지도 상호작용 테스트', () => {
   });
 
   it('음식점 마커 클릭 시 레스토랑 카드가 마커근처에 생성된다.', () => {
-    cy.visit(Cypress.config().baseUrl);
-    cy.getBySel('스시이도 오코노미 마커').click();
-    cy.getBySel('스시이도 오코노미 오버레이').find('[data-cy="스시이도 오코노미 카드"]').should('exist');
+    const restaurants = ['맛좋은순대국', '씨푸드박스', '스시이도 오코노미', '동양'];
+
+    cy.wrap(restaurants).each(restaurant => {
+      cy.visit(Cypress.config().baseUrl);
+      cy.getBySel(`${restaurant} 마커`).click();
+      cy.getBySel(`${restaurant} 오버레이`).find(`[data-cy='${restaurant} 카드']`).should('exist');
+    });
   });
 });
