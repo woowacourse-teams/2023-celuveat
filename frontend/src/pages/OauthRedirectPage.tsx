@@ -27,10 +27,10 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
     onSuccess: (data: OauthCodeResponse) => {
       const { jsessionId } = data;
 
+      updateOauth(type);
       updateToken(jsessionId);
 
       navigator('/');
-      window.location.reload();
     },
     onError: () => {
       navigator('/fail');
@@ -40,7 +40,6 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   useEffect(() => {
     if (code) {
       oauthTokenMutation.mutate();
-      updateOauth(type);
     }
   }, [code]);
 
