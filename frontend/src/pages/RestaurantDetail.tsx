@@ -59,7 +59,7 @@ function RestaurantDetail() {
   });
 
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
-    queryKey: ['nearByRestaurant', restaurantId],
+    queryKey: ['restaurants', 'nearby', restaurantId],
     queryFn: async () => getNearByRestaurant(restaurantId),
   });
 
@@ -83,9 +83,9 @@ function RestaurantDetail() {
     async () => {
       try {
         await navigator.clipboard.writeText(text);
-        onSuccess('클립보드에 복사되었어요.');
+        alert('클립보드에 저장되었어요.');
       } catch (err) {
-        onFailure('복사하는데 문제가 생겼어요.');
+        alert('클립보드에 저장하는데 문제가 생겼어요.');
       }
     };
 

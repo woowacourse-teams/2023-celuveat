@@ -1,13 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getAccessToken } from '~/api/oauth';
 import useTokenState from '~/hooks/store/useTokenState';
-import MainPage from './MainPage';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
+}
+
+interface OauthCodeResponse {
+  jsessionId: string;
 }
 
 function OauthRedirectPage({ type }: OauthRedirectProps) {
@@ -19,12 +22,16 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
 
-  const {
-    data: { jsessionId },
-    isLoading,
-  } = useQuery({
-    queryKey: ['oauthToken', type, code],
-    queryFn: () => getAccessToken(type, code),
+  const oauthTokenMutation = useMutation({
+    mutationFn: () => getAccessToken(type, code),
+    onSuccess: (data: OauthCodeResponse) => {
+      const { jsessionId } = data;
+
+      updateOauth(type);
+      updateToken(jsessionId);
+
+      navigator('/');
+    },
     onError: () => {
       navigator('/fail');
     },
@@ -33,7 +40,6 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   useEffect(() => {
     if (code) {
       oauthTokenMutation.mutate();
-      updateOauth(type);
     }
   }, [code]);
 
@@ -42,20 +48,6 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
       <div>Processing...</div>
     </div>
   );
-    updateToken(jsessionId);
-    updateOauth(type);
-    navigator('/');
-  }, [jsessionId]);
-
-  if (isLoading) {
-    return (
-      <div>
-        <div>Processing...</div>
-      </div>
-    );
-  }
-
-  return <MainPage />;
 }
 
 export default OauthRedirectPage;
