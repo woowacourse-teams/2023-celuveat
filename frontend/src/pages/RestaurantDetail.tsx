@@ -96,14 +96,14 @@ function RestaurantDetail() {
         <StyledMainRestaurantDetail isMobile={isMobile}>
           {isSuccessRestaurantDetail && (
             <>
-              <StyledDetailHeader>
+              <StyledDetailHeader tabIndex={0}>
                 <h3>{name}</h3>
-                <div>
-                  <div>
-                    <View width={18} /> {viewCount}
+                <div role="group">
+                  <div aria-label={`조회수 ${viewCount}`}>
+                    <View width={18} aria-hidden /> <span aria-hidden>{viewCount}</span>
                   </div>
-                  <div>
-                    <Love width={18} /> {likeCount}
+                  <div aria-label={`좋아요수 ${viewCount}`}>
+                    <Love width={18} aria-hidden /> <span aria-hidden>{likeCount}</span>
                   </div>
                 </div>
               </StyledDetailHeader>
@@ -113,7 +113,7 @@ function RestaurantDetail() {
                 <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
               )}
               <StyledDetailAndLink isMobile={isMobile}>
-                <StyledDetailInfo isMobile={isMobile}>
+                <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">
                   <div>
                     <div>
                       <h4>셀럽, {celebs[0].name} 이(가) 다녀간 맛집</h4>
@@ -134,16 +134,16 @@ function RestaurantDetail() {
                   <div>
                     <div>
                       <div>주소 : {roadAddress}</div>
-                      <button type="button" onClick={copyClipBoard(roadAddress)}>
+                      <button aria-label="주소 복사" type="button" onClick={copyClipBoard(roadAddress)}>
                         <Copy width={16} />
-                        <div>복사하기</div>
+                        <div aria-hidden>복사하기</div>
                       </button>
                     </div>
                     <div>
                       <div>전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}</div>
-                      <button type="button" onClick={copyClipBoard(phoneNumber)}>
+                      <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
                         <Copy width={16} />
-                        <div>복사하기</div>
+                        <div aria-hidden>복사하기</div>
                       </button>
                     </div>
                     <div>카테고리 : {category}</div>
@@ -160,7 +160,7 @@ function RestaurantDetail() {
                     </StyledMainVideo>
                   )}
                 </StyledDetailInfo>
-                <StyledLinkContainer isMobile={isMobile}>
+                <StyledLinkContainer isMobile={isMobile} tabIndex={0}>
                   <StyledMainLinkContainer isMobile={isMobile}>
                     <button type="button" onClick={openNewWindow(naverMapUrl)}>
                       <Naver width={32} />
@@ -306,7 +306,7 @@ const StyledDetailHeader = styled.section`
   }
 `;
 
-const StyledDetailAndLink = styled.div<{ isMobile: boolean }>`
+const StyledDetailAndLink = styled.section<{ isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
   margin-bottom: 3.2rem;
@@ -411,7 +411,7 @@ const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
   }
 `;
 
-const StyledLinkContainer = styled.section<{ isMobile: boolean }>`
+const StyledLinkContainer = styled.aside<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
