@@ -20,10 +20,14 @@ public class RestaurantQueryFacade {
     private final RestaurantQueryService restaurantQueryService;
 
     @Transactional
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Long celebId) {
+    public RestaurantDetailResponse findRestaurantDetailById(
+            Long restaurantId,
+            Long celebId,
+            Optional<Long> memberId
+    ) {
         restaurantService.increaseViewCount(restaurantId);
         RestaurantDetailResponse response =
-                restaurantQueryService.findRestaurantDetailById(restaurantId);
+                restaurantQueryService.findRestaurantDetailById(restaurantId, memberId);
         return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 

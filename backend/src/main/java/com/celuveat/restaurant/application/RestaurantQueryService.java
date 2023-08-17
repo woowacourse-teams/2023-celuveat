@@ -26,6 +26,7 @@ import com.celuveat.video.domain.VideoRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,13 +45,14 @@ public class RestaurantQueryService {
     private final VideoRepository videoRepository;
     private final RestaurantImageRepository restaurantImageRepository;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
         Restaurant restaurant = restaurantRepository.getById(restaurantId);
-        return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant);
+        return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant, memberId);
     }
 
     private RestaurantDetailResponse mapToRestaurantWithCelebAndImagesDetailResponse(
-            Restaurant restaurant
+            Restaurant restaurant,
+            Optional<Long> memberId
     ) {
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
         List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
@@ -60,6 +62,7 @@ public class RestaurantQueryService {
                 .celebs(celebs)
                 .restaurantImages(restaurantImages)
                 .likeCount(likeCount)
+                .isLiked(applyLikedRestaurant(restaurant, memberId))
                 .build();
     }
 
@@ -67,6 +70,11 @@ public class RestaurantQueryService {
         return videoRepository.findAllByRestaurant(restaurant).stream()
                 .map(Video::celeb)
                 .toList();
+    }
+
+    private boolean applyLikedRestaurant(Restaurant restaurant, Optional<Long> memberId) {
+        return memberId.isPresent()
+                && restaurantLikeRepository.findByRestaurantAndMemberId(restaurant, memberId.get()).isPresent();
     }
 
     public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
