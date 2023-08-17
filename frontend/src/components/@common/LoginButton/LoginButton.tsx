@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React from 'react';
-import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
+import { OAUTH_BUTTON_MESSAGE } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
@@ -22,7 +22,7 @@ const LoginIcon: Record<string, React.ReactNode> = {
 
 function LoginButton({ type }: LoginButtonProps) {
   return (
-    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]}>
+    <StyledLoginButtonWrapper type={type} to={`/oauth/redirect/${type}`}>
       <div>{LoginIcon[type]}</div>
       <StyledLoginButtonText>{OAUTH_BUTTON_MESSAGE[type]}</StyledLoginButtonText>
     </StyledLoginButtonWrapper>

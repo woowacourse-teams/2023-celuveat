@@ -11,6 +11,7 @@ function DeleteButton() {
     e.preventDefault();
 
     deleteReview(reviewId);
+    window.location.reload();
   };
 
   return <TextButton type="submit" onClick={onDeleteReview} colorType="dark" text="삭제하기" width="100%" />;
