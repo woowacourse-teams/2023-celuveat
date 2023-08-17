@@ -38,7 +38,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     }
 
     private boolean isErrorUri(HttpServletRequest request) {
-        return request.getRequestURI().equals("/error");
+        return request.getRequestURI().equals("/api/error");
     }
 
     private String handlerMethod(HandlerMethod handler) {
