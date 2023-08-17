@@ -74,7 +74,13 @@ export const getCelebVideo = async (celebId: string) => {
   return response.data;
 };
 
-export const postRevisedInfo = async ({ restaurantId, data }: { restaurantId: number; data: string[] }) => {
+export const postRevisedInfo = async ({
+  restaurantId,
+  data,
+}: {
+  restaurantId: number;
+  data: { content: string[] };
+}) => {
   const response = await apiClient.post(`/restaurants/${restaurantId}/correction`, data);
   return response.data;
 };
