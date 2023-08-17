@@ -23,6 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private final AuthContext authContext;
     private final PathMatcher pathMatcher;
     private final Set<UriAndMethodsCondition> authNotRequiredConditions;
+    private final Set<UriAndMethodsCondition> sessionInvalidationConditions;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -44,7 +45,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
         String requestURI = request.getRequestURI();
         return authNotRequiredConditions.stream()
-                .anyMatch(it -> pathMatcher.match(it.uriPattern, requestURI) && it.httpMethods.contains(httpMethod));
+                .anyMatch(it -> it.match(pathMatcher, requestURI, httpMethod));
     }
 
     private HttpSession getSession(HttpServletRequest request) {
@@ -55,9 +56,33 @@ public class AuthInterceptor implements HandlerInterceptor {
         return session;
     }
 
+    @Override
+    public void afterCompletion(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler,
+            Exception ex
+    ) {
+        if (shouldInvalidateSession(request)) {
+            HttpSession session = getSession(request);
+            session.invalidate();
+        }
+    }
+
+    private boolean shouldInvalidateSession(HttpServletRequest request) {
+        HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
+        String requestURI = request.getRequestURI();
+        return sessionInvalidationConditions.stream()
+                .anyMatch(it -> it.match(pathMatcher, requestURI, httpMethod));
+    }
+
     public record UriAndMethodsCondition(
             String uriPattern,
             Set<HttpMethod> httpMethods
     ) {
+
+        public boolean match(PathMatcher pathMatcher, String requestURI, HttpMethod httpMethod) {
+            return pathMatcher.match(uriPattern, requestURI) && httpMethods.contains(httpMethod);
+        }
     }
 }
