@@ -10,4 +10,4 @@ COPY . .
 
 RUN yarn build
 
-CMD ["yarn", "start", "--port", "3000"]
+CMD ["yarn", "start:prod", "--port", "3000"]
