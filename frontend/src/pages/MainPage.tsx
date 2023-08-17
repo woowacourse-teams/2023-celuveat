@@ -189,7 +189,7 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
     `}
 `;
 
-const StyledMobileLayout = styled.div`
+const StyledMobileLayout = styled.main`
   display: flex;
   align-items: flex-end;
 
@@ -199,7 +199,7 @@ const StyledMobileLayout = styled.div`
   height: 100vh;
 `;
 
-const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
+const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
   display: grid;
 
   width: 100%;
@@ -223,7 +223,7 @@ const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
   }
 `;
 
-const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
+const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
   z-index: 0;
 
   ${({ isMapExpanded }) =>
@@ -233,7 +233,7 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
     `}
 `;
 
-const StyledRightSide = styled.div`
+const StyledRightSide = styled.section`
   position: sticky;
   top: 160px;
 

@@ -26,7 +26,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   };
 
   return (
-    <StyledCategoryNavbarWrapper>
+    <StyledCategoryNavbarWrapper aria-hidden>
       {categories.map(({ icon, label }) => (
         <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
           <NavItem label={label} icon={icon} isShow={isEqual(selected, label)} />

@@ -21,7 +21,7 @@ function InfoButton({ isShow = false }: InfoButtonProps) {
   });
 
   return (
-    <StyledInfoButton isShow={isShow}>
+    <StyledInfoButton isShow={isShow} aria-hidden>
       <Menu />
       {isSuccess ? <ProfileImage name={data.nickname} imageUrl={data.profileImageUrl} size="30px" /> : <User />}
     </StyledInfoButton>

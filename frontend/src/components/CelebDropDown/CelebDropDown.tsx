@@ -29,8 +29,8 @@ function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProp
   };
 
   return (
-    <StyledCelebDropDown>
-      <StyledNavItemWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
+    <StyledCelebDropDown aria-hidden>
+      <StyledNavItemWrapper type="button" onClick={onToggleDropDown} onBlur={onCloseDropDown}>
         {selected.id === -1 ? (
           <NavItem label="전체 셀럽" icon={<CelebIcon />} isShow={isShow} />
         ) : (

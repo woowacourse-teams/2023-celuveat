@@ -47,7 +47,7 @@ const StyledWishListPageWrapper = styled.div`
   min-height: 100dvh;
 `;
 
-const StyledMobileLayout = styled.div`
+const StyledMobileLayout = styled.main`
   display: flex;
   flex-direction: column;
 

@@ -59,9 +59,9 @@ function SearchBar() {
 
   return (
     <StyledContainer>
-      <StyledInput placeholder="지역으로 검색하기" aria-label="지역 검색" data-cy="지역 검색" ref={inputRef} />
-      <StyledButton type="button">
-        <SearchIcon />
+      <StyledInput placeholder="지역으로 검색하기" data-cy="지역 검색" ref={inputRef} />
+      <StyledButton type="button" aria-hidden>
+        <SearchIcon aria-label="검색" />
       </StyledButton>
     </StyledContainer>
   );

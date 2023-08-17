@@ -10,7 +10,7 @@ interface NavItemProps {
 
 function NavItem({ icon, label, isShow = false }: NavItemProps) {
   return (
-    <StyledNavItem isShow={isShow}>
+    <StyledNavItem isShow={isShow} aria-selected={isShow}>
       <div>{icon}</div>
       <div>
         <span>{label}</span>
@@ -35,6 +35,10 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
   font-size: ${FONT_SIZE.sm};
 
   & > div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 40px;
     height: 40px;
   }

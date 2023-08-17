@@ -36,7 +36,7 @@ const apiMSWClient = axios.create({
 export const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
   const queryString = getQueryString(queryParams);
 
-  const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+  const response = await apiClient.get<RestaurantListData>(`/restaurants?sort=like&${queryString}`);
 
   return response.data;
 };

@@ -20,7 +20,7 @@ function ImageGrid({ images }: ImageGridProps) {
   };
 
   return (
-    <StyledImageGridContainer>
+    <StyledImageGridContainer tabIndex={0} aria-label="음식점 사진">
       <StyledMainImage>
         <WaterMarkImage type="list" imageUrl={images[0].url} waterMark={images[0].waterMark} />
       </StyledMainImage>
