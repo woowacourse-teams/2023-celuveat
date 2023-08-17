@@ -129,7 +129,7 @@ function MainPage() {
 
 export default MainPage;
 
-const StyledNavBar = styled.div<{ isMobile: boolean }>`
+const StyledNavBar = styled.nav<{ isMobile: boolean }>`
   display: flex;
   align-items: center;
 

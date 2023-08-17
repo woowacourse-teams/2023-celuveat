@@ -63,7 +63,7 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
 
             &::after {
               position: absolute;
-              top: calc(100% + 12px);
+              top: calc(100% + 10px);
               z-index: -1;
 
               height: 2px;
@@ -82,7 +82,7 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
 
               &::after {
                 position: absolute;
-                top: calc(100% + 12px);
+                top: calc(100% + 10px);
                 z-index: -1;
 
                 height: 2px;

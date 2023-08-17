@@ -11,12 +11,17 @@ import useModalState from '~/hooks/store/useModalState';
 import { FONT_SIZE } from '~/styles/common';
 
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
+import getToken from '~/utils/getToken';
+import { isEmptyString } from '~/utils/compare';
+import useToastState from '~/hooks/store/useToastState';
+import PopUpContainer from '../PopUpContainer';
 
 const REVIEW_SHOW_COUNT = 6;
 
 const isMoreThan = (target: number, standard: number) => target > standard;
 
 function RestaurantReviewWrapper() {
+  const [onFailure] = useToastState(state => [state.onFailure, state.onSuccess]);
   const { restaurantReviewsData, isLoading } = useRestaurantReview();
   const [content, isModalOpen, close, open, setId, setContent] = useModalState(
     state => [state.content, state.isModalOpen, state.close, state.open, state.setId, state.setContent],
@@ -37,8 +42,13 @@ function RestaurantReviewWrapper() {
   };
 
   const openFormModal = () => {
-    setContent('리뷰 작성 하기');
-    open();
+    const hasToken = isEmptyString(getToken());
+    if (hasToken) {
+      setContent('리뷰 작성 하기');
+      open();
+    } else {
+      onFailure('로그인 후 리뷰를 작성할 수 있습니다.');
+    }
   };
 
   return (
@@ -80,6 +90,7 @@ function RestaurantReviewWrapper() {
           </ModalContent>
         )}
       </Modal>
+      <PopUpContainer />
     </StyledRestaurantReviewWrapper>
   );
 }
