@@ -3,8 +3,8 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { postMSWRestaurantReview, deleteMSWRestaurantReview, patchRestaurantReview } from '../../api/oauth';
-import { getMSWRestaurantReview } from '~/api';
+import { postRestaurantReview, deleteRestaurantReview, patchRestaurantReview } from '../../api/oauth';
+import { getRestaurantReview } from '~/api';
 
 import useToastState from '~/hooks/store/useToastState';
 
@@ -34,11 +34,11 @@ const useRestaurantReview = () => {
 
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
-    queryFn: () => getMSWRestaurantReview(restaurantId),
+    queryFn: () => getRestaurantReview(restaurantId),
   });
 
   const createReview = useMutation({
-    mutationFn: (body: RestaurantReviewPostBody) => postMSWRestaurantReview(body),
+    mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
     onError: errorHandler,
   });
 
@@ -49,7 +49,7 @@ const useRestaurantReview = () => {
   });
 
   const deleteReview = useMutation({
-    mutationFn: (reviewId: number) => deleteMSWRestaurantReview(reviewId),
+    mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     onError: errorHandler,
   });
 
