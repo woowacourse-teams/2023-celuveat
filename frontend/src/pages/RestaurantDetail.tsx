@@ -250,7 +250,7 @@ function RestaurantDetail() {
               }}
             />
           </StyledMainLinkContainer>
-          <PopUpContainer />
+          <PopUpContainer isShowImg />
         </StyledMobileBottomSheet>
       )}
     </>

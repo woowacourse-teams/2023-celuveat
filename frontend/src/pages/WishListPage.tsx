@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
+import PopUpContainer from '~/components/PopUpContainer';
 import RestaurantWishList from '~/components/RestaurantWishList';
 import useTokenState from '~/hooks/store/useTokenState';
 
@@ -32,6 +33,7 @@ function WishListPage() {
         </StyledMobileLayout>
       </div>
       <Footer />
+      <PopUpContainer isShowImg />
     </StyledWishListPageWrapper>
   );
 }
