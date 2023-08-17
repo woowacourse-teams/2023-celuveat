@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, Long> {
 
     Optional<RestaurantLike> findByRestaurantAndMember(Restaurant restaurant, OauthMember member);
-    
+
     Optional<RestaurantLike> findByRestaurantAndMemberId(Restaurant restaurant, Long memberId);
 
     List<RestaurantLike> findAllByMemberId(Long memberId);

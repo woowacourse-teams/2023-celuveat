@@ -63,5 +63,6 @@ processResources.dependsOn('copySecret')
 tasks.register('copySecret', Copy) {
     from './backend-submodule' // 서브모듈 디렉토리 경로
     include "application*.yml"  // 복사할 파일들
+    exclude "application-local.yml"
     into './src/main/resources'  // 복사 위치
 }

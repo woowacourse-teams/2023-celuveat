@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.exception;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.celuveat.common.exception.BaseExceptionType;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 public enum RestaurantExceptionType implements BaseExceptionType {
 
     NOT_FOUND_RESTAURANT(NOT_FOUND, "음식점을 찾을 수 없습니다"),
+    SORT_PROPERTY_REQUIRED(BAD_REQUEST, "정렬 기준은 필수입니다."),
+    UNSUPPORTED_SORT_PROPERTY(BAD_REQUEST, "지원하지 않는 정렬 기준입니다."),
     ;
 
     private final HttpStatus httpStatus;

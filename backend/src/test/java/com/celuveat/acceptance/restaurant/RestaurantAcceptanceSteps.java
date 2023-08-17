@@ -45,6 +45,27 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
+    //FIXME
+    public static ExtractableResponse<Response> 음식점_좋아요_정렬_검색_요청(
+            RestaurantSearchCond 음식점_검색_조건,
+            LocationSearchCond 위치_검색_조건
+    ) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebId", 음식점_검색_조건.celebId());
+        param.put("category", 음식점_검색_조건.category());
+        param.put("restaurantName", 음식점_검색_조건.restaurantName());
+        param.put("sort", "like");
+        param.put("lowLatitude", 위치_검색_조건.lowLatitude());
+        param.put("highLatitude", 위치_검색_조건.highLatitude());
+        param.put("lowLongitude", 위치_검색_조건.lowLongitude());
+        param.put("highLongitude", 위치_검색_조건.highLongitude());
+        return given()
+                .queryParams(param)
+                .when().get("/api/restaurants")
+                .then()
+                .extract();
+    }
+
     public static RestaurantSearchCond 음식점_검색_조건(
             Object 셀럽_ID,
             Object 카테고리,
@@ -81,6 +102,15 @@ public class RestaurantAcceptanceSteps {
                 .ignoringCollectionOrder()
                 .isEqualTo(예상_응답);
     }
+
+    //FIXME
+    public static void 조회_결과_좋아요순_정렬_기준을_검증한다(ExtractableResponse<Response> 응답) {
+        PageResponse<RestaurantSimpleResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
+        });
+        assertThat(restaurantQueryResponse.content())
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::likeCount).reversed());
+    }
+
 
     public static void 조회_결과를_순서를_포함해서_검증한다(List<RestaurantSimpleResponse> 예상_응답,
                                             ExtractableResponse<Response> 응답) {

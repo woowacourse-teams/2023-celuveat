@@ -27,7 +27,7 @@
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <maxHistory>7</maxHistory>
                 <maxFileSize>1GB</maxFileSize>
-                <totalSizeCap>100GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
                 <fileNamePattern>${infoLogPath}/${fileNamePattern}</fileNamePattern>
             </rollingPolicy>
             <encoder>
@@ -50,7 +50,7 @@
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <maxHistory>7</maxHistory>
                 <maxFileSize>1GB</maxFileSize>
-                <totalSizeCap>100GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
                 <fileNamePattern>${warnLogPath}/${fileNamePattern}</fileNamePattern>
             </rollingPolicy>
             <encoder>
@@ -68,7 +68,7 @@
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <maxHistory>7</maxHistory>
                 <maxFileSize>1GB</maxFileSize>
-                <totalSizeCap>100GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
                 <fileNamePattern>${errorLogPath}/${fileNamePattern}</fileNamePattern>
             </rollingPolicy>
             <encoder>
