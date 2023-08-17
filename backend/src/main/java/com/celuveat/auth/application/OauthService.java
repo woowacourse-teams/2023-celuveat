@@ -6,6 +6,7 @@ import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.authcode.AuthCodeRequestUrlProviderComposite;
 import com.celuveat.auth.domain.client.OauthMemberClientComposite;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
+import com.celuveat.restaurant.domain.review.RestaurantReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class OauthService {
 
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
+    private final RestaurantReviewRepository restaurantReviewRepository;
     private final OauthMemberClientComposite oauthMemberClientComposite;
     private final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
 
@@ -41,6 +43,7 @@ public class OauthService {
         OauthMember oauthMember = oauthMemberRepository.getById(oauthMemberId);
         oauthMemberClientComposite.withdraw(oauthServerType, oauthMember.oauthId());
         restaurantLikeRepository.deleteAllByMemberId(oauthMemberId);
+        restaurantReviewRepository.deleteAllByMemberId(oauthMemberId);
         oauthMemberRepository.deleteById(oauthMemberId);
     }
 }

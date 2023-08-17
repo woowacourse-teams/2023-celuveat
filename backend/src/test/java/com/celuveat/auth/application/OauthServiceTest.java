@@ -20,6 +20,7 @@ import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
+import com.celuveat.restaurant.domain.review.RestaurantReviewRepository;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,6 +44,9 @@ class OauthServiceTest {
     private RestaurantLikeRepository restaurantLikeRepository;
 
     @Autowired
+    private RestaurantReviewRepository restaurantReviewRepository;
+
+    @Autowired
     private AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
 
     private OauthService oauthService;
@@ -54,6 +58,7 @@ class OauthServiceTest {
         this.oauthService = new OauthService(
                 oauthMemberRepository,
                 restaurantLikeRepository,
+                restaurantReviewRepository,
                 clientComposite,
                 authCodeRequestUrlProviderComposite
         );

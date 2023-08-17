@@ -23,7 +23,7 @@ public class RestaurantReview extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
-    private OauthMember oauthMember;
+    private OauthMember member;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "restaurant_id")
@@ -35,7 +35,7 @@ public class RestaurantReview extends BaseEntity {
     }
 
     public void checkOwner(Long memberId) {
-        if (!oauthMember.id().equals(memberId)) {
+        if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
     }
@@ -44,8 +44,8 @@ public class RestaurantReview extends BaseEntity {
         return content;
     }
 
-    public OauthMember oauthMember() {
-        return oauthMember;
+    public OauthMember member() {
+        return member;
     }
 
     public Restaurant restaurant() {

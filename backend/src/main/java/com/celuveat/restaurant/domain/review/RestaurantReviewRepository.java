@@ -13,4 +13,6 @@ public interface RestaurantReviewRepository extends JpaRepository<RestaurantRevi
     default RestaurantReview getById(Long id) {
         return findById(id).orElseThrow(() -> new RestaurantReviewException(NOT_FOUND_RESTAURANT_REVIEW));
     }
+
+    void deleteAllByMemberId(Long memberId);
 }
