@@ -13,15 +13,14 @@ import { FONT_SIZE } from '~/styles/common';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import getToken from '~/utils/getToken';
 import { isEmptyString } from '~/utils/compare';
-import useToastState from '~/hooks/store/useToastState';
 import PopUpContainer from '../PopUpContainer';
+import LoginModalContent from '~/components/LoginModalContent';
 
 const REVIEW_SHOW_COUNT = 6;
 
 const isMoreThan = (target: number, standard: number) => target > standard;
 
 function RestaurantReviewWrapper() {
-  const [onFailure] = useToastState(state => [state.onFailure, state.onSuccess]);
   const { restaurantReviewsData, isLoading } = useRestaurantReview();
   const [content, isModalOpen, close, open, setId, setContent] = useModalState(
     state => [state.content, state.isModalOpen, state.close, state.open, state.setId, state.setContent],
@@ -42,13 +41,14 @@ function RestaurantReviewWrapper() {
   };
 
   const openFormModal = () => {
-    const hasToken = isEmptyString(getToken());
+    const hasToken = !isEmptyString(getToken());
     if (hasToken) {
       setContent('리뷰 작성 하기');
-      open();
     } else {
-      onFailure('로그인 후 리뷰를 작성할 수 있습니다.');
+      setContent('');
     }
+
+    open();
   };
 
   return (
@@ -87,6 +87,11 @@ function RestaurantReviewWrapper() {
               </StyledWarningMessage>
               <DeleteButton />
             </div>
+          </ModalContent>
+        )}
+        {content === '' && (
+          <ModalContent isShow={isModalOpen} title="로그인" closeModal={close}>
+            <LoginModalContent />
           </ModalContent>
         )}
       </Modal>

@@ -58,7 +58,7 @@ function RestaurantDetail() {
   });
 
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
-    queryKey: ['nearByRestaurant', restaurantId],
+    queryKey: ['restaurants', 'nearby', restaurantId],
     queryFn: async () => getNearByRestaurant(restaurantId),
   });
 
