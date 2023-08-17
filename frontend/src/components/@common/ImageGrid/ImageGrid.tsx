@@ -16,7 +16,7 @@ function ImageGrid({ images }: ImageGridProps) {
       return [...additionalImages, ...noImages];
     }
 
-    return additionalImages.slice(1, 4);
+    return additionalImages.slice(0, 4);
   };
 
   return (
