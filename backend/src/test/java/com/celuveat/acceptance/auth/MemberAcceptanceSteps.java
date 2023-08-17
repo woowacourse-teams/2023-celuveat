@@ -24,4 +24,16 @@ public class MemberAcceptanceSteps {
         MemberProfileResponse responseBody = 응답.as(MemberProfileResponse.class);
         assertThat(responseBody).isEqualTo(예상_응답);
     }
+
+    public static ExtractableResponse<Response> 로그아웃_요청을_보낸다(String 세션_아이디, String oauthServerType) {
+        return given(세션_아이디)
+                .when().get("/api/oauth/logout/{oauthServerType}", oauthServerType)
+                .then().extract();
+    }
+
+    public static ExtractableResponse<Response> 회원_탈퇴를_한다(String 세션_아이디, String oauthServerType) {
+        return given(세션_아이디)
+                .when().delete("/api/oauth/withdraw/{oauthServerType}", oauthServerType)
+                .then().extract();
+    }
 }

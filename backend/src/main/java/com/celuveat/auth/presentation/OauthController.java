@@ -1,12 +1,11 @@
 package com.celuveat.auth.presentation;
 
-import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST;
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.application.OauthService;
 import com.celuveat.auth.domain.OauthServerType;
-import com.celuveat.auth.exception.AuthException;
 import com.celuveat.auth.presentation.dto.SessionResponse;
+import com.celuveat.common.auth.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -51,27 +50,24 @@ public class OauthController {
     }
 
     @GetMapping("/logout/{oauthServerType}")
-    ResponseEntity<Void> logout(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Long oauthMemberId = getOauthMemberId(session);
-        oauthService.logout(oauthServerType, oauthMemberId);
-        session.invalidate();
+    ResponseEntity<Void> logout(
+            @PathVariable OauthServerType oauthServerType,
+            @Auth Long memberId,
+            HttpServletRequest request
+    ) {
+        oauthService.logout(oauthServerType, memberId);
+        request.getSession(false).invalidate();
         return ResponseEntity.noContent().build();
     }
 
-    private Long getOauthMemberId(HttpSession session) {
-        if (session == null) {
-            throw new AuthException(UNAUTHORIZED_REQUEST);
-        }
-        return (Long) session.getAttribute(JSESSION_ID);
-    }
-
     @DeleteMapping("/withdraw/{oauthServerType}")
-    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Long oauthMemberId = getOauthMemberId(session);
-        oauthService.withdraw(oauthServerType, oauthMemberId);
-        session.invalidate();
+    ResponseEntity<Void> withdraw(
+            @PathVariable OauthServerType oauthServerType,
+            @Auth Long memberId,
+            HttpServletRequest request
+    ) {
+        oauthService.withdraw(oauthServerType, memberId);
+        request.getSession(false).invalidate();
         return ResponseEntity.noContent().build();
     }
 }

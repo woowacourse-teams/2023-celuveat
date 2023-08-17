@@ -46,6 +46,6 @@ public class GoogleMemberClient implements OauthMemberClient {
     }
 
     @Override
-    public void withDraw(String oauthServerMemberId) {
+    public void withdraw(String oauthServerMemberId) {
     }
 }

@@ -50,10 +50,10 @@ public class KakaoMemberClient implements OauthMemberClient {
     }
 
     @Override
-    public void withDraw(String oauthServerMemberId) {
+    public void withdraw(String oauthServerMemberId) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("target_id_type", "user_id");
         params.add("target_id", oauthServerMemberId);
-        kakaoApiClient.withDrawMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
+        kakaoApiClient.withdrawMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
     }
 }

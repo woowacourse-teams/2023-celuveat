@@ -11,5 +11,5 @@ public interface OauthMemberClient {
 
     void logout(String oauthServerMemberId);
 
-    void withDraw(String oauthServerMemberId);
+    void withdraw(String oauthServerMemberId);
 }

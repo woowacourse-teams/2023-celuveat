@@ -13,7 +13,7 @@ public record RestaurantReviewSingleResponse(
 ) {
 
     public static RestaurantReviewSingleResponse from(RestaurantReview restaurantReview) {
-        OauthMember oauthMember = restaurantReview.oauthMember();
+        OauthMember oauthMember = restaurantReview.member();
         return new RestaurantReviewSingleResponse(
                 restaurantReview.id(),
                 oauthMember.id(),

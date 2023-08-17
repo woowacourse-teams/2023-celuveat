@@ -31,8 +31,8 @@ public class OauthMemberClientComposite {
         getClient(oauthServerType).logout(oauthId.oauthServerMemberId());
     }
 
-    public void withDraw(OauthServerType oauthServerType, OauthId oauthId) {
-        getClient(oauthServerType).withDraw(oauthId.oauthServerMemberId());
+    public void withdraw(OauthServerType oauthServerType, OauthId oauthId) {
+        getClient(oauthServerType).withdraw(oauthId.oauthServerMemberId());
     }
 
     private OauthMemberClient getClient(OauthServerType oauthServerType) {

@@ -28,4 +28,6 @@ public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, 
             GROUP BY rl.restaurant.id
             """)
     List<RestaurantIdWithLikeCount> likeCountGroupByRestaurantsId(@Param("restaurantIds") List<Long> restaurantIds);
+
+    void deleteAllByMemberId(Long memberId);
 }
