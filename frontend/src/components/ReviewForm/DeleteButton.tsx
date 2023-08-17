@@ -1,5 +1,6 @@
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import useModalState from '~/hooks/store/useModalState';
+import TextButton from '../@common/Button';
 
 function DeleteButton() {
   const reviewId = useModalState(state => state.targetId);
@@ -10,13 +11,10 @@ function DeleteButton() {
     e.preventDefault();
 
     deleteReview(reviewId);
+    window.location.reload();
   };
 
-  return (
-    <button type="submit" onClick={onDeleteReview}>
-      삭제하기
-    </button>
-  );
+  return <TextButton type="submit" onClick={onDeleteReview} colorType="dark" text="삭제하기" width="100%" />;
 }
 
 export default DeleteButton;

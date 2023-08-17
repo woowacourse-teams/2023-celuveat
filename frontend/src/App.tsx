@@ -6,6 +6,7 @@ import WishListPage from '~/pages/WishListPage';
 import SignUpPage from '~/pages/SignUpPage';
 import WithdrawalPage from '~/pages/WithdrawalPage';
 import PrivacyPolicy from './pages/PrivacyPolicyPage';
+import OauthRedirectPage from '~/pages/OauthRedirectPage';
 
 export const { BASE_URL } = process.env;
 
@@ -19,6 +20,8 @@ function App() {
         <Route path="/signUp" element={<SignUpPage />} />
         <Route path="/restaurants/like" element={<WishListPage />} />
         <Route path="/withdrawal" element={<WithdrawalPage />} />
+        <Route path="/oauth/redirect/kakao" element={<OauthRedirectPage type="kakao" />} />
+        <Route path="/oauth/redirect/google" element={<OauthRedirectPage type="google" />} />
       </Routes>
     </BrowserRouter>
   );
