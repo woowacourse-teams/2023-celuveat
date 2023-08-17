@@ -20,9 +20,11 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_실패_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_아이디를_가져온다;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_조회수_예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_회원_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과_좋아요순_정렬_기준을_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_순서를_포함해서_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회수를_검증한다;
@@ -67,6 +69,29 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             // then
             조회_결과를_검증한다(예상_응답, 응답);
         }
+
+        //FIXME
+        @Test
+        void 음식점_좋아요_기준_정렬() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 조회_음식점 = 특정_이름의_음식점을_찾는다(전체_음식점, "로이스2호점");
+            var 조회_음식점2 = 특정_이름의_음식점을_찾는다(전체_음식점, "도기1호점");
+            var 오도 = 멤버("오도");
+            var 로이스 = 멤버("로이스");
+            var 오도_세션_아이디 = 회원가입하고_로그인한다(오도);
+            var 로이스_세션_아이디 = 회원가입하고_로그인한다(로이스);
+            좋아요_요청을_보낸다(조회_음식점.id(), 오도_세션_아이디);
+            좋아요_요청을_보낸다(조회_음식점.id(), 로이스_세션_아이디);
+            좋아요_요청을_보낸다(조회_음식점2.id(), 로이스_세션_아이디);
+
+            // when
+            var 응답 = 음식점_좋아요_정렬_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함));
+
+            // then
+            조회_결과_좋아요순_정렬_기준을_검증한다(응답);
+        }
+
 
         @Test
         void 음식점_검색_조건으로_검색한다() {

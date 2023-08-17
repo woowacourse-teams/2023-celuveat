@@ -8,11 +8,15 @@ import static org.springframework.util.StringUtils.hasText;
 import com.celuveat.common.query.DynamicQuery;
 import com.celuveat.common.query.DynamicQueryAssembler;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.restaurant.exception.RestaurantException;
+import com.celuveat.restaurant.exception.RestaurantExceptionType;
 import jakarta.persistence.EntityManager;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +68,15 @@ public class RestaurantQueryRepository {
 
     private static final String ORDER_BY_DISTANCE_ASC = """
             ORDER BY dist ASC
+            """;
+
+    //FIXME
+    private static final String ORDER_BY_LIKE_DESC = """
+            ORDER BY (
+                SELECT count(rl)
+                FROM RestaurantLike rl
+                WHERE rl.restaurant = r
+                ) DESC
             """;
 
     private static final String COUNT_QUERY_JOIN_VIDEO_AND_CELEB = """
@@ -122,7 +135,7 @@ public class RestaurantQueryRepository {
         List<RestaurantWithDistance> resultList = em.createQuery(
                         SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB.formatted(getDistanceColumn(middleLat, middleLng))
                                 + whereQuery
-                                + ORDER_BY_DISTANCE_ASC,
+                                + applyOrderBy(pageable),
                         RestaurantWithDistance.class
                 )
                 .setFirstResult((int) pageable.getOffset())
@@ -174,6 +187,24 @@ public class RestaurantQueryRepository {
 
     private String getDistanceColumn(double middleLat, double middleLng) {
         return HAVERSINE_FORMULA.formatted(middleLat, middleLng, middleLat);
+    }
+
+    //FIXME
+    private String applyOrderBy(Pageable pageable) {
+        String sortProperty = pageable.getSort().stream()
+                .map(Order::getProperty)
+                .findFirst()
+                .orElse(RestaurantSortType.DISTANCE.sortProperty);
+        RestaurantSortType sortType = RestaurantSortType.from(sortProperty);
+        if (sortType == RestaurantSortType.DISTANCE) {
+            return ORDER_BY_DISTANCE_ASC;
+        }
+
+        if (sortType == RestaurantSortType.LIKE_COUNT) {
+            return ORDER_BY_LIKE_DESC;
+        }
+
+        return ORDER_BY_DISTANCE_ASC;
     }
 
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
@@ -232,5 +263,23 @@ public class RestaurantQueryRepository {
             Double lowLongitude,
             Double highLongitude
     ) {
+    }
+
+    //FIXME
+    @RequiredArgsConstructor
+    public enum RestaurantSortType {
+
+        DISTANCE("distance"),
+        LIKE_COUNT("like"),
+        ;
+
+        private final String sortProperty;
+
+        public static RestaurantSortType from(String sortProperty) {
+            return Arrays.stream(RestaurantSortType.values())
+                    .filter(type -> type.sortProperty.equals(sortProperty))
+                    .findFirst()
+                    .orElseThrow(() -> new RestaurantException(RestaurantExceptionType.UNSUPPORTED_SORT_PROPERTY));
+        }
     }
 }
