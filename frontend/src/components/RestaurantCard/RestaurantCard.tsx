@@ -44,6 +44,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
         onMouseLeave={onMouseLeave}
         data-cy={`${name} 카드`}
         aria-label={`${name} 카드`}
+        tabIndex={0}
       >
         <StyledImageViewer>
           <ImageCarousel images={images} type={type} />

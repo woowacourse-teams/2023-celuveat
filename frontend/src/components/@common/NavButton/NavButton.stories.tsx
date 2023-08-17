@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import FastFoodIcon from '~/assets/icons/fastFood.svg';
+import All from '~/assets/icons/restaurantCategory/all.svg';
 import NavItem from '~/components/@common/NavButton/NavButton';
 
 const meta: Meta<typeof NavItem> = {
@@ -13,8 +13,8 @@ type Story = StoryObj<typeof NavItem>;
 
 export const Default: Story = {
   args: {
-    label: '캠핑장',
-    icon: <FastFoodIcon />,
+    label: '전체',
+    icon: <All />,
     isShow: true,
   },
 };
