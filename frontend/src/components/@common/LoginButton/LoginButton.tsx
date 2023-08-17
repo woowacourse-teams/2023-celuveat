@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
@@ -21,8 +21,12 @@ const LoginIcon: Record<string, React.ReactNode> = {
 };
 
 function LoginButton({ type }: LoginButtonProps) {
+  const onClick = () => {
+    window.location.href = OAUTH_LINK[type];
+  };
+
   return (
-    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]}>
+    <StyledLoginButtonWrapper type={type} onClick={onClick}>
       <div>{LoginIcon[type]}</div>
       <StyledLoginButtonText>{OAUTH_BUTTON_MESSAGE[type]}</StyledLoginButtonText>
     </StyledLoginButtonWrapper>
@@ -31,7 +35,7 @@ function LoginButton({ type }: LoginButtonProps) {
 
 export default LoginButton;
 
-const StyledLoginButtonWrapper = styled(Link)<LoginButtonProps>`
+const StyledLoginButtonWrapper = styled.button<LoginButtonProps>`
   display: flex;
   align-items: center;
 
