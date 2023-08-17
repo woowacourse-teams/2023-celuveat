@@ -47,10 +47,11 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}")
     ResponseEntity<RestaurantDetailResponse> getRestaurantDetail(
             @PathVariable Long restaurantId,
-            @RequestParam Long celebId
+            @RequestParam Long celebId,
+            @LooseAuth Optional<Long> memberId
     ) {
         RestaurantDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(
-                restaurantId, celebId
+                restaurantId, celebId, memberId
         );
         return ResponseEntity.ok(result);
     }

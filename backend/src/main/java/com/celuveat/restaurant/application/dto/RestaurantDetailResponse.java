@@ -18,6 +18,7 @@ public record RestaurantDetailResponse(
         String naverMapUrl,
         Integer likeCount,
         Integer viewCount,
+        Boolean isLiked,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -27,7 +28,8 @@ public record RestaurantDetailResponse(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
-            int likeCount
+            int likeCount,
+            boolean isLiked
     ) {
         this(restaurant.id(),
                 restaurant.name(),
@@ -39,6 +41,7 @@ public record RestaurantDetailResponse(
                 restaurant.naverMapUrl(),
                 likeCount,
                 restaurant.viewCount(),
+                isLiked,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList());
     }
@@ -59,6 +62,7 @@ public record RestaurantDetailResponse(
                 other.naverMapUrl(),
                 other.likeCount(),
                 other.viewCount(),
+                other.isLiked(),
                 celebs,
                 restaurantImages
         );

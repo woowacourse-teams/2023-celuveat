@@ -271,6 +271,20 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 음식점_회원_상세_조회_요청(
+            Long restaurantId,
+            Long celebId,
+            String sessionId
+    ) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("celebId", celebId);
+        return given(sessionId)
+                .queryParams(param)
+                .when().get("/api/restaurants/{restaurantId}", restaurantId)
+                .then()
+                .extract();
+    }
+
     public static void 음식점_상세_조회_실패_요청(RestaurantSimpleResponse 조회_음식점) {
         음식점_상세_조회_요청(조회_음식점.id(), 12314121L);
     }
@@ -278,7 +292,8 @@ public class RestaurantAcceptanceSteps {
     public static RestaurantDetailResponse 상세_조회_예상_응답(
             List<RestaurantSimpleResponse> 전체_음식점,
             Long restaurantId,
-            Long celebId
+            Long celebId,
+            boolean isLiked
     ) {
         RestaurantSimpleResponse restaurantResponse = 전체_음식점.stream()
                 .filter(restaurant -> restaurant.id().equals(restaurantId))
@@ -293,7 +308,9 @@ public class RestaurantAcceptanceSteps {
         return toRestaurantDetailQueryResponse(
                 restaurantResponse,
                 셀럽_기준으로_셀럽_정렬(targetCeleb, restaurantResponse),
-                셀럽_기준으로_이미지_정렬(targetCeleb.name(), restaurantResponse));
+                셀럽_기준으로_이미지_정렬(targetCeleb.name(), restaurantResponse),
+                isLiked
+        );
     }
 
     private static List<CelebQueryResponse> 셀럽_기준으로_셀럽_정렬(
@@ -319,7 +336,8 @@ public class RestaurantAcceptanceSteps {
     private static RestaurantDetailResponse toRestaurantDetailQueryResponse(
             RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse,
             List<CelebQueryResponse> celebs,
-            List<RestaurantImageQueryResponse> images
+            List<RestaurantImageQueryResponse> images,
+            boolean isLiked
     ) {
         return new RestaurantDetailResponse(
                 restaurantWithCelebsAndImagesSimpleResponse.id(),
@@ -332,6 +350,7 @@ public class RestaurantAcceptanceSteps {
                 restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
                 0, // likeCount
                 0, // viewCount
+                isLiked,
                 celebs,
                 images
         );
