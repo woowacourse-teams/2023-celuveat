@@ -177,7 +177,9 @@ public class RestaurantQueryRepository {
     }
 
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
-            int distance, Long restaurantId, Pageable pageable
+            int distance,
+            Long restaurantId,
+            Pageable pageable
     ) {
         Restaurant restaurant = em.find(Restaurant.class, restaurantId);
         String dist = getDistanceColumn(restaurant.latitude(), restaurant.longitude());

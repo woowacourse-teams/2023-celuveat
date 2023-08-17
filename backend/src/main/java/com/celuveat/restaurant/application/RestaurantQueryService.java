@@ -172,9 +172,8 @@ public class RestaurantQueryService {
             long restaurantId,
             Pageable pageable
     ) {
-        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsNearByRestaurantId(
-                distance, restaurantId, pageable
-        );
+        Page<RestaurantWithDistance> restaurantsWithDistance
+                = restaurantQueryRepository.getRestaurantsNearByRestaurantId(distance, restaurantId, pageable);
         return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, null);
     }
 

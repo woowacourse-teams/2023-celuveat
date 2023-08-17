@@ -90,9 +90,7 @@ public class RestaurantController {
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSimpleResponse> result =
-                restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                        distance, restaurantId, pageable
-                );
+                restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(distance, restaurantId, pageable);
         return ResponseEntity.ok(PageResponse.from(result));
     }
 
