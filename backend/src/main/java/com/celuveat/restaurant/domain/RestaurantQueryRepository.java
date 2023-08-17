@@ -135,10 +135,6 @@ public class RestaurantQueryRepository {
         );
     }
 
-    private String getDistanceColumn(double middleLat, double middleLng) {
-        return HAVERSINE_FORMULA.formatted(middleLat, middleLng, middleLat);
-    }
-
     private double calculateMiddle(double x, double y) {
         return (x + y) / 2.0;
     }
@@ -174,6 +170,10 @@ public class RestaurantQueryRepository {
                         locationSearchCond.lowLongitude, locationSearchCond.highLongitude)
                 .condition(notNullRecursive(locationSearchCond))
                 .build();
+    }
+
+    private String getDistanceColumn(double middleLat, double middleLng) {
+        return HAVERSINE_FORMULA.formatted(middleLat, middleLng, middleLat);
     }
 
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(

@@ -108,22 +108,6 @@ public class RestaurantQueryService {
         );
     }
 
-    private Set<Long> getRestaurantIds(Long memberId) {
-        return restaurantLikeRepository.findAllByMemberId(memberId).stream()
-                .map(RestaurantLike::restaurant)
-                .map(Restaurant::id)
-                .collect(toUnmodifiableSet());
-    }
-
-    private Map<Long, Long> likeCountGroupByRestaurantIds(List<Long> restaurantIds) {
-        return restaurantLikeRepository.likeCountGroupByRestaurantsId(restaurantIds)
-                .stream()
-                .collect(toMap(
-                        RestaurantIdWithLikeCount::restaurantId,
-                        RestaurantIdWithLikeCount::count
-                ));
-    }
-
     private List<Long> extractRestaurantIds(Page<RestaurantWithDistance> restaurantsWithDistance) {
         return restaurantsWithDistance.getContent().stream()
                 .map(RestaurantWithDistance::id)
@@ -172,6 +156,22 @@ public class RestaurantQueryService {
                         image -> image.restaurant().id(),
                         LinkedHashMap::new,
                         toList()
+                ));
+    }
+
+    private Set<Long> getRestaurantIds(Long memberId) {
+        return restaurantLikeRepository.findAllByMemberId(memberId).stream()
+                .map(RestaurantLike::restaurant)
+                .map(Restaurant::id)
+                .collect(toUnmodifiableSet());
+    }
+
+    private Map<Long, Long> likeCountGroupByRestaurantIds(List<Long> restaurantIds) {
+        return restaurantLikeRepository.likeCountGroupByRestaurantsId(restaurantIds)
+                .stream()
+                .collect(toMap(
+                        RestaurantIdWithLikeCount::restaurantId,
+                        RestaurantIdWithLikeCount::count
                 ));
     }
 
