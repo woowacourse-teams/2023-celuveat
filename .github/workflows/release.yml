@@ -1,0 +1,21 @@
+# Name of the workflow
+name: Release
+
+# Run on every commit tag which begins with "v" (e.g., "v0.1.4")
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+# Automatically create a Github Release, with release details specified (the relevant commits)
+jobs:
+  release:
+    name: 'Release'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'marvinpinto/action-automatic-release@latest'
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          prerelease: false

@@ -14,21 +14,21 @@ import RestaurantCardList from '~/components/RestaurantCardList';
 import { getCelebs, getRestaurants } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
-import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
+import useMapState from '~/hooks/store/useMapState';
 
 function MainPage() {
   const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
   const { isMobile } = useMediaQuery();
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [boundary, setBoundary] = useState<CoordinateBoundary>();
   const [celebId, setCelebId] = useState<Celeb['id']>(-1);
   const [currentPage, setCurrentPage] = useState(0);
   const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
+  const boundary = useMapState(state => state.boundary);
 
   const {
     data: restaurantListData,
@@ -77,11 +77,11 @@ function MainPage() {
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
+
       {isMobile ? (
         <StyledMobileLayout>
           <StyledLayer isMobile={isMobile}>
             <Map
-              setBoundary={setBoundary}
               setCurrentPage={setCurrentPage}
               data={restaurantListData?.content}
               toggleMapExpand={toggleMapExpand}
@@ -112,7 +112,6 @@ function MainPage() {
             </StyledLeftSide>
             <StyledRightSide>
               <Map
-                setBoundary={setBoundary}
                 setCurrentPage={setCurrentPage}
                 data={restaurantListData?.content}
                 toggleMapExpand={toggleMapExpand}
@@ -130,7 +129,7 @@ function MainPage() {
 
 export default MainPage;
 
-const StyledNavBar = styled.div<{ isMobile: boolean }>`
+const StyledNavBar = styled.nav<{ isMobile: boolean }>`
   display: flex;
   align-items: center;
 
@@ -141,11 +140,15 @@ const StyledNavBar = styled.div<{ isMobile: boolean }>`
   width: 100%;
   height: 80px;
 
+  padding-left: 1.2rem;
+
   background-color: var(--white);
   border-bottom: 1px solid var(--gray-1);
 `;
 
 const StyledLine = styled.div`
+  margin-left: 1.2rem;
+
   width: 1px;
   height: 46px;
 
@@ -171,9 +174,9 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
   width: 100%;
   height: 0;
 
-  transition: height 0.8s ease-in-out;
-
   background: var(--white);
+
+  transition: height 0.8s ease-in-out;
 
   overflow: hidden;
 
@@ -186,7 +189,7 @@ const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
     `}
 `;
 
-const StyledMobileLayout = styled.div`
+const StyledMobileLayout = styled.main`
   display: flex;
   align-items: flex-end;
 
@@ -196,7 +199,7 @@ const StyledMobileLayout = styled.div`
   height: 100vh;
 `;
 
-const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
+const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
   display: grid;
 
   width: 100%;
@@ -220,7 +223,7 @@ const StyledLayout = styled.div<{ isMapExpanded: boolean }>`
   }
 `;
 
-const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
+const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
   z-index: 0;
 
   ${({ isMapExpanded }) =>
@@ -230,7 +233,7 @@ const StyledLeftSide = styled.div<{ isMapExpanded: boolean }>`
     `}
 `;
 
-const StyledRightSide = styled.div`
+const StyledRightSide = styled.section`
   position: sticky;
   top: 160px;
 

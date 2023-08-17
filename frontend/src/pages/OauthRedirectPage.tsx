@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import getAccessToken from '~/api/oauth';
+import { getAccessToken } from '~/api/oauth';
 import useTokenState from '~/hooks/store/useTokenState';
 
 interface OauthRedirectProps {
@@ -17,7 +17,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
 
-  const updateToken = useTokenState(state => state.updateToken);
+  const [updateOauth, updateToken] = useTokenState(state => [state.updateOauth, state.updateToken]);
 
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
@@ -27,6 +27,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
     onSuccess: (data: OauthCodeResponse) => {
       const { jsessionId } = data;
 
+      updateOauth(type);
       updateToken(jsessionId);
 
       navigator('/');

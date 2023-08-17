@@ -48,7 +48,7 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
     );
 
   return (
-    <StyledRestaurantCardListContainer>
+    <StyledRestaurantCardListContainer data-cy="음식점 리스트" aria-label="음식점 리스트">
       {restaurantDataList.content.length !== 0 ? (
         <>
           {!isMobile && (

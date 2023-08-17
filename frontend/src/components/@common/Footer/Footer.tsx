@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Instagram from '~/assets/icons/instagram.svg';
 import Github from '~/assets/icons/github.svg';
 import { FONT_SIZE } from '~/styles/common';
@@ -11,11 +12,16 @@ function Footer() {
         <p>셀럽 기반 맛집 탐색 플랫폼, 셀럽잇입니다.</p>
       </StyledIntro>
       <StyledContact>CONTACT: celuveat@gmail.com</StyledContact>
+      <StyledPrivacyPolicy href="/policy">개인정보 처리방침</StyledPrivacyPolicy>
       <StyledLastLine>
         <div>COPYRIGHT © 2023 CELUVEAT ALL RIGHTS RESERVED</div>
         <StyledSNSLinkButtonList>
-          <Instagram />
-          <Github />
+          <Link to="https://www.instagram.com/celuveat/" target="blank">
+            <Instagram />
+          </Link>
+          <Link to="https://github.com/woowacourse-teams/2023-celuveat" target="blank">
+            <Github />
+          </Link>
         </StyledSNSLinkButtonList>
       </StyledLastLine>
     </StyledFooter>
@@ -48,6 +54,10 @@ const StyledIntro = styled.div`
 `;
 
 const StyledContact = styled.div`
+  margin-bottom: 1.2rem;
+`;
+
+const StyledPrivacyPolicy = styled.a`
   margin-bottom: 1.2rem;
 `;
 

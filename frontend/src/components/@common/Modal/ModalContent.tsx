@@ -1,23 +1,29 @@
+import { cloneElement, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import { hideScrollBar } from '~/styles/common';
 
 interface ModalContentProps {
   isShow?: boolean;
   title: string;
   closeModal: () => void;
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 function ModalContent({ isShow = false, title, closeModal, children }: ModalContentProps) {
+  const modalContentRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = useMediaQuery();
+
   return (
-    <StyledModalContentWrapper isShow={isShow}>
+    <StyledModalContentWrapper isShow={isShow} isMobile={isMobile}>
       <StyledModalOverlay onClick={closeModal} />
-      <StyledModalContent isShow={isShow}>
+      <StyledModalContent ref={modalContentRef} isShow={isShow} isMobile={isMobile}>
         <StyledModalHeader>
-          <Exit onClick={closeModal} />
+          <StyledExitButton onClick={closeModal} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
         </StyledModalHeader>
-        <StyledModalBody>{children}</StyledModalBody>
+        <StyledModalBody>{cloneElement(children, { modalContentRef })}</StyledModalBody>
       </StyledModalContent>
     </StyledModalContentWrapper>
   );
@@ -25,7 +31,11 @@ function ModalContent({ isShow = false, title, closeModal, children }: ModalCont
 
 export default ModalContent;
 
-const StyledModalContentWrapper = styled.div<{ isShow: boolean }>`
+const StyledExitButton = styled(Exit)`
+  cursor: pointer;
+`;
+
+const StyledModalContentWrapper = styled.div<{ isShow: boolean; isMobile: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +50,13 @@ const StyledModalContentWrapper = styled.div<{ isShow: boolean }>`
 
   opacity: 0;
   visibility: hidden;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      flex-direction: column;
+      justify-content: flex-end;
+    `}
 
   ${({ isShow }) =>
     isShow &&
@@ -63,7 +80,8 @@ const StyledModalOverlay = styled.div`
   background: rgb(0 0 0 / 50%);
 `;
 
-const StyledModalContent = styled.div<{ isShow: boolean }>`
+const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
+  ${hideScrollBar}
   display: flex;
   flex-direction: column;
 
@@ -74,6 +92,7 @@ const StyledModalContent = styled.div<{ isShow: boolean }>`
   min-width: 500px;
   max-width: 600px;
   min-height: 100px;
+  max-height: 600px;
 
   padding: 2rem;
 
@@ -84,6 +103,14 @@ const StyledModalContent = styled.div<{ isShow: boolean }>`
   transform: translateY(80px);
 
   overflow-y: auto;
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+    `}
 
   ${({ isShow }) =>
     isShow &&

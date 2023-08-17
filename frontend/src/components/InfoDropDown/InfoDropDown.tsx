@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { MouseEvent } from 'react';
+
 import InfoButton from '~/components/@common/InfoButton';
+import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
 import useBooleanState from '~/hooks/useBooleanState';
 
 interface Option {
@@ -18,23 +19,21 @@ interface DropDownProps {
 function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropDownProps) {
   const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
-  const onSelection = () => (event?: MouseEvent<HTMLLIElement>) => {
+  const onSelection = () => (event?: React.MouseEvent<HTMLLIElement>) => {
     if (externalOnClick) externalOnClick(event);
   };
 
   return (
-    <StyledInfoDropDown role="button" aria-label={label}>
-      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
+    <StyledInfoDropDown aria-hidden>
+      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown} aria-label={label}>
         <InfoButton isShow={isShow} />
       </StyledInfoButtonWrapper>
 
       {isShow && (
-        <StyledDropDownWrapper>
+        <StyledDropDownWrapper aria-hidden>
           <StyledSelectContainer>
             {options.map(({ id, value }) => (
-              <StyledDropDownOption key={id} data-name={value} onMouseDown={onSelection()}>
-                {value}
-              </StyledDropDownOption>
+              <InfoDropDownOption key={id} value={value} onClick={onSelection()} />
             ))}
           </StyledSelectContainer>
         </StyledDropDownWrapper>
@@ -55,8 +54,6 @@ const StyledInfoButtonWrapper = styled.button`
 
 const StyledInfoDropDown = styled.div`
   display: relative;
-
-  z-index: 100000000;
 `;
 
 const StyledDropDownWrapper = styled.ul`
@@ -67,11 +64,9 @@ const StyledDropDownWrapper = styled.ul`
   position: absolute;
   top: calc(100% - 8px);
   right: 18px;
+  z-index: 1000;
 
   width: 216px;
-  height: 176px;
-
-  padding: 1.8rem 0;
 
   border-radius: 10px;
   background: white;
@@ -83,35 +78,11 @@ const StyledDropDownWrapper = styled.ul`
 
 const StyledSelectContainer = styled.div`
   width: 100%;
-  height: 150px;
+  height: fit-content;
+
+  margin: 1rem 0;
 
   background: transparent;
 
   overflow-y: auto;
-`;
-
-const StyledDropDownOption = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  height: 44px;
-
-  margin: 0 1.8rem;
-
-  cursor: pointer;
-
-  & + & {
-    border-bottom: 1px solid var(--gray-1);
-  }
-
-  &:first-child {
-    border-bottom: 1px solid var(--gray-1);
-  }
-
-  & > div {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
 `;

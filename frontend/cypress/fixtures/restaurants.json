@@ -1,0 +1,249 @@
+{
+  "content": [
+    {
+      "lat": 37.5137161,
+      "lng": 127.1051931,
+      "id": 40,
+      "name": "바이킹스워프",
+      "category": "바닷가재요리",
+      "roadAddress": "서울 송파구 올림픽로 300 롯데월드몰 4층",
+      "phoneNumber": "1644-3210",
+      "naverMapUrl": "https://map.naver.com/v5/entry/place/35823506?entry=plt&c=15,0,0,0,dh&isCorrectAnswer=true",
+      "viewCount": 2,
+      "distance": 257,
+      "isLiked": false,
+      "likeCount": 2,
+      "celebs": [
+        {
+          "id": 2,
+          "name": "회사랑RawFishEater",
+          "youtubeChannelName": "@RawFishEater",
+          "profileImageUrl": "https://yt3.googleusercontent.com/ytc/AOPolaSzgHdMFMDyvhiU2qtaYULlZx6pdw4Fz_vsW6J5Qw=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 355,
+          "name": "UmF3RmlzaEVhdGVyX-uwlOydtO2CueyKpOybjO2UhF_roa_rjbDsm5Trk5zrqrDsoJA.jpeg",
+          "author": "@RawFishEater",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.5139952,
+      "lng": 127.1066848,
+      "id": 132,
+      "name": "소피텔",
+      "category": "프랑스음식",
+      "roadAddress": "서울 송파구 잠실로 209 소피텔 앰배서더 서울 호텔 & 서비스드 레지던스 4층",
+      "phoneNumber": "02-2092-6100",
+      "naverMapUrl": "https://naver.me/IG6yxm9c",
+      "viewCount": 233,
+      "distance": 353,
+      "isLiked": false,
+      "likeCount": 4,
+      "celebs": [
+        {
+          "id": 1,
+          "name": "먹적 - (스시에 대출 박는 놈)",
+          "youtubeChannelName": "@monstergourmet",
+          "profileImageUrl": "https://yt3.googleusercontent.com/ytc/AOPolaQ0vUJt9JWhig6GY1lWLPt_qIRiH-cKgO5Nnl5uicQ=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 63,
+          "name": "bW9uc3RlcmdvdXJtZXRf7Y6Y66mU7KKF.jpeg",
+          "author": "@monstergourmet",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.5112348,
+      "lng": 127.0980274,
+      "id": 54,
+      "name": "몽드샬롯",
+      "category": "양식",
+      "roadAddress": "서울 송파구 올림픽로 240 샤롯데 씨어터 4층 몽드샬롯",
+      "phoneNumber": "0507-1322-2846",
+      "naverMapUrl": "https://map.naver.com/v5/entry/place/1665875108?entry=plt&c=15,0,0,0,dh",
+      "viewCount": 1150,
+      "distance": 625,
+      "isLiked": false,
+      "likeCount": 5,
+      "celebs": [
+        {
+          "id": 3,
+          "name": "맛객리우A foodie",
+          "youtubeChannelName": "@Liwoo_foodie",
+          "profileImageUrl": "https://yt3.googleusercontent.com/KhKylYQTqpR3QQ1RuiYZ5xiM2fNsOJ_0jLFYbBBhk9Gh-zjpGTMUUSyPVGOHq4VZHzl6DN6qXQ=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 136,
+          "name": "bGl3b29f66q965Oc7IOs66Gv.jpeg",
+          "author": "@Liwoo_foodie",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.5120964,
+      "lng": 127.1124021,
+      "id": 190,
+      "name": "대성연탄갈비",
+      "category": "육류,고기요리",
+      "roadAddress": "서울 송파구 올림픽로32길 58",
+      "phoneNumber": "02-415-4407",
+      "naverMapUrl": "https://naver.me/FBweavpk",
+      "viewCount": 5,
+      "distance": 900,
+      "isLiked": false,
+      "likeCount": 2,
+      "celebs": [
+        {
+          "id": 4,
+          "name": "마리아주",
+          "youtubeChannelName": "@mariage_in",
+          "profileImageUrl": "https://yt3.googleusercontent.com/TJcuv5nlJKaZQBi3mbuuqOvBVzAlE-UdBR_bNgChy4_q-G43o5UUPXquvGCYx8Q6bze-8I253w=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 121,
+          "name": "bWFyaWFnZV_rjIDshLHsl7Dtg4TqsIjruYQ.jpeg",
+          "author": "@mariage_in",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.506418,
+      "lng": 127.0903882,
+      "id": 69,
+      "name": "미타우동",
+      "category": "이자카야",
+      "roadAddress": "서울 송파구 삼전로12길 4 101호",
+      "phoneNumber": "070-4212-5212",
+      "naverMapUrl": "https://map.naver.com/v5/entry/place/1228463080?entry=plt&c=15,0,0,0,dh",
+      "viewCount": 2,
+      "distance": 1483,
+      "isLiked": false,
+      "likeCount": 4,
+      "celebs": [
+        {
+          "id": 3,
+          "name": "맛객리우A foodie",
+          "youtubeChannelName": "@Liwoo_foodie",
+          "profileImageUrl": "https://yt3.googleusercontent.com/KhKylYQTqpR3QQ1RuiYZ5xiM2fNsOJ_0jLFYbBBhk9Gh-zjpGTMUUSyPVGOHq4VZHzl6DN6qXQ=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 151,
+          "name": "bGl3b29f66-47YOA7Jqw64-Z.jpeg",
+          "author": "@Liwoo_foodie",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.4934824,
+      "lng": 127.1115038,
+      "id": 15,
+      "name": "형제상회 가락몰지점",
+      "category": "생선회",
+      "roadAddress": "서울 송파구 양재대로 932 1층 수산부 C-25호",
+      "phoneNumber": "02-6978-1765",
+      "naverMapUrl": "https://map.naver.com/v5/entry/place/1979269941?entry=plt&c=15,0,0,0,dh",
+      "viewCount": 0,
+      "distance": 2533,
+      "isLiked": false,
+      "likeCount": 0,
+      "celebs": [
+        {
+          "id": 2,
+          "name": "회사랑RawFishEater",
+          "youtubeChannelName": "@RawFishEater",
+          "profileImageUrl": "https://yt3.googleusercontent.com/ytc/AOPolaSzgHdMFMDyvhiU2qtaYULlZx6pdw4Fz_vsW6J5Qw=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 330,
+          "name": "UmF3RmlzaEVhdGVyX-2YleygnOyDge2ajF_qsIDrnb3rqrDsp4DsoJA.jpeg",
+          "author": "@RawFishEater",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.5538767,
+      "lng": 127.1091962,
+      "id": 101,
+      "name": "그랜드 워커힐 서울 더파빌리온",
+      "category": "카페",
+      "roadAddress": "서울 광진구 워커힐로 177 그랜드 워커힐 서울 1층 로비",
+      "phoneNumber": "02-450-4534",
+      "naverMapUrl": "https://map.naver.com/v5/entry/place/37093032?entry=plt&c=15,0,0,0,dh",
+      "viewCount": 0,
+      "distance": 4330,
+      "isLiked": false,
+      "likeCount": 1,
+      "celebs": [
+        {
+          "id": 3,
+          "name": "맛객리우A foodie",
+          "youtubeChannelName": "@Liwoo_foodie",
+          "profileImageUrl": "https://yt3.googleusercontent.com/KhKylYQTqpR3QQ1RuiYZ5xiM2fNsOJ_0jLFYbBBhk9Gh-zjpGTMUUSyPVGOHq4VZHzl6DN6qXQ=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 183,
+          "name": "bGl3b29f6re4656c65Oc7JuM7Luk7Z6Q7ISc7Jq4642U7YyM67mM66as7Jio.jpeg",
+          "author": "@Liwoo_foodie",
+          "sns": "YOUTUBE"
+        }
+      ]
+    },
+    {
+      "lat": 37.5539211,
+      "lng": 127.0940767,
+      "id": 161,
+      "name": "산과바다",
+      "category": "한식",
+      "roadAddress": "서울 광진구 자양로 322",
+      "phoneNumber": "02-454-2252",
+      "naverMapUrl": "https://naver.me/xXrDITOD",
+      "viewCount": 0,
+      "distance": 4372,
+      "isLiked": false,
+      "likeCount": 0,
+      "celebs": [
+        {
+          "id": 4,
+          "name": "마리아주",
+          "youtubeChannelName": "@mariage_in",
+          "profileImageUrl": "https://yt3.googleusercontent.com/TJcuv5nlJKaZQBi3mbuuqOvBVzAlE-UdBR_bNgChy4_q-G43o5UUPXquvGCYx8Q6bze-8I253w=s176-c-k-c0x00ffffff-no-rj"
+        }
+      ],
+      "images": [
+        {
+          "id": 92,
+          "name": "bWFyaWFnZV_sgrDqs7zrsJTri6Q.jpeg",
+          "author": "@mariage_in",
+          "sns": "YOUTUBE"
+        }
+      ]
+    }
+  ],
+  "totalPage": 1,
+  "currentPage": 0,
+  "pageSize": 18,
+  "totalElementsCount": 8,
+  "currentElementsCount": 8
+}

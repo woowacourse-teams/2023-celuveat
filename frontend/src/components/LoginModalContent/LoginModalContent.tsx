@@ -4,7 +4,6 @@ import LoginButton from '~/components/@common/LoginButton';
 function LoginModalContent() {
   return (
     <StyledLoginModalContent>
-      <LoginButton type="naver" />
       <LoginButton type="kakao" />
       <LoginButton type="google" />
     </StyledLoginModalContent>
@@ -14,7 +13,7 @@ function LoginModalContent() {
 export default LoginModalContent;
 
 const StyledLoginModalContent = styled.div`
-  a + a {
+  div + div {
     margin-top: 1.6rem;
   }
 `;

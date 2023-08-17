@@ -8,14 +8,15 @@ import type { Coordinate } from '~/@types/map.types';
 interface MapContentProps extends google.maps.MapOptions {
   zoom: number;
   center: Coordinate;
-  children: React.ReactNode;
+  markers?: Coordinate[];
+  children?: React.ReactNode;
   style: { [key: string]: string };
   onIdle?: (map: google.maps.Map) => void;
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
-function MapContent({ style, zoom, center, children, onClick, onIdle }: MapContentProps) {
-  const { ref, map } = useMap({ center, zoom, onClick, onIdle });
+function MapContent({ style, zoom, center, children, onClick, onIdle, markers }: MapContentProps) {
+  const { ref, map } = useMap({ center, zoom, onClick, onIdle, markers });
 
   return (
     <>

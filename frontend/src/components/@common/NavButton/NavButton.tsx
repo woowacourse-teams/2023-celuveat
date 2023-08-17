@@ -10,7 +10,7 @@ interface NavItemProps {
 
 function NavItem({ icon, label, isShow = false }: NavItemProps) {
   return (
-    <StyledNavItem isShow={isShow}>
+    <StyledNavItem isShow={isShow} aria-selected={isShow}>
       <div>{icon}</div>
       <div>
         <span>{label}</span>
@@ -26,14 +26,22 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.8rem 0;
 
-  width: 80px;
+  width: 68px;
 
   border: none;
   background: none;
 
   font-size: ${FONT_SIZE.sm};
+
+  & > div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+  }
 
   & > *:first-child > svg {
     fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
@@ -59,7 +67,7 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
 
             &::after {
               position: absolute;
-              top: calc(100% + 12px);
+              top: calc(100% + 10px);
               z-index: -1;
 
               height: 2px;
@@ -78,7 +86,7 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
 
               &::after {
                 position: absolute;
-                top: calc(100% + 12px);
+                top: calc(100% + 10px);
                 z-index: -1;
 
                 height: 2px;

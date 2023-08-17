@@ -3,7 +3,7 @@ import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 
 interface WaterMarkImageProps {
   waterMark: string;
-  imageUrl: string;
+  imageUrl?: string;
   type: 'list' | 'map';
 }
 
@@ -11,7 +11,7 @@ function WaterMarkImage({ waterMark, imageUrl, type }: WaterMarkImageProps) {
   return (
     <StyledWaterMarkImage type={type}>
       <StyledImage src={`https://dev.celuveat.com/images-data/${imageUrl}`} alt="음식점" loading="lazy" />
-      <StyledWaterMark aria-hidden="true">{waterMark}</StyledWaterMark>
+      {waterMark && <StyledWaterMark aria-hidden="true">{waterMark}</StyledWaterMark>}
     </StyledWaterMarkImage>
   );
 }
@@ -19,6 +19,7 @@ function WaterMarkImage({ waterMark, imageUrl, type }: WaterMarkImageProps) {
 export default WaterMarkImage;
 
 const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
+  ${paintSkeleton}
   position: relative;
 
   width: 100%;
@@ -27,7 +28,6 @@ const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
 `;
 
 const StyledImage = styled.img`
-  ${paintSkeleton}
   position: absolute;
   inset: 0;
 

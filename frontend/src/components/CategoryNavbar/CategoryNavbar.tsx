@@ -4,6 +4,7 @@ import NavItem from '~/components/@common/NavButton/NavButton';
 import { isEqual } from '~/utils/compare';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';
+import { hideScrollBar } from '~/styles/common';
 
 interface Category {
   label: RestaurantCategory;
@@ -25,7 +26,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
   };
 
   return (
-    <StyledCategoryNavbarWrapper>
+    <StyledCategoryNavbarWrapper aria-hidden>
       {categories.map(({ icon, label }) => (
         <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
           <NavItem label={label} icon={icon} isShow={isEqual(selected, label)} />
@@ -38,6 +39,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
 export default CategoryNavbar;
 
 const StyledCategoryNavbarWrapper = styled.ul`
+  ${hideScrollBar}
   display: flex;
   align-items: center;
 
