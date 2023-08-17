@@ -17,7 +17,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
 
-  const updateToken = useTokenState(state => state.updateToken);
+  const [updateOauth, updateToken] = useTokenState(state => [state.updateOauth, state.updateToken]);
 
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
@@ -39,6 +39,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   useEffect(() => {
     if (code) {
       oauthTokenMutation.mutate();
+      updateOauth(type);
     }
   }, [code]);
 
