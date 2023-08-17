@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React from 'react';
-import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
+import { OAUTH_BUTTON_MESSAGE } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
@@ -24,7 +24,7 @@ function LoginButton({ type }: LoginButtonProps) {
   const navigator = useNavigate();
 
   const onClick = () => {
-    navigator(OAUTH_LINK[type]);
+    navigator(`/api/oauth/${type}`);
   };
 
   return (
