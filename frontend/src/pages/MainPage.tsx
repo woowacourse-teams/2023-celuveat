@@ -18,6 +18,7 @@ import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 import useMapState from '~/hooks/store/useMapState';
+import PopUpContainer from '~/components/PopUpContainer';
 
 function MainPage() {
   const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
@@ -120,6 +121,7 @@ function MainPage() {
               />
             </StyledRightSide>
           </StyledLayout>
+          <PopUpContainer isShowImg />
           <Footer />
         </>
       )}
