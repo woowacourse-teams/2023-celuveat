@@ -1,19 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
 import { Oauth } from '~/@types/oauth.types';
-import useTokenState from '~/hooks/store/useTokenState';
-import { FONT_SIZE } from '~/styles/common';
-import { getAccessToken } from '~/api/oauth';
 
-interface OauthCodeResponse {
-  jsessionId: string;
-}
+import { FONT_SIZE } from '~/styles/common';
 
 interface LoginButtonProps {
   type: Oauth;
@@ -26,64 +21,8 @@ const LoginIcon: Record<string, React.ReactNode> = {
 };
 
 function LoginButton({ type }: LoginButtonProps) {
-  const [popUp, setPopup] = useState<Window | null>(null);
-
-  const navigator = useNavigate();
-  const [updateOauth, updateToken] = useTokenState(state => [state.updateOauth, state.updateToken]);
-
-  const handleOpenGithubOAuthPopup = useCallback((): void => {
-    const title = '로그인 중...';
-    const width = 500;
-    const height = 400;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2.5;
-    const url = OAUTH_LINK[type];
-    const popup = window.open(url, title, `width=${width},height=${height},left=${left},top=${top}`);
-
-    setPopup(popup);
-    updateOauth(type);
-  }, [popUp]);
-
-  const clearPopup = useCallback((): void => {
-    if (popUp !== null) {
-      popUp.close();
-    }
-
-    setPopup(null);
-  }, [popUp]);
-
-  useEffect(() => {
-    if (popUp === null) {
-      return;
-    }
-
-    const oauthCodeListener = (e: MessageEvent<any>): void => {
-      if (e.origin !== window.location.origin) return;
-
-      const { code } = e.data;
-
-      getAccessToken(type, code)
-        .then(response => {
-          const { jsessionId } = response.data as OauthCodeResponse;
-          updateToken(jsessionId);
-        })
-        .catch(() => {
-          navigator('/fail');
-        })
-        .finally(() => clearPopup());
-    };
-
-    window.addEventListener('message', oauthCodeListener, false);
-
-    // eslint-disable-next-line consistent-return
-    return () => {
-      window.removeEventListener('message', oauthCodeListener);
-      clearPopup();
-    };
-  }, [popUp]);
-
   return (
-    <StyledLoginButtonWrapper type={type} onClick={handleOpenGithubOAuthPopup}>
+    <StyledLoginButtonWrapper type={type} to={OAUTH_LINK[type]}>
       <div>{LoginIcon[type]}</div>
       <StyledLoginButtonText>{OAUTH_BUTTON_MESSAGE[type]}</StyledLoginButtonText>
     </StyledLoginButtonWrapper>
@@ -92,7 +31,7 @@ function LoginButton({ type }: LoginButtonProps) {
 
 export default LoginButton;
 
-const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
+const StyledLoginButtonWrapper = styled(Link)<LoginButtonProps>`
   display: flex;
   align-items: center;
 
@@ -106,6 +45,10 @@ const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
   font-size: 1.4rem;
   font-weight: 600;
   text-decoration: none;
+
+  & + & {
+    margin-top: 1.2rem;
+  }
 
   ${({ type }) =>
     type === 'naver' &&
