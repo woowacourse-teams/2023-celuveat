@@ -44,11 +44,11 @@ const useDeleteUser = () => {
     }
 
     close();
-    navigator('/');
+    window.location.href = '/';
   }, []);
 
   const onCancelDeleteUser = useCallback(() => {
-    navigator('/');
+    navigator(-1);
   }, []);
 
   return { onCancelDeleteUser, deleteUser };
