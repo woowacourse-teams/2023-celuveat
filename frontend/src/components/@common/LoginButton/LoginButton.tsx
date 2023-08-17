@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
@@ -7,7 +7,7 @@ import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
 import { Oauth } from '~/@types/oauth.types';
-import useTokenState from '~/hooks/store/useTokenState';
+
 import { FONT_SIZE } from '~/styles/common';
 import { getAccessToken } from '~/api/oauth';
 
@@ -92,7 +92,7 @@ function LoginButton({ type }: LoginButtonProps) {
 
 export default LoginButton;
 
-const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
+const StyledLoginButtonWrapper = styled(Link)<LoginButtonProps>`
   display: flex;
   align-items: center;
 
@@ -106,6 +106,10 @@ const StyledLoginButtonWrapper = styled.div<LoginButtonProps>`
   font-size: 1.4rem;
   font-weight: 600;
   text-decoration: none;
+
+  & + & {
+    margin-top: 1.2rem;
+  }
 
   ${({ type }) =>
     type === 'naver' &&

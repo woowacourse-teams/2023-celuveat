@@ -6,6 +6,7 @@ import WishListPage from '~/pages/WishListPage';
 import SignUpPage from '~/pages/SignUpPage';
 import WithdrawalPage from '~/pages/WithdrawalPage';
 import PrivacyPolicy from './pages/PrivacyPolicyPage';
+import OauthRedirectPage from '~/pages/OauthRedirectPage';
 
 export const { BASE_URL } = process.env;
 
