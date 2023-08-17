@@ -50,14 +50,24 @@ public class OauthController {
     }
 
     @GetMapping("/logout/{oauthServerType}")
-    ResponseEntity<Void> logout(@PathVariable OauthServerType oauthServerType, @Auth Long memberId) {
+    ResponseEntity<Void> logout(
+            @PathVariable OauthServerType oauthServerType,
+            @Auth Long memberId,
+            HttpServletRequest request
+    ) {
         oauthService.logout(oauthServerType, memberId);
+        request.getSession(false).invalidate();
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/withdraw/{oauthServerType}")
-    ResponseEntity<Void> withdraw(@PathVariable OauthServerType oauthServerType, @Auth Long memberId) {
+    ResponseEntity<Void> withdraw(
+            @PathVariable OauthServerType oauthServerType,
+            @Auth Long memberId,
+            HttpServletRequest request
+    ) {
         oauthService.withdraw(oauthServerType, memberId);
+        request.getSession(false).invalidate();
         return ResponseEntity.noContent().build();
     }
 }

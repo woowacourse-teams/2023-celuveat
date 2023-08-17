@@ -8,6 +8,8 @@ import com.celuveat.common.util.CorsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private final AuthContext authContext;
     private final PathMatcher pathMatcher;
-    private final Set<UriAndMethodsCondition> authNotRequiredConditions;
-    private final Set<UriAndMethodsCondition> sessionInvalidationConditions;
+    private final Set<UriAndMethodsCondition> authNotRequiredConditions = new HashSet<>();
+
+    public void setAuthNotRequiredConditions(UriAndMethodsCondition... authNotRequiredConditions) {
+        this.authNotRequiredConditions.clear();
+        this.authNotRequiredConditions.addAll(Arrays.asList(authNotRequiredConditions));
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -54,26 +60,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new AuthException(UNAUTHORIZED_REQUEST);
         }
         return session;
-    }
-
-    @Override
-    public void afterCompletion(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler,
-            Exception ex
-    ) {
-        if (shouldInvalidateSession(request)) {
-            HttpSession session = getSession(request);
-            session.invalidate();
-        }
-    }
-
-    private boolean shouldInvalidateSession(HttpServletRequest request) {
-        HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
-        String requestURI = request.getRequestURI();
-        return sessionInvalidationConditions.stream()
-                .anyMatch(it -> it.match(pathMatcher, requestURI, httpMethod));
     }
 
     public record UriAndMethodsCondition(

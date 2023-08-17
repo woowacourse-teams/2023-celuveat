@@ -1,9 +1,13 @@
 package com.celuveat.auth.config;
 
+import static org.springframework.http.HttpMethod.GET;
+
 import com.celuveat.auth.presentation.AuthArgumentResolver;
 import com.celuveat.auth.presentation.AuthInterceptor;
+import com.celuveat.auth.presentation.AuthInterceptor.UriAndMethodsCondition;
 import com.celuveat.auth.presentation.LooseAuthArgumentResolver;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -20,7 +24,7 @@ public class AuthConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
+        registry.addInterceptor(setUpAuthInterceptor())
                 .addPathPatterns(
                         "/restaurants/**/like",
                         "/reviews/**",
@@ -28,6 +32,13 @@ public class AuthConfig implements WebMvcConfigurer {
                         "/oauth/logout/**",
                         "/oauth/withdraw/**"
                 ).order(2);
+    }
+
+    private AuthInterceptor setUpAuthInterceptor() {
+        authInterceptor.setAuthNotRequiredConditions(
+                new UriAndMethodsCondition("/api/reviews", Set.of(GET))
+        );
+        return authInterceptor;
     }
 
     @Override
