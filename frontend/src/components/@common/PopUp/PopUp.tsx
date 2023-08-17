@@ -11,14 +11,15 @@ interface PopUpProps {
   text: string;
   imgUrl: string;
   isSuccess?: boolean;
+  isShowImg: boolean;
 }
 
-function PopUp({ text, isSuccess = false, imgUrl }: PopUpProps) {
+function PopUp({ text, imgUrl, isShowImg, isSuccess = false }: PopUpProps) {
   const { isMobile } = useMediaQuery();
 
   return (
     <StyledPopUpWrapper isSuccess={isSuccess} isMobile={isMobile}>
-      {isSuccess && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
+      {isShowImg && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
       <StyledPopUpText>{text}</StyledPopUpText>
     </StyledPopUpWrapper>
   );
@@ -39,8 +40,8 @@ const StyledPopUpText = styled.span`
 
 const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
   display: flex;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
 
   position: fixed;
   bottom: 0;

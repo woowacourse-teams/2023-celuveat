@@ -4,7 +4,11 @@ import { Modal } from '~/components/@common/Modal';
 import PopUp from '~/components/@common/PopUp/PopUp';
 import useToastState from '~/hooks/store/useToastState';
 
-function PopUpContainer() {
+interface PopUpContainerProps {
+  isShowImg?: boolean;
+}
+
+function PopUpContainer({ isShowImg = false }: PopUpContainerProps) {
   const { text, isSuccess, imgUrl, isOpen, close } = useToastState(
     state => ({
       text: state.text,
@@ -22,7 +26,7 @@ function PopUpContainer() {
     }
   }, []);
 
-  return <Modal>{isOpen && <PopUp text={text} isSuccess={isSuccess} imgUrl={imgUrl} />}</Modal>;
+  return <Modal>{isOpen && <PopUp text={text} isSuccess={isSuccess} imgUrl={imgUrl} isShowImg={isShowImg} />}</Modal>;
 }
 
 export default memo(PopUpContainer);

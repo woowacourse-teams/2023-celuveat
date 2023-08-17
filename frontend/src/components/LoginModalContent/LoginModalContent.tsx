@@ -4,7 +4,6 @@ import LoginButton from '~/components/@common/LoginButton';
 function LoginModalContent() {
   return (
     <StyledLoginModalContent>
-      <LoginButton type="naver" />
       <LoginButton type="kakao" />
       <LoginButton type="google" />
     </StyledLoginModalContent>
