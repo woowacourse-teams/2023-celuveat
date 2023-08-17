@@ -20,6 +20,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_아이디를_가져온다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_조회수_예상_응답;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_회원_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_순서를_포함해서_검증한다;
@@ -27,6 +28,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.특정_이름의_음식점을_찾는다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
+import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
@@ -235,10 +237,29 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 조회_음식점 = 특정_이름의_음식점을_찾는다(전체_음식점, "로이스2호점");
             var 셀럽들 = 셀럽들만_추출_한다(셀럽_전체_조회_요청());
             var 로이스 = 특정_이름의_셀럽을_찾는다(셀럽들, "로이스");
-            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.id(), 로이스.id());
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.id(), 로이스.id(), false);
 
             // when
             var 응답 = 음식점_상세_조회_요청(조회_음식점.id(), 로이스.id());
+
+            // then
+            상세_조회_결과를_검증한다(예상_응답, 응답);
+        }
+
+        @Test
+        void 음식점ID로_조회시_좋아요_여부_반영() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 조회_음식점 = 특정_이름의_음식점을_찾는다(전체_음식점, "로이스2호점");
+            var 셀럽들 = 셀럽들만_추출_한다(셀럽_전체_조회_요청());
+            var 로이스 = 특정_이름의_셀럽을_찾는다(셀럽들, "로이스");
+            var 오도 = 멤버("오도");
+            var 세션_아이디 = 회원가입하고_로그인한다(오도);
+            좋아요_요청을_보낸다(조회_음식점.id(), 세션_아이디);
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.id(), 로이스.id(), true);
+
+            // when
+            var 응답 = 음식점_회원_상세_조회_요청(조회_음식점.id(), 로이스.id(), 세션_아이디);
 
             // then
             상세_조회_결과를_검증한다(예상_응답, 응답);

@@ -28,6 +28,7 @@ import com.celuveat.restaurant.domain.RestaurantRepository;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -525,18 +526,40 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id());
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.empty());
 
         // then
         assertThat(result)
                 .usingRecursiveComparison()
                 .ignoringFields("likeCount", "viewCount")
-                .isEqualTo(toRestaurantDetailQueryResponse(restaurantWithCelebsAndImagesSimpleResponse));
+                .isEqualTo(toRestaurantDetailQueryResponse(restaurantWithCelebsAndImagesSimpleResponse, false));
+        assertThat(result.likeCount()).isEqualTo(1);
+    }
+
+    @Test
+    void 음식점_상세_조회시_좋아요_여부_포함_테스트() {
+        // given
+        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse = seed.get(0);
+        OauthMember oauthMember = 멤버("로이스");
+        oauthMemberRepository.save(oauthMember);
+        Restaurant restaurant = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse.id());
+        restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
+
+        // when
+        RestaurantDetailResponse result =
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.of(oauthMember.id()));
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("likeCount", "viewCount")
+                .isEqualTo(toRestaurantDetailQueryResponse(restaurantWithCelebsAndImagesSimpleResponse, true));
         assertThat(result.likeCount()).isEqualTo(1);
     }
 
     private RestaurantDetailResponse toRestaurantDetailQueryResponse(
-            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse
+            RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse,
+            boolean isLiked
     ) {
         return new RestaurantDetailResponse(
                 restaurantWithCelebsAndImagesSimpleResponse.id(),
@@ -549,6 +572,7 @@ class RestaurantQueryServiceTest {
                 restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
                 0, // likeCount
                 0, // viewCount
+                isLiked,
                 restaurantWithCelebsAndImagesSimpleResponse.celebs(),
                 restaurantWithCelebsAndImagesSimpleResponse.images()
         );

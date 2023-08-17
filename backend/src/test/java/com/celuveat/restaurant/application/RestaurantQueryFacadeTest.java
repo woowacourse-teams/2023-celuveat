@@ -15,6 +15,7 @@ import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -60,7 +61,7 @@ class RestaurantQueryFacadeTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryFacade.findRestaurantDetailById(로이스2호점.id(), targetCeleb.id());
+                restaurantQueryFacade.findRestaurantDetailById(로이스2호점.id(), targetCeleb.id(), Optional.empty());
 
         // then
         assertThat(result.celebs().get(0))
