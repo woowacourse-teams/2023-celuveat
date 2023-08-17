@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PathMatcher;
@@ -23,7 +24,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final AuthContext authContext;
-    private final PathMatcher pathMatcher;
+    private final ObjectProvider<PathMatcher> pathMatcherProvider;
     private final Set<UriAndMethodsCondition> authNotRequiredConditions = new HashSet<>();
 
     public void setAuthNotRequiredConditions(UriAndMethodsCondition... authNotRequiredConditions) {
@@ -50,6 +51,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private boolean isAuthenticationNotRequired(HttpServletRequest request) {
         HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
         String requestURI = request.getRequestURI();
+        PathMatcher pathMatcher = pathMatcherProvider.getIfAvailable();
         return authNotRequiredConditions.stream()
                 .anyMatch(it -> it.match(pathMatcher, requestURI, httpMethod));
     }
