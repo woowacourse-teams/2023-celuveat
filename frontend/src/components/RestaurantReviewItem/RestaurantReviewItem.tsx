@@ -44,26 +44,29 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
 
     return (
       <StyledRestaurantReviewItemWrapper ref={ref}>
-        <StyledProfileWrapper>
-          <ProfileImage name={review.nickname} size="40px" imageUrl={review.profileImageUrl} />
-          <StyledProfileInfoWrapper>
-            <StyledProfileNickName>{review.nickname}</StyledProfileNickName>
-            <StyledCreateDated>{review.createdDate}</StyledCreateDated>
-          </StyledProfileInfoWrapper>
-        </StyledProfileWrapper>
+        <StyledProfileAndButton>
+          <StyledProfileWrapper>
+            <ProfileImage name={review.nickname} size="40px" imageUrl={review.profileImageUrl} />
+            <StyledProfileInfoWrapper>
+              <StyledProfileNickName>{review.nickname}</StyledProfileNickName>
+              <StyledCreateDated>{review.createdDate}</StyledCreateDated>
+            </StyledProfileInfoWrapper>
+          </StyledProfileWrapper>
+          {isUsersReview && (
+            <StyledButtonContainer>
+              <button type="button" onClick={clickUpdateReview}>
+                수정
+              </button>
+              <StyledLine />
+              <button type="button" onClick={clickDeleteReview}>
+                삭제
+              </button>
+            </StyledButtonContainer>
+          )}
+        </StyledProfileAndButton>
         <StyledReviewContent ref={contentRef} isModal={isModal}>
           {review.content}
         </StyledReviewContent>
-        {isUsersReview && (
-          <>
-            <button type="button" onClick={clickUpdateReview}>
-              수정
-            </button>
-            <button type="button" onClick={clickDeleteReview}>
-              삭제
-            </button>
-          </>
-        )}
         {isTextOverflow && (
           <StyledSeeMore isModal={isModal} data-id={review.id} onClick={reviewModalOpen}>
             더 보기
@@ -89,6 +92,11 @@ const StyledCreateDated = styled.span`
   line-height: 1.8rem;
 `;
 
+const StyledProfileAndButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StyledProfileWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -107,6 +115,26 @@ const StyledReviewContent = styled.div<{ isModal: boolean }>`
   font-size: ${FONT_SIZE.md};
   ${({ isModal }) => !isModal && truncateText(3)}
   line-height: 2.4rem;
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 0 0.4rem;
+
+  & > button {
+    border: none;
+    background: none;
+
+    font-size: ${FONT_SIZE.sm};
+  }
+`;
+
+const StyledLine = styled.div`
+  width: 1px;
+  height: 16.5px;
+
+  background: var(--black);
 `;
 
 const StyledRestaurantReviewItemWrapper = styled.div`

@@ -6,7 +6,7 @@ import RestaurantReviewList from '~/components/RestaurantReviewList';
 import ReviewForm from '~/components/ReviewForm/ReviewForm';
 import DeleteButton from '~/components/ReviewForm/DeleteButton';
 import { Modal, ModalContent } from '~/components/@common/Modal';
-
+import Alert from '~/assets/icons/alert.svg';
 import useModalState from '~/hooks/store/useModalState';
 import { FONT_SIZE } from '~/styles/common';
 
@@ -70,7 +70,13 @@ function RestaurantReviewWrapper() {
         )}
         {content === '리뷰 삭제 하기' && (
           <ModalContent isShow={isModalOpen} title={content} closeModal={close}>
-            <DeleteButton />
+            <div>
+              <StyledWarningMessage>
+                <Alert width={32} />
+                <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
+              </StyledWarningMessage>
+              <DeleteButton />
+            </div>
           </ModalContent>
         )}
       </Modal>
@@ -106,4 +112,16 @@ const StyledButtonContainer = styled.div`
       background: var(--gray-1);
     }
   }
+`;
+
+const StyledWarningMessage = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem 0;
+
+  margin: 3.2rem 0;
+
+  font-size: ${FONT_SIZE.md};
+  text-align: center;
 `;
