@@ -85,7 +85,6 @@ jobs:
           docker run \
             -d \
             --name ${{ env.DOCKER_CONTAINER_NAME }} \
-            --network celuveat_network_dev \ 
             -p 8080:8080 \
             -e "SPRING_PROFILES_ACTIVE=${{ env.PROFILE }}" \
             -v ${{ env.SERVER_LOG_DIR_PATH }}:${{ env.DOCKER_LOG_DIR_PATH }} \
