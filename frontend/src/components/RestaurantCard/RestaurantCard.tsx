@@ -60,7 +60,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size={size} />}
           </StyledProfileImageSection>
-          <PopUpContainer />
+          <PopUpContainer isShowImg />
         </section>
       </StyledContainer>
       <Modal>

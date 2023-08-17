@@ -24,12 +24,16 @@ import SuggestionButton from '~/components/SuggestionButton';
 import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ImageCarousel from '~/components/@common/ImageCarousel';
+import PopUpContainer from '~/components/PopUpContainer';
+import useToastState from '~/hooks/store/useToastState';
 
 function RestaurantDetail() {
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+
+  const [onFailure, onSuccess] = useToastState(state => [state.onFailure, state.onSuccess]);
 
   const {
     data: {
@@ -78,9 +82,9 @@ function RestaurantDetail() {
     async () => {
       try {
         await navigator.clipboard.writeText(text);
-        alert('클립보드에 복사되었어요.');
+        onSuccess('클립보드에 복사되었어요.');
       } catch (err) {
-        alert('복사하는데 문제가 생겼어요.');
+        onFailure('복사하는데 문제가 생겼어요.');
       }
     };
 
@@ -247,6 +251,7 @@ function RestaurantDetail() {
               }}
             />
           </StyledMainLinkContainer>
+          <PopUpContainer />
         </StyledMobileBottomSheet>
       )}
     </>
