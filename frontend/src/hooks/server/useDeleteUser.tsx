@@ -9,7 +9,7 @@ import { shallow } from 'zustand/shallow';
 import useToastState from '~/hooks/store/useToastState';
 import useTokenState from '~/hooks/store/useTokenState';
 
-import { deleteUserData, getLogout } from '~/api/oauth';
+import { deleteUserData } from '~/api/oauth';
 
 const useDeleteUser = () => {
   const navigator = useNavigate();
@@ -40,7 +40,6 @@ const useDeleteUser = () => {
   const deleteUser = useCallback(() => {
     if (oauth !== '') {
       onWithdraw.mutate(oauth);
-      getLogout(oauth);
       clearToken();
     }
 

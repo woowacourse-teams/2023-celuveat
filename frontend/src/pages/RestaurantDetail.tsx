@@ -25,15 +25,12 @@ import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton'
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ImageCarousel from '~/components/@common/ImageCarousel';
 import PopUpContainer from '~/components/PopUpContainer';
-import useToastState from '~/hooks/store/useToastState';
 
 function RestaurantDetail() {
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
-
-  const [onFailure, onSuccess] = useToastState(state => [state.onFailure, state.onSuccess]);
 
   const {
     data: {
