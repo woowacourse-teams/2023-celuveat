@@ -5,7 +5,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.국민연금_구내식당;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -354,7 +353,7 @@ class RestaurantQueryRepositoryTest {
         // when
         Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsNearByRestaurantId(
                 specificDistance,
-                국민연금_구내식당.id(),
+                1L,
                 PageRequest.of(0, 4)
         );
 

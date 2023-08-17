@@ -26,6 +26,7 @@ import com.celuveat.video.domain.VideoRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -170,11 +171,12 @@ public class RestaurantQueryService {
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
+            Optional<Long> memberId,
             Pageable pageable
     ) {
         Page<RestaurantWithDistance> restaurantsWithDistance
                 = restaurantQueryRepository.getRestaurantsNearByRestaurantId(distance, restaurantId, pageable);
-        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, null);
+        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, memberId.orElse(null));
     }
 
     public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {

@@ -69,8 +69,8 @@ public abstract class AcceptanceTest {
         return 세션_아이디를_가져온다(로그인_응답);
     }
 
-    protected void 멤버를_저장한다(OauthMember 멤버) {
-        oauthMemberRepository.save(멤버);
+    protected OauthMember 멤버를_저장한다(OauthMember 멤버) {
+        return oauthMemberRepository.save(멤버);
     }
 
     protected void 음식점을_저장한다(Restaurant 음식점) {

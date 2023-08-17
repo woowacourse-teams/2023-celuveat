@@ -9,6 +9,7 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_�
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.근처_음식점_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.모든_음식점에_좋아요가_눌렸는지_확인한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.비회원_음식점_좋아요_조회수_예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_예상_응답;
@@ -31,10 +32,12 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.domain.Restaurant;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -111,10 +114,29 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             int 요청_거리 = 2000;
 
             // when
-            var 요청_결과 = 근처_음식점_조회_요청(음식점_ID, 요청_거리);
+            var 요청_결과 = 근처_음식점_조회_요청(음식점_ID, 요청_거리, null);
 
             // then
             특정_거리_이내에_있는_음식점이며_기준이_되는_음식점은_포함하지_않는지_검증한다(요청_결과, 요청_거리, 음식점_ID);
+        }
+
+        @Test
+        void 근처_음식점을_조회할때_세션이_담기면_좋아요_여부도_포함된다() {
+            // given
+            var 도기 = 멤버를_저장한다(멤버("도기"));
+            var 세션_아이디 = 회원가입하고_로그인한다(도기);
+            var 전체_음식점 = seedData.insertSeedData();
+            for (var restaurantSimpleResponse : 전체_음식점) {
+                var 음식점 = restaurantRepository.getById(restaurantSimpleResponse.id());
+                restaurantLikeRepository.save(음식점_좋아요(음식점, 도기));
+            }
+            Restaurant restaurant = restaurantRepository.getById(1L);
+
+            // when
+            var 요청_결과 = 근처_음식점_조회_요청(restaurant.id(), 30000, 세션_아이디);
+
+            // then
+            모든_음식점에_좋아요가_눌렸는지_확인한다(요청_결과);
         }
     }
 

@@ -361,8 +361,8 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리) {
-        return given()
+    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리, String 세션_아이디) {
+        return given(세션_아이디)
                 .queryParams("distance", 요청_거리)
                 .when().get("/api/restaurants/{restaurantId}/nearby", 특정_음식점_ID)
                 .then().log().all()
@@ -383,5 +383,12 @@ public class RestaurantAcceptanceSteps {
         assertThat(pageResponse.content())
                 .extracting(RestaurantSimpleResponse::id)
                 .doesNotContain(기준_음식점_ID);
+    }
+
+    public static void 모든_음식점에_좋아요가_눌렸는지_확인한다(ExtractableResponse<Response> 요청_결과) {
+        PageResponse<RestaurantSimpleResponse> pageResponse = 요청_결과.as(new TypeRef<>() {
+        });
+        assertThat(pageResponse.content()).extracting(RestaurantSimpleResponse::isLiked)
+                .allMatch(isLiked -> isLiked);
     }
 }
