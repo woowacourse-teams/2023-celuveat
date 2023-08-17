@@ -178,12 +178,12 @@ public class RestaurantQueryService {
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
+            Optional<Long> memberId,
             Pageable pageable
     ) {
-        Page<RestaurantWithDistance> restaurantsWithDistance = restaurantQueryRepository.getRestaurantsNearByRestaurantId(
-                distance, restaurantId, pageable
-        );
-        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, null);
+        Page<RestaurantWithDistance> restaurantsWithDistance
+                = restaurantQueryRepository.getRestaurantsNearByRestaurantId(distance, restaurantId, pageable);
+        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, memberId.orElse(null));
     }
 
     public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {

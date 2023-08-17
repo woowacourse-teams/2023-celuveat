@@ -88,11 +88,15 @@ public class RestaurantController {
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAllNearbyDistance(
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
+            @LooseAuth Optional<Long> memberId,
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSimpleResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                        distance, restaurantId, pageable
+                        distance,
+                        restaurantId,
+                        memberId,
+                        pageable
                 );
         return ResponseEntity.ok(PageResponse.from(result));
     }

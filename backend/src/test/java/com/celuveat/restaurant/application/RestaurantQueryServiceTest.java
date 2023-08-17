@@ -389,32 +389,32 @@ class RestaurantQueryServiceTest {
 
     @Test
     void 로그인_상태에서_음식점을_조회하면_좋아요한_음식점의_좋아요_여부에_참값이_반환한다() {
-        OauthMember 멤버 = 멤버("오도");
-        oauthMemberRepository.save(멤버);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse1 = seed.get(0);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse2 = seed.get(2);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse3 = seed.get(4);
-        RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse4 = seed.get(9);
-        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse1.id());
-        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse2.id());
-        Restaurant 도기2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse3.id());
-        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse4.id());
+        OauthMember 오도 = 멤버("오도");
+        oauthMemberRepository.save(오도);
+        RestaurantSimpleResponse restaurantSimpleResponse1 = seed.get(0);
+        RestaurantSimpleResponse restaurantSimpleResponse2 = seed.get(2);
+        RestaurantSimpleResponse restaurantSimpleResponse3 = seed.get(4);
+        RestaurantSimpleResponse restaurantSimpleResponse4 = seed.get(9);
+        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantSimpleResponse1.id());
+        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantSimpleResponse2.id());
+        Restaurant 도기2호점 = restaurantRepository.getById(restaurantSimpleResponse3.id());
+        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantSimpleResponse4.id());
         restaurantLikeRepository.saveAll(List.of(
-                음식점_좋아요(말랑1호점, 멤버),
-                음식점_좋아요(말랑3호점, 멤버),
-                음식점_좋아요(도기2호점, 멤버),
-                음식점_좋아요(로이스2호점, 멤버)
+                음식점_좋아요(말랑1호점, 오도),
+                음식점_좋아요(말랑3호점, 오도),
+                음식점_좋아요(도기2호점, 오도),
+                음식점_좋아요(로이스2호점, 오도)
         ));
-        seed.set(0, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse1), 1));
-        seed.set(2, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse2), 1));
-        seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse3), 1));
-        seed.set(9, increaseLikeCount(changeIsLikedToTrue(restaurantWithCelebsAndImagesSimpleResponse4), 1));
+        seed.set(0, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse1), 1));
+        seed.set(2, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse2), 1));
+        seed.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse3), 1));
+        seed.set(9, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse4), 1));
 
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
-                멤버.id());
+                오도.id());
 
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
@@ -588,6 +588,7 @@ class RestaurantQueryServiceTest {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 specificDistance,
                 restaurant.id(),
+                Optional.empty(),
                 PageRequest.of(0, 4)
         );
 
@@ -598,6 +599,30 @@ class RestaurantQueryServiceTest {
         assertThat(result.getContent())
                 .extracting(RestaurantSimpleResponse::name)
                 .doesNotContain(restaurant.name());
+    }
+
+    @Test
+    void 주변_음식점을_조회할_때_좋아요_여부가_포함된다() {
+        // given
+        OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
+        oauthMemberRepository.save(도기);
+        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
+            Restaurant restaurant = restaurantRepository.getById(restaurantSimpleResponse.id());
+            restaurantLikeRepository.save(음식점_좋아요(restaurant, 도기));
+        }
+
+        // when
+        Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+                50000,
+                seed.get(0).id(),
+                Optional.of(도기.id()),
+                PageRequest.of(0, 4)
+        );
+
+        // then
+        List<RestaurantSimpleResponse> content = result.getContent();
+        assertThat(content).extracting(RestaurantSimpleResponse::isLiked)
+                .allMatch(isLiked -> isLiked);
     }
 
     @Nested
