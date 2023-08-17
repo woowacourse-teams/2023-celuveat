@@ -26,7 +26,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (CorsUtil.isPreflightRequest(request)) {
+        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
             return true;
         }
         LogContext logContext = new LogContext(LogId.fromRequest(request));
@@ -35,6 +35,10 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         requestInfoLogData.put("Controller Method", handlerMethod((HandlerMethod) handler));
         log.info("[Web Request START] : [\n{}]", requestInfoLogData);
         return true;
+    }
+
+    private boolean isErrorUri(HttpServletRequest request) {
+        return request.getRequestURI().equals("/error");
     }
 
     private String handlerMethod(HandlerMethod handler) {
@@ -50,7 +54,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Object handler,
             Exception ex
     ) {
-        if (CorsUtil.isPreflightRequest(request)) {
+        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
             return;
         }
         LogContext logContext = logContextHolder.get();
