@@ -30,6 +30,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
       updateToken(jsessionId);
 
       navigator('/');
+      window.location.reload();
     },
     onError: () => {
       navigator('/fail');
