@@ -27,6 +27,7 @@ function SuggestionButton() {
 
     const requestData = textareaValue ? [...checkedItems, textareaValue] : checkedItems;
     postRevisedInfo({ restaurantId: Number(id), data: { contents: requestData } });
+    window.location.reload();
   };
 
   const clickCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
