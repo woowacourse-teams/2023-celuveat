@@ -25,8 +25,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'commons-codec:commons-codec:1.15'
-    
+
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 
@@ -61,5 +63,6 @@ processResources.dependsOn('copySecret')
 tasks.register('copySecret', Copy) {
     from './backend-submodule' // 서브모듈 디렉토리 경로
     include "application*.yml"  // 복사할 파일들
+    exclude "application-local.yml"
     into './src/main/resources'  // 복사 위치
 }

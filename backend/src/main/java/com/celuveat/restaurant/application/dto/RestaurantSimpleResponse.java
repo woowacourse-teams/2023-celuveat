@@ -5,8 +5,9 @@ import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import lombok.Builder;
 
-public record RestaurantQueryResponse(
+public record RestaurantSimpleResponse(
         Long id,
         String name,
         String category,
@@ -15,17 +16,23 @@ public record RestaurantQueryResponse(
         @JsonProperty("lng") Double longitude,
         String phoneNumber,
         String naverMapUrl,
+        Integer viewCount,
         Integer distance,
+        Boolean isLiked,
+        Long likeCount,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantQueryResponse from(
+    @Builder
+    public RestaurantSimpleResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages
+            List<RestaurantImage> restaurantImages,
+            boolean isLiked,
+            Long likeCount
     ) {
-        return new RestaurantQueryResponse(
+        this(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -34,9 +41,35 @@ public record RestaurantQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
                 restaurant.distance().intValue(),
+                isLiked,
+                (likeCount == null) ? 0 : likeCount,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+        );
+    }
+
+    public static RestaurantSimpleResponse of(
+            RestaurantSimpleResponse other,
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> restaurantImages
+    ) {
+        return new RestaurantSimpleResponse(
+                other.id,
+                other.name,
+                other.category,
+                other.roadAddress,
+                other.latitude,
+                other.longitude,
+                other.phoneNumber,
+                other.naverMapUrl,
+                other.viewCount,
+                other.distance,
+                other.isLiked,
+                other.likeCount,
+                celebs,
+                restaurantImages
         );
     }
 }

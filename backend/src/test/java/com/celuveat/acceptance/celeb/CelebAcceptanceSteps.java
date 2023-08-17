@@ -25,11 +25,11 @@ public class CelebAcceptanceSteps {
         return given()
                 .when()
                 .get("/api/celebs")
-                .then().log().all()
+                .then()
                 .extract();
     }
 
-    public static List<FindAllCelebResponse> 셀럽들(
+    public static List<FindAllCelebResponse> 셀럽들만_추출_한다(
             ExtractableResponse<Response> 응답
     ) {
         return 응답.as(new TypeRef<>() {

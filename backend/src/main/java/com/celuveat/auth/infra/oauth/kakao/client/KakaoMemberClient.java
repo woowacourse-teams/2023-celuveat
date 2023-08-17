@@ -1,9 +1,9 @@
-package com.celuveat.auth.infra.oauth.kakao;
+package com.celuveat.auth.infra.oauth.kakao.client;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.infra.oauth.kakao.client.KakaoApiClient;
+import com.celuveat.auth.infra.oauth.kakao.KakaoOauthConfig;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoMemberResponse;
 import com.celuveat.auth.infra.oauth.kakao.dto.KakaoToken;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +39,21 @@ public class KakaoMemberClient implements OauthMemberClient {
         params.add("code", authCode);
         params.add("client_secret", kakaoOauthConfig.clientSecret());
         return params;
+    }
+
+    @Override
+    public void logout(String oauthServerMemberId) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", oauthServerMemberId);
+        kakaoApiClient.logoutMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
+    }
+
+    @Override
+    public void withdraw(String oauthServerMemberId) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", oauthServerMemberId);
+        kakaoApiClient.withdrawMember("KakaoAK " + kakaoOauthConfig.adminKey(), params);
     }
 }

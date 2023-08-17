@@ -35,6 +35,12 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String naverMapUrl;
 
+    private Integer viewCount;
+
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
+
     public String name() {
         return name;
     }
@@ -61,5 +67,9 @@ public class Restaurant extends BaseEntity {
 
     public String naverMapUrl() {
         return naverMapUrl;
+    }
+
+    public Integer viewCount() {
+        return viewCount;
     }
 }

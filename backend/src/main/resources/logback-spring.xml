@@ -1,0 +1,90 @@
+<configuration>
+    <springProfile name="local, default, test">
+        <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+        <property name="consoleLogPattern"
+                  value="[%d{yyyy-MM-dd' T 'HH:mm:ss.SSS}]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${consoleLogPattern}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev, prod">
+        <property name="infoLogPath" value="logs/backend/info"/>
+        <property name="warnLogPath" value="logs/backend/warn"/>
+        <property name="errorLogPath" value="logs/backend/error"/>
+        <property name="fileNamePattern" value="%d{yyyy-MM-dd}_%i.log"/>
+        <property name="logPattern" value="%d{HH:mm:ss.SSS} [%20thread] %-5level %-53logger{36} - %msg%n"/>
+
+        <appender name="info-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${infoLogPath}/info.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <maxHistory>7</maxHistory>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>1GB</totalSizeCap>
+                <fileNamePattern>${infoLogPath}/${fileNamePattern}</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${logPattern}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>NEUTRAL</onMismatch>
+            </filter>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="warn-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${warnLogPath}/warn.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <maxHistory>7</maxHistory>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>1GB</totalSizeCap>
+                <fileNamePattern>${warnLogPath}/${fileNamePattern}</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${logPattern}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <appender name="error-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${errorLogPath}/error.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <maxHistory>7</maxHistory>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>1GB</totalSizeCap>
+                <fileNamePattern>${errorLogPath}/${fileNamePattern}</fileNamePattern>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${logPattern}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="info-file"/>
+            <appender-ref ref="warn-file"/>
+            <appender-ref ref="error-file"/>
+        </root>
+    </springProfile>
+</configuration>

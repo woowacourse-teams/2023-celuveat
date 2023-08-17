@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.fixture;
 
 import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantQueryResponse;
+import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class RestaurantFixture {
             .longitude(12.3456)
             .phoneNumber("국민연금 번호")
             .naverMapUrl("국민연금 네이버지도 링크")
+            .viewCount(0)
             .build();
 
     public static Restaurant 음식점(String name) {
@@ -26,6 +27,7 @@ public class RestaurantFixture {
                 .category("category:" + name)
                 .latitude(37.5206993d)
                 .longitude(127.019975d)
+                .viewCount(0)
                 .build();
     }
 
@@ -38,11 +40,15 @@ public class RestaurantFixture {
                 .category("category:" + name)
                 .latitude(latitude)
                 .longitude(longitude)
+                .viewCount(0)
                 .build();
     }
 
-    public static boolean isCelebVisited(Long celebId, RestaurantQueryResponse restaurantQueryResponse) {
-        List<Long> celebIds = restaurantQueryResponse.celebs().stream().map(CelebQueryResponse::id).toList();
+    public static boolean isCelebVisited(
+            Long celebId, RestaurantSimpleResponse restaurantSimpleResponse
+    ) {
+        List<Long> celebIds = restaurantSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+                .toList();
         return celebIds.contains(celebId);
     }
 }

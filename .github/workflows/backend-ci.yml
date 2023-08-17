@@ -3,14 +3,14 @@ name: ✨ Celuveat Backend CI ✨
 on:
   push:
     branches:
-      - develop-backend
+      - develop-backend*
       - main
     paths:
       - 'backend/**'
 
   pull_request:
     branches:
-      - develop-backend
+      - develop-backend*
       - main
     paths:
       - 'backend/**'
@@ -32,6 +32,16 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          
+      - name: ✨ Gradle 의존성 캐싱
+        uses: actions/cache@v3
+        with:
+          path: |  
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-
 
       - name: ✨ Gradlew 권한 설정
         run: chmod +x ./gradlew

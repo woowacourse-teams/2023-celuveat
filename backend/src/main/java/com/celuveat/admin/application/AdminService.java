@@ -4,6 +4,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMA
 import static com.celuveat.restaurant.domain.SocialMedia.YOUTUBE;
 
 import com.celuveat.admin.exception.AdminException;
+import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
@@ -16,6 +17,7 @@ import com.celuveat.video.domain.VideoRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,9 +37,9 @@ public class AdminService {
         for (SaveDataRequest request : requests) {
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
-            RestaurantImage restaurantImage = request.toRestaurantImage(YOUTUBE, restaurant);
+            List<RestaurantImage> restaurantImages = toRestaurantImages(request, restaurant);
             Video video = request.toVideo(celeb, restaurant, toLocalDate(request.videoUploadDate()));
-            saveAllData(celeb, restaurant, restaurantImage, video);
+            saveAllData(celeb, restaurant, restaurantImages, video);
         }
     }
 
@@ -48,6 +50,17 @@ public class AdminService {
         ).orElseGet(request::toRestaurant);
     }
 
+    private List<RestaurantImage> toRestaurantImages(SaveDataRequest request, Restaurant restaurant) {
+        List<RestaurantImage> result = new ArrayList<>();
+        String[] imageNames = request.imageName().split(",");
+        for (String imageName : imageNames) {
+            imageName = imageName.strip();
+            RestaurantImage restaurantImage = request.toRestaurantImage(imageName, YOUTUBE, restaurant);
+            result.add(restaurantImage);
+        }
+        return result;
+    }
+
     private LocalDate toLocalDate(String rawData) {
         try {
             return LocalDate.parse(rawData, DateTimeFormatter.ofPattern("yyyy. M. d."));
@@ -56,10 +69,17 @@ public class AdminService {
         }
     }
 
-    private void saveAllData(Celeb celeb, Restaurant restaurant, RestaurantImage restaurantImage, Video video) {
+    private void saveAllData(Celeb celeb, Restaurant restaurant, List<RestaurantImage> images, Video video) {
         celebRepository.save(celeb);
         restaurantRepository.save(restaurant);
-        restaurantImageRepository.save(restaurantImage);
+        restaurantImageRepository.saveAll(images);
         videoRepository.save(video);
+    }
+
+    public void saveCelebs(List<SaveCelebRequest> requests) {
+        List<Celeb> celebs = requests.stream()
+                .map(SaveCelebRequest::toCeleb)
+                .toList();
+        celebRepository.saveAll(celebs);
     }
 }

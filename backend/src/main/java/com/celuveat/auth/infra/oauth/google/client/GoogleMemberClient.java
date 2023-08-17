@@ -1,9 +1,9 @@
-package com.celuveat.auth.infra.oauth.google;
+package com.celuveat.auth.infra.oauth.google.client;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.auth.domain.OauthServerType;
 import com.celuveat.auth.domain.client.OauthMemberClient;
-import com.celuveat.auth.infra.oauth.google.client.GoogleApiClient;
+import com.celuveat.auth.infra.oauth.google.GoogleOauthConfig;
 import com.celuveat.auth.infra.oauth.google.dto.GoogleMemberResponse;
 import com.celuveat.auth.infra.oauth.google.dto.GoogleToken;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +39,13 @@ public class GoogleMemberClient implements OauthMemberClient {
         params.add("code", authCode);
         params.add("redirect_uri", googleOauthConfig.redirectUri());
         return params;
+    }
+
+    @Override
+    public void logout(String oauthServerMemberId) {
+    }
+
+    @Override
+    public void withdraw(String oauthServerMemberId) {
     }
 }
