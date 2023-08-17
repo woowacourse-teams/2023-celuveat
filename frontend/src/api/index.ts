@@ -79,7 +79,7 @@ export const postRevisedInfo = async ({
   data,
 }: {
   restaurantId: number;
-  data: { content: string[] };
+  data: { contents: string[] };
 }) => {
   const response = await apiClient.post(`/restaurants/${restaurantId}/correction`, data);
   return response.data;
