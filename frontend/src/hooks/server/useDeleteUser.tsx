@@ -9,11 +9,11 @@ import { shallow } from 'zustand/shallow';
 import useToastState from '~/hooks/store/useToastState';
 import useTokenState from '~/hooks/store/useTokenState';
 
-import { deleteUserData } from '~/api/oauth';
+import { deleteUserData, getLogout } from '~/api/oauth';
 
 const useDeleteUser = () => {
   const navigator = useNavigate();
-  const oauth = useTokenState(state => state.oauth);
+  const [oauth, clearToken] = useTokenState(state => [state.oauth, state.clearToken]);
   const { onFailure, close } = useToastState(
     state => ({
       onSuccess: state.onSuccess,
@@ -25,10 +25,6 @@ const useDeleteUser = () => {
 
   const onWithdraw = useMutation({
     mutationFn: deleteUserData,
-
-    onSuccess: () => {
-      navigator('/');
-    },
 
     onError: (error: AxiosError) => {
       switch (error.response.status) {
@@ -44,9 +40,12 @@ const useDeleteUser = () => {
   const deleteUser = useCallback(() => {
     if (oauth !== '') {
       onWithdraw.mutate(oauth);
+      getLogout(oauth);
+      clearToken();
     }
 
     close();
+    navigator('/');
   }, []);
 
   const onCancelDeleteUser = useCallback(() => {
