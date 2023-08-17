@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import React from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
@@ -39,15 +38,14 @@ const StyledLoginButtonWrapper = styled.button<LoginButtonProps>`
   display: flex;
   align-items: center;
 
-  border: none;
-  background: var(--white);
-
   width: 100%;
   height: fit-content;
 
   padding: 2.4rem 1.6rem;
 
+  border: none;
   border-radius: 12px;
+  background: var(--white);
 
   font-size: 1.4rem;
   font-weight: 600;
