@@ -1,7 +1,6 @@
 package com.celuveat.common.log.request;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;

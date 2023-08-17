@@ -1,10 +1,8 @@
 package com.celuveat.common.log.request;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ResponseInfoLogData {
 
