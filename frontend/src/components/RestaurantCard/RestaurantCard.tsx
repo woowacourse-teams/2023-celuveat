@@ -7,10 +7,10 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import useToggleRestaurantLike from '~/hooks/server/useToggleRestaurantLike';
 import PopUpContainer from '~/components/PopUpContainer';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
+import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -22,7 +22,7 @@ interface RestaurantCardProps {
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, toggleRestaurantLike } = useToggleRestaurantLike(restaurant);
+  const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
@@ -49,7 +49,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
         <StyledImageViewer>
           <ImageCarousel images={images} type={type} />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love width={20} fill={restaurant.isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+            <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
         <section>
