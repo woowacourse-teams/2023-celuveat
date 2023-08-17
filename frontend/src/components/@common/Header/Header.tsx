@@ -44,8 +44,8 @@ function Header() {
   return (
     <>
       <StyledHeader isMobile={isMobile}>
-        <Link to="/">
-          <Logo role="button" width={136} />
+        <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
+          <Logo width={136} />
         </Link>
         {!isMobile && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>

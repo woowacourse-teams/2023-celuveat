@@ -24,13 +24,13 @@ function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropD
   };
 
   return (
-    <StyledInfoDropDown role="button" aria-label={label}>
-      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown}>
+    <StyledInfoDropDown aria-hidden>
+      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown} aria-label={label}>
         <InfoButton isShow={isShow} />
       </StyledInfoButtonWrapper>
 
       {isShow && (
-        <StyledDropDownWrapper>
+        <StyledDropDownWrapper aria-hidden>
           <StyledSelectContainer>
             {options.map(({ id, value }) => (
               <InfoDropDownOption key={id} value={value} onClick={onSelection()} />
