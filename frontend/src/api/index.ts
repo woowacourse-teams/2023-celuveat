@@ -5,6 +5,7 @@ import type { RestaurantListData } from '~/@types/api.types';
 import { CoordinateBoundary } from '~/@types/map.types';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import getQueryString from '~/utils/getQueryString';
+import { userInstance } from './User';
 
 export interface GetRestaurantsQueryParams {
   boundary: CoordinateBoundary;
@@ -54,12 +55,12 @@ export const getCelebs = async () => {
 };
 
 export const getRestaurantDetail = async (restaurantId: string, celebId: string) => {
-  const response = await apiClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
+  const response = await userInstance.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
   return response.data;
 };
 
 export const getNearByRestaurant = async (restaurantId: string) => {
-  const response = await apiClient.get(`/restaurants/${restaurantId}/nearby`);
+  const response = await userInstance.get(`/restaurants/${restaurantId}/nearby`);
   return response.data;
 };
 

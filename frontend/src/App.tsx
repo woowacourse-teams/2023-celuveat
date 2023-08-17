@@ -21,7 +21,6 @@ function App() {
         <Route path="/restaurants/like" element={<WishListPage />} />
         <Route path="/withdrawal" element={<WithdrawalPage />} />
         <Route path="/oauth/redirect/kakao" element={<OauthRedirectPage type="kakao" />} />
-        <Route path="/oauth/redirect/naver" element={<OauthRedirectPage type="naver" />} />
         <Route path="/oauth/redirect/google" element={<OauthRedirectPage type="google" />} />
       </Routes>
     </BrowserRouter>

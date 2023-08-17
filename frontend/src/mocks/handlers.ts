@@ -35,7 +35,6 @@ export const handlers = [
 
   rest.get('/reviews', (req, res, ctx) => {
     const restaurantId = req.url.searchParams.get('restaurantId');
-    console.log(restaurantId);
 
     return res(ctx.status(200), ctx.json(Fixture.restaurantReviews));
   }),
