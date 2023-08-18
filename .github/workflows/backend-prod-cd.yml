@@ -2,9 +2,11 @@ name: ✨ Celuveat backend PROD CD ✨
 
 env:
   PROFILE: prod
-  IMAGE_TAG: back-prod-${{ secrets.APP_VERSION_TAG }}
+  IMAGE_TAG: back-dev-${{ secrets.APP_VERSION_TAG }}
   DOCKER_CONTAINER_NAME: backend
   DOCKER_HUB_REPOSITORY: celuveat/celuveat
+  SERVER_LOG_DIR_PATH: ~/log
+  DOCKER_LOG_DIR_PATH: /app/logs
 
 on:
   workflow_dispatch:
@@ -86,4 +88,5 @@ jobs:
             -p 8080:8080 \
             -p 18080:18080 \
             -e "SPRING_PROFILES_ACTIVE=${{ env.PROFILE }}" \
+            -v ${{ env.SERVER_LOG_DIR_PATH }}:${{ env.DOCKER_LOG_DIR_PATH }} \
             ${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.IMAGE_TAG }}
