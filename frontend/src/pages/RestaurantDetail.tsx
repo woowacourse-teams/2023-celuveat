@@ -227,7 +227,7 @@ function RestaurantDetail() {
         </StyledMainRestaurantDetail>
         <Footer />
       </>
-      {isMobile && (
+      {isMobile && isSuccessRestaurantDetail && (
         <StyledMobileBottomSheet>
           <SuggestionButton />
           <StyledMainLinkContainer isMobile={isMobile}>
