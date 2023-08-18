@@ -121,7 +121,7 @@ function MainPage() {
               />
             </StyledRightSide>
           </StyledLayout>
-          <PopUpContainer isShowImg />
+          <PopUpContainer />
           <Footer />
         </>
       )}

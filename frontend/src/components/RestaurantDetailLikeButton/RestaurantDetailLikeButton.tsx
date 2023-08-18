@@ -16,12 +16,12 @@ function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonPr
       <button type="button" onClick={toggleRestaurantLike}>
         {isLiked ? (
           <>
-            <WhiteLove width={30} />
+            <WhiteLove width={30} fill="#fff" />
             <div>위시리스트에서 삭제하기</div>
           </>
         ) : (
           <>
-            <WhiteLove width={30} fill="#fff" />
+            <WhiteLove width={30} />
             <div>위시리스트에 저장하기</div>
           </>
         )}

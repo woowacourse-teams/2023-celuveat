@@ -9,17 +9,16 @@ interface StyledPopUpProps {
 
 interface PopUpProps {
   text: string;
-  imgUrl: string;
+  imgUrl?: string;
   isSuccess?: boolean;
-  isShowImg: boolean;
 }
 
-function PopUp({ text, imgUrl, isShowImg, isSuccess = false }: PopUpProps) {
+function PopUp({ text, imgUrl, isSuccess = false }: PopUpProps) {
   const { isMobile } = useMediaQuery();
 
   return (
     <StyledPopUpWrapper isSuccess={isSuccess} isMobile={isMobile}>
-      {isShowImg && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
+      {imgUrl && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
       <StyledPopUpText>{text}</StyledPopUpText>
     </StyledPopUpWrapper>
   );

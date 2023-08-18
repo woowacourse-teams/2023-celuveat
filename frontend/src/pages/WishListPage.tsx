@@ -33,7 +33,7 @@ function WishListPage() {
         </StyledMobileLayout>
       </div>
       <Footer />
-      <PopUpContainer isShowImg />
+      <PopUpContainer />
     </StyledWishListPageWrapper>
   );
 }

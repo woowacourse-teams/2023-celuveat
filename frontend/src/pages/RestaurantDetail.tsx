@@ -242,6 +242,7 @@ function RestaurantDetail() {
                 name,
                 images,
                 roadAddress,
+                isLiked,
                 category,
                 phoneNumber,
                 naverMapUrl,
@@ -250,7 +251,7 @@ function RestaurantDetail() {
               }}
             />
           </StyledMainLinkContainer>
-          <PopUpContainer isShowImg />
+          <PopUpContainer />
         </StyledMobileBottomSheet>
       )}
     </>
