@@ -27,7 +27,7 @@ public class AdminController {
     ResponseEntity<Void> saveData(@RequestBody String rawData) {
         String[] rows = rawData.split(System.lineSeparator());
         List<SaveDataRequest> requests = Arrays.stream(rows)
-                .map(row -> row.split(TAB))
+                .map(row -> row.split(TAB, -1))
                 .map(SaveDataRequest::from)
                 .toList();
         adminService.saveData(requests);

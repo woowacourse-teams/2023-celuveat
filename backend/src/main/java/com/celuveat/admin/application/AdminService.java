@@ -1,7 +1,7 @@
 package com.celuveat.admin.application;
 
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
-import static com.celuveat.restaurant.domain.SocialMedia.YOUTUBE;
+import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
 
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
@@ -38,8 +38,8 @@ public class AdminService {
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
             List<RestaurantImage> restaurantImages = toRestaurantImages(request, restaurant);
-            Video video = request.toVideo(celeb, restaurant, toLocalDate(request.videoUploadDate()));
-            saveAllData(celeb, restaurant, restaurantImages, video);
+            List<Video> videos = toVideos(request, celeb, restaurant);
+            saveAllData(restaurant, restaurantImages, videos);
         }
     }
 
@@ -51,14 +51,30 @@ public class AdminService {
     }
 
     private List<RestaurantImage> toRestaurantImages(SaveDataRequest request, Restaurant restaurant) {
-        List<RestaurantImage> result = new ArrayList<>();
+        List<RestaurantImage> images = new ArrayList<>();
         String[] imageNames = request.imageName().split(",");
         for (String imageName : imageNames) {
-            imageName = imageName.strip();
-            RestaurantImage restaurantImage = request.toRestaurantImage(imageName, YOUTUBE, restaurant);
-            result.add(restaurantImage);
+            RestaurantImage restaurantImage = request.toRestaurantImage(imageName.strip(), restaurant);
+            images.add(restaurantImage);
         }
-        return result;
+        return images;
+    }
+
+    private List<Video> toVideos(SaveDataRequest request, Celeb celeb, Restaurant restaurant) {
+        String[] videoUrls = request.youtubeVideoUrl().split(",");
+        String[] uploadDates = request.videoUploadDate().split(",");
+        if (videoUrls.length != uploadDates.length) {
+            throw new AdminException(MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE);
+        }
+
+        List<Video> videos = new ArrayList<>();
+        for (int i = 0; i < videoUrls.length; i++) {
+            String videoUrl = videoUrls[i].strip();
+            String rawUploadDate = uploadDates[i].strip();
+            Video video = request.toVideo(videoUrl, toLocalDate(rawUploadDate), celeb, restaurant);
+            videos.add(video);
+        }
+        return videos;
     }
 
     private LocalDate toLocalDate(String rawData) {
@@ -69,11 +85,10 @@ public class AdminService {
         }
     }
 
-    private void saveAllData(Celeb celeb, Restaurant restaurant, List<RestaurantImage> images, Video video) {
-        celebRepository.save(celeb);
+    private void saveAllData(Restaurant restaurant, List<RestaurantImage> images, List<Video> videos) {
         restaurantRepository.save(restaurant);
         restaurantImageRepository.saveAll(images);
-        videoRepository.save(video);
+        videoRepository.saveAll(videos);
     }
 
     public void saveCelebs(List<SaveCelebRequest> requests) {
