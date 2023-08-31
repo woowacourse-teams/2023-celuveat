@@ -1,0 +1,82 @@
+package com.celuveat.restaurant.command.application;
+
+import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthMemberRepository;
+import com.celuveat.common.IntegrationTest;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantRepository;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@IntegrationTest
+@DisplayNameGeneration(ReplaceUnderscores.class)
+@DisplayName("음식점 리뷰 좋아요 서비스(RestaurantReviewLikeService) 은(는)")
+class RestaurantReviewLikeServiceTest {
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private RestaurantReviewRepository restaurantReviewRepository;
+
+    @Autowired
+    private OauthMemberRepository oauthMemberRepository;
+
+    @Autowired
+    private RestaurantReviewLikeRepository restaurantReviewLikeRepository;
+
+    @Autowired
+    private RestaurantReviewLikeService restaurantReviewLikeService;
+
+    @Test
+    void 좋아요를_누른다() {
+        // given
+        Restaurant 음식점 = 음식점("음식점");
+        OauthMember 말랑 = 멤버("말랑");
+        RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        restaurantRepository.save(음식점);
+        oauthMemberRepository.save(말랑);
+        restaurantReviewRepository.save(음식점_리뷰);
+
+        // when
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
+        Optional<RestaurantReviewLike> result =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 말랑);
+
+        // then
+        assertThat(result).isPresent();
+    }
+
+    @Test
+    void 좋아요가_이미_있으면_좋아요를_지운다() {
+        // given
+        Restaurant 음식점 = 음식점("음식점");
+        OauthMember 말랑 = 멤버("말랑");
+        RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        restaurantRepository.save(음식점);
+        oauthMemberRepository.save(말랑);
+        restaurantReviewRepository.save(음식점_리뷰);
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
+
+        // when
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
+        Optional<RestaurantReviewLike> result =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 말랑);
+
+        // then
+        assertThat(result).isEmpty();
+    }
+}
