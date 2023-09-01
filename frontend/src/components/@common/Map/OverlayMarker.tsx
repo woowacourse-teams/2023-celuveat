@@ -45,9 +45,9 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
           >
             <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
             {restaurant.isLiked && (
-              <LikeButton aria-label="좋아요" type="button">
-                {restaurant.isLiked && <Love width={20} fill="red" fillOpacity={0.5} aria-hidden="true" />}
-              </LikeButton>
+              <StyledLikeButton aria-label="좋아요" type="button">
+                <Love width={20} fill="red" fillOpacity={0.8} aria-hidden="true" />
+              </StyledLikeButton>
             )}
           </StyledMarker>
           {isClicked && (
@@ -127,7 +127,7 @@ const StyledModal = styled.div<{ quadrant: Quadrant }>`
   box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
 `;
 
-const LikeButton = styled.button`
+const StyledLikeButton = styled.button`
   position: absolute;
   right: -12px;
   bottom: -12px;
