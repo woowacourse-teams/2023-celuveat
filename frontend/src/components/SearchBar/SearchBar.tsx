@@ -57,9 +57,13 @@ function SearchBar() {
     };
   }, []);
 
+  const clearInput = () => {
+    inputRef.current.value = '';
+  };
+
   return (
     <StyledContainer>
-      <StyledInput placeholder="지역으로 검색하기" data-cy="지역 검색" ref={inputRef} />
+      <StyledInput placeholder="지역으로 검색하기" data-cy="지역 검색" ref={inputRef} onFocus={clearInput} />
       <StyledButton type="button" aria-hidden>
         <SearchIcon aria-label="검색" />
       </StyledButton>

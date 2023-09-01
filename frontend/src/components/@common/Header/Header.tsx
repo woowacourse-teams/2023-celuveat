@@ -18,7 +18,7 @@ function Header() {
   const { isMobile } = useMediaQuery();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const navigator = useNavigate();
-  const { id } = useParams();
+  const { id, celebId } = useParams();
   const [token, clearToken, oauth] = useTokenStore(state => [state.token, state.clearToken, state.oauth]);
 
   const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
@@ -48,7 +48,7 @@ function Header() {
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(isMobile || id) && (
+        {!(isMobile || id || celebId) && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
