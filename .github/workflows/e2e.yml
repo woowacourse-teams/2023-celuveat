@@ -13,14 +13,19 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     name: E2E Test 딱 대라!
+    env:
+      working-directory: ./frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cypress run
+      - name: 🍔 yarn install
+        run: yarn install
+        working-directory: ${{ env.working-directory }}
+
+      - name: 🍔 E2E 테스트
         uses: cypress-io/github-action@v5
         with:
-          install: yarn install
-          build: yarn build
+          working-directory: ${{ env.working-directory }}
           start: yarn start
-          working-directory: ./frontend
+          browser: chrome
