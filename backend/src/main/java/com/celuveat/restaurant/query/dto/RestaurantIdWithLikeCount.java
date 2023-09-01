@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.domain.dto;
+package com.celuveat.restaurant.query.dto;
 
 public record RestaurantIdWithLikeCount(
         Long restaurantId,

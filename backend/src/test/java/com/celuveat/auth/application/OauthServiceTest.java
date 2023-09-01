@@ -21,6 +21,7 @@ import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
 import com.celuveat.restaurant.domain.review.RestaurantReviewRepository;
+import com.celuveat.restaurant.query.RestaurantLikeQueryRepository;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,6 +43,9 @@ class OauthServiceTest {
 
     @Autowired
     private RestaurantLikeRepository restaurantLikeRepository;
+
+    @Autowired
+    private RestaurantLikeQueryRepository restaurantLikeQueryRepository;
 
     @Autowired
     private RestaurantReviewRepository restaurantReviewRepository;
@@ -75,7 +79,7 @@ class OauthServiceTest {
         oauthService.withdraw(KAKAO, 도기.id());
 
         // then
-        assertThat(restaurantLikeRepository.countByRestaurant(새벽집)).isEqualTo(0);
+        assertThat(restaurantLikeQueryRepository.countByRestaurant(새벽집)).isEqualTo(0);
         BaseExceptionType exceptionType = assertThrows(AuthException.class,
                 () -> oauthMemberRepository.getById(도기.id())).exceptionType();
         assertThat(exceptionType).isEqualTo(NOT_FOUND_MEMBER);

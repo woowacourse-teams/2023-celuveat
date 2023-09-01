@@ -40,8 +40,8 @@ import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_�
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

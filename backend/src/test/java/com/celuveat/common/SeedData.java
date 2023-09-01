@@ -9,12 +9,12 @@ import static com.celuveat.video.fixture.VideoFixture.영상;
 
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.celeb.domain.CelebRepository;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
 import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantRepository;
-import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
 import com.celuveat.video.domain.VideoRepository;
 import java.util.List;

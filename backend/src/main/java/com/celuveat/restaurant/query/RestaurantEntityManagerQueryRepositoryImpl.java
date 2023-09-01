@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.domain;
+package com.celuveat.restaurant.query;
 
 import static com.celuveat.common.query.DynamicQueryCondition.notNull;
 import static com.celuveat.common.query.DynamicQueryCondition.notNullRecursive;
@@ -7,9 +7,10 @@ import static org.springframework.util.StringUtils.hasText;
 
 import com.celuveat.common.query.DynamicQuery;
 import com.celuveat.common.query.DynamicQueryAssembler;
-import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.restaurant.exception.RestaurantExceptionType;
+import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantQueryRepository {
+public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEntityManagerQueryRepository {
 
     private static final String HAVERSINE_FORMULA = """
             (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
@@ -33,7 +34,7 @@ public class RestaurantQueryRepository {
              """;
 
     private static final String SELECT_RESTAURANT_JOIN_VIDEO_AND_CELEB = """
-            SELECT DISTINCT new com.celuveat.restaurant.domain.dto.RestaurantWithDistance(
+            SELECT DISTINCT new com.celuveat.restaurant.query.dto.RestaurantWithDistance(
                 r.id,
                 r.name,
                 r.category,
@@ -89,7 +90,7 @@ public class RestaurantQueryRepository {
             """;
 
     private static final String SELECT_RESTAURANT_NEARBY_SPECIFIC_DISTANCE = """
-            SELECT new com.celuveat.restaurant.domain.dto.RestaurantWithDistance(
+            SELECT new com.celuveat.restaurant.query.dto.RestaurantWithDistance(
                 r.id,
                 r.name,
                 r.category,
@@ -119,6 +120,7 @@ public class RestaurantQueryRepository {
 
     private final EntityManager em;
 
+    @Override
     public Page<RestaurantWithDistance> getRestaurantsWithDistance(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
@@ -207,6 +209,7 @@ public class RestaurantQueryRepository {
         return ORDER_BY_DISTANCE_ASC;
     }
 
+    @Override
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
             int distance,
             Long restaurantId,
@@ -250,21 +253,6 @@ public class RestaurantQueryRepository {
                 .build();
     }
 
-    public record RestaurantSearchCond(
-            Long celebId,
-            String category,
-            String restaurantName
-    ) {
-    }
-
-    public record LocationSearchCond(
-            Double lowLatitude,
-            Double highLatitude,
-            Double lowLongitude,
-            Double highLongitude
-    ) {
-    }
-
     //FIXME
     @RequiredArgsConstructor
     public enum RestaurantSortType {
@@ -281,5 +269,20 @@ public class RestaurantQueryRepository {
                     .findFirst()
                     .orElseThrow(() -> new RestaurantException(RestaurantExceptionType.UNSUPPORTED_SORT_PROPERTY));
         }
+    }
+
+    public record RestaurantSearchCond(
+            Long celebId,
+            String category,
+            String restaurantName
+    ) {
+    }
+
+    public record LocationSearchCond(
+            Double lowLatitude,
+            Double highLatitude,
+            Double lowLongitude,
+            Double highLongitude
+    ) {
     }
 }

@@ -3,12 +3,12 @@ package com.celuveat.restaurant.presentation;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.auth.Auth;
-import com.celuveat.restaurant.application.RestaurantReviewQueryService;
 import com.celuveat.restaurant.application.RestaurantReviewService;
 import com.celuveat.restaurant.application.dto.DeleteReviewCommand;
-import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
+import com.celuveat.restaurant.query.RestaurantReviewQueryService;
+import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

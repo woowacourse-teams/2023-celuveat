@@ -33,7 +33,7 @@ public class RequestInfoLogData {
                 Spliterators.spliteratorUnknownSize(parameterNames.asIterator(), Spliterator.ORDERED), false
         );
         return parameterStream.map(param -> "%s = %s".formatted(param, request.getParameter(param)))
-                .collect(Collectors.joining(", ", "[","]"));
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 
     @Override

@@ -1,10 +1,11 @@
-package com.celuveat.restaurant.application;
+package com.celuveat.restaurant.query;
 
-import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.application.mapper.RestaurantRelocator;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.application.RestaurantService;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.mapper.RestaurantRelocator;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

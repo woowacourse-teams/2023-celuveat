@@ -1,8 +1,7 @@
-package com.celuveat.restaurant.application.dto;
+package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.restaurant.domain.RestaurantImage;
-import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Builder;

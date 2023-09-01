@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
 import jakarta.validation.constraints.NotNull;
 
 public record LocationSearchCondRequest(

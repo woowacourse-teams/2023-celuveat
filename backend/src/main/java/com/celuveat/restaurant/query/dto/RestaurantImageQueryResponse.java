@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.application.dto;
+package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.domain.RestaurantImage;

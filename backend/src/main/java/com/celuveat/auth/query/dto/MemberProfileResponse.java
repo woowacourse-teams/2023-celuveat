@@ -1,4 +1,4 @@
-package com.celuveat.auth.application.dto;
+package com.celuveat.auth.query.dto;
 
 public record MemberProfileResponse(
         Long memberId,

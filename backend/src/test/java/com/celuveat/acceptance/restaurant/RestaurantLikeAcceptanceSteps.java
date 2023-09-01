@@ -3,10 +3,10 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

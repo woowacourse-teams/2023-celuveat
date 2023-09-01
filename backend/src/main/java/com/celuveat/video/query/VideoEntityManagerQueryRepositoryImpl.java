@@ -1,10 +1,10 @@
-package com.celuveat.video.domain;
+package com.celuveat.video.query;
 
 import static com.celuveat.common.query.DynamicQueryCondition.notNull;
 
 import com.celuveat.common.query.DynamicQuery;
 import com.celuveat.common.query.DynamicQueryAssembler;
-import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VideoQueryRepository {
+public class VideoEntityManagerQueryRepositoryImpl implements VideoEntityManagerQueryRepository {
 
     private static final String SELECT_VIDEO = """
-            SELECT new com.celuveat.video.application.dto.VideoWithCelebQueryResponse(
+            SELECT new com.celuveat.video.query.dto.VideoWithCelebQueryResponse(
                 v.id,
                 v.youtubeUrl as youtubeVideoKey,
                 v.uploadDate,
@@ -46,6 +46,7 @@ public class VideoQueryRepository {
 
     private final EntityManager em;
 
+    @Override
     public Page<VideoWithCelebQueryResponse> getVideosWithCeleb(
             VideoSearchCond videoSearchCond,
             Pageable pageable

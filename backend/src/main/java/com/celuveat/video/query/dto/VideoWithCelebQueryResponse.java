@@ -1,4 +1,4 @@
-package com.celuveat.video.application.dto;
+package com.celuveat.video.query.dto;
 
 import com.celuveat.video.utils.VideoResponseUtils;
 import java.time.LocalDate;

@@ -1,8 +1,8 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.query.dto.CelebQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.List;
 
 public class RestaurantFixture {

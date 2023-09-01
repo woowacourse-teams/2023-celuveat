@@ -11,10 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
-import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,8 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("음식점 조회용 레포지토리(RestaurantQueryRepository) 은(는)")
-class RestaurantQueryRepositoryTest {
+@DisplayName("음식점 조회용 레포지토리(RestaurantEntityManagerQueryRepository) 은(는)")
+class RestaurantEntityManagerQueryRepositoryImplTest {
 
     private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
 
@@ -43,7 +44,7 @@ class RestaurantQueryRepositoryTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantQueryRepository restaurantQueryRepository;
+    private RestaurantEntityManagerQueryRepositoryImpl restaurantQueryRepository;
 
     @BeforeEach
     void setUp() {

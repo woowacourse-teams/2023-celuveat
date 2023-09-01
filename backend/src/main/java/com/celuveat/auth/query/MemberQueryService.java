@@ -1,8 +1,7 @@
-package com.celuveat.auth.application;
+package com.celuveat.auth.query;
 
-import com.celuveat.auth.application.dto.MemberProfileResponse;
 import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.domain.OauthMemberRepository;
+import com.celuveat.auth.query.dto.MemberProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberQueryService {
 
-    private final OauthMemberRepository oauthMemberRepository;
+    private final OauthMemberQueryRepository oauthMemberQueryRepository;
 
     public MemberProfileResponse getProfile(Long memberId) {
-        OauthMember member = oauthMemberRepository.getById(memberId);
+        OauthMember member = oauthMemberQueryRepository.getById(memberId);
         return new MemberProfileResponse(member.id(), member.nickname(), member.profileImageUrl());
     }
 }

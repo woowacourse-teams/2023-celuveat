@@ -5,8 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.celeb.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.video.application.dto.VideoWithCelebQueryResponse;
-import com.celuveat.video.domain.VideoQueryRepository.VideoSearchCond;
+import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl;
+import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl.VideoSearchCond;
+import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -20,13 +21,13 @@ import org.springframework.data.domain.PageRequest;
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("영상 조회용 Repo(VideoQueryRepository) 은(는)")
-class VideoQueryRepositoryTest {
+class VideoEntityManagerQueryRepositoryImplTest {
 
     @Autowired
     private SeedData seedData;
 
     @Autowired
-    private VideoQueryRepository videoQueryRepository;
+    private VideoEntityManagerQueryRepositoryImpl videoEntityManagerQueryRepositoryImpl;
 
     @Nested
     class 영상_검색 {
@@ -40,7 +41,7 @@ class VideoQueryRepositoryTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryRepository.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
                     new VideoSearchCond(null, null),
                     PageRequest.of(0, expected.size())
             );
@@ -62,7 +63,7 @@ class VideoQueryRepositoryTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryRepository.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
                     new VideoSearchCond(null, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
@@ -84,7 +85,7 @@ class VideoQueryRepositoryTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryRepository.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
                     new VideoSearchCond(expectedCelebId, null),
                     PageRequest.of(0, expected.size())
             );
@@ -108,7 +109,7 @@ class VideoQueryRepositoryTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryRepository.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
                     new VideoSearchCond(expectedCelebId, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );

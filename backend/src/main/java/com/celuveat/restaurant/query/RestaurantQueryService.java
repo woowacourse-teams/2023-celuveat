@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.application;
+package com.celuveat.restaurant.query;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
@@ -7,22 +7,18 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.celuveat.celeb.domain.Celeb;
-import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.domain.Restaurant;
 import com.celuveat.restaurant.domain.RestaurantImage;
-import com.celuveat.restaurant.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.domain.RestaurantLike;
-import com.celuveat.restaurant.domain.RestaurantLikeRepository;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
-import com.celuveat.restaurant.domain.RestaurantRepository;
-import com.celuveat.restaurant.domain.dto.RestaurantIdWithLikeCount;
-import com.celuveat.restaurant.domain.dto.RestaurantWithDistance;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantIdWithLikeCount;
+import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.domain.Video;
-import com.celuveat.video.domain.VideoRepository;
+import com.celuveat.video.query.VideoQueryRepository;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +35,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RestaurantQueryService {
 
-    private final RestaurantRepository restaurantRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final RestaurantLikeQueryRepository restaurantLikeQueryRepository;
     private final RestaurantQueryRepository restaurantQueryRepository;
-    private final VideoRepository videoRepository;
-    private final RestaurantImageRepository restaurantImageRepository;
+    private final VideoQueryRepository videoQueryRepository;
+    private final RestaurantImageQueryRepository restaurantImageQueryRepository;
 
     public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
-        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        Restaurant restaurant = restaurantQueryRepository.getById(restaurantId);
         return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant, memberId);
     }
 
@@ -55,8 +50,8 @@ public class RestaurantQueryService {
             Optional<Long> memberId
     ) {
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
-        List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurant(restaurant);
-        int likeCount = restaurantLikeRepository.countByRestaurant(restaurant);
+        List<RestaurantImage> restaurantImages = restaurantImageQueryRepository.findAllByRestaurant(restaurant);
+        int likeCount = restaurantLikeQueryRepository.countByRestaurant(restaurant);
         return RestaurantDetailResponse.builder()
                 .restaurant(restaurant)
                 .celebs(celebs)
@@ -67,14 +62,14 @@ public class RestaurantQueryService {
     }
 
     private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
-        return videoRepository.findAllByRestaurant(restaurant).stream()
+        return videoQueryRepository.findAllByRestaurant(restaurant).stream()
                 .map(Video::celeb)
                 .toList();
     }
 
     private boolean applyLikedRestaurant(Restaurant restaurant, Optional<Long> memberId) {
         return memberId.isPresent()
-                && restaurantLikeRepository.findByRestaurantAndMemberId(restaurant, memberId.get()).isPresent();
+                && restaurantLikeQueryRepository.findByRestaurantAndMemberId(restaurant, memberId.get()).isPresent();
     }
 
     public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
@@ -117,8 +112,8 @@ public class RestaurantQueryService {
     private RestaurantsIdWithCelebsAndImagesGroupByRestaurantId restaurantDatasGroupByRestaurantId(
             List<Long> restaurantIds
     ) {
-        List<Video> videos = videoRepository.findAllByRestaurantIdIn(restaurantIds);
-        List<RestaurantImage> images = restaurantImageRepository.findAllByRestaurantIdIn(restaurantIds);
+        List<Video> videos = videoQueryRepository.findAllByRestaurantIdIn(restaurantIds);
+        List<RestaurantImage> images = restaurantImageQueryRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<Celeb>> celebsMap = toCelebsGroupByRestaurantId(videos);
         Map<Long, List<RestaurantImage>> restaurantMap = groupingImageByRestaurant(images);
         return new RestaurantsIdWithCelebsAndImagesGroupByRestaurantId(restaurantIds.stream()
@@ -160,14 +155,14 @@ public class RestaurantQueryService {
     }
 
     private Set<Long> getRestaurantIds(Long memberId) {
-        return restaurantLikeRepository.findAllByMemberId(memberId).stream()
+        return restaurantLikeQueryRepository.findAllByMemberId(memberId).stream()
                 .map(RestaurantLike::restaurant)
                 .map(Restaurant::id)
                 .collect(toUnmodifiableSet());
     }
 
     private Map<Long, Long> likeCountGroupByRestaurantIds(List<Long> restaurantIds) {
-        return restaurantLikeRepository.likeCountGroupByRestaurantsId(restaurantIds)
+        return restaurantLikeQueryRepository.likeCountGroupByRestaurantsId(restaurantIds)
                 .stream()
                 .collect(toMap(
                         RestaurantIdWithLikeCount::restaurantId,
@@ -188,7 +183,7 @@ public class RestaurantQueryService {
 
     public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         List<RestaurantLike> restaurantLikes =
-                restaurantLikeRepository.findAllByMemberIdOrderByCreatedDateDesc(memberId);
+                restaurantLikeQueryRepository.findAllByMemberIdOrderByCreatedDateDesc(memberId);
         return mapToRestaurantLikeQueryResponse(restaurantLikes);
     }
 

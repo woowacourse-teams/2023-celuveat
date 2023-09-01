@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.application.dto;
+package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.auth.domain.OauthMember;
 import com.celuveat.restaurant.domain.review.RestaurantReview;

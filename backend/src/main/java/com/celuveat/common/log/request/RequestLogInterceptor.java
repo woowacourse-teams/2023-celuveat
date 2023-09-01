@@ -4,12 +4,12 @@ import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
 import com.celuveat.common.log.context.LogId;
 import com.celuveat.common.log.query.QueryCounter;
-import com.celuveat.common.util.CorsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -26,7 +26,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
+        if (CorsUtils.isPreFlightRequest(request) || isErrorUri(request)) {
             return true;
         }
         LogContext logContext = new LogContext(LogId.fromRequest(request));
@@ -54,7 +54,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Object handler,
             Exception ex
     ) {
-        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
+        if (CorsUtils.isPreFlightRequest(request) || isErrorUri(request)) {
             return;
         }
         LogContext logContext = logContextHolder.get();
