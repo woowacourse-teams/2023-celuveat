@@ -33,7 +33,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         logContextHolder.setLogContext(logContext);
         RequestInfoLogData requestInfoLogData = new RequestInfoLogData(logContext.logId(), request);
         requestInfoLogData.put("Controller Method", handlerMethod((HandlerMethod) handler));
-        log.info("[Web Request START] : [\n{}]", requestInfoLogData);
+        log.info("[Web Request START] : [{}]", requestInfoLogData);
         return true;
     }
 
@@ -58,11 +58,15 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             return;
         }
         LogContext logContext = logContextHolder.get();
-        ResponseInfoLogData responseInfoLogData = new ResponseInfoLogData(logContext.logId(), response);
         long totalTime = logContext.totalTakenTime();
-        responseInfoLogData.put("Query Count", queryCounter.count());
-        responseInfoLogData.put("Total Time", totalTime + "ms");
-        log.info("[Web Request END] : [\n{}]", responseInfoLogData);
+        log.info("[Web Request END] : ID: {}, URI: {}, METHOD: {}, STATUS: {}, 쿼리 개수: {}, 요청 처리 시간: {}ms",
+                logContext.logId(),
+                request.getRequestURI(),
+                request.getMethod(),
+                response.getStatus(),
+                queryCounter.count(),
+                logContext.totalTakenTime()
+        );
         logWarning(logContext, totalTime);
     }
 
