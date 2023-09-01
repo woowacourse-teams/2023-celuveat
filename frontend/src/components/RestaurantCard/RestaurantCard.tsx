@@ -41,7 +41,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        data-cy={`${name} 카드`}
+        data-cy="음식점 카드"
         aria-label={`${name} 카드`}
         tabIndex={0}
       >

@@ -1,0 +1,25 @@
+name: 🍔 E2E 테스트 🍔
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    name: E2E Test 딱 대라!
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          build: yarn build
+          start: yarn start
+          working-directory: ./frontend
