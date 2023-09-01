@@ -72,11 +72,10 @@ public record SaveDataRequest(
             Restaurant restaurant
     ) {
         SocialMedia socialMedia = SocialMedia.getBasedOn(instagramName);
-        String author;
-        switch (socialMedia) {
-            case INSTAGRAM -> author = instagramName;
-            default -> author = youtubeChannelName;
-        }
+        String author = switch (socialMedia) {
+            case INSTAGRAM -> instagramName;
+            default -> youtubeChannelName;
+        };
 
         return RestaurantImage.builder()
                 .name(imageName)
