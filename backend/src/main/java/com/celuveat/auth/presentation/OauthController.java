@@ -2,8 +2,8 @@ package com.celuveat.auth.presentation;
 
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
-import com.celuveat.auth.application.OauthService;
-import com.celuveat.auth.domain.OauthServerType;
+import com.celuveat.auth.command.application.OauthService;
+import com.celuveat.auth.command.domain.OauthServerType;
 import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.auth.Auth;
 import jakarta.servlet.http.HttpServletRequest;

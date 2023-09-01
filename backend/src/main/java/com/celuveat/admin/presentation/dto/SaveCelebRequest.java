@@ -5,7 +5,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.INVALID_URL_PATTER
 import static com.celuveat.admin.exception.AdminExceptionType.INVALID_YOUTUBE_CHANNEL_NAME;
 
 import com.celuveat.admin.exception.AdminException;
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 
 public record SaveCelebRequest(
         String name,

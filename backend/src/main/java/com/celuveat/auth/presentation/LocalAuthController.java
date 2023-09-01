@@ -1,11 +1,11 @@
 package com.celuveat.auth.presentation;
 
-import static com.celuveat.auth.domain.OauthServerType.KAKAO;
+import static com.celuveat.auth.command.domain.OauthServerType.KAKAO;
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
-import com.celuveat.auth.domain.OauthId;
-import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.auth.domain.OauthMemberRepository;
+import com.celuveat.auth.command.domain.OauthId;
+import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.auth.presentation.dto.SessionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
-import com.celuveat.restaurant.application.dto.SaveReviewRequestCommand;
+import com.celuveat.restaurant.command.application.dto.SaveReviewRequestCommand;
 
 public record SaveReviewRequest(
         String content,

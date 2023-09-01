@@ -1,7 +1,7 @@
 package com.celuveat.auth.presentation;
 
-import com.celuveat.auth.application.MemberQueryService;
-import com.celuveat.auth.application.dto.MemberProfileResponse;
+import com.celuveat.auth.query.MemberQueryService;
+import com.celuveat.auth.query.dto.MemberProfileResponse;
 import com.celuveat.common.auth.Auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

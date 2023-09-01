@@ -1,10 +1,10 @@
 package com.celuveat.admin.presentation.dto;
 
-import com.celuveat.celeb.domain.Celeb;
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantImage;
-import com.celuveat.restaurant.domain.SocialMedia;
-import com.celuveat.video.domain.Video;
+import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.SocialMedia;
+import com.celuveat.video.command.domain.Video;
 import java.time.LocalDate;
 import lombok.Builder;
 

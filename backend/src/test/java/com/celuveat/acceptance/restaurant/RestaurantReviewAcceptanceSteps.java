@@ -3,10 +3,10 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantReviewSingleResponse;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
+import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantReviewSingleResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.celuveat.celeb.presentation.response;
 
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 
 public record FindAllCelebResponse(
         Long id,

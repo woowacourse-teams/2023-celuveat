@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
+import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 
 public class LocationFixture {
 

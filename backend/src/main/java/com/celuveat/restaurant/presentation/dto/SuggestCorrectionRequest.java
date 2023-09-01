@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
-import com.celuveat.restaurant.application.dto.SuggestCorrectionRequestCommand;
+import com.celuveat.restaurant.command.application.dto.SuggestCorrectionRequestCommand;
 import java.util.List;
 
 public record SuggestCorrectionRequest(
