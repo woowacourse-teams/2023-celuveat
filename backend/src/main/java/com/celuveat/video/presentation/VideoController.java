@@ -1,7 +1,7 @@
 package com.celuveat.video.presentation;
 
 import com.celuveat.common.PageResponse;
-import com.celuveat.video.application.VideoQueryService;
+import com.celuveat.video.command.application.VideoQueryService;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import lombok.RequiredArgsConstructor;

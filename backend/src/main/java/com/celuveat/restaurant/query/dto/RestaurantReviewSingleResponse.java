@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.restaurant.domain.review.RestaurantReview;
+import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 
 public record RestaurantReviewSingleResponse(
         Long id,

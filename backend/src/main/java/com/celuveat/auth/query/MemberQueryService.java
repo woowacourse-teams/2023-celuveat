@@ -1,6 +1,6 @@
 package com.celuveat.auth.query;
 
-import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.query.dto.MemberProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

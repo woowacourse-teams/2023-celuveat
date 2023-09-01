@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.query;
 
-import com.celuveat.restaurant.application.RestaurantService;
+import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
 import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;

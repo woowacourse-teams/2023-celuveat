@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.common.util.Base64Util;
-import com.celuveat.restaurant.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.RestaurantImage;
 
 public record RestaurantImageQueryResponse(
         Long id,

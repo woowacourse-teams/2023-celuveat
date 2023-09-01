@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.restaurant.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import java.util.List;
 
 public record RestaurantReviewQueryResponse(

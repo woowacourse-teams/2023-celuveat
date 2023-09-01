@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 
 public record CelebQueryResponse(
         Long id,

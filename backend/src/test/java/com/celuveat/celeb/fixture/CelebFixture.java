@@ -1,6 +1,6 @@
 package com.celuveat.celeb.fixture;
 
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 
 public class CelebFixture {
 

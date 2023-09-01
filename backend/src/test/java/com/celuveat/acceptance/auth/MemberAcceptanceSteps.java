@@ -3,7 +3,7 @@ package com.celuveat.acceptance.auth;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.query.dto.MemberProfileResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

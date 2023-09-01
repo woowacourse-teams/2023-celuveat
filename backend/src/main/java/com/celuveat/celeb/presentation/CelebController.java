@@ -1,6 +1,6 @@
 package com.celuveat.celeb.presentation;
 
-import com.celuveat.celeb.domain.CelebRepository;
+import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.celeb.presentation.response.FindAllCelebResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

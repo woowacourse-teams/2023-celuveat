@@ -7,7 +7,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 import com.celuveat.common.query.DynamicQuery;
 import com.celuveat.common.query.DynamicQueryAssembler;
-import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.restaurant.exception.RestaurantExceptionType;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;

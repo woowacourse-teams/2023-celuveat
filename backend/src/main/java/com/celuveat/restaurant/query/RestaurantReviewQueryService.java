@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.query;
 
-import com.celuveat.restaurant.domain.review.RestaurantReview;
-import com.celuveat.restaurant.domain.review.RestaurantReviewRepository;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

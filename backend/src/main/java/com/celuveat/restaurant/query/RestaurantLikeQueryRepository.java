@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.query;
 
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dto.RestaurantIdWithLikeCount;
 import java.util.List;
 import java.util.Optional;

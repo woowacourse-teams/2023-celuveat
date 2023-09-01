@@ -5,12 +5,12 @@ import static com.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
 import static com.celuveat.restaurant.exception.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.exception.CelebException;
 import com.celuveat.common.PageResponse;
-import com.celuveat.restaurant.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
-import com.celuveat.video.domain.Video;
+import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import com.celuveat.video.utils.VideoResponseUtils;

@@ -1,6 +1,6 @@
 package com.celuveat.admin.presentation;
 
-import com.celuveat.admin.application.AdminService;
+import com.celuveat.admin.command.application.AdminService;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import java.util.Arrays;

@@ -18,10 +18,10 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.SeedData;
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.ArrayList;

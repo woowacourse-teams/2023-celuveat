@@ -1,8 +1,8 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.auth.domain.OauthMember;
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantLike;
+import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantLike;
 
 public class RestaurantLikeFixture {
 

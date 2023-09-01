@@ -1,8 +1,8 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.restaurant.domain.RestaurantImage;
-import com.celuveat.restaurant.domain.SocialMedia;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.SocialMedia;
 
 public class RestaurantImageFixture {
 
