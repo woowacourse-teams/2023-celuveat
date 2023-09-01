@@ -6,7 +6,7 @@ public enum SocialMedia {
     INSTAGRAM,
     ;
 
-    public static SocialMedia getBasedOn(String instagramName) {
+    public static SocialMedia from(String instagramName) {
         if (instagramName.strip().isBlank()) {
             return YOUTUBE;
         }
