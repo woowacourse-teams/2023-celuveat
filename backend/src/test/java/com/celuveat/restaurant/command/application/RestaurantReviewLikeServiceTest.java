@@ -1,13 +1,17 @@
 package com.celuveat.restaurant.command.application;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.CAN_NOT_LIKE_MY_REVIEW;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
+import com.celuveat.common.exception.BaseException;
+import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
@@ -47,17 +51,38 @@ class RestaurantReviewLikeServiceTest {
         Restaurant 음식점 = 음식점("음식점");
         OauthMember 말랑 = 멤버("말랑");
         RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        OauthMember 로이스 = 멤버("로이스");
+        restaurantRepository.save(음식점);
+        oauthMemberRepository.save(말랑);
+        restaurantReviewRepository.save(음식점_리뷰);
+        oauthMemberRepository.save(로이스);
+
+        // when
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
+        Optional<RestaurantReviewLike> result =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
+
+        // then
+        assertThat(result).isPresent();
+    }
+
+    @Test
+    void 자신의_리뷰에_좋아요를_누를수없다() {
+        // given
+        Restaurant 음식점 = 음식점("음식점");
+        OauthMember 말랑 = 멤버("말랑");
+        RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
         restaurantRepository.save(음식점);
         oauthMemberRepository.save(말랑);
         restaurantReviewRepository.save(음식점_리뷰);
 
         // when
-        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
-        Optional<RestaurantReviewLike> result =
-                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 말랑);
+        BaseExceptionType result = assertThrows(BaseException.class, () ->
+                restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id())
+        ).exceptionType();
 
         // then
-        assertThat(result).isPresent();
+        assertThat(result).isEqualTo(CAN_NOT_LIKE_MY_REVIEW);
     }
 
     @Test
@@ -66,15 +91,17 @@ class RestaurantReviewLikeServiceTest {
         Restaurant 음식점 = 음식점("음식점");
         OauthMember 말랑 = 멤버("말랑");
         RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        OauthMember 로이스 = 멤버("로이스");
         restaurantRepository.save(음식점);
         oauthMemberRepository.save(말랑);
         restaurantReviewRepository.save(음식점_리뷰);
-        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
+        oauthMemberRepository.save(로이스);
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
 
         // when
-        restaurantReviewLikeService.like(음식점_리뷰.id(), 말랑.id());
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
         Optional<RestaurantReviewLike> result =
-                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 말랑);
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
 
         // then
         assertThat(result).isEmpty();

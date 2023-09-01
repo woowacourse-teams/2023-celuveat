@@ -3,6 +3,7 @@ package com.celuveat.restaurant.presentation;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.auth.Auth;
+import com.celuveat.restaurant.command.application.RestaurantReviewLikeService;
 import com.celuveat.restaurant.command.application.RestaurantReviewService;
 import com.celuveat.restaurant.command.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
@@ -28,6 +29,7 @@ public class ReviewController {
 
     private final RestaurantReviewService restaurantReviewService;
     private final RestaurantReviewQueryService restaurantReviewQueryService;
+    private final RestaurantReviewLikeService restaurantReviewLikeService;
 
     @GetMapping
     ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
@@ -62,5 +64,11 @@ public class ReviewController {
     ) {
         restaurantReviewService.delete(new DeleteReviewCommand(reviewId, memberId));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{reviewId}/like")
+    ResponseEntity<Void> like(@PathVariable Long reviewId, @Auth Long memberId) {
+        restaurantReviewLikeService.like(reviewId, memberId);
+        return ResponseEntity.ok().build();
     }
 }

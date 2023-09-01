@@ -1,11 +1,14 @@
 package com.celuveat.restaurant.command.application;
 
+import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.CAN_NOT_LIKE_MY_REVIEW;
+
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
+import com.celuveat.restaurant.exception.RestaurantReviewException;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ public class RestaurantReviewLikeService {
     public void like(Long restaurantReviewId, Long memberId) {
         RestaurantReview restaurantReview = restaurantReviewRepository.getById(restaurantReviewId);
         OauthMember member = oauthMemberRepository.getById(memberId);
+        if (restaurantReview.member().equals(member)) {
+            throw new RestaurantReviewException(CAN_NOT_LIKE_MY_REVIEW);
+        }
         restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member)
                 .ifPresentOrElse(cancelLike(), clickLike(restaurantReview, member));
     }
