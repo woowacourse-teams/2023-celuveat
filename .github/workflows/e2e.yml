@@ -29,3 +29,5 @@ jobs:
           working-directory: ${{ env.working-directory }}
           start: yarn start
           browser: chrome
+        env:
+          BASE_URL: ${{secrets.DEV_BASE_URL}}
