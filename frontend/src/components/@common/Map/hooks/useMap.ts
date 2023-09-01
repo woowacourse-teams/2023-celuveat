@@ -173,6 +173,7 @@ const useMap = ({ center, zoom, onClick, onIdle, markers }: UseDrawMapProps) => 
         disableDefaultUI: true,
         gestureHandling: 'greedy',
         styles,
+        clickableIcons: false,
       });
 
       markers?.forEach(
