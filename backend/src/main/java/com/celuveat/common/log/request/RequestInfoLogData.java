@@ -32,15 +32,15 @@ public class RequestInfoLogData {
         Stream<String> parameterStream = StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(parameterNames.asIterator(), Spliterator.ORDERED), false
         );
-        return parameterStream.map(param -> "\t\t[%s] = [%s]".formatted(param, request.getParameter(param)))
-                .collect(Collectors.joining("\n", "\n", "\n\t"));
+        return parameterStream.map(param -> "%s = %s".formatted(param, request.getParameter(param)))
+                .collect(Collectors.joining(", ", "[","]"));
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (String key : params.keySet()) {
-            sb.append("\t[%s] = [%s]\n".formatted(key, params.get(key)));
+            sb.append("%s = %s, ".formatted(key, params.get(key)));
         }
         return sb.toString();
     }
