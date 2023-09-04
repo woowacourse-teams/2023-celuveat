@@ -1,4 +1,4 @@
-package com.celuveat.video.command.application;
+package com.celuveat.video.query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

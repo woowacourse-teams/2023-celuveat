@@ -1,6 +1,5 @@
-package com.celuveat.video.command.application;
+package com.celuveat.video.query;
 
-import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl;
 import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl.VideoSearchCond;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class VideoQueryService {
 
-    private final VideoEntityManagerQueryRepositoryImpl videoEntityManagerQueryRepositoryImpl;
+    private final VideoQueryRepository videoQueryRepository;
 
     public Page<VideoWithCelebQueryResponse> findAllVideoWithCeleb(
             VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {
-        return videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
+        return videoQueryRepository.getVideosWithCeleb(
                 videoSearchCond, pageable
         );
     }
