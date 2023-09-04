@@ -1,10 +1,10 @@
 package com.celuveat.restaurant.query;
 
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
