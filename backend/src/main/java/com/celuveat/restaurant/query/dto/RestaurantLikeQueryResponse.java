@@ -5,6 +5,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 
 public record RestaurantLikeQueryResponse(
@@ -19,6 +20,18 @@ public record RestaurantLikeQueryResponse(
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
+
+    public static RestaurantLikeQueryResponse of(
+            Restaurant restaurant,
+            Map<Restaurant, List<Celeb>> celebsMap,
+            Map<Restaurant, List<RestaurantImage>> restaurantMap
+    ) {
+        return RestaurantLikeQueryResponse.builder()
+                .restaurant(restaurant)
+                .celebs(celebsMap.get(restaurant))
+                .restaurantImages(restaurantMap.get(restaurant))
+                .build();
+    }
 
     @Builder
     public RestaurantLikeQueryResponse(
