@@ -9,8 +9,8 @@ import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
+import jakarta.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +25,14 @@ public class RestaurantDetailResponseDao {
     private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, @Nullable Long memberId) {
         Restaurant restaurant = restaurantQueryDaoSupport.getById(restaurantId);
         return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant, memberId);
     }
 
     private RestaurantDetailResponse mapToRestaurantWithCelebAndImagesDetailResponse(
             Restaurant restaurant,
-            Optional<Long> memberId
+            @Nullable Long memberId
     ) {
         List<Celeb> celebs = getCelebsByRestaurant(restaurant);
         List<RestaurantImage> restaurantImages = restaurantImageQueryDaoSupport.findAllByRestaurant(restaurant);
@@ -52,9 +52,11 @@ public class RestaurantDetailResponseDao {
                 .toList();
     }
 
-    private boolean applyLikedRestaurant(Restaurant restaurant, Optional<Long> memberId) {
-        return memberId.isPresent()
-                && restaurantLikeQueryDaoSupport.findByRestaurantAndMemberId(restaurant, memberId.get())
+    private boolean applyLikedRestaurant(Restaurant restaurant, @Nullable Long memberId) {
+        if (memberId == null) {
+            return false;
+        }
+        return restaurantLikeQueryDaoSupport.findByRestaurantAndMemberId(restaurant, memberId)
                 .isPresent();
     }
 }

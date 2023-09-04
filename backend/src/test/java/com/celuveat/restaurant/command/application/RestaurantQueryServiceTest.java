@@ -29,7 +29,6 @@ import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -527,7 +526,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.empty());
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), null);
 
         // then
         assertThat(result)
@@ -548,7 +547,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.of(oauthMember.id()));
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), oauthMember.id());
 
         // then
         assertThat(result)
@@ -589,7 +588,7 @@ class RestaurantQueryServiceTest {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 specificDistance,
                 restaurant.id(),
-                Optional.empty(),
+                null,
                 PageRequest.of(0, 4)
         );
 
@@ -616,7 +615,7 @@ class RestaurantQueryServiceTest {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 50000,
                 seed.get(0).id(),
-                Optional.of(도기.id()),
+                도기.id(),
                 PageRequest.of(0, 4)
         );
 

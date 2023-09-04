@@ -8,8 +8,8 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSea
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import jakarta.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class RestaurantQueryService {
     private final RestaurantSimpleResponseDao restaurantSimpleResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, @Nullable Long memberId) {
         return restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
     }
 
@@ -45,7 +45,7 @@ public class RestaurantQueryService {
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
-            Optional<Long> memberId,
+            @Nullable Long memberId,
             Pageable pageable
     ) {
         return restaurantSimpleResponseDao.findAllNearByDistanceWithoutSpecificRestaurant(

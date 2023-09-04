@@ -19,10 +19,11 @@ import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
+import io.micrometer.common.lang.Nullable;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -56,17 +57,17 @@ public class RestaurantSimpleResponseDao {
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             int distance,
             long restaurantId,
-            Optional<Long> memberId,
+            @Nullable Long memberId,
             Pageable pageable
     ) {
         Page<RestaurantWithDistance> restaurantsWithDistance
                 = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(distance, restaurantId,
                 pageable);
-        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, memberId.orElse(null));
+        return mapToRestaurantWithCelebAndImagesSimpleResponse(restaurantsWithDistance, memberId);
     }
 
     private Page<RestaurantSimpleResponse> mapToRestaurantWithCelebAndImagesSimpleResponse(
-            Page<RestaurantWithDistance> restaurants, Long memberId
+            Page<RestaurantWithDistance> restaurants, @Nullable Long memberId
     ) {
         List<Long> restaurantIds = extractRestaurantIds(restaurants);
         RestaurantsIdWithCelebsAndImagesGroupByRestaurantId restaurantDatasGroup =
@@ -135,8 +136,12 @@ public class RestaurantSimpleResponseDao {
                 ));
     }
 
-    private Set<Long> getRestaurantIds(Long memberId) {
-        return restaurantLikeQueryDaoSupport.findAllByMemberId(memberId).stream()
+    private Set<Long> getRestaurantIds(@Nullable Long memberId) {
+        if (memberId == null) {
+            return Collections.emptySet();
+        }
+        return restaurantLikeQueryDaoSupport.findAllByMemberId(memberId)
+                .stream()
                 .map(RestaurantLike::restaurant)
                 .map(Restaurant::id)
                 .collect(toUnmodifiableSet());

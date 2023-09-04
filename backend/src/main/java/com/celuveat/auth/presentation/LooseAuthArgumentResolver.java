@@ -6,7 +6,7 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import com.celuveat.auth.exception.AuthException;
 import com.celuveat.common.auth.LooseAuth;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -20,7 +20,7 @@ public class LooseAuthArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(LooseAuth.class)
-                && parameter.getParameterType().equals(Optional.class);
+                && parameter.getParameterType().equals(Long.class);
     }
 
     @Override
@@ -34,8 +34,10 @@ public class LooseAuthArgumentResolver implements HandlerMethodArgumentResolver 
         if (httpServletRequest == null) {
             throw new AuthException(REQUEST_EMPTY);
         }
-        return Optional.of(httpServletRequest)
-                .map(request -> request.getSession(false))
-                .map(session -> session.getAttribute(JSESSION_ID));
+        HttpSession session = httpServletRequest.getSession(false);
+        if (session == null) {
+            return null;
+        }
+        return session.getAttribute(JSESSION_ID);
     }
 }

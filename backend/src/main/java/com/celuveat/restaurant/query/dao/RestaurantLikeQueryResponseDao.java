@@ -29,7 +29,8 @@ public class RestaurantLikeQueryResponseDao {
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
     public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
-        List<RestaurantLike> restaurantLikes = restaurantLikeQueryDaoSupport.findAllByMemberIdOrderByCreatedDateDesc(memberId);
+        List<RestaurantLike> restaurantLikes = restaurantLikeQueryDaoSupport.findAllByMemberIdOrderByCreatedDateDesc(
+                memberId);
         List<Restaurant> restaurants = extractRestaurant(restaurantLikes);
         Map<Restaurant, List<Celeb>> celebsMap = celebsGroupByRestaurant(restaurants);
         Map<Restaurant, List<RestaurantImage>> restaurantMap = imagesGroupByRestaurants(restaurants);

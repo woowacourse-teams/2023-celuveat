@@ -48,7 +48,7 @@ public class RestaurantController {
     ResponseEntity<RestaurantDetailResponse> getRestaurantDetail(
             @PathVariable Long restaurantId,
             @RequestParam Long celebId,
-            @LooseAuth Optional<Long> memberId
+            @LooseAuth Long memberId
     ) {
         RestaurantDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(
                 restaurantId, celebId, memberId
@@ -58,7 +58,7 @@ public class RestaurantController {
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAll(
-            @LooseAuth Optional<Long> memberId,
+            @LooseAuth Long memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
             @PageableDefault(size = 18) Pageable pageable
@@ -88,7 +88,7 @@ public class RestaurantController {
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAllNearbyDistance(
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
-            @LooseAuth Optional<Long> memberId,
+            @LooseAuth Long memberId,
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSimpleResponse> result =
