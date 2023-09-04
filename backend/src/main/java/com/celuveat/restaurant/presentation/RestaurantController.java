@@ -15,7 +15,7 @@ import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -71,8 +71,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/like")
-    ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<RestaurantLikeQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
+    ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
+        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
                 memberId);
         return ResponseEntity.ok(result);
     }
@@ -92,8 +92,8 @@ public class RestaurantController {
     ) {
         Page<RestaurantSimpleResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                        distance,
                         restaurantId,
+                        distance,
                         memberId,
                         pageable
                 );

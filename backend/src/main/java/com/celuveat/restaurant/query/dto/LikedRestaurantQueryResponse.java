@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 
-public record RestaurantLikeQueryResponse(
+public record LikedRestaurantQueryResponse(
         Long id,
         String name,
         String category,
@@ -21,12 +21,12 @@ public record RestaurantLikeQueryResponse(
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static RestaurantLikeQueryResponse of(
+    public static LikedRestaurantQueryResponse of(
             Restaurant restaurant,
             Map<Restaurant, List<Celeb>> celebsMap,
             Map<Restaurant, List<RestaurantImage>> restaurantMap
     ) {
-        return RestaurantLikeQueryResponse.builder()
+        return LikedRestaurantQueryResponse.builder()
                 .restaurant(restaurant)
                 .celebs(celebsMap.get(restaurant))
                 .restaurantImages(restaurantMap.get(restaurant))
@@ -34,7 +34,7 @@ public record RestaurantLikeQueryResponse(
     }
 
     @Builder
-    public RestaurantLikeQueryResponse(
+    public LikedRestaurantQueryResponse(
             Restaurant restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages

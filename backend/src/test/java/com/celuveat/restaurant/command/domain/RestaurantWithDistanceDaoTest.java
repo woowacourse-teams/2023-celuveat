@@ -353,8 +353,8 @@ class RestaurantWithDistanceDaoTest {
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // when
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(
-                specificDistance,
                 1L,
+                specificDistance,
                 PageRequest.of(0, 4)
         );
 

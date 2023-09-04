@@ -6,7 +6,7 @@ import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.annotation.Nullable;
 import java.util.List;
@@ -44,20 +44,20 @@ public class RestaurantQueryService {
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
-            int distance,
             long restaurantId,
+            int distance,
             @Nullable Long memberId,
             Pageable pageable
     ) {
         return restaurantSimpleResponseDao.findAllNearByDistanceWithoutSpecificRestaurant(
-                distance,
                 restaurantId,
+                distance,
                 memberId,
                 pageable
         );
     }
 
-    public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
+    public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         return restaurantLikeQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
     }
 }

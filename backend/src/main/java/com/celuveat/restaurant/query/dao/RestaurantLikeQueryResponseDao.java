@@ -1,7 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static com.celuveat.common.util.StreamUtil.sameOrderGroupBy;
 
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
@@ -9,7 +8,7 @@ import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import java.util.LinkedHashMap;
@@ -28,35 +27,25 @@ public class RestaurantLikeQueryResponseDao {
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
-        List<RestaurantLike> restaurantLikes = restaurantLikeQueryDaoSupport.findAllByMemberIdOrderByCreatedDateDesc(
-                memberId);
-        List<Restaurant> restaurants = extractRestaurant(restaurantLikes);
+    public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
+        List<Restaurant> restaurants = getLikedRestaurants(memberId);
         Map<Restaurant, List<Celeb>> celebsMap = celebsGroupByRestaurant(restaurants);
         Map<Restaurant, List<RestaurantImage>> restaurantMap = imagesGroupByRestaurants(restaurants);
         return restaurants.stream()
-                .map(restaurant -> RestaurantLikeQueryResponse.of(restaurant, celebsMap, restaurantMap))
+                .map(restaurant -> LikedRestaurantQueryResponse.of(restaurant, celebsMap, restaurantMap))
                 .toList();
     }
 
-    private List<Restaurant> extractRestaurant(List<RestaurantLike> restaurantLikes) {
-        return restaurantLikes.stream()
+    private List<Restaurant> getLikedRestaurants(Long memberId) {
+        return restaurantLikeQueryDaoSupport.findAllByMemberIdOrderByCreatedDateDesc(memberId)
+                .stream()
                 .map(RestaurantLike::restaurant)
                 .toList();
     }
 
     private Map<Restaurant, List<Celeb>> celebsGroupByRestaurant(List<Restaurant> restaurants) {
         List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIn(restaurants);
-        Map<Restaurant, List<Video>> restaurantVideos = videos.stream()
-                .collect(groupingBy(
-                        Video::restaurant,
-                        LinkedHashMap::new,
-                        toList()
-                ));
-        return mapVideoToCeleb(restaurantVideos);
-    }
-
-    private Map<Restaurant, List<Celeb>> mapVideoToCeleb(Map<Restaurant, List<Video>> restaurantVideos) {
+        Map<Restaurant, List<Video>> restaurantVideos = sameOrderGroupBy(videos, Video::restaurant);
         Map<Restaurant, List<Celeb>> celebs = new LinkedHashMap<>();
         for (Restaurant restaurant : restaurantVideos.keySet()) {
             List<Celeb> list = restaurantVideos.get(restaurant).stream()
@@ -68,12 +57,9 @@ public class RestaurantLikeQueryResponseDao {
     }
 
     private Map<Restaurant, List<RestaurantImage>> imagesGroupByRestaurants(List<Restaurant> restaurants) {
-        return restaurantImageQueryDaoSupport.findAllByRestaurantIn(restaurants)
-                .stream()
-                .collect(groupingBy(
-                        RestaurantImage::restaurant,
-                        LinkedHashMap::new,
-                        toList()
-                ));
+        return sameOrderGroupBy(
+                restaurantImageQueryDaoSupport.findAllByRestaurantIn(restaurants),
+                RestaurantImage::restaurant
+        );
     }
 }

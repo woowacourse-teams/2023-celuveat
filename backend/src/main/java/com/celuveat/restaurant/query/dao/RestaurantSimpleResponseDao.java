@@ -1,7 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static com.celuveat.common.util.StreamUtil.sameOrderGroupBy;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
@@ -20,9 +19,9 @@ import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import io.micrometer.common.lang.Nullable;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantSimpleResponseDao {
 
     private final RestaurantWithDistanceDao restaurantWithDistanceDao;
-
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
@@ -50,30 +48,28 @@ public class RestaurantSimpleResponseDao {
         Page<RestaurantWithDistance> restaurants = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 restaurantCond, locationCond, pageable
         );
-        return mapToSimpleResponse(restaurants, memberId);
+        return toSimpleResponse(restaurants, memberId);
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
-            int distance,
             long restaurantId,
+            int distance,
             @Nullable Long memberId,
             Pageable pageable
     ) {
         Page<RestaurantWithDistance> restaurants = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(
-                distance, restaurantId, pageable
+                restaurantId, distance, pageable
         );
-        return mapToSimpleResponse(restaurants, memberId);
+        return toSimpleResponse(restaurants, memberId);
     }
 
-    private Page<RestaurantSimpleResponse> mapToSimpleResponse(
+    private Page<RestaurantSimpleResponse> toSimpleResponse(
             Page<RestaurantWithDistance> restaurants,
             @Nullable Long memberId
     ) {
         List<Long> restaurantIds = restaurants.map(RestaurantWithDistance::id).toList();
-        List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        List<RestaurantImage> images = restaurantImageQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        Map<Long, List<Celeb>> celebsMap = mapToCelebsGroupByRestaurantId(videos);
-        Map<Long, List<RestaurantImage>> restaurantMap = groupingImageByRestaurantId(images);
+        Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
+        Map<Long, List<RestaurantImage>> restaurantMap = getImagesGroupByRestaurantsId(restaurantIds);
         Map<Long, Long> likeCountsGroupById = likeCountGroupByRestaurantId(restaurantIds);
         Set<Long> likedRestaurantIds = getRestaurantLikes(memberId);
         return RestaurantSimpleResponse.of(
@@ -81,34 +77,28 @@ public class RestaurantSimpleResponseDao {
                 likedRestaurantIds, likeCountsGroupById);
     }
 
-    private Map<Long, List<Celeb>> mapToCelebsGroupByRestaurantId(List<Video> videos) {
-        Map<Long, List<Video>> restaurantVideos = groupByRestaurantId(videos);
-        Map<Long, List<Celeb>> celebs = new LinkedHashMap<>();
-        for (Long restaurantId : restaurantVideos.keySet()) {
-            List<Celeb> list = restaurantVideos.get(restaurantId).stream()
-                    .map(Video::celeb)
-                    .toList();
-            celebs.put(restaurantId, list);
-        }
-        return celebs;
-    }
-
-    private Map<Long, List<Video>> groupByRestaurantId(List<Video> videos) {
-        return videos.stream()
-                .collect(groupingBy(
-                        video -> video.restaurant().id(),
-                        LinkedHashMap::new,
-                        toList()
+    private Map<Long, List<Celeb>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
+        List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
+        Map<Long, List<Video>> restaurantVideos = sameOrderGroupBy(videos, video -> video.restaurant().id());
+        return restaurantVideos.entrySet()
+                .stream()
+                .map(it -> Map.entry(it.getKey(), videosToCelebs(it)))
+                .collect(toMap(
+                        Entry::getKey,
+                        Entry::getValue
                 ));
     }
 
-    private Map<Long, List<RestaurantImage>> groupingImageByRestaurantId(List<RestaurantImage> images) {
-        return images.stream()
-                .collect(groupingBy(
-                        image -> image.restaurant().id(),
-                        LinkedHashMap::new,
-                        toList()
-                ));
+    private List<Celeb> videosToCelebs(Entry<Long, List<Video>> it) {
+        return it.getValue()
+                .stream()
+                .map(Video::celeb)
+                .toList();
+    }
+
+    private Map<Long, List<RestaurantImage>> getImagesGroupByRestaurantsId(List<Long> restaurantIds) {
+        List<RestaurantImage> images = restaurantImageQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
+        return sameOrderGroupBy(images, image -> image.restaurant().id());
     }
 
     private Set<Long> getRestaurantLikes(@Nullable Long memberId) {

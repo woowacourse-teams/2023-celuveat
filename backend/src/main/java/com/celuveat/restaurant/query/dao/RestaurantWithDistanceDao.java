@@ -211,8 +211,8 @@ public class RestaurantWithDistanceDao {
     }
 
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
-            int distance,
             Long restaurantId,
+            int distance,
             Pageable pageable
     ) {
         Restaurant restaurant = em.find(Restaurant.class, restaurantId);
