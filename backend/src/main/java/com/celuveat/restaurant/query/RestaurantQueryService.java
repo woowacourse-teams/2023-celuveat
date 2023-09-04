@@ -33,13 +33,14 @@ public class RestaurantQueryService {
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
-            Long memberId
+            @Nullable Long memberId
     ) {
         return restaurantSimpleResponseDao.findAllWithMemberLiked(
                 restaurantCond,
                 locationCond,
                 pageable,
-                memberId);
+                memberId
+        );
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
