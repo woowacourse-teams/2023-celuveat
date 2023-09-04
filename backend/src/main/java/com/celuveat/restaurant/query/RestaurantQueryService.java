@@ -18,7 +18,7 @@ import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
-import com.celuveat.video.query.VideoQueryRepository;
+import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class RestaurantQueryService {
 
     private final RestaurantLikeQueryRepository restaurantLikeQueryRepository;
     private final RestaurantQueryRepository restaurantQueryRepository;
-    private final VideoQueryRepository videoQueryRepository;
+    private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantImageQueryRepository restaurantImageQueryRepository;
 
     public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
@@ -62,7 +62,7 @@ public class RestaurantQueryService {
     }
 
     private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
-        return videoQueryRepository.findAllByRestaurant(restaurant).stream()
+        return videoQueryDaoSupport.findAllByRestaurant(restaurant).stream()
                 .map(Video::celeb)
                 .toList();
     }
@@ -112,7 +112,7 @@ public class RestaurantQueryService {
     private RestaurantsIdWithCelebsAndImagesGroupByRestaurantId restaurantDatasGroupByRestaurantId(
             List<Long> restaurantIds
     ) {
-        List<Video> videos = videoQueryRepository.findAllByRestaurantIdIn(restaurantIds);
+        List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
         List<RestaurantImage> images = restaurantImageQueryRepository.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<Celeb>> celebsMap = toCelebsGroupByRestaurantId(videos);
         Map<Long, List<RestaurantImage>> restaurantMap = groupingImageByRestaurant(images);

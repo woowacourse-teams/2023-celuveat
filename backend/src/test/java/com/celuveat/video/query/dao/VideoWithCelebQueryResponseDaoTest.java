@@ -1,12 +1,12 @@
-package com.celuveat.video.command.domain;
+package com.celuveat.video.query.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl;
-import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl.VideoSearchCond;
+import com.celuveat.video.command.domain.Video;
+import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao.VideoSearchCond;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +20,14 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("영상 조회용 Repo(VideoQueryRepository) 은(는)")
-class VideoEntityManagerQueryRepositoryImplTest {
+@DisplayName("영상 조회용 Repo(VideoWithCelebQueryResponseDao) 은(는)")
+class VideoWithCelebQueryResponseDaoTest {
 
     @Autowired
     private SeedData seedData;
 
     @Autowired
-    private VideoEntityManagerQueryRepositoryImpl videoEntityManagerQueryRepositoryImpl;
+    private VideoWithCelebQueryResponseDao VideoWithCelebQueryResponseDao;
 
     @Nested
     class 영상_검색 {
@@ -41,7 +41,7 @@ class VideoEntityManagerQueryRepositoryImplTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = VideoWithCelebQueryResponseDao.find(
                     new VideoSearchCond(null, null),
                     PageRequest.of(0, expected.size())
             );
@@ -63,7 +63,7 @@ class VideoEntityManagerQueryRepositoryImplTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = VideoWithCelebQueryResponseDao.find(
                     new VideoSearchCond(null, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
@@ -85,7 +85,7 @@ class VideoEntityManagerQueryRepositoryImplTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = VideoWithCelebQueryResponseDao.find(
                     new VideoSearchCond(expectedCelebId, null),
                     PageRequest.of(0, expected.size())
             );
@@ -109,7 +109,7 @@ class VideoEntityManagerQueryRepositoryImplTest {
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoEntityManagerQueryRepositoryImpl.getVideosWithCeleb(
+            Page<VideoWithCelebQueryResponse> result = VideoWithCelebQueryResponseDao.find(
                     new VideoSearchCond(expectedCelebId, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
