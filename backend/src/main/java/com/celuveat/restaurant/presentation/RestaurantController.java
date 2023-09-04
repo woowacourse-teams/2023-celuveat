@@ -19,7 +19,6 @@ import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
