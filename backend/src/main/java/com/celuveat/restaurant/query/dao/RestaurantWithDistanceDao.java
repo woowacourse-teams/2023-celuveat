@@ -120,7 +120,7 @@ public class RestaurantWithDistanceDao {
 
     private final EntityManager em;
 
-    public Page<RestaurantWithDistance> getRestaurantsWithDistance(
+    public Page<RestaurantWithDistance> search(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
             Pageable pageable
@@ -210,7 +210,7 @@ public class RestaurantWithDistanceDao {
         return ORDER_BY_DISTANCE_ASC;
     }
 
-    public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
+    public Page<RestaurantWithDistance> searchNearBy(
             Long restaurantId,
             int distance,
             Pageable pageable

@@ -45,9 +45,8 @@ public class RestaurantSimpleResponseDao {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        Page<RestaurantWithDistance> restaurants = restaurantWithDistanceDao.getRestaurantsWithDistance(
-                restaurantCond, locationCond, pageable
-        );
+        Page<RestaurantWithDistance> restaurants =
+                restaurantWithDistanceDao.search(restaurantCond, locationCond, pageable);
         return toSimpleResponse(restaurants, memberId);
     }
 
@@ -57,9 +56,8 @@ public class RestaurantSimpleResponseDao {
             @Nullable Long memberId,
             Pageable pageable
     ) {
-        Page<RestaurantWithDistance> restaurants = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(
-                restaurantId, distance, pageable
-        );
+        Page<RestaurantWithDistance> restaurants =
+                restaurantWithDistanceDao.searchNearBy(restaurantId, distance, pageable);
         return toSimpleResponse(restaurants, memberId);
     }
 
@@ -70,11 +68,12 @@ public class RestaurantSimpleResponseDao {
         List<Long> restaurantIds = restaurants.map(RestaurantWithDistance::id).toList();
         Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantMap = getImagesGroupByRestaurantsId(restaurantIds);
-        Map<Long, Long> likeCountsGroupById = likeCountGroupByRestaurantId(restaurantIds);
         Set<Long> likedRestaurantIds = getRestaurantLikes(memberId);
+        Map<Long, Long> likeCountsGroupById = likeCountGroupByRestaurantId(restaurantIds);
         return RestaurantSimpleResponse.of(
                 restaurants, celebsMap, restaurantMap,
-                likedRestaurantIds, likeCountsGroupById);
+                likedRestaurantIds, likeCountsGroupById
+        );
     }
 
     private Map<Long, List<Celeb>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
@@ -89,8 +88,8 @@ public class RestaurantSimpleResponseDao {
                 ));
     }
 
-    private List<Celeb> videosToCelebs(Entry<Long, List<Video>> it) {
-        return it.getValue()
+    private List<Celeb> videosToCelebs(Entry<Long, List<Video>> idWithVideosEntry) {
+        return idWithVideosEntry.getValue()
                 .stream()
                 .map(Video::celeb)
                 .toList();
