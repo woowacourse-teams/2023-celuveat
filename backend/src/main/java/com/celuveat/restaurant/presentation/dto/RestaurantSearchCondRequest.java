@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
-import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 
 public record RestaurantSearchCondRequest(
         Long celebId,

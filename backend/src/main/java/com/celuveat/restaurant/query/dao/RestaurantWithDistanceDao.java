@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.query;
+package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.common.query.DynamicQueryCondition.notNull;
 import static com.celuveat.common.query.DynamicQueryCondition.notNullRecursive;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEntityManagerQueryRepository {
+public class RestaurantWithDistanceDao {
 
     private static final String HAVERSINE_FORMULA = """
             (6371 * acos(cos(radians(%s)) * cos(radians(latitude))
@@ -120,7 +120,6 @@ public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEnt
 
     private final EntityManager em;
 
-    @Override
     public Page<RestaurantWithDistance> getRestaurantsWithDistance(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
@@ -162,7 +161,8 @@ public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEnt
                 .build();
     }
 
-    private DynamicQuery restaurantCategoryEqual(RestaurantSearchCond restaurantSearchCond) {
+    private DynamicQuery restaurantCategoryEqual(
+            RestaurantSearchCond restaurantSearchCond) {
         return DynamicQuery.builder()
                 .query(RESTAURANT_CATEGORY_EQUAL)
                 .params(restaurantSearchCond.category())
@@ -197,7 +197,8 @@ public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEnt
                 .map(Order::getProperty)
                 .findFirst()
                 .orElse(RestaurantSortType.DISTANCE.sortProperty);
-        RestaurantSortType sortType = RestaurantSortType.from(sortProperty);
+        RestaurantSortType sortType = RestaurantSortType.from(
+                sortProperty);
         if (sortType == RestaurantSortType.DISTANCE) {
             return ORDER_BY_DISTANCE_ASC;
         }
@@ -209,7 +210,6 @@ public class RestaurantEntityManagerQueryRepositoryImpl implements RestaurantEnt
         return ORDER_BY_DISTANCE_ASC;
     }
 
-    @Override
     public Page<RestaurantWithDistance> getRestaurantsNearByRestaurantId(
             int distance,
             Long restaurantId,
