@@ -1,4 +1,4 @@
-package com.celuveat.video.query;
+package com.celuveat.video.query.dao;
 
 import static com.celuveat.common.query.DynamicQueryCondition.notNull;
 
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VideoEntityManagerQueryRepositoryImpl implements VideoEntityManagerQueryRepository {
+public class VideoWithCelebQueryResponseDao {
 
     private static final String SELECT_VIDEO = """
             SELECT new com.celuveat.video.query.dto.VideoWithCelebQueryResponse(
@@ -46,8 +46,7 @@ public class VideoEntityManagerQueryRepositoryImpl implements VideoEntityManager
 
     private final EntityManager em;
 
-    @Override
-    public Page<VideoWithCelebQueryResponse> getVideosWithCeleb(
+    public Page<VideoWithCelebQueryResponse> find(
             VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {

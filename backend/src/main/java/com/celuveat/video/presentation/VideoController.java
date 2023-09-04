@@ -1,8 +1,8 @@
 package com.celuveat.video.presentation;
 
 import com.celuveat.common.PageResponse;
-import com.celuveat.video.command.application.VideoQueryService;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
+import com.celuveat.video.query.VideoQueryService;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.celuveat.video.command.application;
+package com.celuveat.video.query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,7 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.video.command.domain.Video;
-import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl.VideoSearchCond;
+import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ class VideoQueryServiceTest {
 
             // when
             Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoSearchCond(null, null),
+                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, null),
                     PageRequest.of(0, expected.size())
             );
 
@@ -64,7 +64,7 @@ class VideoQueryServiceTest {
 
             // when
             Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoSearchCond(null, expectedRestaurantId),
+                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
 
@@ -86,7 +86,7 @@ class VideoQueryServiceTest {
 
             // when
             Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoSearchCond(expectedCelebId, null),
+                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, null),
                     PageRequest.of(0, expected.size())
             );
 
@@ -110,7 +110,7 @@ class VideoQueryServiceTest {
 
             // when
             Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoSearchCond(expectedCelebId, expectedRestaurantId),
+                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
 

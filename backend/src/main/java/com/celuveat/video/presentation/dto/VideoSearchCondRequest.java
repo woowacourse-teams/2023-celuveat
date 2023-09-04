@@ -1,6 +1,6 @@
 package com.celuveat.video.presentation.dto;
 
-import com.celuveat.video.query.VideoEntityManagerQueryRepositoryImpl.VideoSearchCond;
+import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao.VideoSearchCond;
 
 public record VideoSearchCondRequest(
         Long celebId,

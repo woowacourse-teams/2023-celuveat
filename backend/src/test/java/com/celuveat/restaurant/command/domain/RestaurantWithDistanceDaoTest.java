@@ -11,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl;
-import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.LocationSearchCond;
-import com.celuveat.restaurant.query.RestaurantEntityManagerQueryRepositoryImpl.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
@@ -32,8 +32,8 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("음식점 조회용 레포지토리(RestaurantEntityManagerQueryRepository) 은(는)")
-class RestaurantEntityManagerQueryRepositoryImplTest {
+@DisplayName("음식점 조회용 레포지토리(RestaurantWithDistanceDao) 은(는)")
+class RestaurantWithDistanceDaoTest {
 
     private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
 
@@ -44,7 +44,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantEntityManagerQueryRepositoryImpl restaurantQueryRepository;
+    private RestaurantWithDistanceDao restaurantWithDistanceDao;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +63,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -88,7 +88,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -113,7 +113,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -138,7 +138,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -166,7 +166,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -193,7 +193,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -220,7 +220,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -249,7 +249,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -270,7 +270,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -299,7 +299,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
@@ -330,7 +330,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -352,7 +352,7 @@ class RestaurantEntityManagerQueryRepositoryImplTest {
     @ValueSource(ints = {10, 100, 1000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // when
-        Page<RestaurantWithDistance> result = restaurantQueryRepository.getRestaurantsNearByRestaurantId(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(
                 specificDistance,
                 1L,
                 PageRequest.of(0, 4)
