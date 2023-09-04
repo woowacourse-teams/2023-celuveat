@@ -9,6 +9,8 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
+import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
+import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;

@@ -12,6 +12,8 @@ import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
+import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.RestaurantIdWithLikeCount;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;

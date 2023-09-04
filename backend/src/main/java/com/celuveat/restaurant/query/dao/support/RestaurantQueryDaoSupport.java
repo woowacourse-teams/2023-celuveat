@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.query.dao;
+package com.celuveat.restaurant.query.dao.support;
 
 import static com.celuveat.restaurant.exception.RestaurantExceptionType.NOT_FOUND_RESTAURANT;
 

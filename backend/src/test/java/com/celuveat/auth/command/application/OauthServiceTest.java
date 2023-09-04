@@ -21,7 +21,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
-import com.celuveat.restaurant.query.dao.RestaurantLikeQueryDaoSupport;
+import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
