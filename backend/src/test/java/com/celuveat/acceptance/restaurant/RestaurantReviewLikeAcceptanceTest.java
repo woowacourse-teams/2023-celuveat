@@ -9,10 +9,6 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.auth.command.domain.OauthMember;
-import com.celuveat.restaurant.command.domain.Restaurant;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,14 +36,14 @@ public class RestaurantReviewLikeAcceptanceTest extends AcceptanceTest {
     @Test
     void 자신의_음식점_리뷰에_좋아요를_누를수없다() {
         // given
-        Restaurant 맛집 = 음식점("맛집");
+        var 맛집 = 음식점("맛집");
         음식점을_저장한다(맛집);
-        OauthMember 오도 = 멤버("오도");
-        String 세션_아이디 = 회원가입하고_로그인한다(오도);
-        Long 음식점_리뷰_아이디 = 음식점_리뷰를_저장한다(음식점_리뷰(오도, 맛집));
+        var 오도 = 멤버("오도");
+        var 세션_아이디 = 회원가입하고_로그인한다(오도);
+        var 음식점_리뷰_아이디 = 음식점_리뷰를_저장한다(음식점_리뷰(오도, 맛집));
 
         // when
-        ExtractableResponse<Response> 응답 = 좋아요_요청을_보낸다(음식점_리뷰_아이디, 세션_아이디);
+        var 응답 = 좋아요_요청을_보낸다(음식점_리뷰_아이디, 세션_아이디);
 
         // then
         응답_상태를_검증한다(응답, 잘못된_요청);

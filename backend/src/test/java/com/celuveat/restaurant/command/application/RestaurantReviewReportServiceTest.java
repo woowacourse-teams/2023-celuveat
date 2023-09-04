@@ -65,6 +65,8 @@ class RestaurantReviewReportServiceTest {
         List<RestaurantReviewReport> result = restaurantReviewReportRepository.findAllByRestaurantReviewId(음식점_리뷰.id());
 
         // then
-        assertThat(result).usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(expected);
+        assertThat(result).usingRecursiveComparison()
+                .ignoringExpectedNullFields()
+                .isEqualTo(expected);
     }
 }

@@ -59,10 +59,10 @@ class RestaurantReviewLikeServiceTest {
 
         // when
         restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
-        Optional<RestaurantReviewLike> result =
-                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
 
         // then
+        Optional<RestaurantReviewLike> result =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
         assertThat(result).isPresent();
     }
 
@@ -100,10 +100,10 @@ class RestaurantReviewLikeServiceTest {
 
         // when
         restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
-        Optional<RestaurantReviewLike> result =
-                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
 
         // then
+        Optional<RestaurantReviewLike> result =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
         assertThat(result).isEmpty();
     }
 }
