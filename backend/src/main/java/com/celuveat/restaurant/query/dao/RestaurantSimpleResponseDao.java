@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
-import static com.celuveat.common.util.StreamUtil.sameOrderGroupBy;
+import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
@@ -78,7 +78,7 @@ public class RestaurantSimpleResponseDao {
 
     private Map<Long, List<Celeb>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
         List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        Map<Long, List<Video>> restaurantVideos = sameOrderGroupBy(videos, video -> video.restaurant().id());
+        Map<Long, List<Video>> restaurantVideos = groupBySameOrder(videos, video -> video.restaurant().id());
         return restaurantVideos.entrySet()
                 .stream()
                 .map(it -> Map.entry(it.getKey(), videosToCelebs(it)))
@@ -97,7 +97,7 @@ public class RestaurantSimpleResponseDao {
 
     private Map<Long, List<RestaurantImage>> getImagesGroupByRestaurantsId(List<Long> restaurantIds) {
         List<RestaurantImage> images = restaurantImageQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        return sameOrderGroupBy(images, image -> image.restaurant().id());
+        return groupBySameOrder(images, image -> image.restaurant().id());
     }
 
     private Set<Long> getRestaurantLikes(@Nullable Long memberId) {

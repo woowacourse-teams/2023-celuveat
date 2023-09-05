@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
-import static com.celuveat.common.util.StreamUtil.sameOrderGroupBy;
+import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
 
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
@@ -45,7 +45,7 @@ public class RestaurantLikeQueryResponseDao {
 
     private Map<Restaurant, List<Celeb>> celebsGroupByRestaurant(List<Restaurant> restaurants) {
         List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIn(restaurants);
-        Map<Restaurant, List<Video>> restaurantVideos = sameOrderGroupBy(videos, Video::restaurant);
+        Map<Restaurant, List<Video>> restaurantVideos = groupBySameOrder(videos, Video::restaurant);
         Map<Restaurant, List<Celeb>> celebs = new LinkedHashMap<>();
         for (Restaurant restaurant : restaurantVideos.keySet()) {
             List<Celeb> list = restaurantVideos.get(restaurant).stream()
@@ -57,7 +57,7 @@ public class RestaurantLikeQueryResponseDao {
     }
 
     private Map<Restaurant, List<RestaurantImage>> imagesGroupByRestaurants(List<Restaurant> restaurants) {
-        return sameOrderGroupBy(
+        return groupBySameOrder(
                 restaurantImageQueryDaoSupport.findAllByRestaurantIn(restaurants),
                 RestaurantImage::restaurant
         );

@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 public class StreamUtil {
 
-    public static <DATA, KEY> Map<KEY, List<DATA>> sameOrderGroupBy(List<DATA> data, Function<DATA, KEY> classifier) {
+    public static <K, E> Map<K, List<E>> groupBySameOrder(List<E> data, Function<E, K> classifier) {
         return data.stream()
                 .collect(groupingBy(
                         classifier,
