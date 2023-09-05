@@ -194,4 +194,7 @@ gradle-app.setting
 src/main/resources/application*.yml
 !src/main/resources/application-local.yml
 
+### Qclass
+src/main/generated
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij+all,java,gradle,git
