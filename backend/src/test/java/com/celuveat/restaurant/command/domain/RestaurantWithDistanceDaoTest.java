@@ -63,7 +63,7 @@ class RestaurantWithDistanceDaoTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -88,7 +88,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -113,7 +113,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -138,7 +138,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -166,7 +166,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -193,7 +193,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -220,7 +220,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -249,7 +249,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20));
@@ -270,7 +270,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -299,7 +299,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
@@ -330,7 +330,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsWithDistance(
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -352,9 +352,9 @@ class RestaurantWithDistanceDaoTest {
     @ValueSource(ints = {10, 100, 1000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.getRestaurantsNearByRestaurantId(
-                specificDistance,
+        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.searchNearBy(
                 1L,
+                specificDistance,
                 PageRequest.of(0, 4)
         );
 

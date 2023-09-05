@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.query.dao;
+package com.celuveat.restaurant.query.dao.support;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;

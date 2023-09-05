@@ -6,10 +6,10 @@ import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import jakarta.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class RestaurantQueryService {
     private final RestaurantSimpleResponseDao restaurantSimpleResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, Optional<Long> memberId) {
+    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, @Nullable Long memberId) {
         return restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
     }
 
@@ -33,30 +33,31 @@ public class RestaurantQueryService {
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
-            Long memberId
+            @Nullable Long memberId
     ) {
         return restaurantSimpleResponseDao.findAllWithMemberLiked(
                 restaurantCond,
                 locationCond,
                 pageable,
-                memberId);
+                memberId
+        );
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
-            int distance,
             long restaurantId,
-            Optional<Long> memberId,
+            int distance,
+            @Nullable Long memberId,
             Pageable pageable
     ) {
         return restaurantSimpleResponseDao.findAllNearByDistanceWithoutSpecificRestaurant(
-                distance,
                 restaurantId,
+                distance,
                 memberId,
                 pageable
         );
     }
 
-    public List<RestaurantLikeQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
+    public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         return restaurantLikeQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
     }
 }

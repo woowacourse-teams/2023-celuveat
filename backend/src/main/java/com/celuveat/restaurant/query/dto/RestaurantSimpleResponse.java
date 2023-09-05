@@ -4,7 +4,10 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.Builder;
+import org.springframework.data.domain.Page;
 
 public record RestaurantSimpleResponse(
         Long id,
@@ -46,6 +49,24 @@ public record RestaurantSimpleResponse(
                 (likeCount == null) ? 0 : likeCount,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
                 restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+        );
+    }
+
+    public static Page<RestaurantSimpleResponse> of(
+            Page<RestaurantWithDistance> restaurants,
+            Map<Long, List<Celeb>> celebsMap,
+            Map<Long, List<RestaurantImage>> restaurantMap,
+            Set<Long> likedRestaurantIds,
+            Map<Long, Long> likeCountsGroupById
+    ) {
+        return restaurants.map(restaurant ->
+                RestaurantSimpleResponse.builder()
+                        .restaurant(restaurant)
+                        .celebs(celebsMap.get(restaurant.id()))
+                        .restaurantImages(restaurantMap.get(restaurant.id()))
+                        .isLiked(likedRestaurantIds.contains(restaurant.id()))
+                        .likeCount(likeCountsGroupById.get(restaurant.id()))
+                        .build()
         );
     }
 

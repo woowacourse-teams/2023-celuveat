@@ -6,7 +6,7 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSea
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.mapper.RestaurantRelocator;
-import java.util.Optional;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +24,10 @@ public class RestaurantQueryFacade {
     public RestaurantDetailResponse findRestaurantDetailById(
             Long restaurantId,
             Long celebId,
-            Optional<Long> memberId
+            @Nullable Long memberId
     ) {
         restaurantService.increaseViewCount(restaurantId);
-        RestaurantDetailResponse response =
-                restaurantQueryService.findRestaurantDetailById(restaurantId, memberId);
+        RestaurantDetailResponse response = restaurantQueryService.findRestaurantDetailById(restaurantId, memberId);
         return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 
@@ -37,10 +36,10 @@ public class RestaurantQueryFacade {
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
-            Optional<Long> memberId
+            @Nullable Long memberId
     ) {
         Page<RestaurantSimpleResponse> response = restaurantQueryService.findAllWithMemberLiked(
-                restaurantCond, locationCond, pageable, memberId.orElse(null)
+                restaurantCond, locationCond, pageable, memberId
         );
         Long celebId = restaurantCond.celebId();
         if (celebId == null) {

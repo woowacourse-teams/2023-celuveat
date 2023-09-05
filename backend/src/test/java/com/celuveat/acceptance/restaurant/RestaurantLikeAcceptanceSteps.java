@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
@@ -61,10 +61,10 @@ public class RestaurantLikeAcceptanceSteps {
                 .extract();
     }
 
-    public static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
+    public static LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
             RestaurantSimpleResponse restaurantSimpleResponse
     ) {
-        return new RestaurantLikeQueryResponse(
+        return new LikedRestaurantQueryResponse(
                 restaurantSimpleResponse.id(),
                 restaurantSimpleResponse.name(),
                 restaurantSimpleResponse.category(),
@@ -79,8 +79,8 @@ public class RestaurantLikeAcceptanceSteps {
     }
 
     public static void 좋아요한_음식점_조회_요청_결과를_검증한다(ExtractableResponse<Response> 응답,
-                                               List<RestaurantLikeQueryResponse> 예상_응답) {
-        List<RestaurantLikeQueryResponse> responseBody = 응답.as(new TypeRef<>() {
+                                               List<LikedRestaurantQueryResponse> 예상_응답) {
+        List<LikedRestaurantQueryResponse> responseBody = 응답.as(new TypeRef<>() {
         });
         assertThat(responseBody).usingRecursiveComparison().isEqualTo(예상_응답);
     }

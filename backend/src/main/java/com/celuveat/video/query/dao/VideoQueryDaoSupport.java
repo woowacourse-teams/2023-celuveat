@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VideoQueryDaoSupport extends JpaRepository<Video, Long> {
 
-    List<Video> findAllByRestaurantIdIn(List<Long> restaurantIds);
+    List<Video> findAllByRestaurantIn(List<Restaurant> restaurants);
 
     List<Video> findAllByRestaurant(Restaurant restaurant);
+
+    List<Video> findAllByRestaurantIdIn(List<Long> restaurantIds);
 }

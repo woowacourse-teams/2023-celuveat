@@ -24,12 +24,11 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearc
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantLikeQueryResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -485,7 +484,7 @@ class RestaurantQueryServiceTest {
                 음식점_좋아요(도기2호점, 멤버),
                 음식점_좋아요(로이스2호점, 멤버)
         ));
-        List<RestaurantLikeQueryResponse> expected = new ArrayList<>(List.of(
+        List<LikedRestaurantQueryResponse> expected = new ArrayList<>(List.of(
                 toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse4),
                 toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse3),
                 toRestaurantLikeQueryResponse(restaurantWithCelebsAndImagesSimpleResponse2),
@@ -493,16 +492,16 @@ class RestaurantQueryServiceTest {
         ));
 
         // when
-        List<RestaurantLikeQueryResponse> restaurantLikes =
+        List<LikedRestaurantQueryResponse> restaurantLikes =
                 restaurantQueryService.findAllLikedRestaurantByMemberId(멤버.id());
 
         // then
         assertThat(restaurantLikes).usingRecursiveComparison().isEqualTo(expected);
     }
 
-    private RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
+    private LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
             RestaurantSimpleResponse restaurantWithCelebsAndImagesSimpleResponse) {
-        return new RestaurantLikeQueryResponse(
+        return new LikedRestaurantQueryResponse(
                 restaurantWithCelebsAndImagesSimpleResponse.id(),
                 restaurantWithCelebsAndImagesSimpleResponse.name(),
                 restaurantWithCelebsAndImagesSimpleResponse.category(),
@@ -527,7 +526,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.empty());
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), null);
 
         // then
         assertThat(result)
@@ -548,7 +547,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), Optional.of(oauthMember.id()));
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), oauthMember.id());
 
         // then
         assertThat(result)
@@ -587,9 +586,9 @@ class RestaurantQueryServiceTest {
 
         // when
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                specificDistance,
                 restaurant.id(),
-                Optional.empty(),
+                specificDistance,
+                null,
                 PageRequest.of(0, 4)
         );
 
@@ -614,9 +613,9 @@ class RestaurantQueryServiceTest {
 
         // when
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                50000,
                 seed.get(0).id(),
-                Optional.of(도기.id()),
+                50000,
+                도기.id(),
                 PageRequest.of(0, 4)
         );
 
