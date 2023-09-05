@@ -1,11 +1,14 @@
 package com.celuveat.video.query.dao;
 
-import static com.celuveat.common.query.DynamicQueryCondition.notNull;
+import static com.celuveat.celeb.command.domain.QCeleb.celeb;
+import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
+import static com.celuveat.video.command.domain.QVideo.video;
 
-import com.celuveat.common.query.DynamicQuery;
-import com.celuveat.common.query.DynamicQueryAssembler;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
-import jakarta.persistence.EntityManager;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,69 +22,57 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class VideoWithCelebQueryResponseDao {
 
-    private static final String SELECT_VIDEO = """
-            SELECT new com.celuveat.video.query.dto.VideoWithCelebQueryResponse(
-                v.id,
-                v.youtubeUrl as youtubeVideoKey,
-                v.uploadDate,
-                c.id,
-                c.name,
-                c.youtubeChannelName,
-                c.profileImageUrl
-            )
-            FROM Video v
-            JOIN Celeb c ON c = v.celeb
-            JOIN Restaurant r ON r = v.restaurant
-            """;
-
-    private static final String COUNT_QUERY = """
-            SELECT COUNT(DISTINCT v.id)
-            FROM Video v
-            JOIN Celeb c ON c = v.celeb
-            JOIN Restaurant r ON r = v.restaurant
-            """;
-
-    private static final String CELEB_ID_EQUAL = "c.id = %d";
-    private static final String RESTAURANT_ID_EQUAL = "r.id = %d";
-
-    private final EntityManager em;
+    private final JPAQueryFactory query;
 
     public Page<VideoWithCelebQueryResponse> find(
             VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {
-        String whereQuery = DynamicQueryAssembler.assemble(
-                celebIdEqual(videoSearchCond),
-                restaurantIdEqual(videoSearchCond)
-        );
-        List<VideoWithCelebQueryResponse> resultList = em.createQuery(
-                        SELECT_VIDEO + whereQuery,
-                        VideoWithCelebQueryResponse.class
+        List<VideoWithCelebQueryResponse> resultList = query.select(
+                        Projections.constructor(VideoWithCelebQueryResponse.class,
+                                video.id,
+                                video.youtubeUrl,
+                                video.uploadDate,
+                                celeb.id,
+                                celeb.name,
+                                celeb.youtubeChannelName,
+                                celeb.profileImageUrl
+                        ))
+                .from(video)
+                .join(celeb).on(celeb.eq(video.celeb))
+                .join(restaurant).on(restaurant.eq(video.restaurant))
+                .where(
+                        celebIdEqual(videoSearchCond.celebId),
+                        restaurantIdEqual(videoSearchCond.restaurantId)
                 )
-                .setFirstResult((int) pageable.getOffset())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
-        return PageableExecutionUtils.getPage(
-                resultList,
-                pageable,
-                () -> (Long) em.createQuery(COUNT_QUERY + whereQuery).getSingleResult()
-        );
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = query.select(video.count())
+                .from(video)
+                .join(celeb).on(celeb.eq(video.celeb))
+                .join(restaurant).on(restaurant.eq(video.restaurant))
+                .where(
+                        celebIdEqual(videoSearchCond.celebId),
+                        restaurantIdEqual(videoSearchCond.restaurantId)
+                );
+
+        return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
     }
 
-    private DynamicQuery celebIdEqual(VideoSearchCond videoSearchCond) {
-        return DynamicQuery.builder()
-                .query(CELEB_ID_EQUAL)
-                .params(videoSearchCond.celebId())
-                .condition(notNull(videoSearchCond.celebId()))
-                .build();
+    private Predicate celebIdEqual(Long celebId) {
+        if (celebId == null) {
+            return null;
+        }
+        return celeb.id.eq(celebId);
     }
 
-    private DynamicQuery restaurantIdEqual(VideoSearchCond videoSearchCond) {
-        return DynamicQuery.builder()
-                .query(RESTAURANT_ID_EQUAL)
-                .params(videoSearchCond.restaurantId())
-                .condition(notNull(videoSearchCond.restaurantId()))
-                .build();
+    private Predicate restaurantIdEqual(Long restaurantId) {
+        if (restaurantId == null) {
+            return null;
+        }
+        return restaurant.id.eq(restaurantId);
     }
 
     public record VideoSearchCond(
