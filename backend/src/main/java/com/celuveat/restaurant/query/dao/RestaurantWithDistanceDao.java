@@ -132,11 +132,11 @@ public class RestaurantWithDistanceDao {
     }
 
     private OrderSpecifier<?> applyOrderBy(Pageable pageable) {
-        String sortProperty = pageable.getSort().stream()
+        RestaurantSortType sortType = pageable.getSort().stream()
                 .map(Order::getProperty)
                 .findFirst()
-                .orElse(RestaurantSortType.DISTANCE.sortProperty);
-        RestaurantSortType sortType = RestaurantSortType.from(sortProperty);
+                .map(RestaurantSortType::from)
+                .orElse(RestaurantSortType.DISTANCE);
         if (sortType == RestaurantSortType.LIKE_COUNT) {
             SubQueryExpression<Long> orderByLikeDesc = JPAExpressions
                     .select(restaurantLike.count())
