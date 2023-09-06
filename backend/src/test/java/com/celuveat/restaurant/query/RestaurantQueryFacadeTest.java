@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.command.application;
+package com.celuveat.restaurant.query;
 
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
@@ -12,7 +12,6 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
-import com.celuveat.restaurant.query.RestaurantQueryFacade;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.video.command.domain.VideoRepository;
 import java.util.List;

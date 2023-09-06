@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.command.domain;
+package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;

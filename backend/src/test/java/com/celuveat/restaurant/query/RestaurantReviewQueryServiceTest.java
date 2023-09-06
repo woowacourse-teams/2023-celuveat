@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.command.application;
+package com.celuveat.restaurant.query;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
@@ -12,7 +12,6 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
-import com.celuveat.restaurant.query.RestaurantReviewQueryService;
 import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
