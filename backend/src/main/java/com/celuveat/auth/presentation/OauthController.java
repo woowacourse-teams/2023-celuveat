@@ -4,7 +4,6 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.command.application.OauthService;
 import com.celuveat.auth.command.domain.OauthServerType;
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.auth.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,7 +37,7 @@ public class OauthController {
     }
 
     @GetMapping("/login/{oauthServerType}")
-    ResponseEntity<SessionResponse> login(
+    ResponseEntity<Void> login(
             @PathVariable OauthServerType oauthServerType,
             @RequestParam("code") String code,
             HttpServletRequest request
@@ -46,7 +45,7 @@ public class OauthController {
         Long oauthMemberId = oauthService.login(oauthServerType, code);
         HttpSession session = request.getSession(true);
         session.setAttribute(JSESSION_ID, oauthMemberId);
-        return ResponseEntity.ok(new SessionResponse(session.getId()));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/logout/{oauthServerType}")

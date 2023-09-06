@@ -6,7 +6,6 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import com.celuveat.auth.command.domain.OauthId;
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +23,13 @@ public class LocalAuthController {
     private final OauthMemberRepository oauthMemberRepository;
 
     @GetMapping("/login/local")
-    ResponseEntity<SessionResponse> login(@RequestParam String id, HttpServletRequest request) {
+    ResponseEntity<Void> login(@RequestParam String id, HttpServletRequest request) {
         OauthId oauthId = new OauthId(id, KAKAO);
         OauthMember oauthMember = new OauthMember(oauthId, id, null);
         OauthMember savedMember = oauthMemberRepository.findByOauthId(oauthId)
                 .orElseGet(() -> oauthMemberRepository.save(oauthMember));
         HttpSession session = request.getSession(true);
         session.setAttribute(JSESSION_ID, savedMember.id());
-        return ResponseEntity.ok(new SessionResponse(session.getId()));
+        return ResponseEntity.ok().build();
     }
 }
