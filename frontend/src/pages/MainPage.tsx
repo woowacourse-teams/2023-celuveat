@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { styled, css } from 'styled-components';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { shallow } from 'zustand/shallow';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
@@ -17,19 +18,29 @@ import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import type { RestaurantListData } from '~/@types/api.types';
 import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
-import useMapState from '~/hooks/store/useMapState';
 import PopUpContainer from '~/components/PopUpContainer';
+import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 function MainPage() {
   const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
   const { isMobile } = useMediaQuery();
+  const [boundary, celebId, currentPage, restaurantCategory, setCelebId, setCurrentPage, setRestaurantCategory] =
+    useRestaurantsQueryStringState(
+      state => [
+        state.boundary,
+        state.celebId,
+        state.currentPage,
+        state.restaurantCategory,
+        state.setCelebId,
+        state.setCurrentPage,
+        state.setRestaurantCategory,
+      ],
+      shallow,
+    );
+
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const [celebId, setCelebId] = useState<Celeb['id']>(-1);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [restaurantCategory, setRestaurantCategory] = useState<RestaurantCategory>('전체');
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
-  const boundary = useMapState(state => state.boundary);
 
   const {
     data: restaurantListData,

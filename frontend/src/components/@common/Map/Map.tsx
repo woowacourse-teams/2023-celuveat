@@ -17,6 +17,7 @@ import type { Coordinate } from '~/@types/map.types';
 import type { RestaurantData } from '~/@types/api.types';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import useMapState from '~/hooks/store/useMapState';
+import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 interface MapProps {
   data: RestaurantData[];
@@ -47,13 +48,13 @@ const StyledMapLoadingContainer = styled.section`
 `;
 
 function Map({ data, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
-  const [center, setCenter, zoom, setZoom, setBoundary] = useMapState(state => [
+  const [center, setCenter, zoom, setZoom] = useMapState(state => [
     state.center,
     state.setCenter,
     state.zoom,
     state.setZoom,
-    state.setBoundary,
   ]);
+  const [setBoundary] = useRestaurantsQueryStringState(state => [state.setBoundary]);
   const { isMobile } = useMediaQuery();
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
