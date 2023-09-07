@@ -13,7 +13,7 @@ import type { Celeb } from '~/@types/celeb.types';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
-  map?: google.maps.Map;
+  map: google.maps.Map;
   restaurant: Restaurant;
   quadrant: Quadrant;
   isRestaurantHovered: boolean;
