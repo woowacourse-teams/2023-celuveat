@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { styled, css } from 'styled-components';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -10,46 +10,24 @@ import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import BottomSheet from '~/components/@common/BottomSheet';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import { getCelebs, getRestaurants } from '~/api';
+import { getCelebs } from '~/api';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
-import type { RestaurantListData } from '~/@types/api.types';
-import useBottomSheetStatus from '~/hooks/store/useBottomSheetStatus';
 import PopUpContainer from '~/components/PopUpContainer';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 function MainPage() {
-  const isBottomSheetOpen = useBottomSheetStatus(state => state.isOpen);
   const { isMobile } = useMediaQuery();
-  const [boundary, celebId, currentPage, restaurantCategory, setCelebId, setCurrentPage, setRestaurantCategory] =
-    useRestaurantsQueryStringState(
-      state => [
-        state.boundary,
-        state.celebId,
-        state.currentPage,
-        state.restaurantCategory,
-        state.setCelebId,
-        state.setCurrentPage,
-        state.setRestaurantCategory,
-      ],
-      shallow,
-    );
+  const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
+    state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
+    shallow,
+  );
 
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
   const [celebOptions, setCelebOptions] = useState<Celeb[]>();
-
-  const {
-    data: restaurantListData,
-    isLoading,
-    refetch,
-  } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
-    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
-  });
 
   const celebOptionsMutation = useMutation({
     mutationFn: () => getCelebs(),
@@ -67,7 +45,7 @@ function MainPage() {
 
     setRestaurantCategory(currentCategory);
     setCurrentPage(0);
-    refetch();
+    // refetch();
   };
 
   const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
@@ -75,11 +53,11 @@ function MainPage() {
 
     setCelebId(currentCelebId);
     setCurrentPage(0);
-    refetch();
+    // refetch();
   };
 
   const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
-  const bottomSheetHeader = (total: number) => `지도 영역에 있는 음식점 수 ${total}개`;
+  // const bottomSheetHeader = (total: number) => `지도 영역에 있는 음식점 수 ${total}개`;
 
   return (
     <>
@@ -89,53 +67,16 @@ function MainPage() {
         <StyledLine />
         <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
       </StyledNavBar>
-
-      {isMobile ? (
-        <StyledMobileLayout>
-          <StyledLayer isMobile={isMobile}>
-            <Map
-              setCurrentPage={setCurrentPage}
-              data={restaurantListData?.content}
-              toggleMapExpand={toggleMapExpand}
-              hoveredId={hoveredId}
-              loadingData={isLoading}
-            />
-            <StyledMapBottomCover isBottomSheetOpen={isBottomSheetOpen} />
-          </StyledLayer>
-          <BottomSheet title={bottomSheetHeader(restaurantListData?.totalElementsCount)} isLoading={isLoading}>
-            <RestaurantCardList
-              restaurantDataList={restaurantListData}
-              loading={isLoading}
-              setHoveredId={setHoveredId}
-              setCurrentPage={setCurrentPage}
-            />
-          </BottomSheet>
-        </StyledMobileLayout>
-      ) : (
-        <>
-          <StyledLayout isMapExpanded={isMapExpanded}>
-            <StyledLeftSide isMapExpanded={isMapExpanded}>
-              <RestaurantCardList
-                restaurantDataList={restaurantListData}
-                loading={isLoading}
-                setHoveredId={setHoveredId}
-                setCurrentPage={setCurrentPage}
-              />
-            </StyledLeftSide>
-            <StyledRightSide>
-              <Map
-                setCurrentPage={setCurrentPage}
-                data={restaurantListData?.content}
-                toggleMapExpand={toggleMapExpand}
-                hoveredId={hoveredId}
-                loadingData={isLoading}
-              />
-            </StyledRightSide>
-          </StyledLayout>
-          <PopUpContainer />
-          <Footer />
-        </>
-      )}
+      <StyledLayout isMapExpanded={isMapExpanded}>
+        <StyledLeftSide isMapExpanded={isMapExpanded}>
+          <RestaurantCardList setHoveredId={setHoveredId} setCurrentPage={setCurrentPage} />
+        </StyledLeftSide>
+        <StyledRightSide>
+          <Map setCurrentPage={setCurrentPage} toggleMapExpand={toggleMapExpand} hoveredId={hoveredId} />
+        </StyledRightSide>
+      </StyledLayout>
+      <PopUpContainer />
+      <Footer />
     </>
   );
 }
@@ -168,49 +109,49 @@ const StyledLine = styled.div`
   background-color: var(--gray-3);
 `;
 
-const StyledLayer = styled.div<{ isMobile: boolean }>`
-  display: flex;
-  flex-direction: column;
+// const StyledLayer = styled.div<{ isMobile: boolean }>`
+//   display: flex;
+//   flex-direction: column;
 
-  position: fixed;
-  top: ${({ isMobile }) => (isMobile ? '140px' : '160px')};
-  z-index: 0;
+//   position: fixed;
+//   top: ${({ isMobile }) => (isMobile ? '140px' : '160px')};
+//   z-index: 0;
 
-  width: 100%;
-  height: 100%;
-`;
+//   width: 100%;
+//   height: 100%;
+// `;
 
-const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
-  position: fixed;
-  bottom: 0;
+// const StyledMapBottomCover = styled.div<{ isBottomSheetOpen: boolean }>`
+//   position: fixed;
+//   bottom: 0;
 
-  width: 100%;
-  height: 0;
+//   width: 100%;
+//   height: 0;
 
-  background: var(--white);
+//   background: var(--white);
 
-  transition: height 0.8s ease-in-out;
+//   transition: height 0.8s ease-in-out;
 
-  overflow: hidden;
+//   overflow: hidden;
 
-  ${({ isBottomSheetOpen }) =>
-    isBottomSheetOpen &&
-    css`
-      z-index: 20;
+//   ${({ isBottomSheetOpen }) =>
+//     isBottomSheetOpen &&
+//     css`
+//       z-index: 20;
 
-      height: calc(36vh - 74px);
-    `}
-`;
+//       height: calc(36vh - 74px);
+//     `}
+// `;
 
-const StyledMobileLayout = styled.main`
-  display: flex;
-  align-items: flex-end;
+// const StyledMobileLayout = styled.main`
+//   display: flex;
+//   align-items: flex-end;
 
-  position: relative;
+//   position: relative;
 
-  width: 100%;
-  height: 100vh;
-`;
+//   width: 100%;
+//   height: 100vh;
+// `;
 
 const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
   display: grid;

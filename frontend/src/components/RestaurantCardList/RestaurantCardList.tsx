@@ -1,5 +1,7 @@
 import { styled, css } from 'styled-components';
 import React, { useEffect, useState } from 'react';
+import { shallow } from 'zustand/shallow';
+import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '../RestaurantCard';
 import { FONT_SIZE } from '~/styles/common';
 import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
@@ -7,17 +9,26 @@ import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import PageNationBar from '../@common/PageNationBar';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
+import { getRestaurants } from '~/api';
 
 interface RestaurantCardListProps {
-  restaurantDataList: RestaurantListData | null;
-  loading: boolean;
   setHoveredId: React.Dispatch<React.SetStateAction<number>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurrentPage }: RestaurantCardListProps) {
+function RestaurantCardList({ setHoveredId, setCurrentPage }: RestaurantCardListProps) {
   const { isMobile } = useMediaQuery();
   const [prevCardNumber, setPrevCardNumber] = useState(18);
+  const [boundary, celebId, currentPage, restaurantCategory] = useRestaurantsQueryStringState(
+    state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory],
+    shallow,
+  );
+
+  const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+  });
 
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
@@ -33,17 +44,10 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
     if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);
   }, [restaurantDataList?.currentElementsCount]);
 
-  if (!restaurantDataList || loading)
+  if (isLoading)
     return (
       <StyledSkeleton>
-        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />{' '}
-        {restaurantDataList && (
-          <PageNationBar
-            totalPage={restaurantDataList.totalPage}
-            currentPage={restaurantDataList.currentPage + 1}
-            clickPageButton={clickPageButton}
-          />
-        )}
+        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />
       </StyledSkeleton>
     );
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import { styled } from 'styled-components';
+import { shallow } from 'zustand/shallow';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
 import LoadingDots from '../LoadingDots';
@@ -10,21 +11,18 @@ import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import Minus from '~/assets/icons/minus.svg';
 import Plus from '~/assets/icons/plus.svg';
-import getQuadrant from '~/utils/getQuadrant';
-import OverlayMarker from './OverlayMarker';
 
 import type { Coordinate } from '~/@types/map.types';
-import type { RestaurantData } from '~/@types/api.types';
+
 import useMediaQuery from '~/hooks/useMediaQuery';
 import useMapState from '~/hooks/store/useMapState';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
+import OverlayMarkerList from './OverlayMarkerList';
 
 interface MapProps {
-  data: RestaurantData[];
   hoveredId: number | null;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   toggleMapExpand: () => void;
-  loadingData: boolean;
 }
 
 const render = (status: Status) => {
@@ -47,20 +45,20 @@ const StyledMapLoadingContainer = styled.section`
   background-color: var(--gray-2);
 `;
 
-function Map({ data, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: MapProps) {
+function Map({ toggleMapExpand, hoveredId, setCurrentPage }: MapProps) {
   const [center, setCenter, zoom, setZoom] = useMapState(state => [
     state.center,
     state.setCenter,
     state.zoom,
     state.setZoom,
   ]);
-  const [setBoundary] = useRestaurantsQueryStringState(state => [state.setBoundary]);
   const { isMobile } = useMediaQuery();
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [myPosition, setMyPosition] = useState<Coordinate | null>(null);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentCenter, setCurrentCenter] = useState<Coordinate>(center);
+  const [setBoundary] = useRestaurantsQueryStringState(state => [state.setBoundary], shallow);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -111,16 +109,9 @@ function Map({ data, toggleMapExpand, loadingData, hoveredId, setCurrentPage }: 
         zoom={zoom}
         center={center}
       >
-        {data?.map(({ celebs, ...restaurant }) => (
-          <OverlayMarker
-            restaurant={restaurant}
-            celeb={celebs[0]}
-            quadrant={getQuadrant(currentCenter, { lat: restaurant.lat, lng: restaurant.lng })}
-            isRestaurantHovered={restaurant.id === hoveredId}
-          />
-        ))}
+        <OverlayMarkerList center={currentCenter} hoveredId={hoveredId} />
         {myPosition && <OverlayMyLocation position={myPosition} />}
-        {(loadingData || loading) && (
+        {loading && (
           <LoadingUI>
             <LoadingDots />
           </LoadingUI>
