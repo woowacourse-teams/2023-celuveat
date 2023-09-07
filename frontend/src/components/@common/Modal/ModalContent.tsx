@@ -3,24 +3,24 @@ import styled, { css } from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { hideScrollBar } from '~/styles/common';
+import { useModalContext } from './Modal';
 
 interface ModalContentProps {
-  isShow?: boolean;
   title: string;
-  closeModal: () => void;
   children: React.ReactElement;
 }
 
-function ModalContent({ isShow = false, title, closeModal, children }: ModalContentProps) {
+function ModalContent({ title, children }: ModalContentProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const { close, isOpen } = useModalContext();
   const { isMobile } = useMediaQuery();
 
   return (
-    <StyledModalContentWrapper isShow={isShow} isMobile={isMobile}>
-      <StyledModalOverlay onClick={closeModal} />
-      <StyledModalContent ref={modalContentRef} isShow={isShow} isMobile={isMobile}>
+    <StyledModalContentWrapper isShow={isOpen} isMobile={isMobile}>
+      <StyledModalOverlay onClick={close} />
+      <StyledModalContent ref={modalContentRef} isShow={isOpen} isMobile={isMobile}>
         <StyledModalHeader>
-          <StyledExitButton onClick={closeModal} />
+          <StyledExitButton onClick={close} />
           <StyledModalTitleText>{title}</StyledModalTitleText>
         </StyledModalHeader>
         <StyledModalBody>{cloneElement(children, { modalContentRef })}</StyledModalBody>

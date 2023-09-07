@@ -63,7 +63,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     close();
   }, []);
 
-  return { isModalOpen, closeModal, toggleRestaurantLike };
+  return { isModalOpen, openModal, closeModal, toggleRestaurantLike };
 };
 
 export default useToggleRestaurantLike;

@@ -44,7 +44,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     close();
   }, []);
 
-  return { isModalOpen, closeModal, isLiked, toggleRestaurantLike };
+  return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike };
 };
 
 export default useToggleLikeNotUpdate;

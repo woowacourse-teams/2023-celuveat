@@ -20,7 +20,7 @@ interface RestaurantWishItemProps {
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, openModal, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   const openDetail = () => window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
 
@@ -52,8 +52,8 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           <PopUpContainer />
         </section>
       </StyledContainer>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
+      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
+        <ModalContent title="로그인 및 회원 가입">
           <LoginModalContent />
         </ModalContent>
       </Modal>
