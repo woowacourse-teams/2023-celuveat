@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { styled, css } from 'styled-components';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -6,11 +6,10 @@ import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import PopUpContainer from '~/components/PopUpContainer';
 import MainPageNavBar from '~/components/MainPageNavBar';
+import useBooleanState from '~/hooks/useBooleanState';
 
 function MainPage() {
-  const [isMapExpanded, setIsMapExpanded] = useState(false);
-
-  const toggleMapExpand = () => setIsMapExpanded(prev => !prev);
+  const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
 
   return (
     <>
@@ -23,7 +22,7 @@ function MainPage() {
           <RestaurantCardList />
         </StyledLeftSide>
         <StyledRightSide>
-          <Map toggleMapExpand={toggleMapExpand} />
+          <Map toggleMapExpand={toggleExpandedMap} />
         </StyledRightSide>
       </StyledLayout>
       <PopUpContainer />
