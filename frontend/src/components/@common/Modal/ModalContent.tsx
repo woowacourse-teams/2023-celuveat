@@ -6,7 +6,7 @@ import { hideScrollBar } from '~/styles/common';
 import { useModalContext } from './Modal';
 
 interface ModalContentProps {
-  title: string;
+  title?: string;
   children: React.ReactElement;
 }
 

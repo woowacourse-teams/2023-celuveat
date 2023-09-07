@@ -57,21 +57,15 @@ function RestaurantReviewWrapper() {
         {isMoreReviews && <button type="button" onClick={openShowAll}>{`리뷰 ${reviewCount}개 모두 보기`}</button>}
       </StyledButtonContainer>
       <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
-        {formType === '' && (
-          <ModalContent title="로그인">
-            <LoginModalContent />
-          </ModalContent>
-        )}
-        {formType === 'create' && (
-          <ModalContent title="리뷰 생성하기">
-            <ReviewForm type="create" />
-          </ModalContent>
-        )}
-        {formType === 'all' && (
-          <ModalContent title="리뷰 전체">
-            <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
-          </ModalContent>
-        )}
+        <ModalContent>
+          <>
+            {formType === '' && <LoginModalContent />}
+            {formType === 'create' && <ReviewForm type="create" />}
+            {formType === 'all' && (
+              <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
+            )}
+          </>
+        </ModalContent>
       </Modal>
       <PopUpContainer />
     </StyledRestaurantReviewWrapper>
