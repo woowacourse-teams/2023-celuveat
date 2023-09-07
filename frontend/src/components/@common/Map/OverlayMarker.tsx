@@ -10,20 +10,21 @@ import Love from '~/assets/icons/love.svg';
 import type { Quadrant } from '~/utils/getQuadrant';
 import type { Restaurant } from '~/@types/restaurant.types';
 import type { Celeb } from '~/@types/celeb.types';
+import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
   map: google.maps.Map;
   restaurant: Restaurant;
   quadrant: Quadrant;
-  isRestaurantHovered: boolean;
 }
 
-function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }: OverlayMarkerProps) {
-  const { lat, lng } = restaurant;
+function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps) {
+  const { lat, lng, id: restaurantId } = restaurant;
   const [isClicked, setIsClicked] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setIsClicked(false));
+  const [hoveredId] = useHoveredRestaurantState(state => [state.id]);
 
   const clickMarker = () => {
     setIsClicked(true);
@@ -35,12 +36,12 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
 
   return (
     map && (
-      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
+      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || hoveredId === restaurantId ? 18 : 0}>
         <StyledMarkerContainer ref={ref} data-cy={`${restaurant.name} 오버레이`}>
           <StyledMarker
             onClick={clickMarker}
             isClicked={isClicked}
-            isRestaurantHovered={isRestaurantHovered}
+            isRestaurantHovered={hoveredId === restaurantId}
             data-cy={`${restaurant.name} 마커`}
           >
             <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />

@@ -20,8 +20,6 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import OverlayMarkerList from './OverlayMarkerList';
 
 interface MapProps {
-  hoveredId: number | null;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   toggleMapExpand: () => void;
 }
 
@@ -45,7 +43,7 @@ const StyledMapLoadingContainer = styled.section`
   background-color: var(--gray-2);
 `;
 
-function Map({ toggleMapExpand, hoveredId, setCurrentPage }: MapProps) {
+function Map({ toggleMapExpand }: MapProps) {
   const [center, setCenter, zoom, setZoom] = useMapState(state => [
     state.center,
     state.setCenter,
@@ -58,7 +56,10 @@ function Map({ toggleMapExpand, hoveredId, setCurrentPage }: MapProps) {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentCenter, setCurrentCenter] = useState<Coordinate>(center);
-  const [setBoundary] = useRestaurantsQueryStringState(state => [state.setBoundary], shallow);
+  const [setBoundary, setCurrentPage] = useRestaurantsQueryStringState(
+    state => [state.setBoundary, state.setCurrentPage],
+    shallow,
+  );
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     setClicks([...clicks, e.latLng!]);
@@ -109,7 +110,7 @@ function Map({ toggleMapExpand, hoveredId, setCurrentPage }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        <OverlayMarkerList center={currentCenter} hoveredId={hoveredId} />
+        <OverlayMarkerList center={currentCenter} />
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (
           <LoadingUI>

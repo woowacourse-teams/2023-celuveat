@@ -9,11 +9,10 @@ import type { Coordinate } from '~/@types/map.types';
 
 interface OverlayMarkerListProps {
   center: Coordinate;
-  hoveredId: number | null;
   map?: google.maps.Map;
 }
 
-function OverlayMarkerList({ center, hoveredId, map }: OverlayMarkerListProps) {
+function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
   const [boundary, celebId, currentPage, restaurantCategory] = useRestaurantsQueryStringState(
     state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory],
     shallow,
@@ -34,7 +33,6 @@ function OverlayMarkerList({ center, hoveredId, map }: OverlayMarkerListProps) {
         restaurant={restaurant}
         celeb={celebs[0]}
         quadrant={getQuadrant(center, { lat: restaurant.lat, lng: restaurant.lng })}
-        isRestaurantHovered={restaurant.id === hoveredId}
       />
     ))
   );
