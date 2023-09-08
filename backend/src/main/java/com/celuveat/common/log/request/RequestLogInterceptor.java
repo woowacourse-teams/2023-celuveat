@@ -4,12 +4,12 @@ import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
 import com.celuveat.common.log.context.LogId;
 import com.celuveat.common.log.query.QueryCounter;
-import com.celuveat.common.util.CorsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -26,14 +26,14 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
+        if (CorsUtils.isPreFlightRequest(request) || isErrorUri(request)) {
             return true;
         }
         LogContext logContext = new LogContext(LogId.fromRequest(request));
         logContextHolder.setLogContext(logContext);
         RequestInfoLogData requestInfoLogData = new RequestInfoLogData(logContext.logId(), request);
         requestInfoLogData.put("Controller Method", handlerMethod((HandlerMethod) handler));
-        log.info("[Web Request START] : [\n{}]", requestInfoLogData);
+        log.info("[Web Request START] : [{}]", requestInfoLogData);
         return true;
     }
 
@@ -54,15 +54,19 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             Object handler,
             Exception ex
     ) {
-        if (CorsUtil.isPreflightRequest(request) || isErrorUri(request)) {
+        if (CorsUtils.isPreFlightRequest(request) || isErrorUri(request)) {
             return;
         }
         LogContext logContext = logContextHolder.get();
-        ResponseInfoLogData responseInfoLogData = new ResponseInfoLogData(logContext.logId(), response);
         long totalTime = logContext.totalTakenTime();
-        responseInfoLogData.put("Query Count", queryCounter.count());
-        responseInfoLogData.put("Total Time", totalTime + "ms");
-        log.info("[Web Request END] : [\n{}]", responseInfoLogData);
+        log.info("[Web Request END] : ID: {}, URI: {}, METHOD: {}, STATUS: {}, 쿼리 개수: {}, 요청 처리 시간: {}ms",
+                logContext.logId(),
+                request.getRequestURI(),
+                request.getMethod(),
+                response.getStatus(),
+                queryCounter.count(),
+                logContext.totalTakenTime()
+        );
         logWarning(logContext, totalTime);
     }
 

@@ -1,8 +1,8 @@
 package com.celuveat.video.fixture;
 
-import com.celuveat.celeb.domain.Celeb;
-import com.celuveat.restaurant.domain.Restaurant;
-import com.celuveat.video.domain.Video;
+import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.video.command.domain.Video;
 import java.time.LocalDate;
 
 public class VideoFixture {

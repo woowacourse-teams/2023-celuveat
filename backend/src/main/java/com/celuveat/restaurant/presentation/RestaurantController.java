@@ -5,21 +5,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.common.auth.LooseAuth;
-import com.celuveat.restaurant.application.RestaurantCorrectionService;
-import com.celuveat.restaurant.application.RestaurantLikeService;
-import com.celuveat.restaurant.application.RestaurantQueryFacade;
-import com.celuveat.restaurant.application.RestaurantQueryService;
-import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.command.application.RestaurantCorrectionService;
+import com.celuveat.restaurant.command.application.RestaurantLikeService;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
+import com.celuveat.restaurant.query.RestaurantQueryFacade;
+import com.celuveat.restaurant.query.RestaurantQueryService;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +47,7 @@ public class RestaurantController {
     ResponseEntity<RestaurantDetailResponse> getRestaurantDetail(
             @PathVariable Long restaurantId,
             @RequestParam Long celebId,
-            @LooseAuth Optional<Long> memberId
+            @LooseAuth Long memberId
     ) {
         RestaurantDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(
                 restaurantId, celebId, memberId
@@ -58,7 +57,7 @@ public class RestaurantController {
 
     @GetMapping
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAll(
-            @LooseAuth Optional<Long> memberId,
+            @LooseAuth Long memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
             @PageableDefault(size = 18) Pageable pageable
@@ -72,8 +71,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/like")
-    ResponseEntity<List<RestaurantLikeQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<RestaurantLikeQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
+    ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
+        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
                 memberId);
         return ResponseEntity.ok(result);
     }
@@ -88,13 +87,13 @@ public class RestaurantController {
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAllNearbyDistance(
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
-            @LooseAuth Optional<Long> memberId,
+            @LooseAuth Long memberId,
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSimpleResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                        distance,
                         restaurantId,
+                        distance,
                         memberId,
                         pageable
                 );

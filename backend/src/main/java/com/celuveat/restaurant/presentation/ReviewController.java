@@ -3,12 +3,15 @@ package com.celuveat.restaurant.presentation;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.auth.Auth;
-import com.celuveat.restaurant.application.RestaurantReviewQueryService;
-import com.celuveat.restaurant.application.RestaurantReviewService;
-import com.celuveat.restaurant.application.dto.DeleteReviewCommand;
-import com.celuveat.restaurant.application.dto.RestaurantReviewQueryResponse;
+import com.celuveat.restaurant.command.application.RestaurantReviewLikeService;
+import com.celuveat.restaurant.command.application.RestaurantReviewReportService;
+import com.celuveat.restaurant.command.application.RestaurantReviewService;
+import com.celuveat.restaurant.command.application.dto.DeleteReviewCommand;
+import com.celuveat.restaurant.presentation.dto.ReportReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
+import com.celuveat.restaurant.query.RestaurantReviewQueryService;
+import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +31,8 @@ public class ReviewController {
 
     private final RestaurantReviewService restaurantReviewService;
     private final RestaurantReviewQueryService restaurantReviewQueryService;
+    private final RestaurantReviewLikeService restaurantReviewLikeService;
+    private final RestaurantReviewReportService restaurantReviewReportService;
 
     @GetMapping
     ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
@@ -62,5 +67,21 @@ public class ReviewController {
     ) {
         restaurantReviewService.delete(new DeleteReviewCommand(reviewId, memberId));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{reviewId}/like")
+    ResponseEntity<Void> like(@PathVariable Long reviewId, @Auth Long memberId) {
+        restaurantReviewLikeService.like(reviewId, memberId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{reviewId}/report")
+    ResponseEntity<Void> report(
+            @RequestBody ReportReviewRequest request,
+            @PathVariable Long reviewId,
+            @Auth Long memberId
+    ) {
+        restaurantReviewReportService.report(request.content(), reviewId, memberId);
+        return ResponseEntity.ok().build();
     }
 }

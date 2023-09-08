@@ -4,7 +4,6 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.auth.presentation.dto.SessionResponse;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.common.exception.ExceptionResponse;
 import io.restassured.RestAssured;
@@ -46,13 +45,13 @@ public class AcceptanceSteps {
 
     public static ExtractableResponse<Response> 로그인을_요청한다() {
         return given()
-                .when().get("/api/oauth/login/kakao?code=abcd")
+                .when().get("/oauth/login/kakao?code=abcd")
                 .then()
                 .extract();
     }
 
     public static String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-        return 응답.as(SessionResponse.class).jsessionId();
+        return 응답.sessionId();
     }
 
     public static void 응답_상태를_검증한다(

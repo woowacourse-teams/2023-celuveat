@@ -14,25 +14,41 @@ import java.util.List;
 public class AdminAcceptanceSteps {
 
     public static final String TAB = "\t";
+    public static final String 줄바꿈 = System.lineSeparator();
+
+    public static String 데이터_입력_생성(
+            String 셀럽_이름,
+            String 음식점_이름,
+            String 유튜브_영상_링크,
+            String 영상_업로드_일,
+            String 인스타_아이디
+    ) {
+        return 음식점_이름 +
+                TAB + "@" + 셀럽_이름 +
+                TAB + 유튜브_영상_링크 +
+                TAB + 영상_업로드_일 +
+                TAB + 음식점_이름 + " 주소" +
+                TAB + "전화번호" +
+                TAB + "카테고리" +
+                TAB + "12.3456" +
+                TAB + "12.3456" +
+                TAB + "음식점네이버링크" +
+                TAB + 음식점_이름 + ".png" +
+                TAB + 인스타_아이디;
+    }
 
     public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {
-        return "@" + 셀럽_이름 +
-                "\t" + 음식점_이름 + "png" +
-                "\t유튜브링크" +
-                "\t2023. 7. 25." +
-                "\t" + 음식점_이름 +
-                "\t" + 음식점_이름 + " 주소" +
-                "\t전화번호" +
-                "\t카테고리" +
-                "\t음식점네이버링크" +
-                "\t12.3456" +
-                "\t12.3456";
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", "");
+    }
+
+    public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름, String 인스타_아이디) {
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", 인스타_아이디);
     }
 
     public static List<SaveDataRequest> 데이터_저장_요청_생성(String input) {
         String[] rows = input.split(System.lineSeparator());
         return Arrays.stream(rows)
-                .map(row -> row.split(TAB))
+                .map(row -> row.split(TAB, -1))
                 .map(SaveDataRequest::from)
                 .toList();
     }
@@ -41,7 +57,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/api/admin/data")
+                .when().post("/admin/data")
                 .then()
                 .extract();
     }
@@ -64,7 +80,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/api/admin/celebs")
+                .when().post("/admin/celebs")
                 .then()
                 .extract();
     }

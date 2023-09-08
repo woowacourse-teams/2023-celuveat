@@ -3,10 +3,10 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.restaurant.application.dto.RestaurantLikeQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -22,21 +22,21 @@ public class RestaurantLikeAcceptanceSteps {
 
     public static ExtractableResponse<Response> 로그인을_요청한다() {
         return given()
-                .when().get("/api/oauth/login/kakao?code=abcd")
+                .when().get("/oauth/login/kakao?code=abcd")
                 .then()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 좋아요_요청을_보낸다(Long 맛집_아이디, String 세션_아이디) {
         return given(세션_아이디)
-                .when().post("/api/restaurants/" + 맛집_아이디 + "/like")
+                .when().post("/restaurants/" + 맛집_아이디 + "/like")
                 .then()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 좋아요한_음식점_조회_요청(String 세션_아이디) {
         return given(세션_아이디)
-                .when().get("/api/restaurants/like")
+                .when().get("/restaurants/like")
                 .then()
                 .extract();
     }
@@ -56,15 +56,15 @@ public class RestaurantLikeAcceptanceSteps {
         param.put("highLongitude", 위치_검색_조건.highLongitude());
         return given(세션_아이디)
                 .queryParams(param)
-                .when().get("/api/restaurants")
+                .when().get("/restaurants")
                 .then().log().all()
                 .extract();
     }
 
-    public static RestaurantLikeQueryResponse toRestaurantLikeQueryResponse(
+    public static LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
             RestaurantSimpleResponse restaurantSimpleResponse
     ) {
-        return new RestaurantLikeQueryResponse(
+        return new LikedRestaurantQueryResponse(
                 restaurantSimpleResponse.id(),
                 restaurantSimpleResponse.name(),
                 restaurantSimpleResponse.category(),
@@ -79,8 +79,8 @@ public class RestaurantLikeAcceptanceSteps {
     }
 
     public static void 좋아요한_음식점_조회_요청_결과를_검증한다(ExtractableResponse<Response> 응답,
-                                               List<RestaurantLikeQueryResponse> 예상_응답) {
-        List<RestaurantLikeQueryResponse> responseBody = 응답.as(new TypeRef<>() {
+                                               List<LikedRestaurantQueryResponse> 예상_응답) {
+        List<LikedRestaurantQueryResponse> responseBody = 응답.as(new TypeRef<>() {
         });
         assertThat(responseBody).usingRecursiveComparison().isEqualTo(예상_응답);
     }

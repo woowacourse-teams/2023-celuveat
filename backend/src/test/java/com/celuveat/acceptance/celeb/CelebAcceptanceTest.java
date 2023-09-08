@@ -5,8 +5,8 @@ import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_�
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.예상_셀럽조회_결과;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
-import com.celuveat.celeb.domain.Celeb;
-import com.celuveat.celeb.domain.CelebRepository;
+import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.celeb.fixture.CelebFixture;
 import java.util.Arrays;
 import java.util.List;

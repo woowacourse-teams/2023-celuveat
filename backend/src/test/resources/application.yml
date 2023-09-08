@@ -8,12 +8,12 @@ spring:
     password:
 
   jpa:
-    hibernate:
-      ddl-auto: create
-
-server:
-  servlet:
-    contextPath: /api
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
 
 cors:
   allowedOrigins: "CORS_ALLOW_ORIGINS"

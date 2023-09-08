@@ -1,9 +1,9 @@
 package com.celuveat.auth.fixture;
 
-import static com.celuveat.auth.domain.OauthServerType.KAKAO;
+import static com.celuveat.auth.command.domain.OauthServerType.KAKAO;
 
-import com.celuveat.auth.domain.OauthId;
-import com.celuveat.auth.domain.OauthMember;
+import com.celuveat.auth.command.domain.OauthId;
+import com.celuveat.auth.command.domain.OauthMember;
 
 public class OauthMemberFixture {
 

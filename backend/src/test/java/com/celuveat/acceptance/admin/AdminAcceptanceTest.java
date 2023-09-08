@@ -5,6 +5,7 @@ import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_저�
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.줄바꿈;
 import static com.celuveat.admin.exception.AdminExceptionType.EXIST_NULL;
 import static com.celuveat.admin.exception.AdminExceptionType.INVALID_URL_PATTERN;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.admin.exception.AdminException;
-import com.celuveat.celeb.domain.Celeb;
+import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.exception.BaseExceptionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,8 +22,6 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("어드민 인수 테스트")
 class AdminAcceptanceTest extends AcceptanceTest {
-
-    private final String 줄바꿈 = System.lineSeparator();
 
     @Nested
     class 음식점_데이터_저장 {
@@ -35,9 +34,9 @@ class AdminAcceptanceTest extends AcceptanceTest {
             셀럽_저장(셀럽("말랑"));
             셀럽_저장(셀럽("오도"));
 
-            String 입력_데이터 = 데이터_입력_생성("도기", "국민연금, 국민연금2")
+            String 입력_데이터 = 데이터_입력_생성("도기", "국민연금")
                     + 줄바꿈
-                    + 데이터_입력_생성("도기", "농민백암순대, 농민백암순대2, 농민백암순대3")
+                    + 데이터_입력_생성("도기", "농민백암순대")
                     + 줄바꿈
                     + 데이터_입력_생성("로이스", "신천직화")
                     + 줄바꿈
@@ -52,8 +51,8 @@ class AdminAcceptanceTest extends AcceptanceTest {
 
             // then
             셀럽_수_검증(4);
-            음식점_수_검증(5);
-            음식점_이미지_수_검증(9);
+            음식점_수_검증(4);
+            음식점_이미지_수_검증(6);
             영상_수_검증(6);
         }
 

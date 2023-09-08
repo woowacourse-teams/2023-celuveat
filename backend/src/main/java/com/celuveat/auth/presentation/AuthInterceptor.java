@@ -4,7 +4,6 @@ import static com.celuveat.auth.exception.AuthExceptionType.UNAUTHORIZED_REQUEST
 import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 
 import com.celuveat.auth.exception.AuthException;
-import com.celuveat.common.util.CorsUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PathMatcher;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (CorsUtil.isPreflightRequest(request)) {
+        if (CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
         if (isAuthenticationNotRequired(request)) {

@@ -6,13 +6,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.application.dto.CelebQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.application.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.application.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.LocationSearchCond;
-import com.celuveat.restaurant.domain.RestaurantQueryRepository.RestaurantSearchCond;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.CelebQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -40,7 +40,7 @@ public class RestaurantAcceptanceSteps {
         param.put("highLongitude", 위치_검색_조건.highLongitude());
         return given()
                 .queryParams(param)
-                .when().get("/api/restaurants")
+                .when().get("/restaurants")
                 .then()
                 .extract();
     }
@@ -61,7 +61,7 @@ public class RestaurantAcceptanceSteps {
         param.put("highLongitude", 위치_검색_조건.highLongitude());
         return given()
                 .queryParams(param)
-                .when().get("/api/restaurants")
+                .when().get("/restaurants")
                 .then()
                 .extract();
     }
@@ -296,7 +296,7 @@ public class RestaurantAcceptanceSteps {
         param.put("celebId", celebId);
         return given()
                 .queryParams(param)
-                .when().get("/api/restaurants/{restaurantId}", restaurantId)
+                .when().get("/restaurants/{restaurantId}", restaurantId)
                 .then()
                 .extract();
     }
@@ -310,7 +310,7 @@ public class RestaurantAcceptanceSteps {
         param.put("celebId", celebId);
         return given(sessionId)
                 .queryParams(param)
-                .when().get("/api/restaurants/{restaurantId}", restaurantId)
+                .when().get("/restaurants/{restaurantId}", restaurantId)
                 .then()
                 .extract();
     }
@@ -405,7 +405,7 @@ public class RestaurantAcceptanceSteps {
     public static ExtractableResponse<Response> 정보_수정_제안_요청(Long 음식점_ID, String... 수정_내용들) {
         return given()
                 .body(new SuggestCorrectionRequest(Arrays.asList(수정_내용들)))
-                .post("/api/restaurants/{id}/correction", 음식점_ID)
+                .post("/restaurants/{id}/correction", 음식점_ID)
                 .then().log().all()
                 .extract();
     }
@@ -413,7 +413,7 @@ public class RestaurantAcceptanceSteps {
     public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리, String 세션_아이디) {
         return given(세션_아이디)
                 .queryParams("distance", 요청_거리)
-                .when().get("/api/restaurants/{restaurantId}/nearby", 특정_음식점_ID)
+                .when().get("/restaurants/{restaurantId}/nearby", 특정_음식점_ID)
                 .then().log().all()
                 .extract();
     }
