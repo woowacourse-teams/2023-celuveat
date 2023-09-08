@@ -3,8 +3,15 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { postRestaurantReview, deleteRestaurantReview, patchRestaurantReview } from '../../api/oauth';
-import { getRestaurantReview } from '~/api';
+import {
+  postRestaurantReview,
+  deleteRestaurantReview,
+  patchRestaurantReview,
+  postMSWRestaurantReview,
+  patchMSWRestaurantReview,
+  deleteMSWRestaurantReview,
+} from '../../api/oauth';
+import { getMSWRestaurantReview, getRestaurantReview } from '~/api';
 
 import useToastState from '~/hooks/store/useToastState';
 
@@ -34,22 +41,27 @@ const useRestaurantReview = () => {
 
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
-    queryFn: () => getRestaurantReview(restaurantId),
+    // queryFn: () => getRestaurantReview(restaurantId),
+    queryFn: () => getMSWRestaurantReview(restaurantId),
   });
 
   const createReview = useMutation({
-    mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
+    mutationFn: (body: RestaurantReviewPostBody) => postMSWRestaurantReview(body),
+    // mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
     mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
-      patchRestaurantReview({ reviewId, body }),
+      patchMSWRestaurantReview({ reviewId, body }),
+    // mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
+    //   patchRestaurantReview({ reviewId, body }),
     onError: errorHandler,
   });
 
   const deleteReview = useMutation({
-    mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
+    // mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
+    mutationFn: (reviewId: number) => deleteMSWRestaurantReview(reviewId),
     onError: errorHandler,
   });
 

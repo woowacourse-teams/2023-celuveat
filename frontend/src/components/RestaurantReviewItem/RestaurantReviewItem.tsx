@@ -1,48 +1,40 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 
-import { shallow } from 'zustand/shallow';
 import { useQueryClient } from '@tanstack/react-query';
 import ProfileImage from '~/components/@common/ProfileImage';
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
+import Alert from '~/assets/icons/alert.svg';
 
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import useTokenState from '~/hooks/store/useTokenState';
 import { isEmptyString } from '~/utils/compare';
-import useModalState from '~/hooks/store/useModalState';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
+import { Modal, ModalContent } from '../@common/Modal';
+import ReviewForm from '../ReviewForm/ReviewForm';
+import DeleteButton from '../ReviewForm/DeleteButton';
+import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
-  isModal: boolean;
-  reviewModalOpen: React.MouseEventHandler<HTMLDivElement>;
+  isInModal: boolean;
 }
 
-const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(
-  ({ review, isModal, reviewModalOpen }, ref) => {
-    const qc = useQueryClient();
-    const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
-    const token = useTokenState(state => state.token);
-    const profileData: ProfileData = qc.getQueryData(['profile']);
+const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(({ review, isInModal }, ref) => {
+  const qc = useQueryClient();
+  const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
+  const token = useTokenState(state => state.token);
+  const profileData: ProfileData = qc.getQueryData(['profile']);
 
-    const [open, setId, setContent] = useModalState(state => [state.open, state.setId, state.setContent], shallow);
-    const isUsersReview = profileData?.memberId === review.memberId && !isEmptyString(token);
+  const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
+    useReviewModalContext();
 
-    const clickUpdateReview = () => {
-      setContent('리뷰 수정 하기');
-      setId(review.id);
-      open();
-    };
+  const isUsersReview = profileData?.memberId === review.memberId && !isEmptyString(token);
 
-    const clickDeleteReview = () => {
-      setContent('리뷰 삭제 하기');
-      setId(review.id);
-      open();
-    };
-
-    return (
+  return (
+    <>
       <StyledRestaurantReviewItemWrapper ref={ref}>
         <StyledProfileAndButton>
           <StyledProfileWrapper>
@@ -52,7 +44,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
               <StyledCreateDated>{review.createdDate}</StyledCreateDated>
             </StyledProfileInfoWrapper>
           </StyledProfileWrapper>
-          {isUsersReview && (
+          {!isUsersReview && (
             <StyledButtonContainer>
               <button type="button" onClick={clickUpdateReview}>
                 수정
@@ -64,18 +56,37 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
             </StyledButtonContainer>
           )}
         </StyledProfileAndButton>
-        <StyledReviewContent ref={contentRef} isModal={isModal}>
+        <StyledReviewContent ref={contentRef} isInModal={isInModal}>
           {review.content}
         </StyledReviewContent>
         {isTextOverflow && (
-          <StyledSeeMore isModal={isModal} data-id={review.id} onClick={reviewModalOpen}>
+          <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={() => {}}>
             더 보기
           </StyledSeeMore>
         )}
       </StyledRestaurantReviewItemWrapper>
-    );
-  },
-);
+
+      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
+        {formType === 'update' && (
+          <ModalContent title="리뷰 수정하기">
+            <ReviewForm type="update" reviewId={review.id} />
+          </ModalContent>
+        )}
+        {formType === 'delete' && (
+          <ModalContent title="리뷰 삭제하기">
+            <div>
+              <StyledWarningMessage>
+                <Alert width={32} />
+                <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
+              </StyledWarningMessage>
+              <DeleteButton reviewId={review.id} />
+            </div>
+          </ModalContent>
+        )}
+      </Modal>
+    </>
+  );
+});
 
 export default RestaurantReviewItem;
 
@@ -108,12 +119,12 @@ const StyledProfileInfoWrapper = styled.div`
   margin-left: 1rem;
 `;
 
-const StyledReviewContent = styled.div<{ isModal: boolean }>`
+const StyledReviewContent = styled.div<{ isInModal: boolean }>`
   margin: 1.2rem 0;
 
   color: #222;
   font-size: ${FONT_SIZE.md};
-  ${({ isModal }) => !isModal && truncateText(3)}
+  ${({ isInModal }) => !isInModal && truncateText(3)}
   line-height: 2.4rem;
 `;
 
@@ -141,7 +152,7 @@ const StyledRestaurantReviewItemWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledSeeMore = styled.span<{ isModal: boolean }>`
+const StyledSeeMore = styled.span<{ isInModal: boolean }>`
   position: relative;
 
   color: #222;
@@ -167,9 +178,21 @@ const StyledSeeMore = styled.span<{ isModal: boolean }>`
     border-right: 2.5px solid #222; /* 선 두께 */
   }
 
-  ${({ isModal }) =>
-    isModal &&
+  ${({ isInModal }) =>
+    isInModal &&
     css`
       display: none;
     `}
+`;
+
+const StyledWarningMessage = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem 0;
+
+  margin: 3.2rem 0;
+
+  font-size: ${FONT_SIZE.md};
+  text-align: center;
 `;

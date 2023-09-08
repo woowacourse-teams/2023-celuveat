@@ -45,8 +45,8 @@ function SuggestionButton() {
         <Pencil width={16} />
         <div>정보 수정 제안하기</div>
       </button>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="정보 수정 제안" closeModal={closeModal}>
+      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
+        <ModalContent title="정보 수정 제안">
           <StyledForm onSubmit={handleSubmit}>
             <h5>수정 항목</h5>
             <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>

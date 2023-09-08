@@ -10,7 +10,7 @@ interface WaterMarkImageProps {
 function WaterMarkImage({ waterMark, imageUrl, type }: WaterMarkImageProps) {
   return (
     <StyledWaterMarkImage type={type}>
-      <StyledImage src={`https://dev.celuveat.com/images-data/${imageUrl}`} alt="음식점" loading="lazy" />
+      <StyledImage src={`https://www.celuveat.com/images-data/${imageUrl}`} alt="음식점" loading="lazy" />
       {waterMark && <StyledWaterMark aria-hidden="true">{waterMark}</StyledWaterMark>}
     </StyledWaterMarkImage>
   );

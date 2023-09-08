@@ -12,9 +12,7 @@ type Story = StoryObj<typeof ModalContent>;
 
 export const LoginModal: Story = {
   args: {
-    isShow: true,
     title: '로그인 또는 회원가입',
-    closeModal: () => {},
     children: <span>모달 내용</span>,
   },
 };

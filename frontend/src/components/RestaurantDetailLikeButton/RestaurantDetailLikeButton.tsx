@@ -9,7 +9,7 @@ interface RestaurantDetailLikeButtonProps {
 }
 
 function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonProps) {
-  const { isModalOpen, isLiked, closeModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, isLiked, closeModal, openModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   return (
     <>
@@ -26,8 +26,8 @@ function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonPr
           </>
         )}
       </button>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
+      <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
+        <ModalContent title="로그인 및 회원 가입">
           <LoginModalContent />
         </ModalContent>
       </Modal>

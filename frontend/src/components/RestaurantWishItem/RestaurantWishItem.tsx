@@ -5,7 +5,6 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import PopUpContainer from '~/components/PopUpContainer';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
@@ -20,7 +19,7 @@ interface RestaurantWishItemProps {
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, openModal, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   const openDetail = () => window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
 
@@ -49,11 +48,10 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
-          <PopUpContainer />
         </section>
       </StyledContainer>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
+      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
+        <ModalContent title="로그인 및 회원 가입">
           <LoginModalContent />
         </ModalContent>
       </Modal>

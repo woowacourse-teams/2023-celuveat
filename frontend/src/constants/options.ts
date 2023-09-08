@@ -14,3 +14,5 @@ export const OPTION_FOR_CELEB_ALL = {
   youtubeChannelName: '@all',
   profileImageUrl: All,
 };
+
+export const REVIEW_SHOW_COUNT = 6;

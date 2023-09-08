@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from '~/api/User/HttpUserInterceptor';
 
 const axiosUserApi = (options?: Record<string, string>) => {
   const instance = axios.create({
-    baseURL: `${process.env.BASE_URL}/api`,
+    baseURL: `${process.env.BASE_URL}`,
     headers: {
       'Content-type': 'application/json',
       ...options,

@@ -11,5 +11,6 @@
   "stylelint.enable": true,
 
   "stylelint.config": null,
-  "stylelint.validate": ["css", "scss", "typescript", "typescriptreact"]
+  "stylelint.validate": ["css", "scss", "typescript", "typescriptreact"],
+  "cSpell.words": ["tanstack", "zustand"]
 }
