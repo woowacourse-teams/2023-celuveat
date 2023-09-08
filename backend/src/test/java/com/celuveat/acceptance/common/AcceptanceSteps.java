@@ -45,7 +45,7 @@ public class AcceptanceSteps {
 
     public static ExtractableResponse<Response> 로그인을_요청한다() {
         return given()
-                .when().get("/api/oauth/login/kakao?code=abcd")
+                .when().get("/oauth/login/kakao?code=abcd")
                 .then()
                 .extract();
     }

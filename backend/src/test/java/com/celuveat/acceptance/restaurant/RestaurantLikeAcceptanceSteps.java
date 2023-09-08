@@ -22,21 +22,21 @@ public class RestaurantLikeAcceptanceSteps {
 
     public static ExtractableResponse<Response> 로그인을_요청한다() {
         return given()
-                .when().get("/api/oauth/login/kakao?code=abcd")
+                .when().get("/oauth/login/kakao?code=abcd")
                 .then()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 좋아요_요청을_보낸다(Long 맛집_아이디, String 세션_아이디) {
         return given(세션_아이디)
-                .when().post("/api/restaurants/" + 맛집_아이디 + "/like")
+                .when().post("/restaurants/" + 맛집_아이디 + "/like")
                 .then()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 좋아요한_음식점_조회_요청(String 세션_아이디) {
         return given(세션_아이디)
-                .when().get("/api/restaurants/like")
+                .when().get("/restaurants/like")
                 .then()
                 .extract();
     }
@@ -56,7 +56,7 @@ public class RestaurantLikeAcceptanceSteps {
         param.put("highLongitude", 위치_검색_조건.highLongitude());
         return given(세션_아이디)
                 .queryParams(param)
-                .when().get("/api/restaurants")
+                .when().get("/restaurants")
                 .then().log().all()
                 .extract();
     }
