@@ -2,7 +2,7 @@ import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, Suspense } from 'react';
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
 import Love from '~/assets/icons/black-love.svg';
@@ -24,7 +24,7 @@ import SuggestionButton from '~/components/SuggestionButton';
 import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ImageCarousel from '~/components/@common/ImageCarousel';
-import PopUpContainer from '~/components/PopUpContainer';
+import ReviewModalProvider from '~/hooks/ReviewModalProvider';
 
 function RestaurantDetail() {
   const { isMobile } = useMediaQuery();
@@ -208,7 +208,11 @@ function RestaurantDetail() {
               </ul>
             </StyledNearByRestaurant>
           )}
-          <RestaurantReviewWrapper />
+          <ReviewModalProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <RestaurantReviewWrapper />
+            </Suspense>
+          </ReviewModalProvider>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
               <h5>위치 확인하기</h5>
@@ -251,7 +255,6 @@ function RestaurantDetail() {
               }}
             />
           </StyledMainLinkContainer>
-          <PopUpContainer />
         </StyledMobileBottomSheet>
       )}
     </>

@@ -55,8 +55,8 @@ function Header() {
         )}
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
+      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
+        <ModalContent title="로그인 및 회원 가입">
           <LoginModalContent />
         </ModalContent>
       </Modal>

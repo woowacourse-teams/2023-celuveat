@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import Toast from '~/components/@common/Toast';
 import MainPage from '~/pages/MainPage';
 import RestaurantDetail from './pages/RestaurantDetail';
 import WishListPage from '~/pages/WishListPage';
@@ -7,8 +8,6 @@ import SignUpPage from '~/pages/SignUpPage';
 import WithdrawalPage from '~/pages/WithdrawalPage';
 import PrivacyPolicy from './pages/PrivacyPolicyPage';
 import OauthRedirectPage from '~/pages/OauthRedirectPage';
-
-export const { BASE_URL } = process.env;
 
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
         <Route path="/oauth/redirect/kakao" element={<OauthRedirectPage type="kakao" />} />
         <Route path="/oauth/redirect/google" element={<OauthRedirectPage type="google" />} />
       </Routes>
+      <Toast />
     </BrowserRouter>
   );
 }

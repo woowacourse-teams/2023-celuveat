@@ -1,43 +1,48 @@
-import styled, { css, keyframes } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
+import { shallow } from 'zustand/shallow';
+import { Modal } from '~/components/@common/Modal';
+import useToastState from '~/hooks/store/useToastState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
-interface StyledPopUpProps {
+interface StyledToastProps {
   isSuccess?: boolean;
   isMobile: boolean;
 }
 
-interface PopUpProps {
-  text: string;
-  imgUrl?: string;
-  isSuccess?: boolean;
-}
-
-function PopUp({ text, imgUrl, isSuccess = false }: PopUpProps) {
+function Toast() {
   const { isMobile } = useMediaQuery();
+  const [text, isSuccess, image, isOpen, open, close] = useToastState(
+    state => [state.text, state.isSuccess, state.image, state.isOpen, state.open, state.close],
+    shallow,
+  );
 
   return (
-    <StyledPopUpWrapper isSuccess={isSuccess} isMobile={isMobile}>
-      {imgUrl && <StyledPopUpImg src={`${process.env.BASE_URL}/images-data/${imgUrl}`} alt="좋아요한 음식점" />}
-      <StyledPopUpText>{text}</StyledPopUpText>
-    </StyledPopUpWrapper>
+    <Modal open={open} close={close} isOpen={isOpen}>
+      {isOpen && (
+        <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
+          {image && <StyledToastImg src={`${process.env.BASE_URL}/images-data/${image.url}`} alt={image.alt} />}
+          <StyledToastText>{text}</StyledToastText>
+        </StyledToastWrapper>
+      )}
+    </Modal>
   );
 }
 
-export default PopUp;
+export default Toast;
 
-const StyledPopUpImg = styled.img`
+const StyledToastImg = styled.img`
   width: 44px;
   height: 44px;
 
   border-radius: ${BORDER_RADIUS.sm};
 `;
 
-const StyledPopUpText = styled.span`
+const StyledToastText = styled.span`
   color: var(--gary-4);
 `;
 
-const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
+const StyledToastWrapper = styled.div<StyledToastProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -62,7 +67,7 @@ const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
 
   text-align: center;
 
-  ${StyledPopUpImg} + ${StyledPopUpText} {
+  ${StyledToastImg} + ${StyledToastText} {
     margin-left: 1.2rem;
   }
 
@@ -70,17 +75,17 @@ const StyledPopUpWrapper = styled.div<StyledPopUpProps>`
     isSuccess
       ? css`
           transform: translateX(-50%);
-          animation: ${StyledViewPopupAnimation} 2.5s forwards;
+          animation: ${StyledViewToastAnimation} 2.5s forwards;
         `
       : css`
           text-align: center;
 
           opacity: 1;
-          animation: ${StyledViewPopupAnimation} 2.5s forwards;
+          animation: ${StyledViewToastAnimation} 2.5s forwards;
         `}
 `;
 
-const StyledViewPopupAnimation = keyframes`
+const StyledViewToastAnimation = keyframes`
   0% {
     opacity: 1;
     transform: translate(-50%, 0%);

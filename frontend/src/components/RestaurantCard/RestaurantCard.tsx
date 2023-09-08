@@ -21,7 +21,7 @@ interface RestaurantCardProps {
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, closeModal, openModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
@@ -63,8 +63,8 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           </StyledProfileImageSection>
         </section>
       </StyledContainer>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
+      <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
+        <ModalContent title="로그인 및 회원 가입">
           <LoginModalContent />
         </ModalContent>
       </Modal>
