@@ -1,4 +1,4 @@
-package com.celuveat.restaurant.command.application;
+package com.celuveat.restaurant.query;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
@@ -15,16 +15,16 @@ import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
+import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
-import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;

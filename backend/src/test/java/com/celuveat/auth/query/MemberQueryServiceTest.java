@@ -1,11 +1,10 @@
-package com.celuveat.auth.command.application;
+package com.celuveat.auth.query;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
-import com.celuveat.auth.query.MemberQueryService;
 import com.celuveat.auth.query.dto.MemberProfileResponse;
 import com.celuveat.common.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
