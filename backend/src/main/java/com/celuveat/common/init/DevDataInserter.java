@@ -21,7 +21,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile("dev")
+@Profile("local")
 @RequiredArgsConstructor
 @Component
 public class DevDataInserter {
@@ -86,6 +86,7 @@ public class DevDataInserter {
             RestaurantImage nama = RestaurantImage.builder()
                     .restaurant(build)
                     .author("nama")
+                    .name("가짜 이미지.jpeg")
                     .socialMedia(SocialMedia.INSTAGRAM)
                     .build();
             restaurantImages.add(restaurantImageRepository.save(nama));
