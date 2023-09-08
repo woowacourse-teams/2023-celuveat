@@ -50,7 +50,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
       const message = `위시리스트에 ${!restaurant.isLiked ? '저장' : '삭제'}되었습니다.`;
       const imgUrl = restaurant.images[0].name;
 
-      onSuccess(message, imgUrl);
+      onSuccess(message, { url: imgUrl, alt: `좋아요한 ${restaurant.name}` });
     },
 
     onSettled: () => {

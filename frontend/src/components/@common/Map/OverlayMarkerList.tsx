@@ -1,6 +1,6 @@
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
-import { getRestaurants } from '~/api';
+import { getMSWRestaurants } from '~/api';
 import getQuadrant from '~/utils/getQuadrant';
 import OverlayMarker from './OverlayMarker';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
@@ -20,7 +20,7 @@ function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
 
   const { data, isLoading } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
-    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+    queryFn: () => getMSWRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
   if (isLoading) return <div>asd</div>;

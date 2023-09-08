@@ -3,34 +3,27 @@ import styled from 'styled-components';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 import { Modal, ModalContent } from '~/components/@common/Modal';
-import { FONT_SIZE } from '~/styles/common';
-
-import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import PopUpContainer from '../PopUpContainer';
 import LoginModalContent from '~/components/LoginModalContent';
 import ReviewForm from '../ReviewForm/ReviewForm';
+
+import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
-
-const REVIEW_SHOW_COUNT = 6;
-
-const isMoreThan = (target: number, standard: number) => target > standard;
+import { FONT_SIZE } from '~/styles/common';
+import { isMoreThan } from '~/utils/compare';
+import { REVIEW_SHOW_COUNT } from '~/constants/options';
 
 function RestaurantReviewWrapper() {
-  const { restaurantReviewsData, isLoading } = useRestaurantReview();
+  const { restaurantReviewsData } = useRestaurantReview();
   const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll } = useReviewModalContext();
+  const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
 
-  const reviewCount = restaurantReviewsData?.totalElementsCount;
-  const previewReviews = useMemo(
-    () => restaurantReviewsData?.reviews.slice(0, REVIEW_SHOW_COUNT),
-    [restaurantReviewsData],
-  );
+  const previewReviews = useMemo(() => reviews.slice(0, REVIEW_SHOW_COUNT), [reviews]);
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
 
   return (
     <>
       <StyledRestaurantReviewWrapper>
         <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
-        {isLoading && <h5>로딩중입니다.</h5>}
         <RestaurantReviewList reviews={previewReviews} />
         <StyledButtonContainer>
           <button type="button" onClick={openCreateReview}>
@@ -51,8 +44,6 @@ function RestaurantReviewWrapper() {
           </>
         </ModalContent>
       </Modal>
-
-      <PopUpContainer />
     </>
   );
 }

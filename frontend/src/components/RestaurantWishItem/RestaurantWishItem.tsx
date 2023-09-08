@@ -5,7 +5,6 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import PopUpContainer from '~/components/PopUpContainer';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
@@ -49,7 +48,6 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
-          <PopUpContainer />
         </section>
       </StyledContainer>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>

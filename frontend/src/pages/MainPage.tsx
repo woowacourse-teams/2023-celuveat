@@ -4,7 +4,6 @@ import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import PopUpContainer from '~/components/PopUpContainer';
 import MainPageNavBar from '~/components/MainPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
 
@@ -25,7 +24,6 @@ function MainPage() {
           <Map toggleMapExpand={toggleExpandedMap} />
         </StyledRightSide>
       </StyledLayout>
-      <PopUpContainer />
       <Footer />
     </>
   );
