@@ -25,6 +25,7 @@ import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton'
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ImageCarousel from '~/components/@common/ImageCarousel';
 import PopUpContainer from '~/components/PopUpContainer';
+import ReviewModalProvider from '~/hooks/ReviewModalProvider';
 
 function RestaurantDetail() {
   const { isMobile } = useMediaQuery();
@@ -208,7 +209,9 @@ function RestaurantDetail() {
               </ul>
             </StyledNearByRestaurant>
           )}
-          <RestaurantReviewWrapper />
+          <ReviewModalProvider>
+            <RestaurantReviewWrapper />
+          </ReviewModalProvider>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
               <h5>위치 확인하기</h5>

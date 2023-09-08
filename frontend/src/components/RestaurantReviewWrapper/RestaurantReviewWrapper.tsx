@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
@@ -8,8 +8,8 @@ import { FONT_SIZE } from '~/styles/common';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import PopUpContainer from '../PopUpContainer';
 import LoginModalContent from '~/components/LoginModalContent';
-import useBooleanState from '~/hooks/useBooleanState';
 import ReviewForm from '../ReviewForm/ReviewForm';
+import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
 
 const REVIEW_SHOW_COUNT = 6;
 
@@ -17,8 +17,7 @@ const isMoreThan = (target: number, standard: number) => target > standard;
 
 function RestaurantReviewWrapper() {
   const { restaurantReviewsData, isLoading } = useRestaurantReview();
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const [formType, setFormType] = useState<string | null>(null);
+  const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll } = useReviewModalContext();
 
   const reviewCount = restaurantReviewsData?.totalElementsCount;
   const previewReviews = useMemo(
@@ -27,35 +26,20 @@ function RestaurantReviewWrapper() {
   );
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
 
-  // const openAllReviews = () => {
-  //   setContent('리뷰 모두 보기');
-  //   setReviewId(0);
-  //   openModal();
-  // };
-
-  const openCreateReview = () => {
-    // const hasToken = !isEmptyString(getToken());
-    setFormType('create');
-    openModal();
-  };
-
-  const openShowAll = () => {
-    // const hasToken = !isEmptyString(getToken());
-    setFormType('all');
-    openModal();
-  };
-
   return (
-    <StyledRestaurantReviewWrapper>
-      <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
-      {isLoading && <h5>로딩중입니다.</h5>}
-      <RestaurantReviewList reviews={previewReviews} />
-      <StyledButtonContainer>
-        <button type="button" onClick={openCreateReview}>
-          리뷰 작성하기
-        </button>
-        {isMoreReviews && <button type="button" onClick={openShowAll}>{`리뷰 ${reviewCount}개 모두 보기`}</button>}
-      </StyledButtonContainer>
+    <>
+      <StyledRestaurantReviewWrapper>
+        <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
+        {isLoading && <h5>로딩중입니다.</h5>}
+        <RestaurantReviewList reviews={previewReviews} />
+        <StyledButtonContainer>
+          <button type="button" onClick={openCreateReview}>
+            리뷰 작성하기
+          </button>
+          {isMoreReviews && <button type="button" onClick={openShowAll}>{`리뷰 ${reviewCount}개 모두 보기`}</button>}
+        </StyledButtonContainer>
+      </StyledRestaurantReviewWrapper>
+
       <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
         <ModalContent>
           <>
@@ -67,8 +51,9 @@ function RestaurantReviewWrapper() {
           </>
         </ModalContent>
       </Modal>
+
       <PopUpContainer />
-    </StyledRestaurantReviewWrapper>
+    </>
   );
 }
 

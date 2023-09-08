@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 
 import { useQueryClient } from '@tanstack/react-query';
@@ -14,8 +14,8 @@ import { isEmptyString } from '~/utils/compare';
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 import { Modal, ModalContent } from '../@common/Modal';
 import ReviewForm from '../ReviewForm/ReviewForm';
-import useBooleanState from '~/hooks/useBooleanState';
 import DeleteButton from '../ReviewForm/DeleteButton';
+import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -27,21 +27,11 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
   const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
   const token = useTokenState(state => state.token);
   const profileData: ProfileData = qc.getQueryData(['profile']);
-  const [formType, setFormType] = useState<string | null>(null);
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+
+  const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
+    useReviewModalContext();
 
   const isUsersReview = profileData?.memberId === review.memberId && !isEmptyString(token);
-
-  const clickUpdateReview = () => {
-    setFormType('update');
-    openModal();
-    console.log(isTextOverflow);
-  };
-
-  const clickDeleteReview = () => {
-    setFormType('delete');
-    openModal();
-  };
 
   return (
     <>
@@ -75,6 +65,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
           </StyledSeeMore>
         )}
       </StyledRestaurantReviewItemWrapper>
+
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         {formType === 'update' && (
           <ModalContent title="리뷰 수정하기">
