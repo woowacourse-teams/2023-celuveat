@@ -33,7 +33,7 @@ public class RestaurantReviewAcceptanceSteps {
     public static ExtractableResponse<Response> 리뷰_작성_요청을_보낸다(SaveReviewRequest 요청, String 세션_아이디) {
         return given(세션_아이디)
                 .body(요청)
-                .when().post("/api/reviews")
+                .when().post("/reviews")
                 .then().log().all()
                 .extract();
     }
@@ -41,7 +41,7 @@ public class RestaurantReviewAcceptanceSteps {
     public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디) {
         return given()
                 .queryParam("restaurantId", 음식점_아이디)
-                .when().get("/api/reviews")
+                .when().get("/reviews")
                 .then().log().all()
                 .extract();
     }
@@ -53,7 +53,7 @@ public class RestaurantReviewAcceptanceSteps {
     ) {
         return given(세션_아이디)
                 .body(요청)
-                .when().patch("/api/reviews/" + 리뷰_아이디)
+                .when().patch("/reviews/" + 리뷰_아이디)
                 .then().log().all()
                 .extract();
     }
@@ -63,7 +63,7 @@ public class RestaurantReviewAcceptanceSteps {
             Long 리뷰_아이디
     ) {
         return given(세션_아이디)
-                .when().delete("/api/reviews/" + 리뷰_아이디)
+                .when().delete("/reviews/" + 리뷰_아이디)
                 .then().log().all()
                 .extract();
     }

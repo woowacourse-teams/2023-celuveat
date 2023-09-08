@@ -36,7 +36,7 @@ public class AuthConfig implements WebMvcConfigurer {
 
     private AuthInterceptor setUpAuthInterceptor() {
         authInterceptor.setAuthNotRequiredConditions(
-                new UriAndMethodsCondition("/api/reviews", Set.of(GET))
+                new UriAndMethodsCondition("/reviews", Set.of(GET))
         );
         return authInterceptor;
     }

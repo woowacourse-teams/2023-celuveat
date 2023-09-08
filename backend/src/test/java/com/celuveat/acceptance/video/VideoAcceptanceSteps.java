@@ -31,7 +31,7 @@ public class VideoAcceptanceSteps {
         param.put("celebId", videoSearchCondRequest.celebId());
         return given()
                 .queryParams(param)
-                .when().get("/api/videos")
+                .when().get("/videos")
                 .then().log().all()
                 .extract();
     }

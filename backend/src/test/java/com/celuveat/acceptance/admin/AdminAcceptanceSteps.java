@@ -57,7 +57,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/api/admin/data")
+                .when().post("/admin/data")
                 .then()
                 .extract();
     }
@@ -80,7 +80,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/api/admin/celebs")
+                .when().post("/admin/celebs")
                 .then()
                 .extract();
     }

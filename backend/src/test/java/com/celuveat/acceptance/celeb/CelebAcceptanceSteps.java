@@ -24,7 +24,7 @@ public class CelebAcceptanceSteps {
     public static ExtractableResponse<Response> 셀럽_전체_조회_요청() {
         return given()
                 .when()
-                .get("/api/celebs")
+                .get("/celebs")
                 .then()
                 .extract();
     }

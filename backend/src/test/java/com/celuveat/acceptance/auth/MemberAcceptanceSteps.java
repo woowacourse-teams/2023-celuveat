@@ -16,7 +16,7 @@ public class MemberAcceptanceSteps {
 
     public static ExtractableResponse<Response> 회원정보_조회를_요청한다(String 세션_아이디) {
         return given(세션_아이디)
-                .when().get("/api/members/my")
+                .when().get("/members/my")
                 .then().extract();
     }
 
@@ -27,13 +27,13 @@ public class MemberAcceptanceSteps {
 
     public static ExtractableResponse<Response> 로그아웃_요청을_보낸다(String 세션_아이디, String oauthServerType) {
         return given(세션_아이디)
-                .when().get("/api/oauth/logout/{oauthServerType}", oauthServerType)
+                .when().get("/oauth/logout/{oauthServerType}", oauthServerType)
                 .then().extract();
     }
 
     public static ExtractableResponse<Response> 회원_탈퇴를_한다(String 세션_아이디, String oauthServerType) {
         return given(세션_아이디)
-                .when().delete("/api/oauth/withdraw/{oauthServerType}", oauthServerType)
+                .when().delete("/oauth/withdraw/{oauthServerType}", oauthServerType)
                 .then().extract();
     }
 }

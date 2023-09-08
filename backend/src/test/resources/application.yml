@@ -15,9 +15,5 @@ spring:
         use_sql_comments: true
         highlight_sql: true
 
-server:
-  servlet:
-    contextPath: /api
-
 cors:
   allowedOrigins: "CORS_ALLOW_ORIGINS"

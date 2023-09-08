@@ -12,7 +12,7 @@ public class RestaurantReviewReportAcceptanceSteps {
         ReportReviewRequest reportReviewRequest = new ReportReviewRequest(신고내용);
         return given(세션_아이디)
                 .when().body(reportReviewRequest)
-                .post("/api/reviews/" + 리뷰_아이디 + "/report")
+                .post("/reviews/" + 리뷰_아이디 + "/report")
                 .then()
                 .extract();
     }
