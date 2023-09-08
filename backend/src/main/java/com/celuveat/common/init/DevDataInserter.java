@@ -3,7 +3,10 @@ package com.celuveat.common.init;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
+import com.celuveat.restaurant.command.domain.SocialMedia;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.command.domain.VideoRepository;
 import jakarta.annotation.PostConstruct;
@@ -26,9 +29,11 @@ public class DevDataInserter {
     private final Environment environment;
     private final CelebRepository celebRepository;
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantImageRepository restaurantImageRepository;
     private final VideoRepository videoRepository;
     private final List<Celeb> celebs = new ArrayList<>();
     private final List<Restaurant> restaurants = new ArrayList<>();
+    private final List<RestaurantImage> restaurantImages = new ArrayList<>();
     private final List<Video> videos = new ArrayList<>();
 
 
@@ -78,6 +83,12 @@ public class DevDataInserter {
                     .viewCount(0)
                     .build();
             restaurants.add(restaurantRepository.save(build));
+            RestaurantImage nama = RestaurantImage.builder()
+                    .restaurant(build)
+                    .author("nama")
+                    .socialMedia(SocialMedia.INSTAGRAM)
+                    .build();
+            restaurantImages.add(restaurantImageRepository.save(nama));
         }
     }
 
@@ -99,6 +110,7 @@ public class DevDataInserter {
     public void deleteData() {
         videoRepository.deleteAll(videos);
         celebRepository.deleteAll(celebs);
+        restaurantImageRepository.deleteAll(restaurantImages);
         restaurantRepository.deleteAll(restaurants);
     }
 }
