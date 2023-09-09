@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
+import useCarousel from '~/hooks/useCarousel';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
@@ -13,9 +13,8 @@ interface ImageCarouselProps {
 }
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
-  const ref = useRef();
-  const { movingDirection } = useTouchMoveDirection(ref);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const ref = useRef<HTMLDivElement>();
+  const { currentIndex, setCurrentIndex, isMoving } = useCarousel(ref, images.length);
 
   const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
@@ -27,9 +26,9 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
   };
 
   useEffect(() => {
-    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) setCurrentIndex(prevIndex => prevIndex + 1);
-    if (movingDirection.X === 'right' && currentIndex !== 0) setCurrentIndex(prevIndex => prevIndex - 1);
-  }, [movingDirection.X]);
+    ref.current.style.transform = `translateX(-${100 * currentIndex}%)`;
+    ref.current.style.transition = isMoving ? 'none' : `transform 0.3s ease-in-out`;
+  }, [currentIndex, isMoving]);
 
   return (
     <StyledCarouselContainer type={type}>
@@ -92,10 +91,6 @@ const StyledCarouselContainer = styled.div<{ type: 'list' | 'map' }>`
     transform: translateY(-50%);
     box-shadow: var(--shadow);
     outline: none;
-
-    &:hover {
-      transform: translateY(-50%) scale(1.04);
-    }
   }
 
   &:hover {
@@ -123,9 +118,6 @@ const StyledCarouselSlide = styled.div<{ currentIndex: number }>`
   display: flex;
 
   width: 100%;
-
-  transition: transform 0.3s ease-in-out;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
 `;
 
 const StyledDots = styled.div<{ currentIndex: number }>`
