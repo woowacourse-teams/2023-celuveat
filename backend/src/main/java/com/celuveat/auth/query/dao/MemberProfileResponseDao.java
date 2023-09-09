@@ -15,6 +15,11 @@ public class MemberProfileResponseDao {
 
     public MemberProfileResponse find(Long memberId) {
         OauthMember member = oauthMemberQueryDaoSupport.getById(memberId);
-        return new MemberProfileResponse(member.id(), member.nickname(), member.profileImageUrl());
+        return new MemberProfileResponse(
+                member.id(),
+                member.nickname(),
+                member.profileImageUrl(),
+                member.oauthId().oauthServer().name()
+        );
     }
 }

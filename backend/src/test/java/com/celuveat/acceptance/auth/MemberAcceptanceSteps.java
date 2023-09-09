@@ -11,7 +11,12 @@ import io.restassured.response.Response;
 public class MemberAcceptanceSteps {
 
     public static MemberProfileResponse 예상_응답(OauthMember 멤버) {
-        return new MemberProfileResponse(멤버.id(), 멤버.nickname(), 멤버.profileImageUrl());
+        return new MemberProfileResponse(
+                멤버.id(),
+                멤버.nickname(),
+                멤버.profileImageUrl(),
+                멤버.oauthId().oauthServer().name()
+        );
     }
 
     public static ExtractableResponse<Response> 회원정보_조회를_요청한다(String 세션_아이디) {
