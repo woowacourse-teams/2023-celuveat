@@ -207,7 +207,9 @@ function RestaurantDetail() {
               <h5>주변 다른 식당</h5>
               <ul>
                 {nearByRestaurant.content.map(restaurant => (
-                  <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+                  <StyledRestaurantCardContainer>
+                    <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+                  </StyledRestaurantCardContainer>
                 ))}
               </ul>
             </StyledNearByRestaurant>
@@ -554,4 +556,10 @@ const StyledButton = styled.button`
   & > div {
     color: var(--white);
   }
+`;
+
+const StyledRestaurantCardContainer = styled.div`
+  border-radius: 12px;
+
+  box-shadow: var(--map-shadow);
 `;
