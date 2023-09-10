@@ -20,7 +20,7 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import OverlayMarkerList from './OverlayMarkerList';
 
 interface MapProps {
-  toggleMapExpand: () => void;
+  toggleMapExpand?: () => void;
 }
 
 const render = (status: Status) => {
@@ -113,9 +113,9 @@ function Map({ toggleMapExpand }: MapProps) {
         <OverlayMarkerList center={currentCenter} />
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (
-          <LoadingUI>
+          <StyledLoadingUI>
             <LoadingDots />
-          </LoadingUI>
+          </StyledLoadingUI>
         )}
         <StyledMyPositionButtonUI onClick={clickMyLocationButton} type="button">
           <MyLocation />
@@ -141,7 +141,7 @@ function Map({ toggleMapExpand }: MapProps) {
 
 export default Map;
 
-const LoadingUI = styled.div`
+const StyledLoadingUI = styled.div`
   ${mapUIBase}
   position: absolute;
   top: 24px;
