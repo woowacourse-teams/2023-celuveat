@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-// 스크롤 방향을 판단하는 커스텀 훅
 function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState({ x: 'none', y: 'none' });
   const [prevScrollX, setPrevScrollX] = useState(window.scrollX);
