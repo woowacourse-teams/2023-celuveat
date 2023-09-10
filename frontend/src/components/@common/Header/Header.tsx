@@ -1,43 +1,40 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
+import { useQueryClient } from '@tanstack/react-query';
 import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
 import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
-import useTokenStore from '~/hooks/store/useTokenState';
+
 import useBooleanState from '~/hooks/useBooleanState';
-import { isEmptyString } from '~/utils/compare';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
+import { isCookieExpired } from '~/utils/cookies';
+import { ProfileData } from '~/@types/api.types';
 import { getLogout } from '~/api/oauth';
 
 function Header() {
-  const { isMobile } = useMediaQuery();
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const qc = useQueryClient();
   const navigator = useNavigate();
   const { id, celebId } = useParams();
-  const [token, clearToken, oauth] = useTokenStore(state => [state.token, state.clearToken, state.oauth]);
+  const { isMobile } = useMediaQuery();
 
-  const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+
+  const options = isCookieExpired() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
-
+    const profileData: ProfileData = qc.getQueryData(['profile']);
     if (currentOption === '로그인') openModal();
-
     if (currentOption === '위시리스트') navigator('/restaurants/like');
-
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
-
     if (currentOption === '로그아웃') {
-      if (oauth !== '') {
-        getLogout(oauth);
-      }
+      getLogout(profileData.oauthServer);
 
-      clearToken();
       window.location.reload();
     }
   };
