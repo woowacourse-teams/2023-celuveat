@@ -3,19 +3,12 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import {
-  postRestaurantReview,
-  deleteRestaurantReview,
-  patchRestaurantReview,
-  postMSWRestaurantReview,
-  patchMSWRestaurantReview,
-  deleteMSWRestaurantReview,
-} from '../../api/oauth';
-import { getMSWRestaurantReview, getRestaurantReview } from '~/api';
+import { getRestaurantReview } from '~/api';
+import { postRestaurantReview, patchRestaurantReview, deleteRestaurantReview } from '~/api/oauth';
 
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
@@ -42,18 +35,19 @@ const useRestaurantReview = () => {
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
     // queryFn: () => getRestaurantReview(restaurantId),
-    queryFn: () => getMSWRestaurantReview(restaurantId),
+    queryFn: () => getRestaurantReview(restaurantId),
+    suspense: true,
   });
 
   const createReview = useMutation({
-    mutationFn: (body: RestaurantReviewPostBody) => postMSWRestaurantReview(body),
+    mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
     // mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
     mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
-      patchMSWRestaurantReview({ reviewId, body }),
+      patchRestaurantReview({ reviewId, body }),
     // mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
     //   patchRestaurantReview({ reviewId, body }),
     onError: errorHandler,
@@ -61,7 +55,7 @@ const useRestaurantReview = () => {
 
   const deleteReview = useMutation({
     // mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
-    mutationFn: (reviewId: number) => deleteMSWRestaurantReview(reviewId),
+    mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     onError: errorHandler,
   });
 
