@@ -1,4 +1,4 @@
-export const BASE_URL = `${process.env.BASE_URL}`;
+const BASE_URL = `${process.env.BASE_URL}`;
 
 export const OAUTH_LINK = {
   google: `${BASE_URL}/api/oauth/google`,

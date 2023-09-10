@@ -1,30 +1,35 @@
+import { Suspense } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MouseEventHandler, Suspense } from 'react';
+
+import Footer from '~/components/@common/Footer';
+import Header from '~/components/@common/Header';
+import ImageGrid from '~/components/@common/ImageGrid';
+import VideoCarousel from '~/components/@common/VideoCarousel';
+import RestaurantCard from '~/components/RestaurantCard';
+import MapContent from '~/components/@common/Map/MapContent';
+import ProfileImageList from '~/components/@common/ProfileImageList';
+import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
+import SuggestionButton from '~/components/SuggestionButton';
+import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
+import ImageCarousel from '~/components/@common/ImageCarousel';
+
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
 import Love from '~/assets/icons/black-love.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 
-import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
-import ImageGrid from '~/components/@common/ImageGrid';
 import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
-import VideoCarousel from '~/components/@common/VideoCarousel';
-import RestaurantCard from '~/components/RestaurantCard';
-import MapContent from '~/components/@common/Map/MapContent';
-import ProfileImageList from '~/components/@common/ProfileImageList';
-import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
-import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
-import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
-import SuggestionButton from '~/components/SuggestionButton';
-import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
+
 import useMediaQuery from '~/hooks/useMediaQuery';
-import ImageCarousel from '~/components/@common/ImageCarousel';
 import ReviewModalProvider from '~/hooks/ReviewModalProvider';
+
+import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
+
+import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 
 function RestaurantDetail() {
   const { isMobile } = useMediaQuery();
@@ -71,12 +76,12 @@ function RestaurantDetail() {
   });
 
   const openNewWindow =
-    (url: string): MouseEventHandler<HTMLButtonElement> =>
+    (url: string): React.MouseEventHandler<HTMLButtonElement> =>
     () =>
       window.open(url, '_blank');
 
   const copyClipBoard =
-    (text: string): MouseEventHandler<HTMLButtonElement> =>
+    (text: string): React.MouseEventHandler<HTMLButtonElement> =>
     async () => {
       try {
         await navigator.clipboard.writeText(text);
