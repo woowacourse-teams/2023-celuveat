@@ -10,12 +10,10 @@ import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useTokenStore from '~/hooks/store/useTokenState';
 import useBooleanState from '~/hooks/useBooleanState';
 import { isEmptyString } from '~/utils/compare';
-import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
 import { getLogout } from '~/api/oauth';
 
 function Header() {
-  const { isMobile } = useMediaQuery();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const navigator = useNavigate();
   const { id, celebId } = useParams();
@@ -44,11 +42,11 @@ function Header() {
 
   return (
     <>
-      <StyledHeader isMobile={isMobile}>
+      <StyledHeader>
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(isMobile || id || celebId) && (
+        {!(id || celebId) && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
@@ -66,17 +64,17 @@ function Header() {
 
 export default Header;
 
-const StyledHeader = styled.header<{ isMobile: boolean }>`
+const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
+  position: sticky;
   top: 0;
   z-index: 20;
 
   width: 100%;
-  height: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
+  height: 80px;
 
   padding: 1.2rem 2.4rem;
 
