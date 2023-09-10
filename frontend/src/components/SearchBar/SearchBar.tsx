@@ -1,10 +1,12 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import SearchIcon from '../../assets/icons/search.svg';
 import useMapState from '~/hooks/store/useMapState';
-import { FONT_SIZE } from '~/styles/common';
+import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 function SearchBar() {
+  const { isMobile } = useMediaQuery();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [, setWidget] = useState<google.maps.places.Autocomplete | null>(null);
   const setCenter = useMapState(state => state.setCenter);
@@ -62,45 +64,76 @@ function SearchBar() {
   };
 
   return (
-    <StyledContainer>
-      <StyledInput placeholder="지역으로 검색하기" data-cy="지역 검색" ref={inputRef} onFocus={clearInput} />
-      <StyledButton type="button" aria-hidden>
-        <SearchIcon aria-label="검색" />
-      </StyledButton>
+    <StyledContainer isMobile={isMobile}>
+      <StyledInput
+        placeholder="지역으로 검색하기"
+        data-cy="지역 검색"
+        ref={inputRef}
+        onFocus={clearInput}
+        isMobile={isMobile}
+      />
+      {!isMobile && (
+        <StyledButton type="button" aria-hidden>
+          <SearchIcon aria-label="검색" />
+        </StyledButton>
+      )}
     </StyledContainer>
   );
 }
 
 export default SearchBar;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   position: relative;
 
-  width: 382px;
-  height: 48px;
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          width: 100%;
+          height: 36px;
 
-  border: 1px solid var(--gray-2);
-  border-radius: 40px;
-  background: var(--white);
-  box-shadow: var(--shadow);
+          margin: 0.4rem 0;
+
+          border: 1px solid var(--gray-1);
+          border-radius: ${BORDER_RADIUS.xs};
+          background: var(--gray-1);
+        `
+      : css`
+          width: 382px;
+          height: 48px;
+
+          border: 1px solid var(--gray-2);
+          border-radius: 40px;
+          background: var(--white);
+          box-shadow: var(--shadow);
+        `}
 `;
 
-const StyledInput = styled.input`
-  flex: 1;
-
-  height: 100%;
-
-  padding: 0 1.2rem;
-
+const StyledInput = styled.input<{ isMobile: boolean }>`
   border: none;
   background-color: transparent;
 
-  font-size: ${FONT_SIZE.md};
-  outline: none;
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          width: 100%;
+          height: 32px;
+        `
+      : css`
+          flex: 1;
+
+          height: 100%;
+
+          padding: 0 1.2rem;
+
+          outline: none;
+
+          font-size: ${FONT_SIZE.md};
+        `}
 `;
 
 const StyledButton = styled.button`
