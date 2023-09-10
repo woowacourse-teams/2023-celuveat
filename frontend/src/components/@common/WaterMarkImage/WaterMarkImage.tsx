@@ -25,6 +25,9 @@ const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
   width: 100%;
   min-width: 100%;
   ${({ type }) => (type === 'list' ? `padding-top: 95%;` : `padding-top: 65%;`)}
+
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 `;
 
 const StyledImage = styled.img`
