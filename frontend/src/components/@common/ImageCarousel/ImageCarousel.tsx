@@ -14,16 +14,7 @@ interface ImageCarouselProps {
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
   const ref = useRef<HTMLDivElement>();
-  const { currentIndex, setCurrentIndex, isMoving } = useCarousel(ref, images.length);
-
-  const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
-    e.stopPropagation();
-    setCurrentIndex(prevIndex => prevIndex - 1);
-  };
-  const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
-    e.stopPropagation();
-    setCurrentIndex(prevIndex => prevIndex + 1);
-  };
+  const { currentIndex, goToPrevious, goToNext, isMoving } = useCarousel(ref, images.length);
 
   useEffect(() => {
     ref.current.style.transform = `translateX(-${100 * currentIndex}%)`;

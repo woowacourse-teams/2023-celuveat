@@ -16,17 +16,17 @@ const useCarousel = (carouselRef: React.MutableRefObject<HTMLDivElement>, images
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const handleTouchStart = (e: TouchEvent) => {
-    if (!e || imagesLength === 1) return;
+    if (imagesLength === 1) return;
 
     e.stopPropagation();
 
-    startPosition.current.X = e?.touches[0]?.clientX;
-    startPosition.current.Y = e?.touches[0]?.clientY;
+    startPosition.current.X = e.touches[0].clientX;
+    startPosition.current.Y = e.touches[0].clientY;
     isMoving.current = true;
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!e || imagesLength === 1) return;
+    if (imagesLength === 1) return;
 
     e.stopPropagation();
 
@@ -39,7 +39,7 @@ const useCarousel = (carouselRef: React.MutableRefObject<HTMLDivElement>, images
   };
 
   const handleTouchEnd = (e: TouchEvent) => {
-    if (!e || imagesLength === 1) return;
+    if (imagesLength === 1) return;
 
     e.stopPropagation();
 
@@ -66,7 +66,16 @@ const useCarousel = (carouselRef: React.MutableRefObject<HTMLDivElement>, images
     };
   }, [carouselRef]);
 
-  return { currentIndex, setCurrentIndex, isMoving: isMoving.current };
+  const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex - 1);
+  };
+  const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.stopPropagation();
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  };
+
+  return { currentIndex, goToPrevious, goToNext, isMoving: isMoving.current };
 };
 
 export default useCarousel;
