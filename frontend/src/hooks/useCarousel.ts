@@ -43,12 +43,14 @@ const useCarousel = (carouselRef: React.MutableRefObject<HTMLDivElement>, images
 
     e.stopPropagation();
 
-    if (movingDistance.current >= (e.target as HTMLImageElement).width * 0.3) {
-      if (movingDirection.current === 'left')
-        setCurrentIndex(prevIndex => (imagesLength === prevIndex + 1 ? 0 : prevIndex + 1));
-      if (movingDirection.current === 'right')
-        setCurrentIndex(prevIndex => (prevIndex === 0 ? imagesLength - 1 : prevIndex - 1));
-    }
+    const SwipeBreakpoint = (e.target as HTMLImageElement).width * 0.3;
+    const isSwipeConditionFulfilled = movingDistance.current >= SwipeBreakpoint;
+
+    if (isSwipeConditionFulfilled && movingDirection.current === 'left')
+      setCurrentIndex(prevIndex => (imagesLength === prevIndex + 1 ? 0 : prevIndex + 1));
+    if (isSwipeConditionFulfilled && movingDirection.current === 'right')
+      setCurrentIndex(prevIndex => (prevIndex === 0 ? imagesLength - 1 : prevIndex - 1));
+
     isMoving.current = false;
   };
 
