@@ -5,19 +5,17 @@ import styled, { css } from 'styled-components';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import RestaurantWishList from '~/components/RestaurantWishList';
-import useTokenState from '~/hooks/store/useTokenState';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { isEmptyString } from '~/utils/compare';
+
+import { isCookieExpired } from '~/utils/cookies';
 
 function WishListPage() {
+  const navigator = useNavigate();
   const { isMobile } = useMediaQuery();
 
-  const token = useTokenState(state => state.token);
-  const navigator = useNavigate();
-
   useEffect(() => {
-    if (isEmptyString(token)) {
+    if (!isCookieExpired()) {
       navigator('/signUp');
     }
   }, []);

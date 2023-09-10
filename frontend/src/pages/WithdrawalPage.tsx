@@ -3,16 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import LoginPageUI from '~/components/LoginPageUI';
 import WithdrawalModalContent from '~/components/WithdrawalModalContent';
-import useTokenState from '~/hooks/store/useTokenState';
 
-import { isEmptyString } from '~/utils/compare';
+import { isCookieExpired } from '~/utils/cookies';
 
 function WithdrawalPage() {
   const navigator = useNavigate();
-  const token = useTokenState(state => state.token);
 
   useEffect(() => {
-    if (isEmptyString(token)) {
+    if (!isCookieExpired()) {
       navigator('/signUp');
     }
   }, []);
