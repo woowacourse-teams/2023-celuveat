@@ -2,7 +2,7 @@ import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MouseEventHandler, Suspense, useEffect, useRef } from 'react';
+import { MouseEventHandler, Suspense, useRef } from 'react';
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
 import Love from '~/assets/icons/black-love.svg';
@@ -215,9 +215,9 @@ function RestaurantDetail() {
             </StyledNearByRestaurant>
           )}
           <ReviewModalProvider>
-            {/* <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <RestaurantReviewWrapper />
-            </Suspense> */}
+            </Suspense>
           </ReviewModalProvider>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
