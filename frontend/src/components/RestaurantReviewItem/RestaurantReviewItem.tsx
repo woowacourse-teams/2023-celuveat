@@ -1,21 +1,21 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
-
 import { useQueryClient } from '@tanstack/react-query';
-import ProfileImage from '~/components/@common/ProfileImage';
-import useIsTextOverflow from '~/hooks/useIsTextOverflow';
-import Alert from '~/assets/icons/alert.svg';
 
+import { Modal, ModalContent } from '~/components/@common/Modal';
+import ProfileImage from '~/components/@common/ProfileImage';
+import ReviewForm from '~/components/ReviewForm/ReviewForm';
+import DeleteButton from '~/components/ReviewForm/DeleteButton';
+
+import useIsTextOverflow from '~/hooks/useIsTextOverflow';
+import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
+
+import { isLogin } from '~/utils/cookies';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import useTokenState from '~/hooks/store/useTokenState';
-import { isEmptyString } from '~/utils/compare';
+import Alert from '~/assets/icons/alert.svg';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
-import { Modal, ModalContent } from '../@common/Modal';
-import ReviewForm from '../ReviewForm/ReviewForm';
-import DeleteButton from '../ReviewForm/DeleteButton';
-import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -25,13 +25,12 @@ interface RestaurantReviewItemProps {
 const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(({ review, isInModal }, ref) => {
   const qc = useQueryClient();
   const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
-  const token = useTokenState(state => state.token);
   const profileData: ProfileData = qc.getQueryData(['profile']);
 
   const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
     useReviewModalContext();
 
-  const isUsersReview = profileData?.memberId === review.memberId && !isEmptyString(token);
+  const isUsersReview = profileData?.memberId === review.memberId && isLogin();
 
   return (
     <>

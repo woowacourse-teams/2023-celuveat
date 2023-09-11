@@ -1,19 +1,20 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { shallow } from 'zustand/shallow';
 
 import useToastState from '~/hooks/store/useToastState';
-import useTokenState from '~/hooks/store/useTokenState';
 
 import { deleteUserData } from '~/api/oauth';
+import type { ProfileData } from '~/@types/api.types';
 
 const useDeleteUser = () => {
+  const qc = useQueryClient();
   const navigator = useNavigate();
-  const [oauth, clearToken] = useTokenState(state => [state.oauth, state.clearToken]);
+
   const { onFailure, close } = useToastState(
     state => ({
       onSuccess: state.onSuccess,
@@ -38,11 +39,8 @@ const useDeleteUser = () => {
   });
 
   const deleteUser = useCallback(() => {
-    if (oauth !== '') {
-      onWithdraw.mutate(oauth);
-      clearToken();
-    }
-
+    const profileData: ProfileData = qc.getQueryData(['profile']);
+    onWithdraw.mutate(profileData.oauthServer);
     close();
     window.location.href = '/';
   }, []);

@@ -16,7 +16,11 @@ function MainPageNavBar() {
     shallow,
   );
 
-  const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
+  const { data: celebOptions } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: () => getCelebs(),
+    suspense: true,
+  });
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
