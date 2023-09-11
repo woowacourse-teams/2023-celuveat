@@ -15,22 +15,21 @@ interface ImageCarouselProps {
 function ImageCarousel({ images, type }: ImageCarouselProps) {
   const ref = useRef<HTMLDivElement>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [dotIndex, setDotIndex] = useState<number>(0);
   const { isMobile } = useMediaQuery();
 
   const handleScroll = () => {
     const index = Math.round(ref.current.scrollLeft / ref.current.clientWidth);
-    setDotIndex(index);
+    setCurrentIndex(index);
   };
 
   const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    setCurrentIndex(dotIndex - 1);
+    setCurrentIndex(currentIndex - 1);
   };
 
   const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    setCurrentIndex(dotIndex + 1);
+    setCurrentIndex(currentIndex + 1);
   };
 
   useEffect(() => {
@@ -40,9 +39,13 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
     });
   }, [currentIndex]);
 
+  useEffect(() => {
+    ref.current.addEventListener('scrollend', handleScroll);
+  }, []);
+
   return (
     <StyledCarouselContainer type={type}>
-      <StyledCarouselSlide ref={ref} isMobile={isMobile} onScroll={handleScroll}>
+      <StyledCarouselSlide ref={ref} isMobile={isMobile}>
         {images.map(({ id, name, author }) => (
           <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} isMobile={isMobile} />
         ))}
@@ -60,7 +63,7 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
       {images.length > 1 && (
         <StyledDots>
           {images.map((_, index) => (
-            <StyledDot isActive={index === dotIndex} />
+            <StyledDot isActive={index === currentIndex} />
           ))}
         </StyledDots>
       )}
