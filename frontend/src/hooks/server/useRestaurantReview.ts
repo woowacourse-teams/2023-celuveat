@@ -3,12 +3,12 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { postRestaurantReview, deleteRestaurantReview, patchRestaurantReview } from '../../api/oauth';
 import { getRestaurantReview } from '~/api';
+import { postRestaurantReview, patchRestaurantReview, deleteRestaurantReview } from '~/api/oauth';
 
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
@@ -35,6 +35,7 @@ const useRestaurantReview = () => {
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
     queryFn: () => getRestaurantReview(restaurantId),
+    suspense: true,
   });
 
   const createReview = useMutation({

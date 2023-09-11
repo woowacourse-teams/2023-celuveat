@@ -3,33 +3,21 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getAccessToken } from '~/api/oauth';
-import useTokenState from '~/hooks/store/useTokenState';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
-}
-
-interface OauthCodeResponse {
-  jsessionId: string;
 }
 
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
 
-  const [updateOauth, updateToken] = useTokenState(state => [state.updateOauth, state.updateToken]);
-
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
 
   const oauthTokenMutation = useMutation({
     mutationFn: () => getAccessToken(type, code),
-    onSuccess: (data: OauthCodeResponse) => {
-      const { jsessionId } = data;
-
-      updateOauth(type);
-      updateToken(jsessionId);
-
+    onSuccess: () => {
       navigator('/');
     },
     onError: () => {

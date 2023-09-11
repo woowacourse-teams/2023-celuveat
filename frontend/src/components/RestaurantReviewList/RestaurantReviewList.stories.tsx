@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import RestaurantReviewList from '~/components/RestaurantReviewList';
-import { restaurantReviews } from '~/mocks/fixtures';
+import { mockRestaurantReviews } from '~/mocks/detailPage/fixures';
 
 const meta: Meta<typeof RestaurantReviewList> = {
   title: 'RestaurantReviewList',
@@ -13,13 +13,13 @@ type Story = StoryObj<typeof RestaurantReviewList>;
 
 export const Default: Story = {
   args: {
-    reviews: restaurantReviews.reviews,
+    reviews: mockRestaurantReviews.reviews,
   },
 };
 
 export const Modal: Story = {
   args: {
-    reviews: restaurantReviews.reviews,
+    reviews: mockRestaurantReviews.reviews,
     isModal: true,
   },
 };
