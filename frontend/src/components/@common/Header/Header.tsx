@@ -10,7 +10,6 @@ import LoginModalContent from '~/components/LoginModalContent';
 import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 
 import useBooleanState from '~/hooks/useBooleanState';
-import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
 import { isLogin } from '~/utils/cookies';
 import { ProfileData } from '~/@types/api.types';
@@ -20,10 +19,7 @@ function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
   const { id, celebId } = useParams();
-  const { isMobile } = useMediaQuery();
-
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-
   const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
@@ -41,11 +37,11 @@ function Header() {
 
   return (
     <>
-      <StyledHeader isMobile={isMobile}>
+      <StyledHeader>
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(isMobile || id || celebId) && (
+        {!(id || celebId) && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
@@ -63,17 +59,17 @@ function Header() {
 
 export default Header;
 
-const StyledHeader = styled.header<{ isMobile: boolean }>`
+const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
+  position: sticky;
   top: 0;
   z-index: 20;
 
   width: 100%;
-  height: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
+  height: 80px;
 
   padding: 1.2rem 2.4rem;
 

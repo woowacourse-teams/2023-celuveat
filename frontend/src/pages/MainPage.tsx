@@ -1,14 +1,20 @@
 import { Suspense } from 'react';
 import { styled, css } from 'styled-components';
+
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import MainPageNavBar from '~/components/MainPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import MobileMainPage from './MobileMainPage';
 
 function MainPage() {
+  const { isMobile } = useMediaQuery();
   const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
+
+  if (isMobile) return <MobileMainPage />;
 
   return (
     <>
