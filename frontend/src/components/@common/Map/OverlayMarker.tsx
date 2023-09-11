@@ -125,7 +125,7 @@ const StyledModal = styled.div<{ quadrant: Quadrant }>`
   background-color: #fff;
 
   animation: ${fadeInAnimation} 100ms ease-in;
-  box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
+  box-shadow: var(--map-shadow);
 `;
 
 const StyledLikeButton = styled.button`
