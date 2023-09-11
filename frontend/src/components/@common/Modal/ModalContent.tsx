@@ -81,7 +81,6 @@ const StyledModalOverlay = styled.div`
 `;
 
 const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
-  ${hideScrollBar}
   display: flex;
   flex-direction: column;
 
@@ -101,8 +100,6 @@ const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
 
   transition: transform ease 0.3s 0.1s;
   transform: translateY(80px);
-
-  overflow-y: auto;
 
   ${({ isMobile }) =>
     isMobile &&
@@ -129,5 +126,7 @@ const StyledModalTitleText = styled.span`
 `;
 
 const StyledModalBody = styled.div`
+  ${hideScrollBar}
+  overflow-y: auto;
   margin-top: 2.4rem;
 `;
