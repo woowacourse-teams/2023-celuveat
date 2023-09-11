@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import LoginPageUI from '~/components/LoginPageUI';
 import WithdrawalModalContent from '~/components/WithdrawalModalContent';
 
-import { isCookieExpired } from '~/utils/cookies';
+import { isLogin } from '~/utils/cookies';
 
 function WithdrawalPage() {
   const navigator = useNavigate();
 
   useEffect(() => {
-    if (!isCookieExpired()) {
+    if (!isLogin()) {
       navigator('/signUp');
     }
   }, []);

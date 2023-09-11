@@ -10,7 +10,7 @@ import DeleteButton from '~/components/ReviewForm/DeleteButton';
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
 
-import { isCookieExpired } from '~/utils/cookies';
+import { isLogin } from '~/utils/cookies';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import Alert from '~/assets/icons/alert.svg';
@@ -30,7 +30,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
   const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
     useReviewModalContext();
 
-  const isUsersReview = profileData?.memberId === review.memberId && isCookieExpired();
+  const isUsersReview = profileData?.memberId === review.memberId && isLogin();
 
   return (
     <>

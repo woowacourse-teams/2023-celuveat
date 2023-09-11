@@ -8,14 +8,14 @@ import RestaurantWishList from '~/components/RestaurantWishList';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 
-import { isCookieExpired } from '~/utils/cookies';
+import { isLogin } from '~/utils/cookies';
 
 function WishListPage() {
   const navigator = useNavigate();
   const { isMobile } = useMediaQuery();
 
   useEffect(() => {
-    if (!isCookieExpired()) {
+    if (!isLogin()) {
       navigator('/signUp');
     }
   }, []);

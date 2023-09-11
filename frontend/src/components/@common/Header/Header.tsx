@@ -12,7 +12,7 @@ import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useBooleanState from '~/hooks/useBooleanState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import SearchBar from '~/components/SearchBar';
-import { isCookieExpired } from '~/utils/cookies';
+import { isLogin } from '~/utils/cookies';
 import { ProfileData } from '~/@types/api.types';
 import { getLogout } from '~/api/oauth';
 
@@ -24,7 +24,7 @@ function Header() {
 
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
-  const options = isCookieExpired() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
+  const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;

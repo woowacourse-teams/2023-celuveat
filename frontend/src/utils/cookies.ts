@@ -12,11 +12,13 @@ export const hasCookie = (name = 'JSESSIONID') => {
   return parts.length === 2;
 };
 
-export const isCookieExpired = (name = 'JSESSIONID') => {
+export const isExpired = (expirationDate: Date) => expirationDate < new Date();
+
+export const isLogin = (name = 'JSESSIONID') => {
   if (hasCookie(name)) {
     const expirationDate = new Date(getCookie(name)[1]);
-    return expirationDate < new Date();
+    return !isExpired(expirationDate);
   }
 
-  return true;
+  return false;
 };
