@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { RestaurantImage } from '~/@types/image.type';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
@@ -143,7 +143,7 @@ const StyledDots = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0 0.5rem;
+  gap: 0 0.6rem;
 
   position: absolute;
   bottom: 12px;
@@ -152,13 +152,17 @@ const StyledDots = styled.div`
 `;
 
 const StyledDot = styled.div<{ isActive: boolean }>`
-  width: 8px;
-  height: 8px;
-
-  margin: 0 0.5rem;
+  width: 6px;
+  height: 6px;
 
   border-radius: 50%;
-  background-color: ${({ isActive }) => (isActive ? 'var(--gray-4)' : 'var(--white)')};
+  background-color: var(--white);
 
-  cursor: pointer;
+  opacity: 0.2;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      opacity: 1;
+    `}
 `;
