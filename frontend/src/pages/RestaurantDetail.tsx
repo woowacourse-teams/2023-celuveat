@@ -2,7 +2,7 @@ import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MouseEventHandler, Suspense } from 'react';
+import { MouseEventHandler, Suspense, useRef } from 'react';
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
 import Love from '~/assets/icons/black-love.svg';
@@ -25,12 +25,16 @@ import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton'
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ImageCarousel from '~/components/@common/ImageCarousel';
 import ReviewModalProvider from '~/hooks/ReviewModalProvider';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 
 function RestaurantDetail() {
+  const layoutRef = useRef();
+  const sheetRef = useRef<HTMLDivElement>();
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+  const { movingDirection } = useTouchMoveDirection(layoutRef);
 
   const {
     data: {
@@ -90,7 +94,7 @@ function RestaurantDetail() {
     <>
       <Header />
       <>
-        <StyledMainRestaurantDetail isMobile={isMobile}>
+        <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
           {isSuccessRestaurantDetail && (
             <>
               <StyledDetailHeader tabIndex={0}>
@@ -159,10 +163,6 @@ function RestaurantDetail() {
                 </StyledDetailInfo>
                 <StyledLinkContainer isMobile={isMobile} tabIndex={0}>
                   <StyledMainLinkContainer isMobile={isMobile}>
-                    <button type="button" onClick={openNewWindow(naverMapUrl)}>
-                      <Naver width={32} />
-                      <div>네이버 지도로 보기</div>
-                    </button>
                     <RestaurantDetailLikeButton
                       restaurant={{
                         id,
@@ -178,6 +178,10 @@ function RestaurantDetail() {
                         lng,
                       }}
                     />
+                    <button type="button" onClick={openNewWindow(naverMapUrl)}>
+                      <Naver width={32} />
+                      <div>네이버 지도로 보기</div>
+                    </button>
                   </StyledMainLinkContainer>
                   <SuggestionButton />
                 </StyledLinkContainer>
@@ -203,7 +207,9 @@ function RestaurantDetail() {
               <h5>주변 다른 식당</h5>
               <ul>
                 {nearByRestaurant.content.map(restaurant => (
-                  <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+                  <StyledRestaurantCardContainer>
+                    <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+                  </StyledRestaurantCardContainer>
                 ))}
               </ul>
             </StyledNearByRestaurant>
@@ -226,19 +232,24 @@ function RestaurantDetail() {
                   />
                 </Wrapper>
               </div>
+
+              {isMobile && (
+                <>
+                  <StyledButton type="button" onClick={openNewWindow(naverMapUrl)}>
+                    <Naver width={32} />
+                    <div>네이버 지도로 보기</div>
+                  </StyledButton>
+                  <SuggestionButton />
+                </>
+              )}
             </StyledMapSection>
           )}
         </StyledMainRestaurantDetail>
         <Footer />
       </>
       {isMobile && isSuccessRestaurantDetail && (
-        <StyledMobileBottomSheet>
-          <SuggestionButton />
+        <StyledMobileBottomSheet ref={sheetRef} movingDirection={movingDirection}>
           <StyledMainLinkContainer isMobile={isMobile}>
-            <button type="button" onClick={openNewWindow(naverMapUrl)}>
-              <Naver width={32} />
-              <div>네이버 지도로 보기</div>
-            </button>
             <RestaurantDetailLikeButton
               restaurant={{
                 id,
@@ -272,16 +283,12 @@ const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
           position: sticky;
           top: 60px;
 
-          margin: 0 1.2rem 24rem;
+          margin: 0 1.2rem 20rem;
         `
       : css`
           max-width: 1240px;
 
-          margin: 0 auto;
-
-          @media screen and (width <= 1340px) {
-            margin: 0 5rem;
-          }
+          margin: 0 auto 8rem;
         `}
 `;
 
@@ -429,24 +436,6 @@ const StyledLinkContainer = styled.aside<{ isMobile: boolean }>`
 
           width: 33%;
         `}
-
-  & > button:last-child {
-    display: flex;
-    align-items: center;
-    gap: 0 1.2rem;
-
-    margin: 2rem auto 0;
-
-    border: none;
-    background: none;
-
-    & > div {
-      color: var(--gray-3);
-      font-family: SUIT-Medium, sans-serif;
-      font-size: 1.4rem;
-      text-decoration-line: underline;
-    }
-  }
 `;
 
 const StyledMainLinkContainer = styled.div<{ isMobile: boolean }>`
@@ -491,11 +480,11 @@ const StyledMainLinkContainer = styled.div<{ isMobile: boolean }>`
     }
 
     &:first-child {
-      background: #03c75a;
+      background: var(--red-2);
     }
 
     &:nth-child(2) {
-      background: var(--red-2);
+      background: #03c75a;
     }
   }
 `;
@@ -526,7 +515,6 @@ const StyledMapSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem 0;
-  margin-bottom: 4.8rem;
 
   & > div {
     border-radius: ${BORDER_RADIUS.md};
@@ -534,7 +522,12 @@ const StyledMapSection = styled.section`
   }
 `;
 
-const StyledMobileBottomSheet = styled.section`
+const StyledMobileBottomSheet = styled.section<{
+  movingDirection: {
+    X: 'none' | 'left' | 'right';
+    Y: 'none' | 'up' | 'down';
+  };
+}>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -542,26 +535,31 @@ const StyledMobileBottomSheet = styled.section`
 
   width: 100%;
 
-  & > *:first-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0 1.2rem;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ movingDirection }) => (movingDirection.Y === 'up' ? 'translateY(100%)' : 'translateY(0)')};
+`;
 
-    position: absolute;
-    top: -30px;
-    right: calc(50% - 80px);
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0 4rem;
 
-    width: 160px;
-    height: 24px;
+  padding: 1.6rem 3.2rem;
 
-    box-shadow: var(--shadow);
+  border: none;
+  border-radius: ${BORDER_RADIUS.md};
+  background: #03c75a;
 
-    border: none;
-    border-radius: ${BORDER_RADIUS.sm};
-    background: var(--white);
+  font-family: SUIT-Medium, sans-serif;
+  font-size: ${FONT_SIZE.md};
 
-    color: var(--gray-2);
-    font-size: ${FONT_SIZE.sm};
+  & > div {
+    color: var(--white);
   }
+`;
+
+const StyledRestaurantCardContainer = styled.div`
+  border-radius: 12px;
+
+  box-shadow: var(--map-shadow);
 `;

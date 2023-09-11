@@ -51,7 +51,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
-        <section>
+        <StyledInfoSection type={type}>
           <StyledInfo>
             <StyledCategory>{category}</StyledCategory>
             <StyledName role="columnheader">{name}</StyledName>
@@ -61,7 +61,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size={size} />}
           </StyledProfileImageSection>
-        </section>
+        </StyledInfoSection>
       </StyledContainer>
       <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
         <ModalContent title="로그인 및 회원 가입">
@@ -138,4 +138,8 @@ const LikeButton = styled.button`
   &:hover {
     transform: scale(1.2);
   }
+`;
+
+const StyledInfoSection = styled.section<{ type: 'list' | 'map' }>`
+  padding: ${({ type }) => (type === 'list' ? 'none' : '0.8rem')};
 `;
