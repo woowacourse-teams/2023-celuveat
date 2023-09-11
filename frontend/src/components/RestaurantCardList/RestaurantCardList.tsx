@@ -8,7 +8,7 @@ import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
 import PageNationBar from '../@common/PageNationBar';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
-import { getMSWRestaurants } from '~/api';
+import { getRestaurants } from '~/api';
 
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
@@ -23,7 +23,7 @@ function RestaurantCardList() {
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
-    queryFn: () => getMSWRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
   const [setHoveredId] = useHoveredRestaurantState(state => [state.setId]);
