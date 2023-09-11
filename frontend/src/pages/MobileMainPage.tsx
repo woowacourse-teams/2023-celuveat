@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { Link } from 'react-router-dom';
@@ -30,6 +30,7 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
+import TextButton from '~/components/@common/Button';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
@@ -38,6 +39,7 @@ function MobileMainPage() {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
   const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
+  const [filterName, setFilterName] = useState('celeb');
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [
@@ -135,37 +137,52 @@ function MobileMainPage() {
       <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
         <ModalContent>
           <StyledFilterContainer>
-            <StyledFilterItem>
-              <h3>셀럽 선택</h3>
-              <StyledSelectContainer>
-                {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(({ id, name, youtubeChannelName, profileImageUrl }) => (
-                  <StyledDropDownOption data-id={id} onClick={clickCeleb}>
-                    <div>
-                      {id === -1 ? <CelebIcon /> : <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />}
+            <StyledFilterButtonContainer>
+              <TextButton type="button" text="셀럽 선택" onClick={() => setFilterName('celeb')} colorType="dark" />
+              <TextButton
+                type="button"
+                text="카테고리 선택"
+                onClick={() => setFilterName('category')}
+                colorType="dark"
+              />
+            </StyledFilterButtonContainer>
+            {filterName === 'celeb' && (
+              <StyledFilterItem>
+                <StyledSelectContainer>
+                  {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(({ id, name, youtubeChannelName, profileImageUrl }) => (
+                    <StyledDropDownOption data-id={id} onClick={clickCeleb}>
                       <div>
-                        <StyledCelebName>{name}</StyledCelebName>
-                        <StyledChannelName>{youtubeChannelName}</StyledChannelName>
+                        {id === -1 ? (
+                          <CelebIcon />
+                        ) : (
+                          <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />
+                        )}
+                        <div>
+                          <StyledCelebName>{name}</StyledCelebName>
+                          <StyledChannelName>{youtubeChannelName}</StyledChannelName>
+                        </div>
                       </div>
-                    </div>
-                  </StyledDropDownOption>
-                ))}
-              </StyledSelectContainer>
-            </StyledFilterItem>
-            <StyledFilterItem>
-              <h3>카테고리 선택</h3>
-              <li>
-                {RESTAURANT_CATEGORY.map(({ icon, label }) => (
-                  <StyledNavItemButton
-                    aria-label={label}
-                    data-label={label}
-                    type="button"
-                    onClick={clickRestaurantCategory}
-                  >
-                    <NavItem label={label} icon={icon} isShow={isEqual(category, label)} />
-                  </StyledNavItemButton>
-                ))}
-              </li>
-            </StyledFilterItem>
+                    </StyledDropDownOption>
+                  ))}
+                </StyledSelectContainer>
+              </StyledFilterItem>
+            )}
+            {filterName === 'category' && (
+              <StyledFilterItem>
+                <li>
+                  {RESTAURANT_CATEGORY.map(({ icon, label }) => (
+                    <StyledNavItemButton
+                      aria-label={label}
+                      data-label={label}
+                      type="button"
+                      onClick={clickRestaurantCategory}
+                    >
+                      <NavItem label={label} icon={icon} isShow={isEqual(category, label)} />
+                    </StyledNavItemButton>
+                  ))}
+                </li>
+              </StyledFilterItem>
+            )}
           </StyledFilterContainer>
         </ModalContent>
       </Modal>
@@ -184,12 +201,20 @@ const StyledFilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3.2rem 0;
+
+  height: 50vh;
+`;
+
+const StyledFilterButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 0 0.4rem;
 `;
 
 const StyledFilterItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem 0;
 
   & > li > * {
     margin: 0.4rem auto;
@@ -320,7 +345,7 @@ const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolea
 
 const StyledSelectContainer = styled.div`
   width: 100%;
-  height: 480px;
+  height: 40vh;
 
   background: transparent;
 
