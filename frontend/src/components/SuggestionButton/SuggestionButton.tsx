@@ -41,10 +41,10 @@ function SuggestionButton() {
 
   return (
     <>
-      <button type="button" onClick={openModal}>
+      <StyledButton type="button" onClick={openModal}>
         <Pencil width={16} />
         <div>정보 수정 제안하기</div>
-      </button>
+      </StyledButton>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         <ModalContent title="정보 수정 제안">
           <StyledForm onSubmit={handleSubmit}>
@@ -126,5 +126,23 @@ const CheckBox = styled.input.attrs({ type: 'checkbox' })`
     background-color: var(--primary-6);
     background-image: url('~/assets/icons/checked-icon.svg');
     background-size: cover;
+  }
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0 1.2rem;
+
+  margin: 2rem auto 0;
+
+  border: none;
+  background: none;
+
+  & > div {
+    color: var(--gray-3);
+    font-family: SUIT-Medium, sans-serif;
+    font-size: 1.4rem;
+    text-decoration-line: underline;
   }
 `;

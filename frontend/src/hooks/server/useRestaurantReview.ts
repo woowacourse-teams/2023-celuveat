@@ -34,27 +34,22 @@ const useRestaurantReview = () => {
 
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId],
-    // queryFn: () => getRestaurantReview(restaurantId),
     queryFn: () => getRestaurantReview(restaurantId),
     suspense: true,
   });
 
   const createReview = useMutation({
     mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
-    // mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
     mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
       patchRestaurantReview({ reviewId, body }),
-    // mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
-    //   patchRestaurantReview({ reviewId, body }),
     onError: errorHandler,
   });
 
   const deleteReview = useMutation({
-    // mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     onError: errorHandler,
   });
