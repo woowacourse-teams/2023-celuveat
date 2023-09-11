@@ -97,6 +97,12 @@ const base = css`
     box-shadow: var(--shadow);
   }
 
+  @media screen and (width <= 740px) {
+    .pac-container {
+      top: 92px !important;
+    }
+  }
+
   .pac-item {
     width: 100%;
     height: 100%;

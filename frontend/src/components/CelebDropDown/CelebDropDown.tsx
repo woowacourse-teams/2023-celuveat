@@ -3,7 +3,7 @@ import { MouseEvent, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
 import ProfileImage from '~/components/@common/ProfileImage';
-import NavItem from '~/components/@common/NavButton/NavButton';
+import NavItem from '~/components/@common/NavItem/NavItem';
 import useBooleanState from '~/hooks/useBooleanState';
 
 import type { Celeb } from '~/@types/celeb.types';

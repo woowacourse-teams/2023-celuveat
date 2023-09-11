@@ -81,7 +81,6 @@ const StyledModalOverlay = styled.div`
 `;
 
 const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
-  ${hideScrollBar}
   display: flex;
   flex-direction: column;
 
@@ -94,15 +93,13 @@ const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
   min-height: 100px;
   max-height: 600px;
 
-  padding: 2rem;
+  padding: 2rem 2rem 0;
 
   border-radius: 5px;
   background: #fff;
 
   transition: transform ease 0.3s 0.1s;
   transform: translateY(80px);
-
-  overflow-y: auto;
 
   ${({ isMobile }) =>
     isMobile &&
@@ -122,6 +119,7 @@ const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
 const StyledModalHeader = styled.h5`
   display: flex;
   align-items: center;
+  margin-bottom: 2.4rem;
 `;
 
 const StyledModalTitleText = styled.span`
@@ -129,5 +127,6 @@ const StyledModalTitleText = styled.span`
 `;
 
 const StyledModalBody = styled.div`
-  margin-top: 2.4rem;
+  ${hideScrollBar}
+  overflow-y: auto;
 `;

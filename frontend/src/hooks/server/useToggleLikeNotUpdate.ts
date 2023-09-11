@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
-import { postMSWRestaurantLike } from '~/api/oauth';
+import { postRestaurantLike } from '~/api/oauth';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -20,7 +20,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   );
 
   const toggleLike = useMutation({
-    mutationFn: postMSWRestaurantLike,
+    mutationFn: postRestaurantLike,
 
     onError: (error: AxiosError) => {
       if (error.response.status < 500) {
