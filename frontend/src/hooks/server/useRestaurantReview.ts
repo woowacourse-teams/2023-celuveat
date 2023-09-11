@@ -3,15 +3,8 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import {
-  postRestaurantReview,
-  deleteRestaurantReview,
-  patchRestaurantReview,
-  postMSWRestaurantReview,
-  patchMSWRestaurantReview,
-  deleteMSWRestaurantReview,
-} from '../../api/oauth';
-import { getMSWRestaurantReview, getRestaurantReview } from '~/api';
+import { postMSWRestaurantReview, patchMSWRestaurantReview, deleteMSWRestaurantReview } from '../../api/oauth';
+import { getMSWRestaurantReview } from '~/api';
 
 import useToastState from '~/hooks/store/useToastState';
 
