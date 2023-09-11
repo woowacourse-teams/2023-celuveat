@@ -5,6 +5,7 @@ import static com.celuveat.common.auth.AuthConstant.JSESSION_ID;
 import com.celuveat.auth.command.application.OauthService;
 import com.celuveat.auth.command.domain.OauthServerType;
 import com.celuveat.common.auth.Auth;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -52,10 +53,15 @@ public class OauthController {
     ResponseEntity<Void> logout(
             @PathVariable OauthServerType oauthServerType,
             @Auth Long memberId,
-            HttpServletRequest request
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         oauthService.logout(oauthServerType, memberId);
         request.getSession(false).invalidate();
+        Cookie cookie = new Cookie(JSESSION_ID, "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return ResponseEntity.noContent().build();
     }
 
