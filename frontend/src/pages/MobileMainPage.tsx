@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
 import useBooleanState from '~/hooks/useBooleanState';
