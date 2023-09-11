@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import All from '~/assets/icons/restaurantCategory/all.svg';
-import NavItem from '~/components/@common/NavButton/NavButton';
+import NavItem from './NavItem';
 
 const meta: Meta<typeof NavItem> = {
   title: 'NavItem',
