@@ -1,11 +1,10 @@
-import { apiClient } from '~/api';
 import { userInstance, userMSWInstance } from '~/api/User';
 
 import type { Oauth } from '~/@types/oauth.types';
 import type { RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
 
 export const getAccessToken = async (type: Oauth, code: string) => {
-  const response = await apiClient.get(`/oauth/login/${type}?code=${code}`);
+  const response = await userInstance.get(`/oauth/login/${type}?code=${code}`);
   return response.data;
 };
 

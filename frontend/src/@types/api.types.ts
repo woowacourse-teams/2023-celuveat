@@ -1,3 +1,4 @@
+import { Oauth } from '~/@types/oauth.types';
 import { HyphenatedDate } from '~/@types/date.types';
 
 export interface RestaurantListData {
@@ -30,6 +31,7 @@ export interface ProfileData {
   memberId: number;
   nickname: string;
   profileImageUrl: string;
+  oauthServer: Oauth;
 }
 
 export interface RestaurantDetailData extends RestaurantData {

@@ -1,5 +1,5 @@
-import { styled, css } from 'styled-components';
 import React, { useEffect, useState } from 'react';
+import { styled, css } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '../RestaurantCard';
