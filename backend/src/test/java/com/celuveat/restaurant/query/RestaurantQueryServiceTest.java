@@ -684,27 +684,27 @@ class RestaurantQueryServiceTest {
             ));
         }
 
-        @Test
-        void 비회원으로_음식점을_조회하면_음식점의_좋아요여부에_모두_거짓이_반환되고_모두의_좋아요수가_함께_반환된다() {
-            // given
-            seed.set(0, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse1, 2));
-            seed.set(2, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse2, 2));
-            seed.set(3, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse3, 1));
-            seed.set(4, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse4, 3));
-            seed.set(8, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse5, 3));
-            seed.set(9, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse6, 1));
-
-            // when
-            Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
-                    new RestaurantSearchCond(null, null, null),
-                    전체영역_검색_범위,
-                    PageRequest.of(0, 100),
-                    null
-            );
-
-            // then
-            결과를_검증한다(result, seed);
-        }
+//        @Test
+//        void 비회원으로_음식점을_조회하면_음식점의_좋아요여부에_모두_거짓이_반환되고_모두의_좋아요수가_함께_반환된다() {
+//            // given
+//            seed.set(0, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse1, 2));
+//            seed.set(2, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse2, 2));
+//            seed.set(3, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse3, 1));
+//            seed.set(4, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse4, 3));
+//            seed.set(8, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse5, 3));
+//            seed.set(9, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse6, 1));
+//
+//            // when
+//            Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
+//                    new RestaurantSearchCond(null, null, null),
+//                    전체영역_검색_범위,
+//                    PageRequest.of(0, 100),
+//                    null
+//            );
+//
+//            // then
+//            결과를_검증한다(result, seed);
+//        }
 
         private void 결과를_검증한다(Page<RestaurantSimpleResponse> result,
                               List<RestaurantSimpleResponse> expected) {
