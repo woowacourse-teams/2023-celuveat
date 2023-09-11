@@ -19,9 +19,7 @@ function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
   const { id, celebId } = useParams();
-
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-
   const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
