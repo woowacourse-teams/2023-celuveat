@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,6 @@ import useBooleanState from '~/hooks/useBooleanState';
 import useScrollDirection from '~/hooks/useScrollDirection';
 import useScrollEnd from '~/hooks/useScrollEnd';
 import Logo from '~/assets/icons/logo-icon.svg';
-import Filter from '~/assets/icons/filter.svg';
 import MapIcon from '~/assets/icons/map.svg';
 import ListIcon from '~/assets/icons/list.svg';
 import UserIcon from '~/assets/icons/etc/user.svg';
@@ -18,7 +17,7 @@ import CelebIcon from '~/assets/icons/celeb.svg';
 import { FONT_SIZE } from '~/styles/common';
 
 import SearchBar from '~/components/SearchBar';
-import NavButton from '~/components/@common/NavButton';
+import NavItem from '~/components/@common/NavItem';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import Footer from '~/components/@common/Footer';
 import Map from '~/components/@common/Map';
@@ -26,11 +25,11 @@ import { Modal, ModalContent } from '~/components/@common/Modal';
 import ProfileImage from '~/components/@common/ProfileImage';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import { getCelebs } from '~/api';
-import NavItem from '~/components/@common/NavButton/NavButton';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
+import useScrollBlock from '~/hooks/useScrollBlock';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
@@ -40,10 +39,18 @@ function MobileMainPage() {
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
   const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
 
-  const [category, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
-    state => [state.restaurantCategory, state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
+  const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
+    state => [
+      state.restaurantCategory,
+      state.celebId,
+      state.setCelebId,
+      state.setCurrentPage,
+      state.setRestaurantCategory,
+    ],
     shallow,
   );
+
+  const selectedCeleb = celebOptions.find(({ id }) => id === celebId);
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
@@ -59,13 +66,7 @@ function MobileMainPage() {
     setCurrentPage(0);
   };
 
-  const blockScroll = (ref: React.MutableRefObject<Element>) => {
-    ref.current.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-  };
-
-  useEffect(() => {
-    refs.forEach(ref => blockScroll(ref));
-  }, []);
+  useScrollBlock(refs);
 
   return (
     <>
@@ -74,9 +75,7 @@ function MobileMainPage() {
           <header>
             <Logo width={32} />
             <h5>celuveat</h5>
-            <StyledFilterButton type="button" onClick={openModal}>
-              <Filter width={24} />
-            </StyledFilterButton>
+            <div />
           </header>
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
@@ -109,9 +108,19 @@ function MobileMainPage() {
 
         <StyledBottomNavBar isHide={scrollDirection.y === 'down'} ref={refs[2]}>
           <Link to="/restaurants/like">
-            <NavButton label="위시리스트" icon={<LoveIcon width={24} />} />
+            <NavItem label="위시리스트" icon={<LoveIcon width={24} />} />
           </Link>
-          <NavButton label="프로필" icon={<UserIcon width={24} />} />
+          <StyledFilterButton type="button" onClick={openModal}>
+            {selectedCeleb ? (
+              <NavItem
+                label={selectedCeleb.youtubeChannelName.replace('@', '')}
+                icon={<ProfileImage name={selectedCeleb.name} imageUrl={selectedCeleb.profileImageUrl} size="32px" />}
+              />
+            ) : (
+              <NavItem label="필터" icon={<CelebIcon width={24} />} />
+            )}
+          </StyledFilterButton>
+          <NavItem label="프로필" icon={<UserIcon width={24} />} />
         </StyledBottomNavBar>
 
         <StyledMobileLayout isListShowed={isListShowed}>
@@ -226,6 +235,8 @@ const StyledTopNavBar = styled.nav`
     height: 44px;
 
     & > div {
+      width: 32px;
+
       font-size: ${FONT_SIZE.lg};
     }
   }
