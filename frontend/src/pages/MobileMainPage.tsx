@@ -138,12 +138,12 @@ function MobileMainPage() {
         <ModalContent>
           <StyledFilterContainer>
             <StyledFilterButtonContainer>
-              <TextButton type="button" text="셀럽 선택" onClick={() => setFilterName('celeb')} colorType="dark" />
+              <TextButton type="button" text="셀럽 선택" onClick={() => setFilterName('celeb')} colorType="light" />
               <TextButton
                 type="button"
                 text="카테고리 선택"
                 onClick={() => setFilterName('category')}
-                colorType="dark"
+                colorType="light"
               />
             </StyledFilterButtonContainer>
             {filterName === 'celeb' && (
