@@ -1,9 +1,9 @@
 const BASE_URL = `${process.env.BASE_URL}`;
 
 export const OAUTH_LINK = {
-  google: `${BASE_URL}/api/oauth/google`,
-  kakao: `${BASE_URL}/api/oauth/kakao`,
-  naver: `${BASE_URL}/api/oauth/naver`,
+  google: `${BASE_URL}/oauth/google`,
+  kakao: `${BASE_URL}/oauth/kakao`,
+  naver: `${BASE_URL}/oauth/naver`,
 };
 
 export const OAUTH_BUTTON_MESSAGE = {
