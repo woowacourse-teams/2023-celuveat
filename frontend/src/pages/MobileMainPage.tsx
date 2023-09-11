@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
 import useBooleanState from '~/hooks/useBooleanState';
@@ -31,9 +31,11 @@ import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
+import { isLogin } from '~/utils/cookies';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
+  const navigator = useNavigate();
   const scrollDirection = useScrollDirection();
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -109,9 +111,9 @@ function MobileMainPage() {
         )}
 
         <StyledBottomNavBar isHide={scrollDirection.y === 'down'} ref={refs[2]}>
-          <Link to="/restaurants/like">
+          <StyledNavBarButton type="button" onClick={() => navigator('/restaurants/like')}>
             <NavItem label="위시리스트" icon={<LoveIcon width={24} />} />
-          </Link>
+          </StyledNavBarButton>
           <StyledFilterButton type="button" onClick={openModal}>
             {selectedCeleb ? (
               <NavItem
@@ -122,7 +124,16 @@ function MobileMainPage() {
               <NavItem label="필터" icon={<CelebIcon width={24} />} />
             )}
           </StyledFilterButton>
-          <NavItem label="프로필" icon={<UserIcon width={24} />} />
+          {!isLogin() && (
+            <StyledNavBarButton
+              type="button"
+              onClick={() => {
+                navigator('/signUp');
+              }}
+            >
+              <NavItem label="로그인" icon={<UserIcon width={24} />} />
+            </StyledNavBarButton>
+          )}
         </StyledBottomNavBar>
 
         <StyledMobileLayout isListShowed={isListShowed}>
@@ -276,13 +287,11 @@ const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
 
   & > div:first-child {
     position: absolute;
-
-    height: 100vh;
-
     top: 0;
     z-index: 1;
 
     width: 100%;
+    height: 100vh;
 
     background-color: var(--white);
 
@@ -296,18 +305,17 @@ const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
 
 const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolean }>`
   display: flex;
-
-  width: 100px;
-
   justify-content: center;
   align-items: center;
 
   position: fixed;
   bottom: 88px;
-  z-index: 20;
 
   gap: 0.8rem;
 
+  width: 100px;
+
+  z-index: 20;
   left: calc(50% - 50px);
 
   height: 40px;
@@ -406,7 +414,7 @@ const StyledDropDownOption = styled.li`
 `;
 
 const StyledCelebName = styled.div`
-  font-family: SUIT-Medium;
+  font-family: SUIT-Medium, sans-serif;
 `;
 
 const StyledChannelName = styled.div`
@@ -414,4 +422,11 @@ const StyledChannelName = styled.div`
 
   color: var(--gray-3);
   font-size: ${FONT_SIZE.sm};
+`;
+
+const StyledNavBarButton = styled.button`
+  border: none;
+  outline: none;
+
+  background: none;
 `;
