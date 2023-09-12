@@ -217,7 +217,9 @@ public class SeedData {
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
                 restaurant.viewCount(),
-                distance
+                distance,
+                0L, // likeCount
+                false // isLiked
         );
     }
 

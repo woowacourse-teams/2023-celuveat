@@ -25,15 +25,15 @@ public record SaveDataRequest(
 ) {
 
     private static final int RESTAURANT_NAME = 0;
-    private static final int YOUTUBE_CHANNEL_NAME = 1;
-    private static final int YOUTUBE_VIDEO_URL = 2;
+    private static final int YOUTUBE_VIDEO_URL = 1;
+    private static final int YOUTUBE_CHANNEL_NAME = 2;
     private static final int UPLOAD_DATE = 3;
-    private static final int ROAD_ADDRESS = 4;
-    private static final int PHONE_NUMBER = 5;
-    private static final int CATEGORY = 6;
-    private static final int LATITUDE = 7;
-    private static final int LONGITUDE = 8;
-    private static final int NAVER_MAP_URL = 9;
+    private static final int NAVER_MAP_URL = 4;
+    private static final int CATEGORY = 5;
+    private static final int PHONE_NUMBER = 6;
+    private static final int ROAD_ADDRESS = 7;
+    private static final int LATITUDE = 8;
+    private static final int LONGITUDE = 9;
     private static final int IMAGE_NAME = 10;
     private static final int INSTAGRAM_NAME = 11;
 
@@ -69,6 +69,7 @@ public record SaveDataRequest(
 
     public RestaurantImage toRestaurantImage(
             String imageName,
+            String instagramName,
             Restaurant restaurant
     ) {
         SocialMedia socialMedia = SocialMedia.from(instagramName);

@@ -8,6 +8,7 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSea
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.mapper.RestaurantRelocator;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,14 @@ public class RestaurantQueryService {
     private final RestaurantSimpleResponseDao restaurantSimpleResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, @Nullable Long memberId) {
-        return restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
+    public RestaurantDetailResponse findRestaurantDetailById(
+            Long restaurantId,
+            Long celebId,
+            @Nullable Long memberId
+    ) {
+        RestaurantDetailResponse response =
+                restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
+        return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
     }
 
     public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
@@ -35,12 +42,17 @@ public class RestaurantQueryService {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantSimpleResponseDao.findAllWithMemberLiked(
+        Page<RestaurantSimpleResponse> response = restaurantSimpleResponseDao.findAllWithMemberLiked(
                 restaurantCond,
                 locationCond,
                 pageable,
                 memberId
         );
+        Long celebId = restaurantCond.celebId();
+        if (celebId == null) {
+            return response;
+        }
+        return RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
