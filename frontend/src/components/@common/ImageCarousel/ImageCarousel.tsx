@@ -41,6 +41,7 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
 
   useEffect(() => {
     ref.current.addEventListener('scrollend', handleScroll);
+    ref.current.addEventListener('touchend', handleScroll);
   }, []);
 
   return (
