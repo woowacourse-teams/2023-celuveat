@@ -1,6 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { ProfileData } from '~/@types/api.types';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -8,14 +10,14 @@ import RestaurantWishList from '~/components/RestaurantWishList';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 
-import { isLogin } from '~/utils/cookies';
-
 function WishListPage() {
+  const qc = useQueryClient();
+  const profileData: ProfileData = qc.getQueryData(['profile']);
   const navigator = useNavigate();
   const { isMobile } = useMediaQuery();
 
   useEffect(() => {
-    if (!isLogin()) {
+    if (!profileData) {
       navigator('/signUp');
     }
   }, []);

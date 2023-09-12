@@ -1,16 +1,19 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ProfileData } from '~/@types/api.types';
 
 import LoginPageUI from '~/components/LoginPageUI';
 import WithdrawalModalContent from '~/components/WithdrawalModalContent';
 
-import { isLogin } from '~/utils/cookies';
-
 function WithdrawalPage() {
   const navigator = useNavigate();
 
+  const qc = useQueryClient();
+  const profileData: ProfileData = qc.getQueryData(['profile']);
+
   useEffect(() => {
-    if (!isLogin()) {
+    if (!profileData) {
       navigator('/signUp');
     }
   }, []);
