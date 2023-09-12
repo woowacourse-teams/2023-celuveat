@@ -3,16 +3,14 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { getRestaurantReview } from '~/api';
-import { postRestaurantReview, patchRestaurantReview, deleteRestaurantReview } from '~/api/oauth';
-
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
+import useAPIClient from './useAPIClient';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
-
+  const { apiClient } = useAPIClient();
   const { onFailure } = useToastState(
     state => ({
       onFailure: state.onFailure,
@@ -32,8 +30,13 @@ const useRestaurantReview = () => {
     }
   };
 
+  const getRestaurantReview = async (id: string) => {
+    const response = await apiClient.get(`/reviews?restaurantId=${id}`);
+    return response.data;
+  };
+
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
-    queryKey: ['restaurantReview', restaurantId],
+    queryKey: ['restaurantReview', restaurantId, apiClient],
     queryFn: () => getRestaurantReview(restaurantId),
     suspense: true,
   });
@@ -53,6 +56,21 @@ const useRestaurantReview = () => {
     mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     onError: errorHandler,
   });
+
+  const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
+    const response = await apiClient.post(`/reviews`, body);
+    return response;
+  };
+
+  const deleteRestaurantReview = async (reviewId: number) => {
+    const response = await apiClient.delete(`/reviews/${reviewId}`);
+    return response;
+  };
+
+  const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
+    const response = await apiClient.patch(`/reviews/${reviewId}`, body);
+    return response;
+  };
 
   return {
     restaurantReviewsData,

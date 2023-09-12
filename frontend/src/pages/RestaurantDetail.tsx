@@ -11,7 +11,6 @@ import VideoCarousel from '~/components/@common/VideoCarousel';
 import RestaurantCard from '~/components/RestaurantCard';
 import MapContent from '~/components/@common/Map/MapContent';
 import ProfileImageList from '~/components/@common/ProfileImageList';
-import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import SuggestionButton from '~/components/SuggestionButton';
 import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 import ImageCarousel from '~/components/@common/ImageCarousel';
@@ -23,14 +22,14 @@ import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 
 import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
-
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/ReviewModalProvider';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
-
-import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
 
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
+import useRestaurant from '~/hooks/server/useRestaurant';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
+import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
+import useCeleb from '~/hooks/server/useCeleb';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,7 +38,9 @@ function RestaurantDetail() {
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+  const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
   const { movingDirection } = useTouchMoveDirection(layoutRef);
+  const { getCelebVideo } = useCeleb();
 
   const {
     data: {

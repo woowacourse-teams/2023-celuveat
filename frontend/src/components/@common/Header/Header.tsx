@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled } from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
@@ -11,13 +10,15 @@ import LoginModalContent from '~/components/LoginModalContent';
 import useBooleanState from '~/hooks/useBooleanState';
 import SearchBar from '~/components/SearchBar';
 import { ProfileData } from '~/@types/api.types';
-import { getLogout } from '~/api/oauth';
+import useUser from '~/hooks/server/useUser';
 
 function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
   const { id, celebId } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
+  const { getLogout } = useUser();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
@@ -43,7 +44,8 @@ function Header() {
             <SearchBar />
           </Wrapper>
         )}
-        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+
+        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         <ModalContent title="로그인 및 회원 가입">
