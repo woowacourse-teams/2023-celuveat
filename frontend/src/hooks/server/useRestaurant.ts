@@ -10,6 +10,7 @@ export interface GetRestaurantsQueryParams {
   celebId: number;
   category: RestaurantCategory;
   page: number;
+  sort: 'distance' | 'like';
 }
 
 const useRestaurant = () => {
@@ -17,7 +18,7 @@ const useRestaurant = () => {
 
   const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
     const queryString = getQueryString(queryParams);
-    const response = await apiClient.get<RestaurantListData>(`/restaurants?sort=like&${queryString}`);
+    const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
     return response.data;
   };

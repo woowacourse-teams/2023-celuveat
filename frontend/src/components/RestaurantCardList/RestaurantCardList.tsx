@@ -13,20 +13,28 @@ import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
 import useRestaurant from '~/hooks/server/useRestaurant';
 import useBaseURLState from '~/hooks/store/useBaseURLState';
+import FilterSelectBox from '../FilterSelectBox';
 
 function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
   const [prevCardNumber, setPrevCardNumber] = useState(18);
-  const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage] = useRestaurantsQueryStringState(
-    state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.setCurrentPage],
+  const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort] = useRestaurantsQueryStringState(
+    state => [
+      state.boundary,
+      state.celebId,
+      state.currentPage,
+      state.restaurantCategory,
+      state.setCurrentPage,
+      state.sort,
+    ],
     shallow,
   );
   const { getRestaurants } = useRestaurant();
   const { baseURL } = useBaseURLState();
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL],
-    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL, sort],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
   });
 
   const [setHoveredId] = useHoveredRestaurantState(state => [state.setId]);
@@ -57,7 +65,10 @@ function RestaurantCardList() {
       {restaurantDataList.content.length !== 0 ? (
         <>
           {!isMobile && (
-            <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
+            <StyledCardListHeader>
+              <StyledRestaurantCount>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledRestaurantCount>
+              <FilterSelectBox />
+            </StyledCardListHeader>
           )}
           <StyledRestaurantCardList isMobile={isMobile}>
             {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
@@ -100,7 +111,15 @@ const StyledDescription = styled.div`
   font-size: ${FONT_SIZE.md};
 `;
 
-const StyledCardListHeader = styled.p`
+const StyledCardListHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+`;
+
+const StyledRestaurantCount = styled.span`
   font-size: ${FONT_SIZE.md};
   font-weight: 700;
 `;

@@ -6,10 +6,12 @@ interface ParamTypes extends CoordinateBoundary {
   celebId?: string;
   category?: RestaurantCategory;
   page?: string;
+  sort: 'distance' | 'like';
 }
 
-const getQueryString = ({ boundary, celebId, category, page }: GetRestaurantsQueryParams) => {
-  let params: ParamTypes = boundary;
+const getQueryString = ({ boundary, celebId, category, page, sort }: GetRestaurantsQueryParams) => {
+  let params: ParamTypes = { ...boundary, sort };
+
   if (celebId !== -1) params = { ...params, celebId: String(celebId) };
 
   if (category !== '전체') params = { ...params, category };

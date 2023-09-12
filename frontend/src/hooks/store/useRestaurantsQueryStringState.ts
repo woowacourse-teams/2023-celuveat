@@ -8,6 +8,7 @@ interface RestaurantsQueryStringState {
   celebId: number;
   currentPage: number;
   restaurantCategory: RestaurantCategory;
+  sort: 'distance' | 'like';
 }
 
 interface RestaurantsQueryStringAction {
@@ -15,6 +16,7 @@ interface RestaurantsQueryStringAction {
   setCelebId: (celebId: number) => void;
   setCurrentPage: (currentPage: number) => void;
   setRestaurantCategory: (restaurantCategory: RestaurantCategory) => void;
+  setSort: (sort: 'distance' | 'like') => void;
 }
 
 const useRestaurantsQueryStringState = create<RestaurantsQueryStringState & RestaurantsQueryStringAction>(set => ({
@@ -22,11 +24,13 @@ const useRestaurantsQueryStringState = create<RestaurantsQueryStringState & Rest
   celebId: -1,
   currentPage: 0,
   restaurantCategory: '전체',
+  sort: 'like',
 
   setBoundary: boundary => set(() => ({ boundary })),
   setCelebId: celebId => set(() => ({ celebId })),
   setCurrentPage: currentPage => set(() => ({ currentPage })),
   setRestaurantCategory: restaurantCategory => set({ restaurantCategory }),
+  setSort: sort => set({ sort }),
 }));
 
 export default useRestaurantsQueryStringState;
