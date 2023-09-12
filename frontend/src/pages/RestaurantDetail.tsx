@@ -27,9 +27,9 @@ import ReviewModalProvider from '~/hooks/ReviewModalProvider';
 
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 import useRestaurant from '~/hooks/server/useRestaurant';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import useCeleb from '~/hooks/server/useCeleb';
+import useScrollDirection from '~/hooks/useScrollDirection';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,7 +39,7 @@ function RestaurantDetail() {
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
   const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
-  const { movingDirection } = useTouchMoveDirection(layoutRef);
+  const scrollDirection = useScrollDirection();
   const { getCelebVideo } = useCeleb();
 
   const {
@@ -235,6 +235,7 @@ function RestaurantDetail() {
                     zoom={17}
                     style={{ width: '100%', height: isMobile ? '300px' : '600px' }}
                     markers={[{ lat, lng }]}
+                    gestureHandling="cooperative"
                   />
                 </Wrapper>
               </div>
@@ -254,7 +255,7 @@ function RestaurantDetail() {
         <Footer />
       </>
       {isMobile && isSuccessRestaurantDetail && (
-        <StyledMobileBottomSheet ref={sheetRef} movingDirection={movingDirection}>
+        <StyledMobileBottomSheet ref={sheetRef} movingDirection={scrollDirection.y}>
           <StyledMainLinkContainer isMobile={isMobile}>
             <RestaurantDetailLikeButton
               restaurant={{
@@ -530,10 +531,7 @@ const StyledMapSection = styled.section`
 `;
 
 const StyledMobileBottomSheet = styled.section<{
-  movingDirection: {
-    X: 'none' | 'left' | 'right';
-    Y: 'none' | 'up' | 'down';
-  };
+  movingDirection: string;
 }>`
   position: fixed;
   bottom: 0;
@@ -543,7 +541,7 @@ const StyledMobileBottomSheet = styled.section<{
   width: 100%;
 
   transition: transform 0.3s ease-in-out;
-  transform: ${({ movingDirection }) => (movingDirection.Y === 'up' ? 'translateY(100%)' : 'translateY(0)')};
+  transform: ${({ movingDirection }) => (movingDirection === 'up' ? 'translateY(100%)' : 'translateY(0)')};
 `;
 
 const StyledButton = styled.button`
@@ -569,8 +567,4 @@ const StyledRestaurantCardContainer = styled.div`
   border-radius: 12px;
 
   box-shadow: var(--map-shadow);
-`;
-
-const StyledAddress = styled.div`
-  display: flex;
 `;
