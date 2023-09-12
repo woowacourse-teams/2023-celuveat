@@ -40,9 +40,9 @@ function MobileMainPage() {
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
+  const { getCelebs } = useCeleb();
   const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
   const [filterName, setFilterName] = useState('celeb');
-  const { getCelebs } = useCeleb();
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [
