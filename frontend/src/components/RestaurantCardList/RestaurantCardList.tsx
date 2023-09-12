@@ -8,10 +8,10 @@ import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
 import PageNationBar from '../@common/PageNationBar';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
-import { getRestaurants } from '~/api';
 
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
+import useRestaurant from '~/hooks/server/useRestaurant';
 
 function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
@@ -20,6 +20,7 @@ function RestaurantCardList() {
     state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.setCurrentPage],
     shallow,
   );
+  const { getRestaurants } = useRestaurant();
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],

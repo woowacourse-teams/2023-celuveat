@@ -3,15 +3,16 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { getRestaurantReview } from '~/api';
-import { postRestaurantReview, patchRestaurantReview, deleteRestaurantReview } from '~/api/oauth';
+import { postRestaurantReview, deleteRestaurantReview, patchRestaurantReview } from '../../api/oauth';
 
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
+import useRestaurant from './useRestaurant';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
+  const { getRestaurantReview } = useRestaurant();
 
   const { onFailure } = useToastState(
     state => ({

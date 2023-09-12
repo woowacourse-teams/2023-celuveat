@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -11,7 +11,6 @@ import VideoCarousel from '~/components/@common/VideoCarousel';
 import RestaurantCard from '~/components/RestaurantCard';
 import MapContent from '~/components/@common/Map/MapContent';
 import ProfileImageList from '~/components/@common/ProfileImageList';
-import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import SuggestionButton from '~/components/SuggestionButton';
 import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 import ImageCarousel from '~/components/@common/ImageCarousel';
@@ -23,14 +22,14 @@ import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 
 import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
-
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/ReviewModalProvider';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 
-import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
+import { getCelebVideo } from '~/api';
 
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
+import useRestaurant from '~/hooks/server/useRestaurant';
+import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,6 +38,7 @@ function RestaurantDetail() {
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+  const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
   const { movingDirection } = useTouchMoveDirection(layoutRef);
 
   const {
@@ -220,9 +220,9 @@ function RestaurantDetail() {
             </StyledNearByRestaurant>
           )}
           <ReviewModalProvider>
-            <Suspense fallback={<div>Loading...</div>}>
+            {/* <Suspense fallback={<div>Loading...</div>}>
               <RestaurantReviewWrapper />
-            </Suspense>
+            </Suspense> */}
           </ReviewModalProvider>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
