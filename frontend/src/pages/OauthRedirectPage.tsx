@@ -1,8 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import { getAccessToken } from '~/api/oauth';
+import useUser from '~/hooks/server/useUser';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
@@ -11,6 +10,7 @@ interface OauthRedirectProps {
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
+  const { getAccessToken } = useUser();
 
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');

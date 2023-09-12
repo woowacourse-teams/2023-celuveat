@@ -12,7 +12,7 @@ import useBooleanState from '~/hooks/useBooleanState';
 import SearchBar from '~/components/SearchBar';
 import { isLogin } from '~/utils/cookies';
 import { ProfileData } from '~/@types/api.types';
-import { getLogout } from '~/api/oauth';
+import useUser from '~/hooks/server/useUser';
 
 function Header() {
   const qc = useQueryClient();
@@ -20,6 +20,7 @@ function Header() {
   const { id, celebId } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
+  const { getLogout } = useUser();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;

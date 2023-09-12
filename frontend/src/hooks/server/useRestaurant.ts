@@ -1,8 +1,16 @@
-import { GetRestaurantsQueryParams } from '~/api';
 import useAPIClient from './useAPIClient';
 import getQueryString from '~/utils/getQueryString';
 
-import { RestaurantListData } from '~/@types/api.types';
+import type { RestaurantListData } from '~/@types/api.types';
+import type { CoordinateBoundary } from '~/@types/map.types';
+import type { RestaurantCategory } from '~/@types/restaurant.types';
+
+export interface GetRestaurantsQueryParams {
+  boundary: CoordinateBoundary;
+  celebId: number;
+  category: RestaurantCategory;
+  page: number;
+}
 
 const useRestaurant = () => {
   const { apiClient } = useAPIClient();
@@ -29,8 +37,8 @@ const useRestaurant = () => {
     return response.data;
   };
 
-  const getRestaurantReview = async (restaurantId: string) => {
-    const response = await apiClient.get(`/reviews?restaurantId=${restaurantId}`);
+  const postRevisedInfo = async ({ restaurantId, data }: { restaurantId: number; data: { contents: string[] } }) => {
+    const response = await apiClient.post(`/restaurants/${restaurantId}/correction`, data);
     return response.data;
   };
 
@@ -39,7 +47,7 @@ const useRestaurant = () => {
     getRestaurantDetail,
     getNearByRestaurant,
     getRestaurantVideo,
-    getRestaurantReview,
+    postRevisedInfo,
   };
 };
 

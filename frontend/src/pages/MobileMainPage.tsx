@@ -24,7 +24,6 @@ import Map from '~/components/@common/Map';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import ProfileImage from '~/components/@common/ProfileImage';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
-import { getCelebs } from '~/api';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 import { RestaurantCategory } from '~/@types/restaurant.types';
@@ -32,6 +31,7 @@ import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
 import { isLogin } from '~/utils/cookies';
+import useCeleb from '~/hooks/server/useCeleb';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
@@ -42,6 +42,7 @@ function MobileMainPage() {
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
   const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
   const [filterName, setFilterName] = useState('celeb');
+  const { getCelebs } = useCeleb();
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [

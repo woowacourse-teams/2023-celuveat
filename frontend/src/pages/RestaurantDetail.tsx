@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { Suspense, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -25,11 +25,11 @@ import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/ReviewModalProvider';
 
-import { getCelebVideo } from '~/api';
-
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 import useRestaurant from '~/hooks/server/useRestaurant';
 import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
+import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
+import useCeleb from '~/hooks/server/useCeleb';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -40,6 +40,7 @@ function RestaurantDetail() {
   const celebId = searchParams.get('celebId');
   const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
   const { movingDirection } = useTouchMoveDirection(layoutRef);
+  const { getCelebVideo } = useCeleb();
 
   const {
     data: {
@@ -220,9 +221,9 @@ function RestaurantDetail() {
             </StyledNearByRestaurant>
           )}
           <ReviewModalProvider>
-            {/* <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
               <RestaurantReviewWrapper />
-            </Suspense> */}
+            </Suspense>
           </ReviewModalProvider>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
