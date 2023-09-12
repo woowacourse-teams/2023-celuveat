@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import styled, { css } from 'styled-components';
 
 import Menu from '~/assets/icons/etc/menu.svg';
@@ -11,6 +10,8 @@ import useUser from '~/hooks/server/useUser';
 
 interface InfoButtonProps {
   isShow?: boolean;
+  isSuccess: boolean;
+  profile: ProfileData;
 }
 
 function InfoButton({ isShow = false }: InfoButtonProps) {
@@ -19,18 +20,17 @@ function InfoButton({ isShow = false }: InfoButtonProps) {
     queryKey: ['profile'],
     queryFn: () => getProfile(),
   });
-
   return (
     <StyledInfoButton isShow={isShow} aria-hidden>
       <Menu />
-      {isSuccess ? <ProfileImage name={data.nickname} imageUrl={data.profileImageUrl} size="30px" /> : <User />}
+      {isSuccess ? <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="30px" /> : <User />}
     </StyledInfoButton>
   );
 }
 
 export default InfoButton;
 
-const StyledInfoButton = styled.button<InfoButtonProps>`
+const StyledInfoButton = styled.button<{ isShow: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
