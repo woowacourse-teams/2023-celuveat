@@ -5,7 +5,7 @@ import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.restaurant.command.domain.QRestaurantLike.restaurantLike;
 import static com.celuveat.video.command.domain.QVideo.video;
-import static com.querydsl.core.types.Order.DESC;
+import static com.querydsl.core.types.dsl.Expressions.as;
 import static com.querydsl.jpa.JPAExpressions.select;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
@@ -15,7 +15,6 @@ import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -40,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantWithDistanceDao {
 
     private static final NumberPath<Double> distanceColumn = Expressions.numberPath(Double.class, "distance");
+    private static final NumberPath<Long> likeCountColumn = Expressions.numberPath(Long.class, "likeCount");
 
     private final JPAQueryFactory query;
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
@@ -74,10 +74,10 @@ public class RestaurantWithDistanceDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(middleLat, middleLng).as(distanceColumn),
-                        (select(restaurantLike.count())
+                        (as(select(restaurantLike.count())
                                 .from(restaurantLike)
                                 .where(restaurantLike.restaurant.id.eq(restaurant.id))
-                                .groupBy(restaurant.id)),
+                                .groupBy(restaurant.id), likeCountColumn)),
                         (select(isLike(memberId))
                                 .from(restaurantLike)
                                 .where(restaurantLike.restaurant.id.eq(restaurant.id)
@@ -149,10 +149,7 @@ public class RestaurantWithDistanceDao {
                 .map(RestaurantSortType::from)
                 .orElse(RestaurantSortType.DISTANCE);
         if (sortType == RestaurantSortType.LIKE_COUNT) {
-            SubQueryExpression<Long> orderByLikeDesc = select(restaurantLike.count())
-                    .from(restaurantLike)
-                    .where(restaurantLike.restaurant.eq(restaurant));
-            return new OrderSpecifier<>(DESC, orderByLikeDesc);
+            return likeCountColumn.desc();
         }
         return distanceColumn.asc();
     }
