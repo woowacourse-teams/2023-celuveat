@@ -92,7 +92,7 @@ public class RestaurantWithDistanceDao {
                         restaurantCategoryEqual(restaurantSearchCond.category),
                         restaurantNameLike(restaurantSearchCond.restaurantName),
                         restaurantInArea(locationSearchCond)
-                ).orderBy(applyOrderBy(pageable))
+                ).orderBy(applyOrderBy(pageable), restaurant.id.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -181,7 +181,7 @@ public class RestaurantWithDistanceDao {
                 .where(
                         distanceMinOrEqual(standard, distance),
                         restaurantIdNotEqual(restaurantId)
-                ).orderBy(RestaurantWithDistanceDao.distanceColumn.asc())
+                ).orderBy(RestaurantWithDistanceDao.distanceColumn.asc(), restaurant.id.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
