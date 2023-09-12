@@ -172,10 +172,15 @@ public class RestaurantWithDistanceDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(standard.latitude(), standard.longitude()).as(RestaurantWithDistanceDao.distanceColumn),
-                        select(restaurantLike.count()).from(restaurantLike)
-                                .where(restaurantLike.restaurant.id.eq(restaurant.id)).groupBy(restaurant.id),
-                        select(isLike(memberId)).from(restaurantLike).where(restaurantLike.restaurant.id.eq(restaurant.id)
-                                .and(restaurantLikeMemberIdEqual(memberId)))
+                        select(restaurantLike.count())
+                                .from(restaurantLike)
+                                .where(restaurantLike.restaurant.id.eq(restaurant.id))
+                                .groupBy(restaurant.id),
+                        select(isLike(memberId))
+                                .from(restaurantLike)
+                                .where(restaurantLike.restaurant.id.eq(restaurant.id)
+                                        .and(restaurantLikeMemberIdEqual(memberId)))
+                                .groupBy(restaurantLike.restaurant.id)
                 ))
                 .from(restaurant)
                 .where(
