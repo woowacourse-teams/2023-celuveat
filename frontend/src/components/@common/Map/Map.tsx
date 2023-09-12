@@ -18,7 +18,6 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 import useMapState from '~/hooks/store/useMapState';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 import OverlayMarkerList from './OverlayMarkerList';
-import ServerSelectBox from '~/components/ServerSelectBox';
 
 interface MapProps {
   toggleMapExpand?: () => void;
@@ -129,7 +128,6 @@ function Map({ toggleMapExpand }: MapProps) {
           <button type="button" onClick={clickZoom(-1)}>
             <Minus />
           </button>
-          {process.env.NODE_ENV === 'development' && <ServerSelectBox />}
         </StyledZoomUI>
         {!isMobile && (
           <StyledMapExpandButton onClick={clickMapExpand}>

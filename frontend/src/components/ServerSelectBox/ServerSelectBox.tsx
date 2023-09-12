@@ -13,9 +13,9 @@ function ServerSelectBox() {
 
   return (
     <StyledSelectBox id="environmentSelect" onChange={handleServerState}>
+      <option value="prod">prod</option>
       <option value="dev">dev</option>
       <option value="msw">msw</option>
-      <option value="prod">prod</option>
     </StyledSelectBox>
   );
 }
@@ -23,8 +23,10 @@ function ServerSelectBox() {
 export default ServerSelectBox;
 
 const StyledSelectBox = styled.select`
-  position: absolute;
-  right: 200px;
+  position: fixed;
+  top: 20px;
+  left: 200px;
+  z-index: 10000;
 
   width: 100px;
   height: 40px;
