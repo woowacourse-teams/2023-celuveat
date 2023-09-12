@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
-import { getCelebs } from '~/api';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import CategoryNavbar from '../CategoryNavbar';
 import CelebDropDown from '../CelebDropDown/CelebDropDown';
@@ -9,12 +8,14 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';
+import useCeleb from '~/hooks/server/useCeleb';
 
 function MainPageNavBar() {
   const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
     shallow,
   );
+  const { getCelebs } = useCeleb();
 
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],

@@ -5,12 +5,13 @@ import { FONT_SIZE } from '~/styles/common';
 
 import RestaurantWishItem from '~/components/RestaurantWishItem/RestaurantWishItem';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { getRestaurantWishList } from '~/api/oauth';
 
 import type { RestaurantData } from '~/@types/api.types';
+import useUser from '~/hooks/server/useUser';
 
 function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
+  const { getRestaurantWishList } = useUser();
 
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['restaurants', 'like'],

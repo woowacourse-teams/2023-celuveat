@@ -1,6 +1,6 @@
 import type { CoordinateBoundary } from '~/@types/map.types';
 import type { RestaurantCategory } from '~/@types/restaurant.types';
-import type { GetRestaurantsQueryParams } from '~/api';
+import { GetRestaurantsQueryParams } from '~/hooks/server/useRestaurant';
 
 interface ParamTypes extends CoordinateBoundary {
   celebId?: string;
