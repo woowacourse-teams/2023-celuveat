@@ -7,11 +7,9 @@ import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
-import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 
 import useBooleanState from '~/hooks/useBooleanState';
 import SearchBar from '~/components/SearchBar';
-import { isLogin } from '~/utils/cookies';
 import { ProfileData } from '~/@types/api.types';
 import { getLogout } from '~/api/oauth';
 
@@ -20,7 +18,6 @@ function Header() {
   const navigator = useNavigate();
   const { id, celebId } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
@@ -46,7 +43,7 @@ function Header() {
             <SearchBar />
           </Wrapper>
         )}
-        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         <ModalContent title="로그인 및 회원 가입">

@@ -1,23 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { ProfileData } from '~/@types/api.types';
+import { getProfile } from '~/api/oauth';
 
 import InfoButton from '~/components/@common/InfoButton';
 import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
+import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useBooleanState from '~/hooks/useBooleanState';
 
-interface Option {
-  id: number;
-  value: string;
-}
-
 interface DropDownProps {
-  options: Option[];
   isOpen?: boolean;
   externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
   label: string;
 }
 
-function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropDownProps) {
+function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps) {
   const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
+
+  const { data, isSuccess } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
+
+  const options = isSuccess ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const onSelection = () => (event?: React.MouseEvent<HTMLLIElement>) => {
     if (externalOnClick) externalOnClick(event);
@@ -26,7 +31,7 @@ function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropD
   return (
     <StyledInfoDropDown aria-hidden>
       <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown} aria-label={label}>
-        <InfoButton isShow={isShow} />
+        <InfoButton profile={data} isShow={isShow} isSuccess={isSuccess} />
       </StyledInfoButtonWrapper>
 
       {isShow && (
