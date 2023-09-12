@@ -13,10 +13,20 @@ interface MapContentProps extends google.maps.MapOptions {
   style: { [key: string]: string };
   onIdle?: (map: google.maps.Map) => void;
   onClick?: (e: google.maps.MapMouseEvent) => void;
+  gestureHandling?: 'greedy' | 'cooperative';
 }
 
-function MapContent({ style, zoom, center, children, onClick, onIdle, markers }: MapContentProps) {
-  const { ref, map } = useMap({ center, zoom, onClick, onIdle, markers });
+function MapContent({
+  style,
+  zoom,
+  center,
+  children,
+  onClick,
+  onIdle,
+  markers,
+  gestureHandling = 'greedy',
+}: MapContentProps) {
+  const { ref, map } = useMap({ center, zoom, onClick, onIdle, markers, gestureHandling });
 
   return (
     <>

@@ -41,13 +41,14 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
 
   useEffect(() => {
     ref.current.addEventListener('scrollend', handleScroll);
+    ref.current.addEventListener('touchend', handleScroll);
   }, []);
 
   return (
     <StyledCarouselContainer type={type}>
       <StyledCarouselSlide ref={ref} isMobile={isMobile}>
-        {images.map(({ id, name, author }) => (
-          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} isMobile={isMobile} />
+        {images.map(({ id, name, author, sns }) => (
+          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} sns={sns} />
         ))}
       </StyledCarouselSlide>
       {currentIndex !== 0 && !isMobile && (

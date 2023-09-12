@@ -6,7 +6,6 @@ import User from '~/assets/icons/etc/user.svg';
 import type { ProfileData } from '~/@types/api.types';
 
 import ProfileImage from '~/components/@common/ProfileImage';
-import useUser from '~/hooks/server/useUser';
 
 interface InfoButtonProps {
   isShow?: boolean;
@@ -14,12 +13,7 @@ interface InfoButtonProps {
   profile: ProfileData;
 }
 
-function InfoButton({ isShow = false }: InfoButtonProps) {
-  const { getProfile } = useUser();
-  const { data, isSuccess } = useQuery<ProfileData>({
-    queryKey: ['profile'],
-    queryFn: () => getProfile(),
-  });
+function InfoButton({ isShow = false, isSuccess, profile }: InfoButtonProps) {
   return (
     <StyledInfoButton isShow={isShow} aria-hidden>
       <Menu />

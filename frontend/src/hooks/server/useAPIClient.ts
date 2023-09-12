@@ -16,7 +16,19 @@ const useAPIClient = () => {
     [baseURL],
   );
 
-  return { apiClient };
+  const apiUserClient = useMemo(
+    () =>
+      axios.create({
+        baseURL,
+        headers: {
+          'Content-type': 'application/json',
+        },
+        withCredentials: true,
+      }),
+    [baseURL],
+  );
+
+  return { apiClient, apiUserClient };
 };
 
 export default useAPIClient;

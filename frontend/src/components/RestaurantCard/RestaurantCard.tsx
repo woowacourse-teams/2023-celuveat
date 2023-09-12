@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -23,10 +24,12 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, closeModal, openModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
+  const navigate = useNavigate();
+
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
   const onClick = () => {
-    window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+    navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
   };
 
   const toggle: MouseEventHandler<HTMLButtonElement> = e => {
@@ -115,6 +118,7 @@ const StyledAddress = styled.span`
   ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.md};
+  line-height: 20px;
 `;
 
 const StyledCategory = styled.span`

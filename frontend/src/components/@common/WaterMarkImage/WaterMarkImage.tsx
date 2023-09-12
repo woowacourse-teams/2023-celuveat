@@ -1,19 +1,23 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 
 interface WaterMarkImageProps {
   waterMark: string;
   imageUrl?: string;
   type: 'list' | 'map';
-  isMobile?: boolean;
+  sns?: string;
 }
 
-function WaterMarkImage({ waterMark, imageUrl, type, isMobile }: WaterMarkImageProps) {
+function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
+  const onClickWaterMark = () => {
+    if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
+    if (sns === 'YOUTUBE') window.open(`https://www.youtube.com/${waterMark}`, '_blank');
+  };
   return (
     <StyledWaterMarkImage type={type}>
       <StyledImage src={`https://www.celuveat.com/images-data/${imageUrl}`} alt="음식점" loading="lazy" />
       {waterMark && (
-        <StyledWaterMark aria-hidden="true" isMobile={isMobile}>
+        <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
           {waterMark}
         </StyledWaterMark>
       )}
@@ -45,7 +49,7 @@ const StyledImage = styled.img`
   height: 100%;
 `;
 
-const StyledWaterMark = styled.div<{ isMobile: boolean }>`
+const StyledWaterMark = styled.div`
   position: absolute;
   top: 12px;
   left: 12px;
@@ -57,17 +61,4 @@ const StyledWaterMark = styled.div<{ isMobile: boolean }>`
 
   color: var(--black);
   font-size: ${FONT_SIZE.sm};
-
-  ${({ isMobile }) =>
-    isMobile &&
-    css`
-      top: 6px;
-      left: 6px;
-
-      padding: 0.2rem 0.4rem;
-
-      border-radius: ${BORDER_RADIUS.xs};
-
-      font-size: ${FONT_SIZE.xs};
-    `}
 `;

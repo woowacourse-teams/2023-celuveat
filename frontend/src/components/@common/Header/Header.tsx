@@ -17,7 +17,6 @@ function Header() {
   const navigator = useNavigate();
   const { id, celebId } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
   const { getLogout } = useUser();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
@@ -45,7 +44,7 @@ function Header() {
           </Wrapper>
         )}
 
-        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         <ModalContent title="로그인 및 회원 가입">
