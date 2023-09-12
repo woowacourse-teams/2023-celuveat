@@ -122,7 +122,7 @@ function RestaurantDetail() {
                 <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">
                   <div>
                     <div>
-                      <h4>셀럽, {celebs[0].name} 이(가) 다녀간 맛집</h4>
+                      <h4>{celebs[0].name}</h4>
                       <div>
                         <div>{celebs[0].youtubeChannelName}</div>
                         <div>|</div>
@@ -130,7 +130,7 @@ function RestaurantDetail() {
                           type="button"
                           onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}
                         >
-                          <Youtube width={18} />
+                          <Youtube width={28} />
                           <div>유튜브 바로가기</div>
                         </button>
                       </div>
@@ -139,17 +139,17 @@ function RestaurantDetail() {
                   </div>
                   <div>
                     <div>
-                      <div>주소 : {roadAddress}</div>
+                      주소 : {roadAddress}
                       <button aria-label="주소 복사" type="button" onClick={copyClipBoard(roadAddress)}>
                         <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
+                        복사
                       </button>
                     </div>
                     <div>
-                      <div>전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}</div>
+                      전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}
                       <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
                         <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
+                        복사
                       </button>
                     </div>
                     <div>카테고리 : {category}</div>
@@ -286,9 +286,8 @@ const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
     isMobile
       ? css`
           position: sticky;
-          top: 60px;
 
-          margin: 0 1.2rem 20rem;
+          margin: 0 1.2rem 2rem;
         `
       : css`
           max-width: 1240px;
@@ -383,17 +382,19 @@ const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
     border-bottom: 1px solid var(--gray-2);
 
     & > div {
-      display: flex;
-      align-items: center;
-      gap: 0 1.2rem;
+      display: inline-block;
+
+      line-height: 20px;
 
       & > button {
-        display: flex;
-        align-items: center;
-        gap: 0 0.4rem;
-
         border: none;
         background: none;
+
+        color: #60bf48;
+
+        vertical-align: -1px;
+
+        text-align: start;
       }
     }
   }
@@ -567,4 +568,8 @@ const StyledRestaurantCardContainer = styled.div`
   border-radius: 12px;
 
   box-shadow: var(--map-shadow);
+`;
+
+const StyledAddress = styled.div`
+  display: flex;
 `;
