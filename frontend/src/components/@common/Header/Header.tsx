@@ -6,11 +6,9 @@ import Logo from '~/assets/icons/logo.svg';
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
-import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 
 import useBooleanState from '~/hooks/useBooleanState';
 import SearchBar from '~/components/SearchBar';
-import { isLogin } from '~/utils/cookies';
 import { ProfileData } from '~/@types/api.types';
 import useUser from '~/hooks/server/useUser';
 
