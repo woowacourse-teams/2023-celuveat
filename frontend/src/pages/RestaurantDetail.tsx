@@ -27,9 +27,9 @@ import ReviewModalProvider from '~/hooks/ReviewModalProvider';
 
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 import useRestaurant from '~/hooks/server/useRestaurant';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import useCeleb from '~/hooks/server/useCeleb';
+import useScrollDirection from '~/hooks/useScrollDirection';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,7 +39,7 @@ function RestaurantDetail() {
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
   const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
-  const { movingDirection } = useTouchMoveDirection(layoutRef);
+  const scrollDirection = useScrollDirection();
   const { getCelebVideo } = useCeleb();
 
   const {
@@ -123,7 +123,7 @@ function RestaurantDetail() {
                 <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">
                   <div>
                     <div>
-                      <h4>셀럽, {celebs[0].name} 이(가) 다녀간 맛집</h4>
+                      <h4>{celebs[0].name}</h4>
                       <div>
                         <div>{celebs[0].youtubeChannelName}</div>
                         <div>|</div>
@@ -131,7 +131,7 @@ function RestaurantDetail() {
                           type="button"
                           onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}
                         >
-                          <Youtube width={18} />
+                          <Youtube width={28} />
                           <div>유튜브 바로가기</div>
                         </button>
                       </div>
@@ -140,17 +140,17 @@ function RestaurantDetail() {
                   </div>
                   <div>
                     <div>
-                      <div>주소 : {roadAddress}</div>
+                      주소 : {roadAddress}
                       <button aria-label="주소 복사" type="button" onClick={copyClipBoard(roadAddress)}>
                         <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
+                        복사
                       </button>
                     </div>
                     <div>
-                      <div>전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}</div>
+                      전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}
                       <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
                         <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
+                        복사
                       </button>
                     </div>
                     <div>카테고리 : {category}</div>
@@ -235,6 +235,7 @@ function RestaurantDetail() {
                     zoom={17}
                     style={{ width: '100%', height: isMobile ? '300px' : '600px' }}
                     markers={[{ lat, lng }]}
+                    gestureHandling="cooperative"
                   />
                 </Wrapper>
               </div>
@@ -254,7 +255,7 @@ function RestaurantDetail() {
         <Footer />
       </>
       {isMobile && isSuccessRestaurantDetail && (
-        <StyledMobileBottomSheet ref={sheetRef} movingDirection={movingDirection}>
+        <StyledMobileBottomSheet ref={sheetRef} movingDirection={scrollDirection.y}>
           <StyledMainLinkContainer isMobile={isMobile}>
             <RestaurantDetailLikeButton
               restaurant={{
@@ -287,9 +288,8 @@ const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
     isMobile
       ? css`
           position: sticky;
-          top: 60px;
 
-          margin: 0 1.2rem 20rem;
+          margin: 0 1.2rem 2rem;
         `
       : css`
           max-width: 1240px;
@@ -384,17 +384,19 @@ const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
     border-bottom: 1px solid var(--gray-2);
 
     & > div {
-      display: flex;
-      align-items: center;
-      gap: 0 1.2rem;
+      display: inline-block;
+
+      line-height: 20px;
 
       & > button {
-        display: flex;
-        align-items: center;
-        gap: 0 0.4rem;
-
         border: none;
         background: none;
+
+        color: #60bf48;
+
+        vertical-align: -1px;
+
+        text-align: start;
       }
     }
   }
@@ -529,10 +531,7 @@ const StyledMapSection = styled.section`
 `;
 
 const StyledMobileBottomSheet = styled.section<{
-  movingDirection: {
-    X: 'none' | 'left' | 'right';
-    Y: 'none' | 'up' | 'down';
-  };
+  movingDirection: string;
 }>`
   position: fixed;
   bottom: 0;
@@ -542,7 +541,7 @@ const StyledMobileBottomSheet = styled.section<{
   width: 100%;
 
   transition: transform 0.3s ease-in-out;
-  transform: ${({ movingDirection }) => (movingDirection.Y === 'up' ? 'translateY(100%)' : 'translateY(0)')};
+  transform: ${({ movingDirection }) => (movingDirection === 'up' ? 'translateY(100%)' : 'translateY(0)')};
 `;
 
 const StyledButton = styled.button`

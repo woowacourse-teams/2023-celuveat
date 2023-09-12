@@ -2,34 +2,34 @@ import { Oauth } from '~/@types/oauth.types';
 import useAPIClient from './useAPIClient';
 
 const useUser = () => {
-  const { apiClient } = useAPIClient();
+  const { apiUserClient } = useAPIClient();
 
   const getAccessToken = async (type: Oauth, code: string) => {
-    const response = await apiClient.get(`/oauth/login/${type}?code=${code}`);
+    const response = await apiUserClient.get(`/oauth/login/${type}?code=${code}`);
     return response.data;
   };
 
   const getLogout = async (type: Oauth) => {
-    const response = await apiClient.get(`/oauth/logout/${type}`);
+    const response = await apiUserClient.get(`/oauth/logout/${type}`);
     return response.data;
   };
 
   const getProfile = async () => {
-    const response = await apiClient.get('/members/my');
+    const response = await apiUserClient.get('/members/my');
     return response.data;
   };
 
   const getRestaurantWishList = async () => {
-    const response = await apiClient.get('/restaurants/like');
+    const response = await apiUserClient.get('/restaurants/like');
     return response.data;
   };
 
   const postRestaurantLike = async (restaurantId: number) => {
-    await apiClient.post(`/restaurants/${restaurantId}/like`);
+    await apiUserClient.post(`/restaurants/${restaurantId}/like`);
   };
 
   const deleteUserData = async (type: Oauth) => {
-    const response = await apiClient.delete(`/oauth/withdraw/${type}`);
+    const response = await apiUserClient.delete(`/oauth/withdraw/${type}`);
     return response.data;
   };
 

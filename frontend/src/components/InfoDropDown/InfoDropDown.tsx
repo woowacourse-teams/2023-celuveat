@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { ProfileData } from '~/@types/api.types';
-import { getProfile } from '~/api/oauth';
 
 import InfoButton from '~/components/@common/InfoButton';
 import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
 import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
+import useUser from '~/hooks/server/useUser';
 import useBooleanState from '~/hooks/useBooleanState';
 
 interface DropDownProps {
@@ -16,6 +16,7 @@ interface DropDownProps {
 
 function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps) {
   const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
+  const { getProfile } = useUser();
 
   const { data, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
