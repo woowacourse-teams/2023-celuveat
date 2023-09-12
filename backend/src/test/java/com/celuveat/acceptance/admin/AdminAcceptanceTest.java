@@ -60,7 +60,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
         void 사진_이름에_두_장_이상을_입력할_수_있다() {
             // given
             셀럽_저장(셀럽("도기"));
-            String 입력_데이터 = 데이터_입력_생성("도기", "test1.jpeg, test2.jpeg");
+            String 입력_데이터 = 데이터_입력_생성("도기", "test1.jpeg, test2.jpeg", "insta1, insta2");
 
             // when
             데이터_저장_요청(입력_데이터);

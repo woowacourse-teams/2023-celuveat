@@ -1,6 +1,7 @@
 package com.celuveat.admin.command.application;
 
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
+import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
 
 import com.celuveat.admin.exception.AdminException;
@@ -51,10 +52,15 @@ public class AdminService {
     }
 
     private List<RestaurantImage> toRestaurantImages(SaveDataRequest request, Restaurant restaurant) {
-        List<RestaurantImage> images = new ArrayList<>();
         String[] imageNames = request.imageName().split(",");
-        for (String imageName : imageNames) {
-            RestaurantImage restaurantImage = request.toRestaurantImage(imageName.strip(), restaurant);
+        String[] instagramNames = request.instagramName().split(",");
+        if (imageNames.length != instagramNames.length) {
+            throw new AdminException(MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME);
+        }
+
+        List<RestaurantImage> images = new ArrayList<>();
+        for (int i = 0; i < imageNames.length; i++) {
+            RestaurantImage restaurantImage = request.toRestaurantImage(imageNames[i].strip(), instagramNames[i].strip(), restaurant);
             images.add(restaurantImage);
         }
         return images;
