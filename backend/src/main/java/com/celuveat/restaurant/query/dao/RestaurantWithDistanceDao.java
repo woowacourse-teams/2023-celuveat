@@ -6,6 +6,7 @@ import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.restaurant.command.domain.QRestaurantLike.restaurantLike;
 import static com.celuveat.video.command.domain.QVideo.video;
 import static com.querydsl.core.types.Order.DESC;
+import static com.querydsl.jpa.JPAExpressions.select;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
@@ -19,10 +20,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
+import jakarta.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,7 @@ public class RestaurantWithDistanceDao {
     public Page<RestaurantWithDistance> search(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
+            @Nullable Long memberId,
             Pageable pageable
     ) {
         double middleLat = calculateMiddle(locationSearchCond.lowLatitude, locationSearchCond.highLatitude);
@@ -71,7 +73,16 @@ public class RestaurantWithDistanceDao {
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
-                        distance(middleLat, middleLng).as(distanceColumn)
+                        distance(middleLat, middleLng).as(distanceColumn),
+                        (select(restaurantLike.count())
+                                .from(restaurantLike)
+                                .where(restaurantLike.restaurant.id.eq(restaurant.id))
+                                .groupBy(restaurant.id)),
+                        (select(isLike(memberId))
+                                .from(restaurantLike)
+                                .where(restaurantLike.restaurant.id.eq(restaurant.id)
+                                        .and(restaurantLikeMemberIdEqual(memberId)))
+                                .groupBy(restaurantLike.restaurant.id))
                 ))
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -138,8 +149,7 @@ public class RestaurantWithDistanceDao {
                 .map(RestaurantSortType::from)
                 .orElse(RestaurantSortType.DISTANCE);
         if (sortType == RestaurantSortType.LIKE_COUNT) {
-            SubQueryExpression<Long> orderByLikeDesc = JPAExpressions
-                    .select(restaurantLike.count())
+            SubQueryExpression<Long> orderByLikeDesc = select(restaurantLike.count())
                     .from(restaurantLike)
                     .where(restaurantLike.restaurant.eq(restaurant));
             return new OrderSpecifier<>(DESC, orderByLikeDesc);
@@ -150,6 +160,7 @@ public class RestaurantWithDistanceDao {
     public Page<RestaurantWithDistance> searchNearBy(
             Long restaurantId,
             int distance,
+            Long memberId,
             Pageable pageable
     ) {
         Restaurant standard = restaurantQueryDaoSupport.getById(restaurantId);
@@ -163,7 +174,11 @@ public class RestaurantWithDistanceDao {
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
-                        distance(standard.latitude(), standard.longitude()).as(RestaurantWithDistanceDao.distanceColumn)
+                        distance(standard.latitude(), standard.longitude()).as(RestaurantWithDistanceDao.distanceColumn),
+                        select(restaurantLike.count()).from(restaurantLike)
+                                .where(restaurantLike.restaurant.id.eq(restaurant.id)).groupBy(restaurant.id),
+                        select(isLike(memberId)).from(restaurantLike).where(restaurantLike.restaurant.id.eq(restaurant.id)
+                                .and(restaurantLikeMemberIdEqual(memberId)))
                 ))
                 .from(restaurant)
                 .where(
@@ -182,6 +197,20 @@ public class RestaurantWithDistanceDao {
                 );
 
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression restaurantLikeMemberIdEqual(Long memberId) {
+        if (memberId == null) {
+            return null;
+        }
+        return restaurantLike.member.id.eq(memberId);
+    }
+
+    private BooleanExpression isLike(Long memberId) {
+        if (memberId == null) {
+            return Expressions.asBoolean(false);
+        }
+        return restaurantLike.count().gt(0);
     }
 
     private BooleanExpression distanceMinOrEqual(Restaurant standard, int distance) {

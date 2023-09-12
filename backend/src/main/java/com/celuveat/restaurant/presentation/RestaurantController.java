@@ -7,15 +7,15 @@ import com.celuveat.common.auth.Auth;
 import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.restaurant.command.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.command.application.RestaurantLikeService;
+import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
-import com.celuveat.restaurant.query.RestaurantQueryFacade;
 import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -38,8 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
+    private final RestaurantService restaurantService;
     private final RestaurantLikeService restaurantLikeService;
-    private final RestaurantQueryFacade restaurantQueryFacade;
     private final RestaurantQueryService restaurantQueryService;
     private final RestaurantCorrectionService restaurantCorrectionService;
 
@@ -49,9 +49,10 @@ public class RestaurantController {
             @RequestParam Long celebId,
             @LooseAuth Long memberId
     ) {
-        RestaurantDetailResponse result = restaurantQueryFacade.findRestaurantDetailById(
+        RestaurantDetailResponse result = restaurantQueryService.findRestaurantDetailById(
                 restaurantId, celebId, memberId
         );
+        restaurantService.increaseViewCount(restaurantId);
         return ResponseEntity.ok(result);
     }
 
@@ -64,7 +65,7 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantSimpleResponse> result = restaurantQueryFacade.findAll(
+        Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
                 restaurantSearchCond, locationSearchCond, pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
