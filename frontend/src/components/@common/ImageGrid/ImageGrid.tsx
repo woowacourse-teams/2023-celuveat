@@ -3,7 +3,7 @@ import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
 
 interface ImageGridProps {
-  images: { waterMark: string; url: string }[];
+  images: { waterMark: string; url: string; sns: string }[];
 }
 
 function ImageGrid({ images }: ImageGridProps) {
@@ -12,7 +12,7 @@ function ImageGrid({ images }: ImageGridProps) {
     const imagesLength = additionalImages.length;
 
     if (imagesLength < 4) {
-      const noImages = Array.from({ length: 4 - imagesLength }, () => ({ waterMark: '', url: '' }));
+      const noImages = Array.from({ length: 4 - imagesLength }, () => ({ waterMark: '', url: '', sns: '' }));
       return [...additionalImages, ...noImages];
     }
 
@@ -22,12 +22,12 @@ function ImageGrid({ images }: ImageGridProps) {
   return (
     <StyledImageGridContainer tabIndex={0} aria-label="음식점 사진">
       <StyledMainImage>
-        <WaterMarkImage type="list" imageUrl={images[0].url} waterMark={images[0].waterMark} />
+        <WaterMarkImage type="list" imageUrl={images[0].url} waterMark={images[0].waterMark} sns={images[0].sns} />
       </StyledMainImage>
       <StyledAdditionalImage>
-        {makeAdditionalImage().map(({ url, waterMark }) =>
+        {makeAdditionalImage().map(({ url, waterMark, sns }) =>
           url ? (
-            <WaterMarkImage type="list" imageUrl={url} waterMark={waterMark} />
+            <WaterMarkImage type="list" imageUrl={url} waterMark={waterMark} sns={sns} />
           ) : (
             <StyledNoImage>🥺사진이 더이상 없어요🥺</StyledNoImage>
           ),
