@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useQueryClient } from '@tanstack/react-query';
 import Logo from '~/assets/icons/logo.svg';
@@ -17,7 +17,7 @@ import useUser from '~/hooks/server/useUser';
 function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
-  const { id, celebId } = useParams();
+  const { pathname } = useLocation();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
   const { getLogout } = useUser();
@@ -41,7 +41,7 @@ function Header() {
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(id || celebId) && (
+        {pathname === '/' && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
