@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
@@ -21,8 +21,6 @@ function WishListPage() {
     queryFn: () => getProfile(),
     staleTime: Infinity,
   });
-
-  console.log(isSuccess);
 
   useEffect(() => {
     if (!isSuccess) {
