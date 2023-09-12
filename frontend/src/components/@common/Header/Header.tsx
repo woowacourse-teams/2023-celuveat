@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useQueryClient } from '@tanstack/react-query';
 import Logo from '~/assets/icons/logo.svg';
@@ -15,9 +15,8 @@ import useUser from '~/hooks/server/useUser';
 function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
-  const { pathname } = useLocation();
+  const { id, celebId } = useParams();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const options = isLogin() ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
   const { getLogout } = useUser();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,13 +38,13 @@ function Header() {
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {pathname === '/' && (
+        {!(id || celebId) && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
         )}
 
-        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
         <ModalContent title="로그인 및 회원 가입">
