@@ -6,16 +6,16 @@ interface BaseURLState {
 
 interface BaseURLAction {
   setMSW: VoidFunction;
-  setOrigin: VoidFunction;
+  setDev: VoidFunction;
+  setProd: VoidFunction;
 }
 
-const { BASE_URL } = process.env;
-
 const useBaseURLState = create<BaseURLState & BaseURLAction>(set => ({
-  baseURL: BASE_URL,
+  baseURL: process.env.BASE_URL_DEV,
 
   setMSW: () => set({ baseURL: '/' }),
-  setOrigin: () => set({ baseURL: BASE_URL }),
+  setDev: () => set({ baseURL: process.env.BASE_URL_DEV }),
+  setProd: () => set({ baseURL: process.env.BASE_URL_PROD }),
 }));
 
 export default useBaseURLState;

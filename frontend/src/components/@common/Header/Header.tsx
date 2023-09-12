@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled } from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
@@ -46,6 +45,7 @@ function Header() {
             <SearchBar />
           </Wrapper>
         )}
+
         <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
       <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>

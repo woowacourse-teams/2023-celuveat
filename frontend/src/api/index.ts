@@ -17,7 +17,7 @@ export interface GetRestaurantDetailQueryParams {
 }
 
 export const apiClient = axios.create({
-  baseURL: `${process.env.BASE_URL}`,
+  baseURL: `${process.env.BASE_URL_DEV}`,
   headers: {
     'Content-type': 'application/json',
   },

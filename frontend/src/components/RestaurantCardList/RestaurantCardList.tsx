@@ -12,6 +12,7 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
 import useRestaurant from '~/hooks/server/useRestaurant';
+import useBaseURLState from '~/hooks/store/useBaseURLState';
 
 function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
@@ -21,9 +22,10 @@ function RestaurantCardList() {
     shallow,
   );
   const { getRestaurants } = useRestaurant();
+  const { baseURL } = useBaseURLState();
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage],
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL],
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
   });
 
