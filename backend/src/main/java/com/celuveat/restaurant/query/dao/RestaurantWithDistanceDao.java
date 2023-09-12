@@ -181,7 +181,7 @@ public class RestaurantWithDistanceDao {
                 .where(
                         distanceMinOrEqual(standard, distance),
                         restaurantIdNotEqual(restaurantId)
-                ).orderBy(RestaurantWithDistanceDao.distanceColumn.asc(), restaurant.id.asc())
+                ).orderBy(RestaurantWithDistanceDao.distanceColumn.asc(), restaurant.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
