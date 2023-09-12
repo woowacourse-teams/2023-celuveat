@@ -30,7 +30,6 @@ import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
-import { isLogin } from '~/utils/cookies';
 import useCeleb from '~/hooks/server/useCeleb';
 
 function MobileMainPage() {
@@ -40,8 +39,14 @@ function MobileMainPage() {
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
+
   const { getCelebs } = useCeleb();
-  const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
+
+  const { data: celebOptions, isSuccess } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: () => getCelebs(),
+    suspense: true,
+  });
   const [filterName, setFilterName] = useState('celeb');
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
@@ -125,7 +130,7 @@ function MobileMainPage() {
               <NavItem label="필터" icon={<CelebIcon width={24} />} />
             )}
           </StyledFilterButton>
-          {!isLogin() && (
+          {!isSuccess && (
             <StyledNavBarButton
               type="button"
               onClick={() => {

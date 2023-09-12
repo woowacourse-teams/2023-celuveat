@@ -5,5 +5,6 @@ import { WishListPageSuccessHandler, WishListPageErrorHandler } from '~/mocks/wi
 
 const successHandler = [...DetailPageSuccessHandler, ...MainPageSuccessHandler, ...WishListPageSuccessHandler];
 const errorHandler = [...DetailPageErrorHandler, ...MainPageErrorHandler, ...WishListPageErrorHandler];
+const errorHandler1 = [...MainPageSuccessHandler, ...DetailPageErrorHandler, ...WishListPageErrorHandler];
 
-export const worker = setupWorker(...successHandler);
+export const worker = setupWorker(...errorHandler1);

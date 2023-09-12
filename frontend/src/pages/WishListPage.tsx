@@ -1,21 +1,31 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { ProfileData } from '~/@types/api.types';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import RestaurantWishList from '~/components/RestaurantWishList';
+import useUser from '~/hooks/server/useUser';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 
-import { isLogin } from '~/utils/cookies';
-
 function WishListPage() {
   const navigator = useNavigate();
+  const { getProfile } = useUser();
   const { isMobile } = useMediaQuery();
 
+  const { isSuccess } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+    staleTime: Infinity,
+  });
+
+  console.log(isSuccess);
+
   useEffect(() => {
-    if (!isLogin()) {
+    if (!isSuccess) {
       navigator('/signUp');
     }
   }, []);
