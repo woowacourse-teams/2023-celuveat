@@ -1,22 +1,29 @@
 package com.celuveat.restaurant.query;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
+import static com.celuveat.video.fixture.VideoFixture.영상;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
+import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
@@ -26,6 +33,7 @@ import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.video.command.domain.VideoRepository;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +76,16 @@ class RestaurantQueryServiceTest {
 
     @Autowired
     private RestaurantQueryService restaurantQueryService;
+
+
+    @Autowired
+    private CelebRepository celebRepository;
+
+    @Autowired
+    private RestaurantImageRepository restaurantImageRepository;
+
+    @Autowired
+    private VideoRepository videoRepository;
 
     @BeforeEach
     void setUp() {
@@ -526,7 +544,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), null);
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), 1L, null);
 
         // then
         assertThat(result)
@@ -547,7 +565,7 @@ class RestaurantQueryServiceTest {
 
         // when
         RestaurantDetailResponse result =
-                restaurantQueryService.findRestaurantDetailById(restaurant.id(), oauthMember.id());
+                restaurantQueryService.findRestaurantDetailById(restaurant.id(), 1L, oauthMember.id());
 
         // then
         assertThat(result)
@@ -625,6 +643,35 @@ class RestaurantQueryServiceTest {
                 .allMatch(isLiked -> isLiked);
     }
 
+    @Test
+    void 셀럽ID로_음식점_상세_조회_정렬_테스트() {
+        // given
+        Restaurant 로이스2호점 = restaurantRepository.save(음식점("로이스2호점"));
+        List<Celeb> celebs = celebRepository.saveAll(List.of(셀럽("로이스2"), 셀럽("말랑2")));
+        restaurantImageRepository.saveAll(List.of(
+                        음식점사진("이미지1", 로이스2호점, "로이스2"),
+                        음식점사진("이미지2", 로이스2호점, "말랑2")
+                )
+        );
+        videoRepository.saveAll(List.of(
+                        영상("youtube1.com", 로이스2호점, celebs.get(0)),
+                        영상("youtube2.com", 로이스2호점, celebs.get(1))
+                )
+        );
+        Celeb targetCeleb = celebs.get(1);
+
+        // when
+        RestaurantDetailResponse result =
+                restaurantQueryService.findRestaurantDetailById(로이스2호점.id(), targetCeleb.id(), null);
+
+        // then
+        assertThat(result.celebs().get(0))
+                .usingRecursiveComparison()
+                .isEqualTo(targetCeleb);
+        assertThat(result.images().get(0).author())
+                .isEqualTo(targetCeleb.name());
+    }
+
     @Nested
     class 좋아요수_테스트 {
 
@@ -683,28 +730,6 @@ class RestaurantQueryServiceTest {
                     음식점_좋아요(로이스1호점, 말랑)
             ));
         }
-
-//        @Test
-//        void 비회원으로_음식점을_조회하면_음식점의_좋아요여부에_모두_거짓이_반환되고_모두의_좋아요수가_함께_반환된다() {
-//            // given
-//            seed.set(0, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse1, 2));
-//            seed.set(2, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse2, 2));
-//            seed.set(3, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse3, 1));
-//            seed.set(4, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse4, 3));
-//            seed.set(8, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse5, 3));
-//            seed.set(9, increaseLikeCount(restaurantWithCelebsAndImagesSimpleResponse6, 1));
-//
-//            // when
-//            Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
-//                    new RestaurantSearchCond(null, null, null),
-//                    전체영역_검색_범위,
-//                    PageRequest.of(0, 100),
-//                    null
-//            );
-//
-//            // then
-//            결과를_검증한다(result, seed);
-//        }
 
         private void 결과를_검증한다(Page<RestaurantSimpleResponse> result,
                               List<RestaurantSimpleResponse> expected) {
