@@ -56,7 +56,6 @@ function MobileMainPage() {
     queryKey: ['profile'],
     queryFn: () => getProfile(),
   });
-
   const [filterName, setFilterName] = useState('celeb');
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
