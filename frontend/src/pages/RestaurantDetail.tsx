@@ -585,8 +585,20 @@ const StyledMobileHeader = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
   width: 100%;
   height: 44px;
 
   padding: 0.2rem 0.8rem;
+
+  background-color: var(--white);
+  box-shadow: var(--map-shadow);
+
+  & > div:last-child {
+    width: 32px;
+  }
 `;
