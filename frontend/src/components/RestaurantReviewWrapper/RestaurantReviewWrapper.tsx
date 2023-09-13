@@ -7,7 +7,7 @@ import LoginModalContent from '~/components/LoginModalContent';
 import ReviewForm from '../ReviewForm/ReviewForm';
 
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
+import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import { FONT_SIZE } from '~/styles/common';
 import { isMoreThan } from '~/utils/compare';
 import { REVIEW_SHOW_COUNT } from '~/constants/options';

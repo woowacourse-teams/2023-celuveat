@@ -10,7 +10,7 @@ import useAPIClient from './useAPIClient';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
-  const { apiClient } = useAPIClient();
+  const { apiClient, apiUserClient } = useAPIClient();
   const { onFailure } = useToastState(
     state => ({
       onFailure: state.onFailure,
@@ -35,6 +35,21 @@ const useRestaurantReview = () => {
     return response.data;
   };
 
+  const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
+    const response = await apiUserClient.post(`/reviews`, body);
+    return response;
+  };
+
+  const deleteRestaurantReview = async (reviewId: number) => {
+    const response = await apiUserClient.delete(`/reviews/${reviewId}`);
+    return response;
+  };
+
+  const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
+    const response = await apiUserClient.patch(`/reviews/${reviewId}`, body);
+    return response;
+  };
+
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({
     queryKey: ['restaurantReview', restaurantId, apiClient],
     queryFn: () => getRestaurantReview(restaurantId),
@@ -56,21 +71,6 @@ const useRestaurantReview = () => {
     mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
     onError: errorHandler,
   });
-
-  const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
-    const response = await apiClient.post(`/reviews`, body);
-    return response;
-  };
-
-  const deleteRestaurantReview = async (reviewId: number) => {
-    const response = await apiClient.delete(`/reviews/${reviewId}`);
-    return response;
-  };
-
-  const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
-    const response = await apiClient.patch(`/reviews/${reviewId}`, body);
-    return response;
-  };
 
   return {
     restaurantReviewsData,

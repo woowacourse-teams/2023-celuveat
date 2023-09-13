@@ -14,22 +14,22 @@ export interface GetRestaurantsQueryParams {
 }
 
 const useRestaurant = () => {
-  const { apiClient } = useAPIClient();
+  const { apiClient, apiUserClient } = useAPIClient();
 
   const getRestaurants = async (queryParams: GetRestaurantsQueryParams) => {
     const queryString = getQueryString(queryParams);
-    const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+    const response = await apiUserClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
     return response.data;
   };
 
   const getRestaurantDetail = async (restaurantId: string, celebId: string) => {
-    const response = await apiClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
+    const response = await apiUserClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
     return response.data;
   };
 
   const getNearByRestaurant = async (restaurantId: string) => {
-    const response = await apiClient.get(`/restaurants/${restaurantId}/nearby`);
+    const response = await apiUserClient.get(`/restaurants/${restaurantId}/nearby`);
     return response.data;
   };
 

@@ -30,8 +30,9 @@ import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
-import { isLogin } from '~/utils/cookies';
 import useCeleb from '~/hooks/server/useCeleb';
+import useUser from '~/hooks/server/useUser';
+import { ProfileData } from '~/@types/api.types';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
@@ -40,8 +41,21 @@ function MobileMainPage() {
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
+
   const { getCelebs } = useCeleb();
-  const { data: celebOptions } = useQuery({ queryKey: ['celebOptions'], queryFn: () => getCelebs(), suspense: true });
+  const { getProfile } = useUser();
+  const { getLogout } = useUser();
+
+  const { data: celebOptions } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: () => getCelebs(),
+    suspense: true,
+  });
+
+  const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
   const [filterName, setFilterName] = useState('celeb');
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
@@ -70,6 +84,26 @@ function MobileMainPage() {
     setCelebId(currentCelebId);
     setCurrentPage(0);
   };
+
+  const clickLogin = () => {
+    navigator('/signUp');
+  };
+
+  const clickLogout = () => {
+    getLogout(profile.oauthServer);
+    window.location.href = '/';
+  };
+
+  const clickLoginNavItem = () => {
+    if (!isLogin) {
+      clickLogin();
+      return;
+    }
+
+    clickLogout();
+  };
+
+  const loginNavItemText = isLogin ? '로그아웃' : '로그인';
 
   useScrollBlock(refs);
 
@@ -125,16 +159,19 @@ function MobileMainPage() {
               <NavItem label="필터" icon={<CelebIcon width={24} />} />
             )}
           </StyledFilterButton>
-          {!isLogin() && (
-            <StyledNavBarButton
-              type="button"
-              onClick={() => {
-                navigator('/signUp');
-              }}
-            >
-              <NavItem label="로그인" icon={<UserIcon width={24} />} />
-            </StyledNavBarButton>
-          )}
+
+          <StyledNavBarButton type="button" onClick={clickLoginNavItem}>
+            <NavItem
+              label={loginNavItemText}
+              icon={
+                isLogin && profile ? (
+                  <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />
+                ) : (
+                  <UserIcon width={24} />
+                )
+              }
+            />
+          </StyledNavBarButton>
         </StyledBottomNavBar>
 
         <StyledMobileLayout isListShowed={isListShowed}>

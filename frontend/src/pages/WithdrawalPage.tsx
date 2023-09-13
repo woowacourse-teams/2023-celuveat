@@ -1,24 +1,14 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import LoginPageUI from '~/components/LoginPageUI';
 import WithdrawalModalContent from '~/components/WithdrawalModalContent';
-
-import { isLogin } from '~/utils/cookies';
+import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 
 function WithdrawalPage() {
-  const navigator = useNavigate();
-
-  useEffect(() => {
-    if (!isLogin()) {
-      navigator('/signUp');
-    }
-  }, []);
-
   return (
-    <LoginPageUI title="회원 탈퇴하기">
-      <WithdrawalModalContent />
-    </LoginPageUI>
+    <LoginErrorHandleComponent>
+      <LoginPageUI title="회원 탈퇴하기">
+        <WithdrawalModalContent />
+      </LoginPageUI>
+    </LoginErrorHandleComponent>
   );
 }
 
