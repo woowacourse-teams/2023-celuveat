@@ -117,7 +117,7 @@ function RestaurantDetail() {
               {isMobile ? (
                 <ImageCarousel type="list" images={images} />
               ) : (
-                <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
+                <ImageGrid images={images.map(({ name: url, author, sns }) => ({ waterMark: author, url, sns }))} />
               )}
               <StyledDetailAndLink isMobile={isMobile}>
                 <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">

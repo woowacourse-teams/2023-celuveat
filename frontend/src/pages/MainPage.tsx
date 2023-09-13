@@ -14,7 +14,12 @@ function MainPage() {
   const { isMobile } = useMediaQuery();
   const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
 
-  if (isMobile) return <MobileMainPage />;
+  if (isMobile)
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <MobileMainPage />
+      </Suspense>
+    );
 
   return (
     <>

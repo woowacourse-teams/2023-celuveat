@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --open --mode development --port 3000",
     "start:prod": "webpack serve --open --mode production --port 3000",
-    "build": "webpack --mode production",
+    "build": "webpack --mode development",
+    "build:prod": "webpack --mode production",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:css": "stylelint './src/**/*.{tsx,ts,jsx,js}'",
     "lint:css:fix": "stylelint './src/**/*.{tsx,ts,jsx,js}' --fix",
