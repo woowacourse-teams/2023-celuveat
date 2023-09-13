@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VideoQueryDaoSupport extends JpaRepository<Video, Long> {
 
+    @EntityGraph(attributePaths = {"celeb"})
     List<Video> findAllByRestaurantIn(List<Restaurant> restaurants);
 
     List<Video> findAllByRestaurant(Restaurant restaurant);
