@@ -92,7 +92,7 @@ function MobileMainPage() {
 
   const clickLogout = () => {
     getLogout(profileData.oauthServer);
-    navigator('/');
+    window.location.href = '/';
   };
 
   const clickLoginNavItem = () => {
