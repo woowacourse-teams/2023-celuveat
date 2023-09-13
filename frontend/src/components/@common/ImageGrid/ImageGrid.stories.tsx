@@ -16,22 +16,27 @@ export const Default: Story = {
       {
         waterMark: '@d0dam',
         url: 'https://random.imagecdn.app/500/500',
+        sns: 'INSTAGRAM',
       },
       {
         waterMark: '@jjj',
         url: 'https://random.imagecdn.app/500/500',
+        sns: 'INSTAGRAM',
       },
       {
         waterMark: '@mallangcow',
         url: 'https://random.imagecdn.app/500/500',
+        sns: 'YOUTUBE',
       },
       {
         waterMark: '@royeee',
         url: 'https://random.imagecdn.app/500/500',
+        sns: 'INSTAGRAM',
       },
       {
         waterMark: '@dogydogy',
         url: 'https://random.imagecdn.app/500/500',
+        sns: 'INSTAGRAM',
       },
     ],
   },

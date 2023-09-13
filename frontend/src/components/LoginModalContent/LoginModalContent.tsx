@@ -13,7 +13,8 @@ function LoginModalContent() {
 export default LoginModalContent;
 
 const StyledLoginModalContent = styled.div`
-  div + div {
-    margin-top: 1.6rem;
-  }
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 1.6rem;
 `;
