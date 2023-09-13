@@ -67,13 +67,15 @@ const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
   ${({ isMobile }) =>
     isMobile
       ? css`
-          grid-template-columns: 1fr 1fr;
-
-          @media screen and (width <= 550px) {
-            grid-template-columns: 1fr;
-          }
+          grid-template-columns: 1fr;
         `
       : css`
+          grid-template-columns: 1fr 1fr 1fr;
+
+          @media screen and (width <= 1240px) {
+            grid-template-columns: 1fr 1fr;
+          }
+
           @media screen and (width <= 743px) {
             grid-template-columns: 1fr;
           }
