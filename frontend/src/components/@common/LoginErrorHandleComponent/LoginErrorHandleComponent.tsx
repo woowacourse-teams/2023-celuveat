@@ -12,16 +12,19 @@ function LoginErrorHandleComponent({ children }: LoginErrorHandleComponentProps)
   const navigator = useNavigate();
   const { getProfile } = useUser();
 
-  const { isSuccess } = useQuery<ProfileData>({
+  const { isLoading, isFetching, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
+    retry: 1,
   });
 
   useEffect(() => {
-    if (!isSuccess) {
+    if (!isFetching && !isSuccess) {
       navigator('/signUp');
     }
-  }, [isSuccess]);
+  }, [isFetching, isSuccess]);
+
+  if (isLoading) return null;
 
   return <main>{children}</main>;
 }
