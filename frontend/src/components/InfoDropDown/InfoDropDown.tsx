@@ -21,7 +21,6 @@ function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps)
   const { data, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
-    staleTime: Infinity,
   });
 
   const options = isSuccess ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
