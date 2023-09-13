@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
 import useBooleanState from '~/hooks/useBooleanState';
@@ -78,7 +78,9 @@ function MobileMainPage() {
       <StyledMobileMainPageContainer>
         <StyledTopNavBar ref={refs[0]}>
           <header>
-            <Logo width={32} />
+            <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
+              <Logo width={32} />
+            </Link>
             <h5>celuveat</h5>
             <div />
           </header>
