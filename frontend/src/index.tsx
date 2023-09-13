@@ -5,9 +5,9 @@ import App from '~/App';
 import GlobalStyles from './styles/GlobalStyles';
 import { worker } from './mocks/browser';
 
-const PROD = process.env.NODE_ENV === 'production';
+const DEV = process.env.NODE_ENV === 'development';
 
-if (!PROD) {
+if (DEV) {
   worker.start();
 }
 
@@ -20,7 +20,7 @@ root.render(
     <GlobalStyles />
     <QueryClientProvider client={queryClient}>
       <App />
-      {!PROD && <ReactQueryDevtools />}
+      {DEV && <ReactQueryDevtools />}
     </QueryClientProvider>
   </>,
 );

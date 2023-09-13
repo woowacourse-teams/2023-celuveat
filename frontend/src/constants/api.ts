@@ -1,9 +1,7 @@
-const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.BASE_URL_PROD : process.env.BASE_URL_DEV;
-
 export const OAUTH_LINK = {
-  google: `${BASE_URL}/oauth/google`,
-  kakao: `${BASE_URL}/oauth/kakao`,
-  naver: `${BASE_URL}/oauth/naver`,
+  google: `${process.env.BASE_URL}oauth/google`,
+  kakao: `${process.env.BASE_URL}oauth/kakao`,
+  naver: `${process.env.BASE_URL}oauth/naver`,
 };
 
 export const OAUTH_BUTTON_MESSAGE = {
