@@ -1,15 +1,17 @@
-const { merge } = require('webpack-merge');
-
-const commonConfig = require('./webpack.common.js');
 const productionConfig = require('./webpack.prod.js');
 const developmentConfig = require('./webpack.dev.js');
+const localConfig = require('./webpack.local.js');
 
 module.exports = (env, args) => {
-  switch (args.mode) {
-    case 'development':
-      return merge(commonConfig, developmentConfig);
-    case 'production':
-      return merge(commonConfig, productionConfig);
+  const { TARGET_ENV } = env;
+
+  switch (TARGET_ENV) {
+    case 'msw':
+      return localConfig;
+    case 'dev':
+      return developmentConfig;
+    case 'prod':
+      return productionConfig;
     default:
       throw new Error('No matching configuration was found!');
   }
