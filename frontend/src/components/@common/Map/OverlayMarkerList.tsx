@@ -26,7 +26,7 @@ function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
   });
 
-  if (isLoading) return <div>asd</div>;
+  if (isLoading) return <div>로딩중입니다...</div>;
 
   return (
     map &&

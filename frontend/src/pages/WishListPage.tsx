@@ -1,26 +1,19 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import styled, { css } from 'styled-components';
 import Logo from '~/assets/icons/logo-icon.svg';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
+import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 import RestaurantWishList from '~/components/RestaurantWishList';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { FONT_SIZE } from '~/styles/common';
 
-import { isLogin } from '~/utils/cookies';
-
 function WishListPage() {
-  const navigator = useNavigate();
   const { isMobile } = useMediaQuery();
-
-  useEffect(() => {
-    if (!isLogin()) {
-      navigator('/signUp');
-    }
-  }, []);
 
   return (
     <StyledWishListPageWrapper>

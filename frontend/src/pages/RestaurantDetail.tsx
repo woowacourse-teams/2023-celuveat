@@ -24,7 +24,7 @@ import Youtube from '~/assets/icons/youtube.svg';
 
 import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import ReviewModalProvider from '~/hooks/ReviewModalProvider';
+import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
 import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
 import useRestaurant from '~/hooks/server/useRestaurant';

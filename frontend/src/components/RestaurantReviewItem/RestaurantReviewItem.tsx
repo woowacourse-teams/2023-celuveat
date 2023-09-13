@@ -8,9 +8,8 @@ import ReviewForm from '~/components/ReviewForm/ReviewForm';
 import DeleteButton from '~/components/ReviewForm/DeleteButton';
 
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
-import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
+import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
-import { isLogin } from '~/utils/cookies';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import Alert from '~/assets/icons/alert.svg';
@@ -24,13 +23,13 @@ interface RestaurantReviewItemProps {
 
 const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(({ review, isInModal }, ref) => {
   const qc = useQueryClient();
-  const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
   const profileData: ProfileData = qc.getQueryData(['profile']);
+  const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
 
   const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
     useReviewModalContext();
 
-  const isUsersReview = profileData?.memberId === review.memberId && isLogin();
+  const isUsersReview = profileData?.memberId === review.memberId && profileData;
 
   return (
     <>
