@@ -1,21 +1,24 @@
 import { styled } from 'styled-components';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useQueryClient } from '@tanstack/react-query';
-import Logo from '~/assets/icons/logo.svg';
+
 import { Modal, ModalContent } from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
+import SearchBar from '~/components/SearchBar';
 
 import useBooleanState from '~/hooks/useBooleanState';
-import SearchBar from '~/components/SearchBar';
-import { ProfileData } from '~/@types/api.types';
 import useUser from '~/hooks/server/useUser';
+
+import Logo from '~/assets/icons/logo.svg';
+
+import { ProfileData } from '~/@types/api.types';
 
 function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
-  const { id, celebId } = useParams();
+  const { pathname } = useLocation();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { getLogout } = useUser();
 
@@ -27,10 +30,11 @@ function Header() {
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
     if (currentOption === '로그아웃') {
       getLogout(profileData.oauthServer);
-
-      window.location.reload();
+      window.location.href = '/';
     }
   };
+
+  const isHome = pathname === '/';
 
   return (
     <>
@@ -38,7 +42,7 @@ function Header() {
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(id || celebId) && (
+        {isHome && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from 'react';
-import useBooleanState from './useBooleanState';
+import useBooleanState from '../useBooleanState';
 
 interface ReviewModalContextState {
   formType: string;
