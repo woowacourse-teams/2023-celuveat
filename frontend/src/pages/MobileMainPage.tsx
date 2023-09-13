@@ -52,7 +52,7 @@ function MobileMainPage() {
     suspense: true,
   });
 
-  const { data: profileData, isSuccess: isLogin } = useQuery<ProfileData>({
+  const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
   });
@@ -91,7 +91,7 @@ function MobileMainPage() {
   };
 
   const clickLogout = () => {
-    getLogout(profileData.oauthServer);
+    getLogout(profile.oauthServer);
     window.location.href = '/';
   };
 
@@ -162,7 +162,16 @@ function MobileMainPage() {
           </StyledFilterButton>
 
           <StyledNavBarButton type="button" onClick={clickLoginNavItem}>
-            <NavItem label={loginNavItemText} icon={<UserIcon width={24} />} />
+            <NavItem
+              label={loginNavItemText}
+              icon={
+                isLogin && profile ? (
+                  <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />
+                ) : (
+                  <UserIcon width={24} />
+                )
+              }
+            />
           </StyledNavBarButton>
         </StyledBottomNavBar>
 
