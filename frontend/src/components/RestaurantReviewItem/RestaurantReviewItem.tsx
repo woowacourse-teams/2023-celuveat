@@ -8,7 +8,7 @@ import ReviewForm from '~/components/ReviewForm/ReviewForm';
 import DeleteButton from '~/components/ReviewForm/DeleteButton';
 
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
-import { useReviewModalContext } from '~/hooks/ReviewModalProvider';
+import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
