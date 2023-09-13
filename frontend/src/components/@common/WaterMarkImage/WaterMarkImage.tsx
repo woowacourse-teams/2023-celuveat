@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 
@@ -5,14 +6,17 @@ interface WaterMarkImageProps {
   waterMark: string;
   imageUrl?: string;
   type: 'list' | 'map';
-  sns?: string;
+  sns: string;
 }
 
 function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
-  const onClickWaterMark = () => {
+  const onClickWaterMark = (e: MouseEvent) => {
+    e.stopPropagation();
+
     if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
     if (sns === 'YOUTUBE') window.open(`https://www.youtube.com/${waterMark}`, '_blank');
   };
+
   return (
     <StyledWaterMarkImage type={type}>
       <StyledImage src={`https://www.celuveat.com/images-data/${imageUrl}`} alt="음식점" loading="lazy" />

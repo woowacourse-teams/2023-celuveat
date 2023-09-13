@@ -14,16 +14,16 @@ interface OverlayMarkerListProps {
 }
 
 function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
-  const [boundary, celebId, currentPage, restaurantCategory] = useRestaurantsQueryStringState(
-    state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory],
+  const [boundary, celebId, currentPage, restaurantCategory, sort] = useRestaurantsQueryStringState(
+    state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.sort],
     shallow,
   );
   const { getRestaurants } = useRestaurant();
   const { baseURL } = useBaseURLState();
 
   const { data, isLoading } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL],
-    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage }),
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL, sort],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
   });
 
   if (isLoading) return <div>asd</div>;

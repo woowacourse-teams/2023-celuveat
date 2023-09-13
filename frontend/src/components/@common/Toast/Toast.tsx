@@ -16,12 +16,11 @@ function Toast() {
     state => [state.text, state.isSuccess, state.image, state.isOpen, state.open, state.close],
     shallow,
   );
-
   return (
     <Modal open={open} close={close} isOpen={isOpen}>
       {isOpen && (
         <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
-          {image && <StyledToastImg src={`${process.env.BASE_URL}/images-data/${image.url}`} alt={image.alt} />}
+          {image && <StyledToastImg src={`https://www.celuveat.com/images-data/${image.url}`} alt={image.alt} />}
           <StyledToastText>{text}</StyledToastText>
         </StyledToastWrapper>
       )}

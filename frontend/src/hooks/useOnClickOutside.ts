@@ -11,9 +11,17 @@ export default function useOnClickOutside<T extends HTMLElement = HTMLElement>(
       }
       handler(event);
     }
+    function onTouchHandler(event: TouchEvent) {
+      if (!ref?.current || ref?.current.contains(event?.target as Node)) {
+        return;
+      }
+      handler(event);
+    }
     window.addEventListener('click', onClickHandler);
+    window.addEventListener('touchstart', onTouchHandler);
     return () => {
       window.removeEventListener('click', onClickHandler);
+      window.removeEventListener('touchstart', onTouchHandler);
     };
   }, [ref, handler]);
 }

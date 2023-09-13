@@ -1,4 +1,4 @@
-const BASE_URL = `${process.env.BASE_URL}`;
+const BASE_URL = process.env.NODE_ENV === 'production' ? process.env.BASE_URL_PROD : process.env.BASE_URL_DEV;
 
 export const OAUTH_LINK = {
   google: `${BASE_URL}/oauth/google`,
