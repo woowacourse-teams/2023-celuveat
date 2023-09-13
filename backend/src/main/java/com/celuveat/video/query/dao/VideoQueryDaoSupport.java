@@ -11,6 +11,7 @@ public interface VideoQueryDaoSupport extends JpaRepository<Video, Long> {
     @EntityGraph(attributePaths = {"celeb"})
     List<Video> findAllByRestaurantIn(List<Restaurant> restaurants);
 
+    @EntityGraph(attributePaths = {"celeb"})
     List<Video> findAllByRestaurant(Restaurant restaurant);
 
     @EntityGraph(attributePaths = {"celeb", "restaurant"})

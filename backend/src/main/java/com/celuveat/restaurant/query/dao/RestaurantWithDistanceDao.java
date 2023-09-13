@@ -44,16 +44,6 @@ public class RestaurantWithDistanceDao {
     private final JPAQueryFactory query;
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
 
-    private NumberExpression<Double> distance(double latitude, double longitude) {
-        return Expressions.numberTemplate(Double.class,
-                """
-                        6371 * acos(cos(radians({1})) * cos(radians({0}.latitude))
-                        * cos(radians({0}.longitude) - radians({2}))
-                        + sin(radians({1})) * sin(radians({0}.latitude))) * 1000
-                        """,
-                restaurant, latitude, longitude);
-    }
-
     public Page<RestaurantWithDistance> search(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
@@ -96,7 +86,6 @@ public class RestaurantWithDistanceDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
         JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -107,12 +96,28 @@ public class RestaurantWithDistanceDao {
                         restaurantNameLike(restaurantSearchCond.restaurantName),
                         restaurantInArea(locationSearchCond)
                 );
-
         return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
     }
 
     private double calculateMiddle(double x, double y) {
         return (x + y) / 2.0;
+    }
+
+    private NumberExpression<Double> distance(double latitude, double longitude) {
+        return Expressions.numberTemplate(Double.class,
+                """
+                        6371 * acos(cos(radians({1})) * cos(radians({0}.latitude))
+                        * cos(radians({0}.longitude) - radians({2}))
+                        + sin(radians({1})) * sin(radians({0}.latitude))) * 1000
+                        """,
+                restaurant, latitude, longitude);
+    }
+
+    private BooleanExpression isLike(Long memberId) {
+        if (memberId == null) {
+            return Expressions.asBoolean(false);
+        }
+        return restaurantLike.count().gt(0);
     }
 
     private BooleanExpression celebIdEqual(Long celebId) {
@@ -129,6 +134,13 @@ public class RestaurantWithDistanceDao {
         return restaurant.category.eq(category);
     }
 
+    private BooleanExpression restaurantLikeMemberIdEqual(Long memberId) {
+        if (memberId == null) {
+            return null;
+        }
+        return restaurantLike.member.id.eq(memberId);
+    }
+
     private BooleanExpression restaurantNameLike(String restaurantName) {
         if (StringUtils.isBlank(restaurantName)) {
             return null;
@@ -137,7 +149,6 @@ public class RestaurantWithDistanceDao {
     }
 
     private BooleanExpression restaurantInArea(LocationSearchCond locationSearchCond) {
-        // TODO null 처리
         return restaurant.latitude.between(locationSearchCond.lowLatitude, locationSearchCond.highLatitude)
                 .and(restaurant.longitude.between(locationSearchCond.lowLongitude, locationSearchCond.highLongitude));
     }
@@ -190,29 +201,13 @@ public class RestaurantWithDistanceDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
         JPAQuery<Long> countQuery = query.select(restaurant.count())
                 .from(restaurant)
                 .where(
                         distanceMinOrEqual(standard, distance),
                         restaurantIdNotEqual(restaurantId)
                 );
-
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
-    }
-
-    private BooleanExpression restaurantLikeMemberIdEqual(Long memberId) {
-        if (memberId == null) {
-            return null;
-        }
-        return restaurantLike.member.id.eq(memberId);
-    }
-
-    private BooleanExpression isLike(Long memberId) {
-        if (memberId == null) {
-            return Expressions.asBoolean(false);
-        }
-        return restaurantLike.count().gt(0);
     }
 
     private BooleanExpression distanceMinOrEqual(Restaurant standard, int distance) {
