@@ -31,6 +31,8 @@ import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
 import useCeleb from '~/hooks/server/useCeleb';
+import useUser from '~/hooks/server/useUser';
+import { ProfileData } from '~/@types/api.types';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef(), useRef()];
@@ -41,12 +43,19 @@ function MobileMainPage() {
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
 
   const { getCelebs } = useCeleb();
+  const { getProfile } = useUser();
 
-  const { data: celebOptions, isSuccess } = useQuery({
+  const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
     queryFn: () => getCelebs(),
     suspense: true,
   });
+
+  const { isSuccess: isLogin } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
+
   const [filterName, setFilterName] = useState('celeb');
 
   const [category, celebId, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
@@ -130,7 +139,7 @@ function MobileMainPage() {
               <NavItem label="필터" icon={<CelebIcon width={24} />} />
             )}
           </StyledFilterButton>
-          {!isSuccess && (
+          {!isLogin && (
             <StyledNavBarButton
               type="button"
               onClick={() => {
