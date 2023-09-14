@@ -4,10 +4,12 @@ import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.NO
 
 import com.celuveat.restaurant.exception.RestaurantReviewException;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RestaurantReviewRepository extends JpaRepository<RestaurantReview, Long> {
 
+    @EntityGraph(attributePaths = "member")
     List<RestaurantReview> findAllByRestaurantIdOrderByCreatedDateDesc(Long restaurantId);
 
     default RestaurantReview getById(Long id) {
