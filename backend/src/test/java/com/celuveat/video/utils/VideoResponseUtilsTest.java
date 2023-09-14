@@ -16,7 +16,11 @@ class VideoResponseUtilsTest {
             "https://www.youtube.com/watch?v=z3LLrRL1o18 --> z3LLrRL1o18",
             "https://www.youtube.com/watch?v=z7yxl67xe0M --> z7yxl67xe0M",
             "https://www.youtube.com/watch?v=z8qSs69MT3g --> z8qSs69MT3g",
-            "https://www.youtube.com/watch?v=zQVvYfG4ETs&t=39 --> zQVvYfG4ETs"
+            "https://www.youtube.com/watch?v=zQVvYfG4ETs&t=39 --> zQVvYfG4ETs",
+            "https://www.youtube.com/shorts/1_v5kOOJ6xo?t=48 --> 1_v5kOOJ6xo",
+            "https://www.youtube.com/shorts/AqZESPTfnns --> AqZESPTfnns",
+            "https://www.youtube.com/shorts/GFDjAALa7BE?t=41 --> GFDjAALa7BE",
+            "https://www.youtube.com/shorts/oFjx1P7ryeY --> oFjx1P7ryeY"
     }, delimiterString = " --> ")
     void 영상_키_값을_추출_테스트(String videoUrl, String expectedVideoKey) {
         String extracted = VideoResponseUtils.extractVideoKey(videoUrl);
