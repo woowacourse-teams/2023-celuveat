@@ -30,7 +30,7 @@ function Header() {
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
     if (currentOption === '로그아웃') {
       getLogout(profileData.oauthServer);
-      window.location.href = '/';
+      window.location.reload();
     }
   };
 
