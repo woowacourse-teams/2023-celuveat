@@ -1,8 +1,9 @@
 import { Suspense, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import Logo from '~/assets/icons/logo-icon.svg';
 
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
@@ -98,7 +99,17 @@ function RestaurantDetail() {
 
   return (
     <>
-      <Header />
+      {isMobile ? (
+        <StyledMobileHeader>
+          <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
+            <Logo width={32} />
+          </Link>
+          <h5>celuveat</h5>
+          <div />
+        </StyledMobileHeader>
+      ) : (
+        <Header />
+      )}
       <>
         <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
           {isSuccessRestaurantDetail && (
@@ -567,4 +578,27 @@ const StyledRestaurantCardContainer = styled.div`
   border-radius: 12px;
 
   box-shadow: var(--map-shadow);
+`;
+
+const StyledMobileHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  width: 100%;
+  height: 44px;
+
+  padding: 0.2rem 0.8rem;
+
+  background-color: var(--white);
+  box-shadow: var(--map-shadow);
+
+  & > div:last-child {
+    width: 32px;
+  }
 `;

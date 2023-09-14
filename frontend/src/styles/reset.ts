@@ -133,6 +133,10 @@ const reset = css`
     content: none;
   }
 
+  input {
+    outline: none;
+  }
+
   table {
     border-collapse: collapse;
     border-spacing: 0;
