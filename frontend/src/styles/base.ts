@@ -86,21 +86,12 @@ const base = css`
     display: flex;
     flex-direction: column;
 
-    position: fixed !important;
-    top: 72px !important;
-
     padding: 1.6rem;
 
     border: 1px solid var(--gray-2);
     border-radius: 40px;
 
     box-shadow: var(--shadow);
-  }
-
-  @media screen and (width <= 740px) {
-    .pac-container {
-      top: 92px !important;
-    }
   }
 
   .pac-item {

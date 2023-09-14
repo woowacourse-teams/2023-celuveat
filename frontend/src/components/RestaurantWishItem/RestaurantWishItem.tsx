@@ -102,6 +102,7 @@ const StyledAddress = styled.span`
   ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.md};
+  line-height: 20px;
 `;
 
 const StyledCategory = styled.span`
