@@ -4,6 +4,8 @@ import { ProfileData } from '~/@types/api.types';
 import useBooleanState from '../useBooleanState';
 
 interface ReviewModalContextState {
+  reviewId: number;
+  setReviewId: React.Dispatch<number>;
   formType: string;
   isModalOpen: boolean;
   openModal: VoidFunction;
@@ -24,9 +26,12 @@ function ReviewModalProvider({ children }: { children: React.ReactNode }) {
   const profileData: ProfileData = qc.getQueryData(['profile']);
   const [formType, setFormType] = useState('');
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const [reviewId, setReviewId] = useState(null);
 
   const value = useMemo(
     () => ({
+      reviewId,
+      setReviewId,
       formType,
       openModal,
       isModalOpen,
