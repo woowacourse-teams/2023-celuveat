@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
+import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 import { Modal, ModalContent } from '~/components/@common/Modal';
@@ -11,10 +12,12 @@ import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import { FONT_SIZE } from '~/styles/common';
 import { isMoreThan } from '~/utils/compare';
 import { REVIEW_SHOW_COUNT } from '~/constants/options';
+import DeleteButton from '../ReviewForm/DeleteButton';
 
 function RestaurantReviewWrapper() {
   const { restaurantReviewsData } = useRestaurantReview();
-  const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll } = useReviewModalContext();
+  const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll, reviewId } =
+    useReviewModalContext();
   const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
 
   const previewReviews = useMemo(() => reviews.slice(0, REVIEW_SHOW_COUNT), [reviews]);
@@ -40,6 +43,22 @@ function RestaurantReviewWrapper() {
             {formType === 'create' && <ReviewForm type="create" />}
             {formType === 'all' && (
               <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
+            )}
+            {formType === 'update' && (
+              <ModalContent title="리뷰 수정하기">
+                <ReviewForm type="update" reviewId={reviewId} />
+              </ModalContent>
+            )}
+            {formType === 'delete' && (
+              <ModalContent title="리뷰 삭제하기">
+                <div>
+                  <StyledWarningMessage>
+                    <Alert width={32} />
+                    <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
+                  </StyledWarningMessage>
+                  <DeleteButton reviewId={reviewId} />
+                </div>
+              </ModalContent>
             )}
           </>
         </ModalContent>
@@ -76,4 +95,16 @@ const StyledButtonContainer = styled.div`
       background: var(--gray-1);
     }
   }
+`;
+
+const StyledWarningMessage = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem 0;
+
+  margin: 3.2rem 0;
+
+  font-size: ${FONT_SIZE.md};
+  text-align: center;
 `;
