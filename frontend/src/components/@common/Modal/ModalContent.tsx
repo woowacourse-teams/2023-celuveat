@@ -77,7 +77,9 @@ const StyledModalOverlay = styled.div`
   width: 100%;
   height: 100%;
 
-  background: rgb(0 0 0 / 50%);
+  background-color: black;
+
+  opacity: 0.2;
 `;
 
 const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
@@ -93,7 +95,7 @@ const StyledModalContent = styled.div<{ isShow: boolean; isMobile: boolean }>`
   min-height: 100px;
   max-height: 600px;
 
-  padding: 2rem 2rem 0;
+  padding: 2rem;
 
   border-radius: 5px;
   background: #fff;

@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -20,8 +21,11 @@ interface RestaurantWishItemProps {
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, openModal, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const navigate = useNavigate();
 
-  const openDetail = () => window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+  const onClick = () => {
+    navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
+  };
 
   const toggle: MouseEventHandler = e => {
     e.stopPropagation();
@@ -31,7 +35,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
 
   return (
     <>
-      <StyledContainer onClick={openDetail}>
+      <StyledContainer onClick={onClick}>
         <StyledImageViewer>
           <ImageCarousel images={images} type="list" />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
