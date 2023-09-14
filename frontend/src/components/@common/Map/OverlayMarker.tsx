@@ -56,7 +56,10 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
                     <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="24px" />
                   </Link>
                   <Link to={`/restaurants/${restaurant.id}?celebId=${celeb.id}`}>
-                    <div>{restaurant.name}</div>
+                    <StyledRestaurantInfo>
+                      <span>{restaurant.name}</span>
+                      <span>{restaurant.category}</span>
+                    </StyledRestaurantInfo>
                   </Link>
                 </>
               ) : (
@@ -123,7 +126,7 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
 
           ${isClicked
             ? css`
-                border: 1.8px solid var(--black);
+                border: 1.8px solid var(--white);
               `
             : css`
                 border: 1.8px solid var(--white);
@@ -181,4 +184,15 @@ const StyledLikeButton = styled.button`
 
   border: none;
   background-color: transparent;
+`;
+
+const StyledRestaurantInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > :last-child {
+    color: var(--gray-3);
+    font-size: 1rem;
+    font-weight: 400;
+  }
 `;
