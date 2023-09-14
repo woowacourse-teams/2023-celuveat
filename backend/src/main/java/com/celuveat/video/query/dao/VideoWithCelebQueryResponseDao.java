@@ -28,7 +28,7 @@ public class VideoWithCelebQueryResponseDao {
             VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {
-        List<VideoWithCelebQueryResponse> resultList = query.select(
+        List<VideoWithCelebQueryResponse> resultList = query.selectDistinct(
                         Projections.constructor(VideoWithCelebQueryResponse.class,
                                 video.id,
                                 video.youtubeUrl,
@@ -48,7 +48,7 @@ public class VideoWithCelebQueryResponseDao {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<Long> countQuery = query.select(video.count())
+        JPAQuery<Long> countQuery = query.select(video.countDistinct())
                 .from(video)
                 .join(celeb).on(celeb.eq(video.celeb))
                 .where(
