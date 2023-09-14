@@ -19,6 +19,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     shallow,
   );
   const { postRestaurantLike } = useUser();
+  // const queryClient = useQueryClient();
 
   const toggleLike = useMutation({
     mutationFn: postRestaurantLike,
@@ -37,6 +38,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
 
       toggleIsLiked();
       onSuccess(message, { url: imgUrl, alt: `좋아요한 ${restaurant.name}` });
+      // queryClient.invalidateQueries({ queryKey: ['restaurantDetail'] });
     },
   });
 

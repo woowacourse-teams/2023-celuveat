@@ -64,6 +64,7 @@ function RestaurantDetail() {
   } = useQuery<RestaurantDetailData>({
     queryKey: ['restaurantDetail', restaurantId, celebId],
     queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    cacheTime: 0,
   });
 
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
