@@ -28,10 +28,9 @@ function ReviewModalProvider({ children }: { children: React.ReactNode }) {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const [reviewId, setReviewId] = useState(null);
 
-
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   const value = {
-    reviewId
+    reviewId,
     setReviewId,
     formType,
     openModal,
