@@ -35,7 +35,7 @@ import useUser from '~/hooks/server/useUser';
 import { ProfileData } from '~/@types/api.types';
 
 function MobileMainPage() {
-  const refs = [useRef(), useRef(), useRef()];
+  const refs = [useRef(), useRef()];
   const navigator = useNavigate();
   const scrollDirection = useScrollDirection();
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
@@ -110,7 +110,7 @@ function MobileMainPage() {
   return (
     <>
       <StyledMobileMainPageContainer>
-        <StyledTopNavBar ref={refs[0]}>
+        <StyledTopNavBar>
           <header>
             <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
               <Logo width={32} />
@@ -128,8 +128,8 @@ function MobileMainPage() {
             type="button"
             onClick={toggleShowedList}
             isHide={isEnd}
-            isNavBarHide={scrollDirection.y === 'down'}
-            ref={refs[1]}
+            isNavBarHide={isListShowed && scrollDirection.y === 'down'}
+            ref={refs[0]}
           >
             <span>지도</span>
             <MapIcon width={24} />
@@ -140,14 +140,14 @@ function MobileMainPage() {
             onClick={toggleShowedList}
             isHide={false}
             isNavBarHide={false}
-            ref={refs[1]}
+            ref={refs[0]}
           >
             <span>리스트</span>
             <ListIcon width={20} stroke="#fff" />
           </StyledToggleButton>
         )}
 
-        <StyledBottomNavBar isHide={scrollDirection.y === 'down'} ref={refs[2]}>
+        <StyledBottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} ref={refs[1]}>
           <StyledNavBarButton type="button" onClick={() => navigator('/restaurants/like')}>
             <NavItem label="위시리스트" icon={<LoveIcon width={24} />} />
           </StyledNavBarButton>
