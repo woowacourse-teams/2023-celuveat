@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { ProfileData } from '~/@types/api.types';
 import useBooleanState from '../useBooleanState';
 
@@ -25,46 +25,44 @@ function ReviewModalProvider({ children }: { children: React.ReactNode }) {
   const [formType, setFormType] = useState('');
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
-  const value = useMemo(
-    () => ({
-      formType,
-      openModal,
-      isModalOpen,
-      closeModal,
-      clickUpdateReview: () => {
-        if (!profileData) {
-          setFormType('');
-          openModal();
-          return;
-        }
-        setFormType('update');
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const value = {
+    formType,
+    openModal,
+    isModalOpen,
+    closeModal,
+    clickUpdateReview: () => {
+      if (!profileData) {
+        setFormType('');
         openModal();
-      },
-      clickDeleteReview: () => {
-        if (!profileData) {
-          setFormType('');
-          openModal();
-          return;
-        }
-        setFormType('delete');
+        return;
+      }
+      setFormType('update');
+      openModal();
+    },
+    clickDeleteReview: () => {
+      if (!profileData) {
+        setFormType('');
         openModal();
-      },
-      openCreateReview: () => {
-        if (!profileData) {
-          setFormType('');
-          openModal();
-          return;
-        }
-        setFormType('create');
+        return;
+      }
+      setFormType('delete');
+      openModal();
+    },
+    openCreateReview: () => {
+      if (!profileData) {
+        setFormType('');
         openModal();
-      },
-      openShowAll: () => {
-        setFormType('all');
-        openModal();
-      },
-    }),
-    [formType, isModalOpen],
-  );
+        return;
+      }
+      setFormType('create');
+      openModal();
+    },
+    openShowAll: () => {
+      setFormType('all');
+      openModal();
+    },
+  };
 
   return <ReviewModalContext.Provider value={value}>{children}</ReviewModalContext.Provider>;
 }
