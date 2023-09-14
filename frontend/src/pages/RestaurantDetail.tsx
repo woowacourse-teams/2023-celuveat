@@ -231,11 +231,11 @@ function RestaurantDetail() {
               </ul>
             </StyledNearByRestaurant>
           )}
-          <ReviewModalProvider>
-            <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ReviewModalProvider>
               <RestaurantReviewWrapper />
-            </Suspense>
-          </ReviewModalProvider>
+            </ReviewModalProvider>
+          </Suspense>
           {isSuccessRestaurantDetail && (
             <StyledMapSection>
               <h5>위치 확인하기</h5>

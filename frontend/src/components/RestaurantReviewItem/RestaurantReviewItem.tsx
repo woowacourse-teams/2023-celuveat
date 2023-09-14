@@ -132,6 +132,13 @@ const StyledLine = styled.div`
 
 const StyledRestaurantReviewItemWrapper = styled.div`
   width: 100%;
+
+  padding: 1.6rem;
+
+  border: 1px solid #f2f2f2;
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
 `;
 
 const StyledSeeMore = styled.span<{ isInModal: boolean }>`
