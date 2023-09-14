@@ -40,7 +40,6 @@ public class VideoWithCelebQueryResponseDao {
                         ))
                 .from(video)
                 .join(celeb).on(celeb.eq(video.celeb))
-                .join(restaurant).on(restaurant.eq(video.restaurant))
                 .where(
                         celebIdEqual(videoSearchCond.celebId),
                         restaurantIdEqual(videoSearchCond.restaurantId)
@@ -52,7 +51,6 @@ public class VideoWithCelebQueryResponseDao {
         JPAQuery<Long> countQuery = query.select(video.count())
                 .from(video)
                 .join(celeb).on(celeb.eq(video.celeb))
-                .join(restaurant).on(restaurant.eq(video.restaurant))
                 .where(
                         celebIdEqual(videoSearchCond.celebId),
                         restaurantIdEqual(videoSearchCond.restaurantId)
