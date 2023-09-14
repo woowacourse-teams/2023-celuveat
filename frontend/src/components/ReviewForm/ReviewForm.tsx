@@ -47,7 +47,7 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
   return (
     <StyledReviewFormContainer>
-      <textarea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
+      <StyledTextArea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
       {type === 'create' && (
         <TextButton
           type="submit"
@@ -78,12 +78,18 @@ const StyledReviewFormContainer = styled.form`
   gap: 3.6rem 0;
 
   width: 100%;
+`;
 
-  & > textarea {
-    height: 30vh;
-    resize: vertical;
+const StyledTextArea = styled.textarea`
+  height: 30vh;
 
-    font-size: ${FONT_SIZE.md};
-    text-align: start;
-  }
+  padding: 0.8rem;
+
+  border: none;
+  border-radius: 10px;
+  background-color: var(--gray-2);
+
+  font-size: ${FONT_SIZE.md};
+  text-align: start;
+  resize: vertical;
 `;
