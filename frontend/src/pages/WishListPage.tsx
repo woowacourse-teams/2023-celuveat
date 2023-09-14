@@ -6,6 +6,7 @@ import Logo from '~/assets/icons/logo-icon.svg';
 import Footer from '~/components/@common/Footer';
 import Header from '~/components/@common/Header';
 import RestaurantWishList from '~/components/RestaurantWishList';
+import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { FONT_SIZE } from '~/styles/common';
@@ -14,26 +15,28 @@ function WishListPage() {
   const { isMobile } = useMediaQuery();
 
   return (
-    <StyledWishListPageWrapper>
-      <div>
-        {isMobile ? (
-          <StyledMobileHeader>
-            <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
-              <Logo width={32} />
-            </Link>
-            <h5>celuveat</h5>
-            <div />
-          </StyledMobileHeader>
-        ) : (
-          <Header />
-        )}
-        <StyledMobileLayout>
-          <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
-          <RestaurantWishList />
-        </StyledMobileLayout>
-      </div>
-      <Footer />
-    </StyledWishListPageWrapper>
+    <LoginErrorHandleComponent>
+      <StyledWishListPageWrapper>
+        <div>
+          {isMobile ? (
+            <StyledMobileHeader>
+              <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
+                <Logo width={32} />
+              </Link>
+              <h5>celuveat</h5>
+              <div />
+            </StyledMobileHeader>
+          ) : (
+            <Header />
+          )}
+          <StyledMobileLayout>
+            <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
+            <RestaurantWishList />
+          </StyledMobileLayout>
+        </div>
+        <Footer />
+      </StyledWishListPageWrapper>
+    </LoginErrorHandleComponent>
   );
 }
 
