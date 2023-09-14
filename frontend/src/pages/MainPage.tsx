@@ -9,6 +9,7 @@ import MainPageNavBar from '~/components/MainPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import MobileMainPage from './MobileMainPage';
+import LoadingIndicator from '~/components/@common/LoadingIndicator';
 
 function MainPage() {
   const { isMobile } = useMediaQuery();
@@ -16,7 +17,13 @@ function MainPage() {
 
   if (isMobile)
     return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <StyledProcessing>
+            <LoadingIndicator size={32} />
+          </StyledProcessing>
+        }
+      >
         <MobileMainPage />
       </Suspense>
     );
@@ -82,4 +89,12 @@ const StyledRightSide = styled.section`
 
   width: 100%;
   height: calc(100vh - 160px);
+`;
+
+const StyledProcessing = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
 `;
