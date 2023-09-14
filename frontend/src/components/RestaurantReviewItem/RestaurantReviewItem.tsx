@@ -26,10 +26,10 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
   const profileData: ProfileData = qc.getQueryData(['profile']);
   const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
 
-  const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview } =
+  const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview, openShowAll } =
     useReviewModalContext();
 
-  const isUsersReview = profileData?.memberId === review.memberId && profileData;
+  const isUsersReview = profileData?.memberId === review.memberId;
 
   return (
     <>
@@ -42,7 +42,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
               <StyledCreateDated>{review.createdDate}</StyledCreateDated>
             </StyledProfileInfoWrapper>
           </StyledProfileWrapper>
-          {!isUsersReview && (
+          {isUsersReview && (
             <StyledButtonContainer>
               <button type="button" onClick={clickUpdateReview}>
                 수정
@@ -58,7 +58,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
           {review.content}
         </StyledReviewContent>
         {isTextOverflow && (
-          <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={() => {}}>
+          <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={openShowAll}>
             더 보기
           </StyledSeeMore>
         )}

@@ -8,7 +8,6 @@ import SignUpPage from '~/pages/SignUpPage';
 import WithdrawalPage from '~/pages/WithdrawalPage';
 import PrivacyPolicy from './pages/PrivacyPolicyPage';
 import OauthRedirectPage from '~/pages/OauthRedirectPage';
-import ServerSelectBox from './components/ServerSelectBox';
 
 function App() {
   return (
@@ -24,7 +23,6 @@ function App() {
         <Route path="/oauth/redirect/google" element={<OauthRedirectPage type="google" />} />
       </Routes>
       <Toast />
-      {process.env.NODE_ENV === 'development' && <ServerSelectBox />}
     </BrowserRouter>
   );
 }

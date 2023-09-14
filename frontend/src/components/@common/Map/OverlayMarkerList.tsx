@@ -6,7 +6,6 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import type { RestaurantListData } from '~/@types/api.types';
 import type { Coordinate } from '~/@types/map.types';
 import useRestaurant from '~/hooks/server/useRestaurant';
-import useBaseURLState from '~/hooks/store/useBaseURLState';
 
 interface OverlayMarkerListProps {
   center: Coordinate;
@@ -19,10 +18,9 @@ function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
     shallow,
   );
   const { getRestaurants } = useRestaurant();
-  const { baseURL } = useBaseURLState();
 
   const { data, isLoading } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, baseURL, sort],
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
   });
 

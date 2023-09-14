@@ -1,4 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useMemo, useState } from 'react';
+import { ProfileData } from '~/@types/api.types';
 import useBooleanState from '../useBooleanState';
 
 interface ReviewModalContextState {
@@ -17,6 +19,9 @@ const ReviewModalContext = createContext<ReviewModalContextState | null>(null);
 export const useReviewModalContext = () => useContext(ReviewModalContext);
 
 function ReviewModalProvider({ children }: { children: React.ReactNode }) {
+  const qc = useQueryClient();
+
+  const profileData: ProfileData = qc.getQueryData(['profile']);
   const [formType, setFormType] = useState('');
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
@@ -27,14 +32,29 @@ function ReviewModalProvider({ children }: { children: React.ReactNode }) {
       isModalOpen,
       closeModal,
       clickUpdateReview: () => {
+        if (!profileData) {
+          setFormType('');
+          openModal();
+          return;
+        }
         setFormType('update');
         openModal();
       },
       clickDeleteReview: () => {
+        if (!profileData) {
+          setFormType('');
+          openModal();
+          return;
+        }
         setFormType('delete');
         openModal();
       },
       openCreateReview: () => {
+        if (!profileData) {
+          setFormType('');
+          openModal();
+          return;
+        }
         setFormType('create');
         openModal();
       },

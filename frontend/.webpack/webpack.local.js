@@ -3,11 +3,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const Dotenv = require('dotenv-webpack');
+
 const webpack = require('webpack');
-const dotenv = require('dotenv');
-dotenv.config();
 
 module.exports = {
+  mode: 'development',
   entry: ['./src/index.tsx'],
   output: {
     path: path.resolve(__dirname, '../dist/'),
@@ -69,8 +70,8 @@ module.exports = {
       filename: 'index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env),
+    new Dotenv({
+      path: path.resolve(__dirname, `../.msw.env`),
     }),
   ],
 };

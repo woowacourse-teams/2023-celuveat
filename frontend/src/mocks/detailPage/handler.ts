@@ -31,12 +31,12 @@ export const DetailPageSuccessHandler = [
     return res(ctx.status(200), ctx.json(result));
   }),
 
-  rest.get('/video', (req, res, ctx) => {
+  rest.get('/videos', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockVideoList));
   }),
 
   rest.get('/restaurants/:restaurantId/nearby', (req, res, ctx) => {
-    ctx.status(200), ctx.json(mockRestaurantListData);
+    return res(ctx.status(200), ctx.json(mockRestaurantListData));
   }),
 
   rest.post('/restaurants/:restaurantId/correction', (req, res, ctx) => {
@@ -48,18 +48,42 @@ export const DetailPageSuccessHandler = [
   }),
 
   rest.post('/reviews', (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
     return res(ctx.status(201));
   }),
 
   rest.patch('/reviews/:reviewId', (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
     return res(ctx.status(204));
   }),
 
   rest.patch('/reviews/:reviewId', (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
     return res(ctx.status(204));
   }),
 
   rest.delete('/reviews/:reviewId', (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
     return res(ctx.status(204));
   }),
 ];
