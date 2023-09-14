@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
@@ -16,7 +16,6 @@ function RestaurantReviewWrapper() {
   const { restaurantReviewsData } = useRestaurantReview();
   const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll } = useReviewModalContext();
   const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
-  const [isReviewClicked, setReviewClicked] = useState(false);
 
   const previewReviews = useMemo(() => reviews.slice(0, REVIEW_SHOW_COUNT), [reviews]);
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
@@ -27,39 +26,24 @@ function RestaurantReviewWrapper() {
         <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
         <RestaurantReviewList reviews={previewReviews} />
         <StyledButtonContainer>
-          <button
-            type="button"
-            onClick={() => {
-              openCreateReview();
-              setReviewClicked(true);
-            }}
-          >
+          <button type="button" onClick={openCreateReview}>
             리뷰 작성하기
           </button>
           {isMoreReviews && <button type="button" onClick={openShowAll}>{`리뷰 ${reviewCount}개 모두 보기`}</button>}
         </StyledButtonContainer>
       </StyledRestaurantReviewWrapper>
 
-      {isReviewClicked && (
-        <Modal
-          isOpen={isModalOpen}
-          open={openModal}
-          close={() => {
-            closeModal();
-            setReviewClicked(false);
-          }}
-        >
-          <ModalContent>
-            <>
-              {formType === '' && <LoginModalContent />}
-              {formType === 'create' && <ReviewForm type="create" />}
-              {formType === 'all' && (
-                <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
-              )}
-            </>
-          </ModalContent>
-        </Modal>
-      )}
+      <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
+        <ModalContent>
+          <>
+            {formType === '' && <LoginModalContent />}
+            {formType === 'create' && <ReviewForm type="create" />}
+            {formType === 'all' && (
+              <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
+            )}
+          </>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
