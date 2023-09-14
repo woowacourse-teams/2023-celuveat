@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import LoadingIndicator from '~/components/@common/LoadingIndicator';
 import useUser from '~/hooks/server/useUser';
 
 interface OauthRedirectProps {
@@ -32,10 +34,18 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   }, [code]);
 
   return (
-    <div>
-      <div>Processing...</div>
-    </div>
+    <StyledProcessing>
+      <LoadingIndicator size={32} />
+    </StyledProcessing>
   );
 }
 
 export default OauthRedirectPage;
+
+const StyledProcessing = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+`;
