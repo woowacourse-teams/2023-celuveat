@@ -1,18 +1,12 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
-
-import { Modal, ModalContent } from '~/components/@common/Modal';
 import ProfileImage from '~/components/@common/ProfileImage';
-import ReviewForm from '~/components/ReviewForm/ReviewForm';
-import DeleteButton from '~/components/ReviewForm/DeleteButton';
 
 import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import { FONT_SIZE, truncateText } from '~/styles/common';
-
-import Alert from '~/assets/icons/alert.svg';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
@@ -26,63 +20,53 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
   const profileData: ProfileData = qc.getQueryData(['profile']);
   const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
 
-  const { formType, isModalOpen, openModal, closeModal, clickUpdateReview, clickDeleteReview, openShowAll } =
-    useReviewModalContext();
+  const { clickUpdateReview, clickDeleteReview, openShowAll, setReviewId } = useReviewModalContext();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
   return (
-    <>
-      <StyledRestaurantReviewItemWrapper ref={ref}>
-        <StyledProfileAndButton>
-          <StyledProfileWrapper>
-            <ProfileImage name={review.nickname} size="40px" imageUrl={review.profileImageUrl} />
-            <StyledProfileInfoWrapper>
-              <StyledProfileNickName>{review.nickname}</StyledProfileNickName>
-              <StyledCreateDated>{review.createdDate}</StyledCreateDated>
-            </StyledProfileInfoWrapper>
-          </StyledProfileWrapper>
-          {isUsersReview && (
-            <StyledButtonContainer>
-              <button type="button" onClick={clickUpdateReview}>
-                수정
-              </button>
-              <StyledLine />
-              <button type="button" onClick={clickDeleteReview}>
-                삭제
-              </button>
-            </StyledButtonContainer>
-          )}
-        </StyledProfileAndButton>
-        <StyledReviewContent ref={contentRef} isInModal={isInModal}>
-          {review.content}
-        </StyledReviewContent>
-        {isTextOverflow && (
-          <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={openShowAll}>
-            더 보기
-          </StyledSeeMore>
+    <StyledRestaurantReviewItemWrapper ref={ref}>
+      <StyledProfileAndButton>
+        <StyledProfileWrapper>
+          <ProfileImage name={review.nickname} size="40px" imageUrl={review.profileImageUrl} />
+          <StyledProfileInfoWrapper>
+            <StyledProfileNickName>{review.nickname}</StyledProfileNickName>
+            <StyledCreateDated>{review.createdDate}</StyledCreateDated>
+          </StyledProfileInfoWrapper>
+        </StyledProfileWrapper>
+        {isUsersReview && (
+          <StyledButtonContainer>
+            <button
+              type="button"
+              onClick={() => {
+                setReviewId(review.id);
+                clickUpdateReview();
+              }}
+            >
+              수정
+            </button>
+            <StyledLine />
+            <button
+              type="button"
+              onClick={() => {
+                setReviewId(review.id);
+                clickDeleteReview();
+              }}
+            >
+              삭제
+            </button>
+          </StyledButtonContainer>
         )}
-      </StyledRestaurantReviewItemWrapper>
-
-      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
-        {formType === 'update' && (
-          <ModalContent title="리뷰 수정하기">
-            <ReviewForm type="update" reviewId={review.id} />
-          </ModalContent>
-        )}
-        {formType === 'delete' && (
-          <ModalContent title="리뷰 삭제하기">
-            <div>
-              <StyledWarningMessage>
-                <Alert width={32} />
-                <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
-              </StyledWarningMessage>
-              <DeleteButton reviewId={review.id} />
-            </div>
-          </ModalContent>
-        )}
-      </Modal>
-    </>
+      </StyledProfileAndButton>
+      <StyledReviewContent ref={contentRef} isInModal={isInModal}>
+        {review.content}
+      </StyledReviewContent>
+      {isTextOverflow && (
+        <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={openShowAll}>
+          더 보기
+        </StyledSeeMore>
+      )}
+    </StyledRestaurantReviewItemWrapper>
   );
 });
 
@@ -181,16 +165,4 @@ const StyledSeeMore = styled.span<{ isInModal: boolean }>`
     css`
       display: none;
     `}
-`;
-
-const StyledWarningMessage = styled.p`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.4rem 0;
-
-  margin: 3.2rem 0;
-
-  font-size: ${FONT_SIZE.md};
-  text-align: center;
 `;
