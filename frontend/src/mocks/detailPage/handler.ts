@@ -1,34 +1,38 @@
 import { rest } from 'msw';
-import type { RestaurantData, RestaurantDetailData } from '~/@types/api.types';
-
+import restaurants from '../data/restaurants';
 import { mockVideoList, mockRestaurantReviews } from '~/mocks/detailPage/fixures';
 import { mockRestaurantListData } from '~/mocks/mainPage/fixures';
 
+import type { RestaurantData } from '~/@types/api.types';
+import { Celeb } from '~/@types/celeb.types';
+
 export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantsId', (req, res, ctx) => {
+    const queryParams = req.url.searchParams;
+    const celebId = Number(queryParams.get('celebId'));
     const { restaurantsId } = req.params;
 
-    const data: RestaurantData = mockRestaurantListData.content.find(restaurantItem => {
-      return restaurantItem.id === Number(restaurantsId);
+    const restaurant: RestaurantData = restaurants.find(({ id }) => {
+      return id === Number(restaurantsId);
     });
 
-    const result: RestaurantDetailData = {
-      id: data.id,
-      name: data.name,
-      category: data.category,
-      roadAddress: data.roadAddress,
-      lat: data.lat,
-      lng: data.lng,
-      distance: 12,
-      phoneNumber: data.phoneNumber,
-      naverMapUrl: data.naverMapUrl,
-      likeCount: 12,
-      viewCount: 1112,
-      celebs: data.celebs,
-      images: data.images,
-    };
+    const { celebs, ...etc } = restaurant;
 
-    return res(ctx.status(200), ctx.json(result));
+    function moveCelebToFrontById(celebs: Celeb[], targetId: number): Celeb[] {
+      const targetIndex = celebs.findIndex(celeb => celeb.id === targetId);
+
+      if (targetIndex === -1) return celebs;
+
+      const newArray = [...celebs];
+      const [movedCeleb] = newArray.splice(targetIndex, 1);
+      newArray.unshift(movedCeleb);
+
+      return newArray;
+    }
+
+    const sortedCelebs = moveCelebToFrontById(celebs, celebId);
+
+    return res(ctx.status(200), ctx.json({ celebs: sortedCelebs, ...etc }));
   }),
 
   rest.get('/videos', (req, res, ctx) => {

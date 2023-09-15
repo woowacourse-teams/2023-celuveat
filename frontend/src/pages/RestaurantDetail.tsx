@@ -26,7 +26,7 @@ import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
-import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
+import type { RestaurantData, RestaurantListData, VideoList } from '~/@types/api.types';
 import useRestaurant from '~/hooks/server/useRestaurant';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import useCeleb from '~/hooks/server/useCeleb';
@@ -61,7 +61,7 @@ function RestaurantDetail() {
       lng,
     } = {},
     isSuccess: isSuccessRestaurantDetail,
-  } = useQuery<RestaurantDetailData>({
+  } = useQuery<RestaurantData>({
     queryKey: ['restaurantDetail', restaurantId, celebId],
     queryFn: async () => getRestaurantDetail(restaurantId, celebId),
     cacheTime: 0,
@@ -194,6 +194,8 @@ function RestaurantDetail() {
                         naverMapUrl,
                         lat,
                         lng,
+                        likeCount,
+                        viewCount,
                       }}
                     />
                     <button type="button" onClick={openNewWindow(naverMapUrl)}>
@@ -281,6 +283,8 @@ function RestaurantDetail() {
                 phoneNumber,
                 naverMapUrl,
                 lat,
+                viewCount,
+                likeCount,
                 lng,
               }}
             />

@@ -1,10 +1,71 @@
 import { rest } from 'msw';
 
 import { mockCelebs, mockProfileData, mockRestaurantListData } from '~/mocks/mainPage/fixures';
+import restaurants from '../data/restaurants';
+import { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import { Celeb } from '~/@types/celeb.types';
 
 export const MainPageSuccessHandler = [
   rest.get('/restaurants', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockRestaurantListData));
+    const pageSize = 18;
+
+    const queryParams = req.url.searchParams;
+    const sort = queryParams.get('sort') || 'distance';
+    const page = Number(queryParams.get('page')) || 0;
+    const celebId = Number(queryParams.get('celebId')) || null;
+    const category = queryParams.get('category') || null;
+    const lowLatitude = Number(queryParams.get('lowLatitude'));
+    const highLatitude = Number(queryParams.get('highLatitude'));
+    const lowLongitude = Number(queryParams.get('lowLongitude'));
+    const highLongitude = Number(queryParams.get('highLongitude'));
+
+    const filteredRestaurants = restaurants.filter(({ celebs, category: restaurantCategory }) => {
+      const hasCelebId = celebId ? celebs.map(({ id }) => id).includes(celebId) : true;
+      const isMatchCategory = category ? category === restaurantCategory : true;
+      return hasCelebId && isMatchCategory;
+    });
+
+    const sortedRestaurants = filteredRestaurants
+      .filter(restaurant => {
+        return (
+          restaurant.lat >= lowLatitude &&
+          restaurant.lat <= highLatitude &&
+          restaurant.lng >= lowLongitude &&
+          restaurant.lng <= highLongitude
+        );
+      })
+      .sort((prev, current) => {
+        if (sort === 'like') return current.likeCount - prev.likeCount;
+        return current.distance - prev.distance;
+      });
+
+    function moveCelebToFrontById(celebs: Celeb[], targetId: number): Celeb[] {
+      const targetIndex = celebs.findIndex(celeb => celeb.id === targetId);
+
+      if (targetIndex === -1) return celebs;
+
+      const newArray = [...celebs];
+      const [movedCeleb] = newArray.splice(targetIndex, 1);
+      newArray.unshift(movedCeleb);
+
+      return newArray;
+    }
+
+    const content: RestaurantData[] = sortedRestaurants.slice(page * 18, (page + 1) * 18).map(({ celebs, ...etc }) => {
+      const sortedCelebs: Celeb[] = moveCelebToFrontById(celebs, celebId);
+      return { celebs: sortedCelebs, ...etc };
+    });
+
+    const restaurantListData: RestaurantListData = {
+      content,
+      currentElementsCount: content.length,
+      currentPage: page,
+      pageSize,
+      totalElementsCount: sortedRestaurants.length,
+      totalPage: Math.ceil(sortedRestaurants.length / pageSize),
+    };
+
+    return res(ctx.status(200), ctx.json(restaurantListData));
   }),
 
   rest.get('/celebs', (req, res, ctx) => {
@@ -13,7 +74,6 @@ export const MainPageSuccessHandler = [
 
   rest.get('/oauth/login/:oauthType', (req, res, ctx) => {
     const code = req.url.searchParams.get('code') ?? null;
-
     if (code === null) {
       return res(ctx.status(401), ctx.json({ message: '인증되지 않은 code입니다.' }));
     }
@@ -21,6 +81,7 @@ export const MainPageSuccessHandler = [
     const currentDate = new Date();
     const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
     const expirationDate = new Date(currentDate.getTime() + sixHoursInMilliseconds);
+    window.location.href = '/';
     return res(ctx.cookie('JSESSION', `${code}`, { expires: expirationDate }), ctx.status(200));
   }),
 
@@ -58,6 +119,10 @@ export const MainPageSuccessHandler = [
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
     const { JSESSION } = req.cookies;
+    const { restaurantId } = req.params;
+
+    const restaurant = restaurants.find(restaurant => restaurant.id === Number(restaurantId));
+    restaurant.isLiked ? (restaurant['isLiked'] = false) : (restaurant['isLiked'] = true);
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));

@@ -23,7 +23,8 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
       navigator('/');
     },
     onError: () => {
-      navigator('/fail');
+      navigator('/');
+      alert('서버 문제로 인해 로그인에 실패하였습니다.');
     },
   });
 
@@ -32,6 +33,18 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
       oauthTokenMutation.mutate();
     }
   }, [code]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      fetch('https://d.api.celuveat.com/login/local?id=abc').then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        navigator('/');
+      });
+    }
+  }, []);
 
   return (
     <StyledProcessing>
