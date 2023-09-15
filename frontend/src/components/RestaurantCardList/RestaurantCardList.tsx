@@ -18,17 +18,19 @@ import FilterSelectBox from '../FilterSelectBox';
 function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
   const [prevCardNumber, setPrevCardNumber] = useState(18);
-  const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort] = useRestaurantsQueryStringState(
-    state => [
-      state.boundary,
-      state.celebId,
-      state.currentPage,
-      state.restaurantCategory,
-      state.setCurrentPage,
-      state.sort,
-    ],
-    shallow,
-  );
+  const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort, setSort] =
+    useRestaurantsQueryStringState(
+      state => [
+        state.boundary,
+        state.celebId,
+        state.currentPage,
+        state.restaurantCategory,
+        state.setCurrentPage,
+        state.sort,
+        state.setSort,
+      ],
+      shallow,
+    );
   const { getRestaurants } = useRestaurant();
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
@@ -47,6 +49,10 @@ function RestaurantCardList() {
     if (pageValue === 'next') return setCurrentPage(currentPage + 1);
     return setCurrentPage(Number(pageValue) - 1);
   };
+
+  useEffect(() => {
+    if (isMobile) setSort('distance');
+  }, []);
 
   useEffect(() => {
     if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);

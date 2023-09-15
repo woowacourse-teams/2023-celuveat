@@ -146,11 +146,12 @@ const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boole
           width: 36px;
           height: 36px;
 
-          border: ${isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid transparent'};
+          border: ${isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid var(--white)'};
           border-radius: 50%;
 
           transition: transform 0.2s ease-in-out;
           transform: ${isClicked ? 'scale(1.4)' : 'scale(1)'};
+          box-shadow: var(--map-shadow);
 
           &:hover {
             transform: scale(1.4);

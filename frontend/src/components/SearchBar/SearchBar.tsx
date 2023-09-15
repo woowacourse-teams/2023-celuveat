@@ -16,7 +16,6 @@ function SearchBar() {
 
     const autocomplete = new google.maps.places.Autocomplete(inputRef.current);
     autocomplete.setFields(['name', 'geometry', 'types']);
-    autocomplete.setTypes(['(regions)']);
     autocomplete.setComponentRestrictions({ country: ['kr'] });
 
     setWidget(autocomplete);
