@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import restaurants from '../data/restaurants';
 
 export const WishListPageSuccessHandler = [

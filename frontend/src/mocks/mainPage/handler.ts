@@ -1,9 +1,11 @@
 import { rest } from 'msw';
 
-import { mockCelebs, mockProfileData, mockRestaurantListData } from '~/mocks/mainPage/fixures';
 import restaurants from '../data/restaurants';
-import { RestaurantData, RestaurantListData } from '~/@types/api.types';
-import { Celeb } from '~/@types/celeb.types';
+import celebs from '../data/celebs';
+import { profile } from '../data/user';
+
+import type { Celeb } from '~/@types/celeb.types';
+import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 
 export const MainPageSuccessHandler = [
   rest.get('/restaurants', (req, res, ctx) => {
@@ -36,7 +38,7 @@ export const MainPageSuccessHandler = [
       })
       .sort((prev, current) => {
         if (sort === 'like') return current.likeCount - prev.likeCount;
-        return current.distance - prev.distance;
+        return prev.distance - current.distance;
       });
 
     function moveCelebToFrontById(celebs: Celeb[], targetId: number): Celeb[] {
@@ -51,10 +53,12 @@ export const MainPageSuccessHandler = [
       return newArray;
     }
 
-    const content: RestaurantData[] = sortedRestaurants.slice(page * 18, (page + 1) * 18).map(({ celebs, ...etc }) => {
-      const sortedCelebs: Celeb[] = moveCelebToFrontById(celebs, celebId);
-      return { celebs: sortedCelebs, ...etc };
-    });
+    const content: RestaurantData[] = sortedRestaurants
+      .slice(page * pageSize, (page + 1) * pageSize)
+      .map(({ celebs, ...etc }) => {
+        const sortedCelebs: Celeb[] = moveCelebToFrontById(celebs, celebId);
+        return { celebs: sortedCelebs, ...etc };
+      });
 
     const restaurantListData: RestaurantListData = {
       content,
@@ -69,11 +73,12 @@ export const MainPageSuccessHandler = [
   }),
 
   rest.get('/celebs', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockCelebs));
+    return res(ctx.status(200), ctx.json(celebs));
   }),
 
   rest.get('/oauth/login/:oauthType', (req, res, ctx) => {
     const code = req.url.searchParams.get('code') ?? null;
+
     if (code === null) {
       return res(ctx.status(401), ctx.json({ message: '인증되지 않은 code입니다.' }));
     }
@@ -82,6 +87,7 @@ export const MainPageSuccessHandler = [
     const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
     const expirationDate = new Date(currentDate.getTime() + sixHoursInMilliseconds);
     window.location.href = '/';
+
     return res(ctx.cookie('JSESSION', `${code}`, { expires: expirationDate }), ctx.status(200));
   }),
 
@@ -114,7 +120,7 @@ export const MainPageSuccessHandler = [
     }
 
     // 쿠키 갱신
-    return res(ctx.status(200), ctx.json(mockProfileData));
+    return res(ctx.status(200), ctx.json(profile));
   }),
 
   rest.post('/restaurants/:restaurantId/like', (req, res, ctx) => {
