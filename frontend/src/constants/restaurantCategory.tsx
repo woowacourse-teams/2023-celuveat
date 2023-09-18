@@ -17,50 +17,17 @@ interface Category {
 }
 
 const RESTAURANT_CATEGORY: Category[] = [
-  {
-    label: '전체',
-    icon: <All />,
-  },
-  {
-    label: '일식당',
-    icon: <Japanese />,
-  },
-  {
-    label: '한식',
-    icon: <Korean />,
-  },
-  {
-    label: '초밥,롤',
-    icon: <Sushi />,
-  },
-  {
-    label: '생선회',
-    icon: <Sashimi />,
-  },
-  {
-    label: '양식',
-    icon: <Pasta />,
-  },
-  {
-    label: '와인',
-    icon: <Wine />,
-  },
-  {
-    label: '육류,고기요리',
-    icon: <Meat />,
-  },
-  {
-    label: '이자카야',
-    icon: <Ijakaya />,
-  },
-  {
-    label: '돼지고기구이',
-    icon: <Pig />,
-  },
-  {
-    label: '요리주점',
-    icon: <Pub />,
-  },
+  { label: '전체', icon: <All /> },
+  { label: '일식당', icon: <Japanese /> },
+  { label: '한식', icon: <Korean /> },
+  { label: '초밥,롤', icon: <Sushi /> },
+  { label: '생선회', icon: <Sashimi /> },
+  { label: '양식', icon: <Pasta /> },
+  { label: '와인', icon: <Wine /> },
+  { label: '육류,고기요리', icon: <Meat /> },
+  { label: '이자카야', icon: <Ijakaya /> },
+  { label: '돼지고기구이', icon: <Pig /> },
+  { label: '요리주점', icon: <Pub /> },
 ];
 
 export default RESTAURANT_CATEGORY;
