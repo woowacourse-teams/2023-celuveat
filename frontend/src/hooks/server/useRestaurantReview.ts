@@ -6,11 +6,16 @@ import { shallow } from 'zustand/shallow';
 import useToastState from '~/hooks/store/useToastState';
 
 import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
-import useAPIClient from './useAPIClient';
+import { apiClient } from '~/api/apiClient';
+import {
+  deleteRestaurantReview,
+  getRestaurantReview,
+  patchRestaurantReview,
+  postRestaurantReview,
+} from '~/api/restaurantReview';
 
 const useRestaurantReview = () => {
   const { id: restaurantId } = useParams();
-  const { apiClient, apiUserClient } = useAPIClient();
   const { onFailure } = useToastState(
     state => ({
       onFailure: state.onFailure,
@@ -28,26 +33,6 @@ const useRestaurantReview = () => {
         onFailure(error.response.data as string);
         break;
     }
-  };
-
-  const getRestaurantReview = async (id: string) => {
-    const response = await apiClient.get(`/reviews?restaurantId=${id}`);
-    return response.data;
-  };
-
-  const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
-    const response = await apiUserClient.post(`/reviews`, body);
-    return response;
-  };
-
-  const deleteRestaurantReview = async (reviewId: number) => {
-    const response = await apiUserClient.delete(`/reviews/${reviewId}`);
-    return response;
-  };
-
-  const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
-    const response = await apiUserClient.patch(`/reviews/${reviewId}`, body);
-    return response;
   };
 
   const { data: restaurantReviewsData, isLoading } = useQuery<RestaurantReviewData>({

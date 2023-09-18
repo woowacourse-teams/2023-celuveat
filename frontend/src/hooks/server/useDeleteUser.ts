@@ -9,12 +9,11 @@ import { shallow } from 'zustand/shallow';
 import useToastState from '~/hooks/store/useToastState';
 
 import type { ProfileData } from '~/@types/api.types';
-import useUser from './useUser';
+import { deleteUserData } from '~/api/user';
 
 const useDeleteUser = () => {
   const qc = useQueryClient();
   const navigator = useNavigate();
-  const { deleteUserData } = useUser();
 
   const { onFailure, close } = useToastState(
     state => ({

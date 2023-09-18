@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
-import useUser from './useUser';
+import { postRestaurantLike } from '~/api/user';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -18,7 +18,6 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     }),
     shallow,
   );
-  const { postRestaurantLike } = useUser();
   // const queryClient = useQueryClient();
 
   const toggleLike = useMutation({

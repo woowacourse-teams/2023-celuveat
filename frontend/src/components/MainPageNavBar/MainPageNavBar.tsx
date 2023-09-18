@@ -8,14 +8,13 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';
-import useCeleb from '~/hooks/server/useCeleb';
+import { getCelebs } from '~/api/celeb';
 
 function MainPageNavBar() {
   const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
     shallow,
   );
-  const { getCelebs } = useCeleb();
 
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],

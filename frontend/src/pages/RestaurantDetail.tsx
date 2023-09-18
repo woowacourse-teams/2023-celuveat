@@ -27,10 +27,10 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
 import type { RestaurantData, RestaurantListData, VideoList } from '~/@types/api.types';
-import useRestaurant from '~/hooks/server/useRestaurant';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
-import useCeleb from '~/hooks/server/useCeleb';
 import useScrollDirection from '~/hooks/useScrollDirection';
+import { getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
+import { getCelebVideo } from '~/api/celeb';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,9 +39,7 @@ function RestaurantDetail() {
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
-  const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
   const scrollDirection = useScrollDirection();
-  const { getCelebVideo } = useCeleb();
 
   const {
     data: {

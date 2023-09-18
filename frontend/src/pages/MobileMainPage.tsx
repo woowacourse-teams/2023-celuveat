@@ -26,13 +26,14 @@ import ProfileImage from '~/components/@common/ProfileImage';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
-import { RestaurantCategory } from '~/@types/restaurant.types';
 import { isEqual } from '~/utils/compare';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import TextButton from '~/components/@common/Button';
-import useCeleb from '~/hooks/server/useCeleb';
-import useUser from '~/hooks/server/useUser';
-import { ProfileData } from '~/@types/api.types';
+
+import type { RestaurantCategory } from '~/@types/restaurant.types';
+import type { ProfileData } from '~/@types/api.types';
+import { getCelebs } from '~/api/celeb';
+import { getLogout, getProfile } from '~/api/user';
 
 function MobileMainPage() {
   const refs = [useRef(), useRef()];
@@ -41,10 +42,6 @@ function MobileMainPage() {
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
-
-  const { getCelebs } = useCeleb();
-  const { getProfile } = useUser();
-  const { getLogout } = useUser();
 
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
