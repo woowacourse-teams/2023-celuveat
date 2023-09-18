@@ -31,8 +31,6 @@ function RestaurantCardList() {
       ],
       shallow,
     );
-  
-  const { getRestaurants } = useRestaurant();
 
   const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
