@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NavItem from '../@common/NavItem';
 import LoveIcon from '~/assets/icons/love.svg';
 import UserButton from './UserButton';
-import FilterButton from './filterButton';
+import FilterButton from './FilterButton';
 import useScrollBlock from '~/hooks/useScrollBlock';
 
 interface BottomNavBarProps {
