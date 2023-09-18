@@ -175,6 +175,7 @@ const useMap = ({ center, zoom, onClick, onIdle, markers, gestureHandling }: Use
         gestureHandling,
         styles,
         clickableIcons: false,
+        minZoom: 7,
       });
 
       markers?.forEach(
