@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Header } from '~/components/@common/Header';
+import Footer from '~/components/@common/Footer';
+import { Header, MobileHeader } from '~/components/@common/Header';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
 import Toast from '~/components/@common/Toast';
 import useMediaQuery from '~/hooks/useMediaQuery';
@@ -11,8 +12,9 @@ function Root() {
   return (
     <>
       <Suspense fallback={<LoadingIndicator size={64} />}>
-        {!isMobile && <Header />}
+        {isMobile ? <MobileHeader /> : <Header />}
         <Outlet />
+        {!isMobile && <Footer />}
       </Suspense>
       <Toast />
     </>

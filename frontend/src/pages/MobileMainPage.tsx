@@ -11,7 +11,6 @@ import ListIcon from '~/assets/icons/list.svg';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import Footer from '~/components/@common/Footer';
 import Map from '~/components/@common/Map';
-import MobileHeader from '~/components/@common/Header/MobileHeader';
 import BottomNavBar from '~/components/BottomNavBar/BottomNavBar';
 
 function MobileMainPage() {
@@ -24,8 +23,6 @@ function MobileMainPage() {
 
   return (
     <StyledMobileMainPageContainer>
-      <MobileHeader showSearchBar />
-
       {isListShowed ? (
         <StyledToggleButton
           type="button"

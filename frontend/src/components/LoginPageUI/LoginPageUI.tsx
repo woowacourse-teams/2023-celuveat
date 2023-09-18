@@ -1,8 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import Footer from '~/components/@common/Footer';
-import { Header } from '~/components/@common/Header';
-
 import useMediaQuery from '~/hooks/useMediaQuery';
 
 import { FONT_SIZE } from '~/styles/common';
@@ -17,12 +14,10 @@ function LoginPageUI({ title, children }: LoginPageUIProps) {
 
   return (
     <StyledMobileLayout>
-      {!isMobile && <Header />}
       <StyledContent isMobile={isMobile}>
         <StyledTitle>{title}</StyledTitle>
         {children}
       </StyledContent>
-      <Footer />
     </StyledMobileLayout>
   );
 }

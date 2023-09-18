@@ -1,17 +1,17 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { FONT_SIZE } from '~/styles/common';
 import SearchBar from '~/components/SearchBar';
 import Logo from '~/assets/icons/logo-icon.svg';
 
-interface MobileHeaderProps {
-  showSearchBar?: boolean;
-}
+function MobileHeader() {
+  const { pathname } = useLocation();
 
-function MobileHeader({ showSearchBar = false }: MobileHeaderProps) {
+  const isHome = pathname === '/';
+
   return (
-    <StyledTopNavBar>
+    <StyledTopNavBar isHome={isHome}>
       <header>
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={32} />
@@ -19,7 +19,7 @@ function MobileHeader({ showSearchBar = false }: MobileHeaderProps) {
         <h5>celuveat</h5>
         <div />
       </header>
-      {showSearchBar && (
+      {isHome && (
         <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
           <SearchBar />
         </Wrapper>
@@ -30,19 +30,18 @@ function MobileHeader({ showSearchBar = false }: MobileHeaderProps) {
 
 export default MobileHeader;
 
-const StyledTopNavBar = styled.nav`
+const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   position: fixed;
-  z-index: 10;
+  z-index: 100;
 
   width: 100%;
-  height: 88px;
+  height: ${({ isHome }) => (isHome ? '88px' : '44px')};
 
-  padding: 0.2rem 0.8rem;
+  padding: 0 0.8rem;
 
   background-color: var(--white);
   box-shadow: var(--map-shadow);

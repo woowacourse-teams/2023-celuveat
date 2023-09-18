@@ -1,8 +1,6 @@
 import { Suspense } from 'react';
 import { styled, css } from 'styled-components';
 
-import Footer from '~/components/@common/Footer';
-import { Header } from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import MainPageNavBar from '~/components/MainPageNavBar';
@@ -30,7 +28,6 @@ function MainPage() {
 
   return (
     <>
-      <Header />
       <Suspense fallback={<div>로딩중...</div>}>
         <MainPageNavBar />
       </Suspense>
@@ -42,7 +39,6 @@ function MainPage() {
           <Map toggleMapExpand={toggleExpandedMap} />
         </StyledRightSide>
       </StyledLayout>
-      <Footer />
     </>
   );
 }
