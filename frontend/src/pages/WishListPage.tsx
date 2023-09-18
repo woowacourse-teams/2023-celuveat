@@ -4,10 +4,10 @@ import styled, { css } from 'styled-components';
 import Logo from '~/assets/icons/logo-icon.svg';
 
 import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
 import RestaurantWishList from '~/components/RestaurantWishList';
 import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 
+import { Header } from '~/components/@common/Header';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { FONT_SIZE } from '~/styles/common';
 

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import Logo from '~/assets/icons/logo-icon.svg';
 
 import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
+import { Header } from '~/components/@common/Header';
 import ImageGrid from '~/components/@common/ImageGrid';
 import VideoCarousel from '~/components/@common/VideoCarousel';
 import RestaurantCard from '~/components/RestaurantCard';

@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { styled, css } from 'styled-components';
 
 import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
+import { Header } from '~/components/@common/Header';
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import MainPageNavBar from '~/components/MainPageNavBar';
