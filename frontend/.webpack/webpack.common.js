@@ -57,8 +57,4 @@ module.exports = {
     historyApiFallback: true,
     allowedHosts: 'all',
   },
-
-  optimization: {
-    minimize: true,
-  },
 };
