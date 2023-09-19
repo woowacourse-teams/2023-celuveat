@@ -26,11 +26,11 @@ import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
-import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
-import useRestaurant from '~/hooks/server/useRestaurant';
+import type { RestaurantData, RestaurantListData, VideoList } from '~/@types/api.types';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
-import useCeleb from '~/hooks/server/useCeleb';
 import useScrollDirection from '~/hooks/useScrollDirection';
+import { getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
+import { getCelebVideo } from '~/api/celeb';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -39,9 +39,7 @@ function RestaurantDetail() {
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
-  const { getRestaurantDetail, getRestaurantVideo, getNearByRestaurant } = useRestaurant();
   const scrollDirection = useScrollDirection();
-  const { getCelebVideo } = useCeleb();
 
   const {
     data: {
@@ -61,7 +59,7 @@ function RestaurantDetail() {
       lng,
     } = {},
     isSuccess: isSuccessRestaurantDetail,
-  } = useQuery<RestaurantDetailData>({
+  } = useQuery<RestaurantData>({
     queryKey: ['restaurantDetail', restaurantId, celebId],
     queryFn: async () => getRestaurantDetail(restaurantId, celebId),
     cacheTime: 0,
@@ -194,6 +192,8 @@ function RestaurantDetail() {
                         naverMapUrl,
                         lat,
                         lng,
+                        likeCount,
+                        viewCount,
                       }}
                     />
                     <button type="button" onClick={openNewWindow(naverMapUrl)}>
@@ -281,6 +281,8 @@ function RestaurantDetail() {
                 phoneNumber,
                 naverMapUrl,
                 lat,
+                viewCount,
+                likeCount,
                 lng,
               }}
             />

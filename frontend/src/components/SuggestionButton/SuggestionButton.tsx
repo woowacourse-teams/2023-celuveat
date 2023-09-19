@@ -6,7 +6,7 @@ import { Modal, ModalContent } from '../@common/Modal';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
 import Pencil from '~/assets/icons/pencil.svg';
-import useRestaurant from '~/hooks/server/useRestaurant';
+import { postRevisedInfo } from '~/api/restaurant';
 
 const labels = [
   '레스토랑이 폐점했어요.',
@@ -20,7 +20,6 @@ function SuggestionButton() {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [textareaValue, setTextareaValue] = useState('');
-  const { postRevisedInfo } = useRestaurant();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

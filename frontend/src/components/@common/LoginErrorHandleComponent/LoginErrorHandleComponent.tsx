@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProfileData } from '~/@types/api.types';
-import useUser from '~/hooks/server/useUser';
+import { getProfile } from '~/api/user';
 
 interface LoginErrorHandleComponentProps {
   children: React.ReactNode;
@@ -10,7 +10,6 @@ interface LoginErrorHandleComponentProps {
 
 function LoginErrorHandleComponent({ children }: LoginErrorHandleComponentProps) {
   const navigator = useNavigate();
-  const { getProfile } = useUser();
 
   const { isLoading, isFetching, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
