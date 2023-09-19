@@ -1,9 +1,9 @@
 import { rest } from 'msw';
 
-import { videos, originVideos } from '../data/videos';
-import restaurants from '../data/restaurants';
-import correction from '../data/correction';
-import reviews from '../data/reviews';
+import { videos, originVideos } from '../../data/videos';
+import restaurants from '../../data/restaurants';
+import correction from '../../data/correction';
+import reviews from '../../data/reviews';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData, VideoList } from '~/@types/api.types';
