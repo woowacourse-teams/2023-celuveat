@@ -98,7 +98,7 @@ function RestaurantCardList() {
   );
 }
 
-export default React.memo(RestaurantCardList);
+export default RestaurantCardList;
 
 const StyledSkeleton = styled.div`
   padding-bottom: 3.2rem;
