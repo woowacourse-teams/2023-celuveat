@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "index.tsx",
   "license": "MIT",
+  "sideEffects": false,
   "scripts": {
     "start:msw": "webpack serve --port 3000 --env TARGET_ENV=msw",
     "start:dev": "webpack serve --port 3000 --env TARGET_ENV=dev",
