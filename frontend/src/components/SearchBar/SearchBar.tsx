@@ -97,7 +97,6 @@ const StyledContainer = styled.div<{ isMobile: boolean }>`
 
           margin: 0.4rem 0;
 
-          border: 1px solid var(--gray-1);
           border-radius: ${BORDER_RADIUS.xs};
           background: var(--gray-1);
         `
