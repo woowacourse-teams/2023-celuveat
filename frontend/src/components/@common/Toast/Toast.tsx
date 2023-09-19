@@ -4,6 +4,7 @@ import { Modal } from '~/components/@common/Modal';
 import useToastState from '~/hooks/store/useToastState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import getImgUrl from '~/utils/image';
 
 interface StyledToastProps {
   isSuccess?: boolean;
@@ -20,7 +21,12 @@ function Toast() {
     <Modal open={open} close={close} isOpen={isOpen}>
       {isOpen && (
         <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
-          {image && <StyledToastImg src={`https://www.celuveat.com/images-data/${image.url}`} alt={image.alt} />}
+          {image && (
+            <picture>
+              <StyledToastSource type="image/webp" srcSet={`${getImgUrl(image.url, 'webp')}`} />
+              <StyledToastImg src={`${getImgUrl(image.url, 'jpeg')}`} alt={image.alt} />
+            </picture>
+          )}
           <StyledToastText>{text}</StyledToastText>
         </StyledToastWrapper>
       )}
@@ -30,11 +36,19 @@ function Toast() {
 
 export default Toast;
 
-const StyledToastImg = styled.img`
+const styledToastImgVariable = css`
   width: 44px;
   height: 44px;
 
   border-radius: ${BORDER_RADIUS.sm};
+`;
+
+const StyledToastImg = styled.img`
+  ${styledToastImgVariable}
+`;
+
+const StyledToastSource = styled.source`
+  ${styledToastImgVariable}
 `;
 
 const StyledToastText = styled.span`

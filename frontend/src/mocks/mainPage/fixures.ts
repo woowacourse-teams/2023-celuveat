@@ -46,7 +46,7 @@ export let mockRestaurantListData: RestaurantListData = {
       images: [
         {
           id: 401,
-          name: 'eWFzaWdpX-uwsOqwgOustOuLreuztuydjO2DlQ.jpeg',
+          name: 'eWFzaWdpX-uwsOqwgOustOuLreuztuydjO2DlQ',
           author: '@yasigi',
           sns: '@yasigi',
         },
@@ -75,7 +75,7 @@ export let mockRestaurantListData: RestaurantListData = {
       images: [
         {
           id: 47,
-          name: 'bW9uc3RlcmdvdXJtZXRfNjDrhYTsoITthrXsi6DstIztmanshozqs7HssL1f7ISg66aJ7KeB7JiB7KCQ.jpeg',
+          name: 'bW9uc3RlcmdvdXJtZXRfNjDrhYTsoITthrXsi6DstIztmanshozqs7HssL1f7ISg66aJ7KeB7JiB7KCQ',
           author: '@monstergourmet',
           sns: '@monstergourmet',
         },
@@ -105,7 +105,7 @@ export let mockRestaurantListData: RestaurantListData = {
       images: [
         {
           id: 150,
-          name: 'bGl3b29f7IiZ7ISx7ZqM7J6l.jpeg',
+          name: 'bGl3b29f7IiZ7ISx7ZqM7J6l',
           author: '@Liwoo_foodie',
           sns: '@Liwoo_foodie',
         },
@@ -134,7 +134,7 @@ export let mockRestaurantListData: RestaurantListData = {
       images: [
         {
           id: 48,
-          name: 'bW9uc3RlcmdvdXJtZXRf64uo7LSI7Iud64u5.jpeg',
+          name: 'bW9uc3RlcmdvdXJtZXRf64uo7LSI7Iud64u5',
           author: '@monstergourmet',
           sns: '@monstergourmet',
         },
@@ -164,7 +164,7 @@ export let mockRestaurantListData: RestaurantListData = {
       images: [
         {
           id: 143,
-          name: 'bGl3b29f7Iqk7Iuc7JWE7Jik66eI7Lig.jpeg',
+          name: 'bGl3b29f7Iqk7Iuc7JWE7Jik66eI7Lig',
           author: '@Liwoo_foodie',
           sns: '@Liwoo_foodie',
         },
