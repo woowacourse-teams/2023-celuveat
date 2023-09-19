@@ -146,7 +146,6 @@ function RestaurantDetail() {
                     <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
                       <Copy width={16} />
                       복사
-
                     </button>
                   </div>
                   <div>카테고리 : {category}</div>
@@ -155,7 +154,6 @@ function RestaurantDetail() {
                   <StyledMainVideo>
                     <h5>영상으로 보기</h5>
                     <iframe
-                      loading="lazy"
                       title={`${restaurantVideo.content[0].name}의 영상`}
                       src={`https://www.youtube.com/embed/${restaurantVideo.content[0].youtubeVideoKey}`}
                       allow="encrypted-media; gyroscope; picture-in-picture"

@@ -15,7 +15,6 @@ function VideoCarousel({ title, videos }: VideoCarouselProps) {
         {videos.map(({ name, youtubeVideoKey }) => (
           <li>
             <StyledVideo
-              loading="lazy"
               title={`${name}의 영상`}
               src={`https://www.youtube.com/embed/${youtubeVideoKey}`}
               allow="encrypted-media; gyroscope; picture-in-picture"
