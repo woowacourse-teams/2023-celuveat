@@ -13,6 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, '../dist/'),
     publicPath: '/',
     clean: true,
+    filename: '[name].[chunkhash:8].js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
