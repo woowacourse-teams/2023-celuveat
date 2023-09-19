@@ -7,11 +7,10 @@ import RestaurantWishItem from '~/components/RestaurantWishItem/RestaurantWishIt
 import useMediaQuery from '~/hooks/useMediaQuery';
 
 import type { RestaurantData } from '~/@types/api.types';
-import useUser from '~/hooks/server/useUser';
+import { getRestaurantWishList } from '~/api/user';
 
 function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
-  const { getRestaurantWishList } = useUser();
 
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['restaurants', 'like'],

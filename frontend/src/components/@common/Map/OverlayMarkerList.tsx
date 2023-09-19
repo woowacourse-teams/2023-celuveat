@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import getQuadrant from '~/utils/getQuadrant';
 import OverlayMarker from './OverlayMarker';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
+import { getRestaurants } from '~/api/restaurant';
 import type { RestaurantListData } from '~/@types/api.types';
 import type { Coordinate } from '~/@types/map.types';
-import useRestaurant from '~/hooks/server/useRestaurant';
 
 interface OverlayMarkerListProps {
   center: Coordinate;
@@ -17,7 +17,6 @@ function OverlayMarkerList({ center, map }: OverlayMarkerListProps) {
     state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.sort],
     shallow,
   );
-  const { getRestaurants } = useRestaurant();
 
   const { data, isLoading } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],

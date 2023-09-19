@@ -23,14 +23,12 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const { createReview, updateReview } = useRestaurantReview();
 
   const onCreateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
-    console.log(reviewId);
     e.preventDefault();
     createReview({ content: text, restaurantId: Number(restaurantId) });
     window.location.reload();
   };
 
   const onUpdateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
-    console.log(reviewId);
     e.preventDefault();
     updateReview({ reviewId, body: { content: text } });
     window.location.reload();

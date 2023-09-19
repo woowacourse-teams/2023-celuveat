@@ -12,5 +12,5 @@
 
   "stylelint.config": null,
   "stylelint.validate": ["css", "scss", "typescript", "typescriptreact"],
-  "cSpell.words": ["tanstack", "zustand"]
+  "cSpell.words": ["JSESSION", "tanstack", "zustand"]
 }
