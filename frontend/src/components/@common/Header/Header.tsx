@@ -9,18 +9,17 @@ import LoginModalContent from '~/components/LoginModalContent';
 import SearchBar from '~/components/SearchBar';
 
 import useBooleanState from '~/hooks/useBooleanState';
-import useUser from '~/hooks/server/useUser';
 
 import Logo from '~/assets/icons/logo.svg';
 
-import { ProfileData } from '~/@types/api.types';
+import type { ProfileData } from '~/@types/api.types';
+import { getLogout } from '~/api/user';
 
 function Header() {
   const qc = useQueryClient();
   const navigator = useNavigate();
   const { pathname } = useLocation();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
-  const { getLogout } = useUser();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;

@@ -7,7 +7,7 @@ import useBooleanState from '~/hooks/useBooleanState';
 
 import type { Restaurant } from '../../@types/restaurant.types';
 import type { RestaurantListData } from '../../@types/api.types';
-import useUser from './useUser';
+import { postRestaurantLike } from '~/api/user';
 
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
@@ -20,7 +20,6 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     }),
     shallow,
   );
-  const { postRestaurantLike } = useUser();
 
   const toggleLike = useMutation({
     mutationFn: postRestaurantLike,

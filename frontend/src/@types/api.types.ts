@@ -11,32 +11,29 @@ export interface RestaurantListData {
 }
 
 export interface RestaurantData {
+  lat: number;
+  lng: number;
   id: number;
   name: string;
   category: string;
   roadAddress: string;
-  isLiked?: boolean;
-  lat: number;
-  distance: number;
-  lng: number;
   phoneNumber: string;
   naverMapUrl: string;
+  viewCount: number;
+  distance: number;
+  isLiked: boolean;
+  likeCount: number;
   celebs: { id: number; name: string; youtubeChannelName: string; profileImageUrl: string }[];
   images: { id: number; name: string; author: string; sns: string }[];
 }
 
-export type RestaurantWishData = Omit<RestaurantData, 'isLiked'>;
+export type RestaurantWishData = Omit<RestaurantData, 'isLiked' | 'viewCount' | 'likeCount' | 'distance'>;
 
 export interface ProfileData {
   memberId: number;
   nickname: string;
   profileImageUrl: string;
   oauthServer: Oauth;
-}
-
-export interface RestaurantDetailData extends RestaurantData {
-  likeCount: number;
-  viewCount: number;
 }
 
 export interface Video {
