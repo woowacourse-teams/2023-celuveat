@@ -23,9 +23,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { isModalOpen, openModal, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
   const navigate = useNavigate();
 
-  const onClick = () => {
-    navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
-  };
+  const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
 
   const toggle: MouseEventHandler = e => {
     e.stopPropagation();

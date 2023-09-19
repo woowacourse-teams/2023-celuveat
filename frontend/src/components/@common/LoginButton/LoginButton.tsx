@@ -21,7 +21,12 @@ const LoginIcon: Record<string, React.ReactNode> = {
 
 function LoginButton({ type }: LoginButtonProps) {
   const onClick = () => {
-    window.location.href = OAUTH_LINK[type];
+    if (process.env.NODE_ENV === 'development') {
+      window.location.href = 'https://d.api.celuveat.com/login/local?id=abc';
+      window.location.href = '/oauth/redirect/kakao?code=12312421';
+    } else {
+      window.location.href = OAUTH_LINK[type];
+    }
   };
 
   return (
