@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-
+import styled, { css } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import getImgUrl from '~/utils/image';
 
@@ -36,6 +35,16 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
 
 export default WaterMarkImage;
 
+const styledImgCssVariable = css`
+  position: absolute;
+  inset: 0;
+
+  object-fit: cover;
+
+  width: 100%;
+  height: 100%;
+`;
+
 const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
   ${paintSkeleton}
   position: relative;
@@ -49,13 +58,7 @@ const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
 `;
 
 const StyledImage = styled.img`
-  position: absolute;
-  inset: 0;
-
-  object-fit: cover;
-
-  width: 100%;
-  height: 100%;
+  ${styledImgCssVariable}
 `;
 
 const StyledWaterMark = styled.div`

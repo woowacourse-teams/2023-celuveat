@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
-import { Modal, ModalContent } from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
+import Modal from '~/components/@common/Modal';
 import ReviewForm from '../ReviewForm/ReviewForm';
 import Pencil from '~/assets/icons/pencil.svg';
 
@@ -14,19 +13,20 @@ import { FONT_SIZE } from '~/styles/common';
 import { isMoreThan } from '~/utils/compare';
 import { REVIEW_SHOW_COUNT } from '~/constants/options';
 import DeleteButton from '../ReviewForm/DeleteButton';
+import LoginModal from '../LoginModal';
 
 function RestaurantReviewWrapper() {
   const { restaurantReviewsData } = useRestaurantReview();
-  const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll, reviewId } =
-    useReviewModalContext();
+  const { formType, isModalOpen, closeModal, openCreateReview, openShowAll, reviewId } = useReviewModalContext();
   const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
 
   const previewReviews = useMemo(() => reviews.slice(0, REVIEW_SHOW_COUNT), [reviews]);
   const isMoreReviews = isMoreThan(reviewCount, REVIEW_SHOW_COUNT);
 
   const getTitle = (type: string) => {
-    if (type === '') return '로그인';
     if (type === 'create') return '리뷰 작성하기';
+    if (type === 'update') return '리뷰 수정하기';
+    if (type === 'delete') return '리뷰 삭제하기';
     if (type === 'all') return '리뷰 모두 보기';
     return null;
   };
@@ -47,33 +47,28 @@ function RestaurantReviewWrapper() {
         </StyledButtonContainer>
       </StyledRestaurantReviewWrapper>
 
-      <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
-        <ModalContent title={getTitle(formType)}>
+      {formType ? (
+        <Modal title={getTitle(formType)} isOpen={isModalOpen} close={closeModal}>
           <>
-            {formType === '' && <LoginModalContent />}
             {formType === 'create' && <ReviewForm type="create" />}
             {formType === 'all' && (
               <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
             )}
-            {formType === 'update' && (
-              <ModalContent title="리뷰 수정하기">
-                <ReviewForm type="update" reviewId={reviewId} />
-              </ModalContent>
-            )}
+            {formType === 'update' && <ReviewForm type="update" reviewId={reviewId} />}
             {formType === 'delete' && (
-              <ModalContent title="리뷰 삭제하기">
-                <div>
-                  <StyledWarningMessage>
-                    <Alert width={32} />
-                    <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
-                  </StyledWarningMessage>
-                  <DeleteButton reviewId={reviewId} />
-                </div>
-              </ModalContent>
+              <div>
+                <StyledWarningMessage>
+                  <Alert width={32} />
+                  <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
+                </StyledWarningMessage>
+                <DeleteButton reviewId={reviewId} />
+              </div>
             )}
           </>
-        </ModalContent>
-      </Modal>
+        </Modal>
+      ) : (
+        <LoginModal isOpen={isModalOpen} close={closeModal} />
+      )}
     </>
   );
 }

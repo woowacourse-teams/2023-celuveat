@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LoginModalContent from './LoginModalContent';
+import LoginModal from './LoginModal';
 
-const meta: Meta<typeof LoginModalContent> = {
-  title: 'Modal/LoginModalContent',
-  component: LoginModalContent,
+const meta: Meta<typeof LoginModal> = {
+  title: 'Modal/LoginModal',
+  component: LoginModal,
   decorators: [
     Story => (
       <BrowserRouter>
@@ -18,8 +18,11 @@ const meta: Meta<typeof LoginModalContent> = {
 
 export default meta;
 
-type Story = StoryObj<typeof LoginModalContent>;
+type Story = StoryObj<typeof LoginModal>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    isOpen: true,
+    close: () => {},
+  },
 };
