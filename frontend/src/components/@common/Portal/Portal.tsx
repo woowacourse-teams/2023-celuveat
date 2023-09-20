@@ -1,4 +1,4 @@
-import React from 'react';
+import { cloneElement } from 'react';
 import { createPortal } from 'react-dom';
 
 interface PortalProps {
@@ -8,7 +8,7 @@ interface PortalProps {
 }
 
 function Portal({ children, close, isOpen }: PortalProps) {
-  return isOpen && createPortal(React.cloneElement(children, { close }), document.querySelector('#modal'));
+  return isOpen && createPortal(cloneElement(children, { close }), document.querySelector('#modal'));
 }
 
 export default Portal;

@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useBooleanState from '~/hooks/useBooleanState';
-import { Modal, ModalContent } from '../@common/Modal';
+import Modal from '../@common/Modal';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
 import Pencil from '~/assets/icons/pencil.svg';
@@ -45,29 +45,28 @@ function SuggestionButton() {
         <Pencil width={16} />
         <div>정보 수정 제안하기</div>
       </StyledButton>
-      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
-        <ModalContent title="정보 수정 제안">
-          <StyledForm onSubmit={handleSubmit}>
-            <h5>수정 항목</h5>
-            <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
-            <StyledUnorderedList>
-              {labels.map(label => (
-                <StyledListItem>
-                  <CheckBox value={label} onChange={clickCheckBox} />
-                  <span>{label}</span>
-                </StyledListItem>
-              ))}
-              <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
-            </StyledUnorderedList>
-            <TextButton
-              type="submit"
-              text="등록하기"
-              onClick={handleSubmit}
-              colorType="light"
-              disabled={!checkedItems.length && !textareaValue}
-            />
-          </StyledForm>
-        </ModalContent>
+
+      <Modal title="정보 수정 제안" close={closeModal} isOpen={isModalOpen}>
+        <StyledForm onSubmit={handleSubmit}>
+          <h5>수정 항목</h5>
+          <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
+          <StyledUnorderedList>
+            {labels.map(label => (
+              <StyledListItem>
+                <CheckBox value={label} onChange={clickCheckBox} />
+                <span>{label}</span>
+              </StyledListItem>
+            ))}
+            <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
+          </StyledUnorderedList>
+          <TextButton
+            type="submit"
+            text="등록하기"
+            onClick={handleSubmit}
+            colorType="light"
+            disabled={!checkedItems.length && !textareaValue}
+          />
+        </StyledForm>
       </Modal>
     </>
   );

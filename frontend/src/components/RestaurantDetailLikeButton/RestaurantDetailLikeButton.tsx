@@ -1,5 +1,5 @@
 import type { Restaurant } from '~/@types/restaurant.types';
-import { Modal, ModalContent } from '../@common/Modal';
+import Modal from '../@common/Modal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import LoginModalContent from '../LoginModalContent';
 import WhiteLove from '~/assets/icons/love.svg';
@@ -26,10 +26,8 @@ function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonPr
           </>
         )}
       </button>
-      <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
-        <ModalContent title="로그인 및 회원 가입">
-          <LoginModalContent />
-        </ModalContent>
+      <Modal title="로그인 및 회원 가입" isOpen={isModalOpen} close={closeModal}>
+        <LoginModalContent />
       </Modal>
     </>
   );

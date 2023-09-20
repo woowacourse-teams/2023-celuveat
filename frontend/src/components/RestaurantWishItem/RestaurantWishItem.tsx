@@ -6,7 +6,7 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import { Modal, ModalContent } from '~/components/@common/Modal';
+import Modal from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
@@ -52,10 +52,8 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           </StyledProfileImageSection>
         </section>
       </StyledContainer>
-      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
-        <ModalContent title="로그인 및 회원 가입">
-          <LoginModalContent />
-        </ModalContent>
+      <Modal title="로그인 및 회원 가입" close={closeModal} isOpen={isModalOpen}>
+        <LoginModalContent />
       </Modal>
     </>
   );

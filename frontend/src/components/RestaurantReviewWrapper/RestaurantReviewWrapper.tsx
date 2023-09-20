@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
-import { Modal, ModalContent } from '~/components/@common/Modal';
+import Modal from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
 import ReviewForm from '../ReviewForm/ReviewForm';
 import Pencil from '~/assets/icons/pencil.svg';
@@ -17,8 +17,7 @@ import DeleteButton from '../ReviewForm/DeleteButton';
 
 function RestaurantReviewWrapper() {
   const { restaurantReviewsData } = useRestaurantReview();
-  const { formType, isModalOpen, openModal, closeModal, openCreateReview, openShowAll, reviewId } =
-    useReviewModalContext();
+  const { formType, isModalOpen, closeModal, openCreateReview, openShowAll, reviewId } = useReviewModalContext();
   const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
 
   const previewReviews = useMemo(() => reviews.slice(0, REVIEW_SHOW_COUNT), [reviews]);
@@ -47,32 +46,22 @@ function RestaurantReviewWrapper() {
         </StyledButtonContainer>
       </StyledRestaurantReviewWrapper>
 
-      <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
-        <ModalContent title={getTitle(formType)}>
-          <>
-            {formType === '' && <LoginModalContent />}
-            {formType === 'create' && <ReviewForm type="create" />}
-            {formType === 'all' && (
-              <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
-            )}
-            {formType === 'update' && (
-              <ModalContent title="리뷰 수정하기">
-                <ReviewForm type="update" reviewId={reviewId} />
-              </ModalContent>
-            )}
-            {formType === 'delete' && (
-              <ModalContent title="리뷰 삭제하기">
-                <div>
-                  <StyledWarningMessage>
-                    <Alert width={32} />
-                    <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
-                  </StyledWarningMessage>
-                  <DeleteButton reviewId={reviewId} />
-                </div>
-              </ModalContent>
-            )}
-          </>
-        </ModalContent>
+      <Modal title={getTitle(formType)} isOpen={isModalOpen} close={closeModal}>
+        <>
+          {formType === '' && <LoginModalContent />}
+          {formType === 'create' && <ReviewForm type="create" />}
+          {formType === 'all' && <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />}
+          {formType === 'update' && <ReviewForm type="update" reviewId={reviewId} />}
+          {formType === 'delete' && (
+            <div>
+              <StyledWarningMessage>
+                <Alert width={32} />
+                <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
+              </StyledWarningMessage>
+              <DeleteButton reviewId={reviewId} />
+            </div>
+          )}
+        </>
       </Modal>
     </>
   );

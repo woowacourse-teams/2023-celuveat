@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import CelebIcon from '~/assets/icons/celeb.svg';
 import TextButton from '../@common/Button';
-import { Modal, ModalContent } from '../@common/Modal';
+import Modal from '../@common/Modal';
 import { FONT_SIZE } from '~/styles/common';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import { Celeb } from '~/@types/celeb.types';
@@ -44,53 +44,46 @@ function FilterOptionsModal({ isModalOpen, openModal, closeModal, celebOptions }
   };
 
   return (
-    <Modal isOpen={isModalOpen} open={openModal} close={closeModal}>
-      <ModalContent>
-        <StyledFilterContainer>
-          <StyledFilterButtonContainer>
-            <TextButton type="button" text="셀럽 선택" onClick={() => setFilterName('celeb')} colorType="light" />
-            <TextButton
-              type="button"
-              text="카테고리 선택"
-              onClick={() => setFilterName('category')}
-              colorType="light"
-            />
-          </StyledFilterButtonContainer>
-          {filterName === 'celeb' && (
-            <StyledFilterItem>
-              <StyledSelectContainer>
-                {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(({ id, name, youtubeChannelName, profileImageUrl }) => (
-                  <StyledDropDownOption data-id={id} onClick={clickCeleb}>
+    <Modal isOpen={isModalOpen} close={closeModal}>
+      <StyledFilterContainer>
+        <StyledFilterButtonContainer>
+          <TextButton type="button" text="셀럽 선택" onClick={() => setFilterName('celeb')} colorType="light" />
+          <TextButton type="button" text="카테고리 선택" onClick={() => setFilterName('category')} colorType="light" />
+        </StyledFilterButtonContainer>
+        {filterName === 'celeb' && (
+          <StyledFilterItem>
+            <StyledSelectContainer>
+              {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(({ id, name, youtubeChannelName, profileImageUrl }) => (
+                <StyledDropDownOption data-id={id} onClick={clickCeleb}>
+                  <div>
+                    {id === -1 ? <CelebIcon /> : <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />}
                     <div>
-                      {id === -1 ? <CelebIcon /> : <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />}
-                      <div>
-                        <StyledCelebName>{name}</StyledCelebName>
-                        <StyledChannelName>{youtubeChannelName}</StyledChannelName>
-                      </div>
+                      <StyledCelebName>{name}</StyledCelebName>
+                      <StyledChannelName>{youtubeChannelName}</StyledChannelName>
                     </div>
-                  </StyledDropDownOption>
-                ))}
-              </StyledSelectContainer>
-            </StyledFilterItem>
-          )}
-          {filterName === 'category' && (
-            <StyledFilterItem>
-              <li>
-                {RESTAURANT_CATEGORY.map(({ icon, label }) => (
-                  <StyledNavItemButton
-                    aria-label={label}
-                    data-label={label}
-                    type="button"
-                    onClick={clickRestaurantCategory}
-                  >
-                    <NavItem label={label} icon={icon} isShow={isEqual(category, label)} />
-                  </StyledNavItemButton>
-                ))}
-              </li>
-            </StyledFilterItem>
-          )}
-        </StyledFilterContainer>
-      </ModalContent>
+                  </div>
+                </StyledDropDownOption>
+              ))}
+            </StyledSelectContainer>
+          </StyledFilterItem>
+        )}
+        {filterName === 'category' && (
+          <StyledFilterItem>
+            <li>
+              {RESTAURANT_CATEGORY.map(({ icon, label }) => (
+                <StyledNavItemButton
+                  aria-label={label}
+                  data-label={label}
+                  type="button"
+                  onClick={clickRestaurantCategory}
+                >
+                  <NavItem label={label} icon={icon} isShow={isEqual(category, label)} />
+                </StyledNavItemButton>
+              ))}
+            </li>
+          </StyledFilterItem>
+        )}
+      </StyledFilterContainer>
     </Modal>
   );
 }

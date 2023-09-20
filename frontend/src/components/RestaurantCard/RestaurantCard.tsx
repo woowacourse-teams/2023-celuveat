@@ -8,7 +8,7 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import { Modal, ModalContent } from '~/components/@common/Modal';
+import Modal from '~/components/@common/Modal';
 import LoginModalContent from '~/components/LoginModalContent';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
@@ -66,10 +66,8 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           </StyledProfileImageSection>
         </StyledInfoSection>
       </StyledContainer>
-      <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
-        <ModalContent title="로그인 및 회원 가입">
-          <LoginModalContent />
-        </ModalContent>
+      <Modal title="로그인 및 회원 가입" isOpen={isModalOpen} close={closeModal}>
+        <LoginModalContent />
       </Modal>
     </>
   );

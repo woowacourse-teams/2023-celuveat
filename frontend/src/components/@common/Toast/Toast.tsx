@@ -1,9 +1,9 @@
 import { css, keyframes, styled } from 'styled-components';
 import { shallow } from 'zustand/shallow';
-import { Modal } from '~/components/@common/Modal';
 import useToastState from '~/hooks/store/useToastState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import Portal from '../Portal';
 
 interface StyledToastProps {
   isSuccess?: boolean;
@@ -12,19 +12,20 @@ interface StyledToastProps {
 
 function Toast() {
   const { isMobile } = useMediaQuery();
-  const [text, isSuccess, image, isOpen, open, close] = useToastState(
-    state => [state.text, state.isSuccess, state.image, state.isOpen, state.open, state.close],
+  const [text, isSuccess, image, isOpen, close] = useToastState(
+    state => [state.text, state.isSuccess, state.image, state.isOpen, state.close],
     shallow,
   );
+
   return (
-    <Modal open={open} close={close} isOpen={isOpen}>
+    <Portal close={close} isOpen={isOpen}>
       {isOpen && (
         <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
           {image && <StyledToastImg src={`https://www.celuveat.com/images-data/${image.url}`} alt={image.alt} />}
           <StyledToastText>{text}</StyledToastText>
         </StyledToastWrapper>
       )}
-    </Modal>
+    </Portal>
   );
 }
 

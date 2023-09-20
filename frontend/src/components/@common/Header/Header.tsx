@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { Modal, ModalContent } from '~/components/@common/Modal';
+import Modal from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModalContent from '~/components/LoginModalContent';
 import SearchBar from '~/components/SearchBar';
@@ -49,10 +49,8 @@ function Header() {
 
         <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
-      <Modal open={openModal} close={closeModal} isOpen={isModalOpen}>
-        <ModalContent title="로그인 및 회원 가입">
-          <LoginModalContent />
-        </ModalContent>
+      <Modal title="로그인 및 회원 가입" close={closeModal} isOpen={isModalOpen}>
+        <LoginModalContent />
       </Modal>
     </>
   );
