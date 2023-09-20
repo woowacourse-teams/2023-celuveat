@@ -1,5 +1,5 @@
-const serverImgUrl = 'https://www.celuveat.com/images-data/';
+import { SERVER_IMG_URL } from '~/constants/url';
 
-const getImgUrl = (imgUrl: string, type: 'webp' | 'jpeg') => `${serverImgUrl}${type}/${imgUrl}.${type}`;
+const getImgUrl = (imgUrl: string, type: 'webp' | 'jpeg') => `${SERVER_IMG_URL}${type}/${imgUrl}.${type}`;
 
 export default getImgUrl;

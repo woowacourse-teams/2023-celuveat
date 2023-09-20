@@ -1,0 +1,20 @@
+@font-face {
+  font-family: SUIT-Regular;
+  font-weight: normal;
+  font-style: normal;
+  src: url('./SUIT-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: SUIT-Medium;
+  font-weight: normal;
+  font-style: normal;
+  src: url('./SUIT-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: SUIT-Bold;
+  font-weight: normal;
+  font-style: normal;
+  src: url('./SUIT-Bold.woff2') format('woff2');
+}
