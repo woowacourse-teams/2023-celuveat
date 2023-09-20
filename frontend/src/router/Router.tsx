@@ -1,12 +1,15 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import MainPage from '~/pages/MainPage';
-import RestaurantDetail from '~/pages/RestaurantDetail';
-import WishListPage from '~/pages/WishListPage';
-import SignUpPage from '~/pages/SignUpPage';
-import WithdrawalPage from '~/pages/WithdrawalPage';
-import PrivacyPolicy from '~/pages/PrivacyPolicyPage';
-import OauthRedirectPage from '~/pages/OauthRedirectPage';
+
+import { lazy } from 'react';
 import Root from './Root';
+
+const MainPage = lazy(() => import('~/pages/MainPage'));
+const RestaurantDetail = lazy(() => import('~/pages/RestaurantDetail'));
+const SignUpPage = lazy(() => import('~/pages/SignUpPage'));
+const WishListPage = lazy(() => import('~/pages/WishListPage'));
+const WithdrawalPage = lazy(() => import('~/pages/WithdrawalPage'));
+const PrivacyPolicy = lazy(() => import('~/pages/PrivacyPolicyPage'));
+const OauthRedirectPage = lazy(() => import('~/pages/OauthRedirectPage'));
 
 function Router() {
   const router = createBrowserRouter([

@@ -1,7 +1,5 @@
 import { setupWorker } from 'msw';
-import { DetailPageSuccessHandler, DetailPageErrorHandler } from '~/mocks/detailPage/handler';
-import { MainPageSuccessHandler, MainPageErrorHandler } from '~/mocks/mainPage/handler';
-import { WishListPageSuccessHandler, WishListPageErrorHandler } from '~/mocks/wishListPage/handler';
+import { WishListPageSuccessHandler, DetailPageSuccessHandler, MainPageSuccessHandler } from '~/mocks/handler';
 
 export const worker = setupWorker(
   ...WishListPageSuccessHandler,

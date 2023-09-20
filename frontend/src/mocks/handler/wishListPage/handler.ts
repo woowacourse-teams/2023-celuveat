@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import restaurants from '../data/restaurants';
+import restaurants from '../../data/restaurants';
 
 export const WishListPageSuccessHandler = [
   rest.get('/restaurants/like', (req, res, ctx) => {

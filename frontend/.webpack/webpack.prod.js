@@ -2,6 +2,7 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const Dotenv = require('dotenv-webpack');
 
@@ -12,6 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, '../dist/'),
     publicPath: '/',
     clean: true,
+    filename: '[name].[chunkhash:8].js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
@@ -70,6 +72,9 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({
       path: path.resolve(__dirname, `../.prod.env`),
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
     }),
   ],
 
