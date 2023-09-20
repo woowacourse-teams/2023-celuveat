@@ -1,15 +1,14 @@
-import type { Restaurant } from '~/@types/restaurant.types';
-import { Modal, ModalContent } from '../@common/Modal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
-import LoginModalContent from '../LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import WhiteLove from '~/assets/icons/love.svg';
+import type { Restaurant } from '~/@types/restaurant.types';
 
 interface RestaurantDetailLikeButtonProps {
   restaurant: Restaurant;
 }
 
 function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonProps) {
-  const { isModalOpen, isLiked, closeModal, openModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, isLiked, closeModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   return (
     <>
@@ -26,11 +25,8 @@ function RestaurantDetailLikeButton({ restaurant }: RestaurantDetailLikeButtonPr
           </>
         )}
       </button>
-      <Modal isOpen={isModalOpen} close={closeModal} open={openModal}>
-        <ModalContent title="로그인 및 회원 가입">
-          <LoginModalContent />
-        </ModalContent>
-      </Modal>
+
+      <LoginModal isOpen={isModalOpen} close={closeModal} />
     </>
   );
 }

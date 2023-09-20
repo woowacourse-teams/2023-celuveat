@@ -1,9 +1,9 @@
 import { css, keyframes, styled } from 'styled-components';
 import { shallow } from 'zustand/shallow';
-import { Modal } from '~/components/@common/Modal';
 import useToastState from '~/hooks/store/useToastState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import Portal from '../Portal';
 import getImgUrl from '~/utils/image';
 
 interface StyledToastProps {
@@ -13,35 +13,38 @@ interface StyledToastProps {
 
 function Toast() {
   const { isMobile } = useMediaQuery();
-  const [text, isSuccess, image, isOpen, open, close] = useToastState(
-    state => [state.text, state.isSuccess, state.image, state.isOpen, state.open, state.close],
+  const [text, isSuccess, image, isOpen, close] = useToastState(
+    state => [state.text, state.isSuccess, state.image, state.isOpen, state.close],
     shallow,
   );
+
   return (
-    <Modal open={open} close={close} isOpen={isOpen}>
-      {isOpen && (
-        <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
-          {image && (
-            <picture>
-              <source type="images/webp" srcSet={getImgUrl(image.url, 'webp')} />
-              <source type="images/jpeg" srcSet={getImgUrl(image.url, 'jpeg')} />
-              <StyledToastImg src={getImgUrl(image.url, 'webp')} alt="음식점" loading="lazy" />
-            </picture>
-          )}
-          <StyledToastText>{text}</StyledToastText>
-        </StyledToastWrapper>
-      )}
-    </Modal>
+    <Portal close={close} isOpen={isOpen}>
+      <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
+        {image && (
+          <picture>
+            <source type="images/webp" srcSet={getImgUrl(image.url, 'webp')} />
+            <source type="images/jpeg" srcSet={getImgUrl(image.url, 'jpeg')} />
+            <StyledToastImg src={getImgUrl(image.url, 'webp')} alt="음식점" loading="lazy" />
+          </picture>
+        )}
+        <StyledToastText>{text}</StyledToastText>
+      </StyledToastWrapper>
+    </Portal>
   );
 }
 
 export default Toast;
 
-const StyledToastImg = styled.img`
+const styledToastImgVariable = css`
   width: 44px;
   height: 44px;
 
   border-radius: ${BORDER_RADIUS.sm};
+`;
+
+const StyledToastImg = styled.img`
+  ${styledToastImgVariable}
 `;
 
 const StyledToastText = styled.span`

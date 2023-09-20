@@ -33,14 +33,7 @@ function FilterButton() {
         )}
       </StyledFilterButton>
 
-      {isModalOpen && (
-        <FilterOptionsModal
-          isModalOpen={isModalOpen}
-          openModal={openModal}
-          closeModal={closeModal}
-          celebOptions={celebOptions}
-        />
-      )}
+      <FilterOptionsModal isModalOpen={isModalOpen} closeModal={closeModal} celebOptions={celebOptions} />
     </>
   );
 }
