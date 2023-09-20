@@ -16,12 +16,11 @@ import { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface FilterOptionsModalProps {
   isModalOpen: boolean;
-  openModal: VoidFunction;
   closeModal: VoidFunction;
   celebOptions: Celeb[];
 }
 
-function FilterOptionsModal({ isModalOpen, openModal, closeModal, celebOptions }: FilterOptionsModalProps) {
+function FilterOptionsModal({ isModalOpen, closeModal, celebOptions }: FilterOptionsModalProps) {
   const [filterName, setFilterName] = useState('celeb');
 
   const [category, setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(

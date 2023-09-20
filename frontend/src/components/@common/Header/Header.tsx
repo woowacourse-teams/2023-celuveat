@@ -3,9 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useQueryClient } from '@tanstack/react-query';
 
-import Modal from '~/components/@common/Modal';
 import InfoDropDown from '~/components/InfoDropDown';
-import LoginModalContent from '~/components/LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import SearchBar from '~/components/SearchBar';
 
 import useBooleanState from '~/hooks/useBooleanState';
@@ -49,9 +48,8 @@ function Header() {
 
         <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
-      <Modal title="로그인 및 회원 가입" close={closeModal} isOpen={isModalOpen}>
-        <LoginModalContent />
-      </Modal>
+
+      <LoginModal close={closeModal} isOpen={isModalOpen} />
     </>
   );
 }

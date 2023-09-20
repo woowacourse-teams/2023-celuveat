@@ -6,8 +6,7 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import Modal from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 import type { Celeb } from '~/@types/celeb.types';
@@ -20,7 +19,7 @@ interface RestaurantWishItemProps {
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, openModal, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
   const navigate = useNavigate();
 
   const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
@@ -52,9 +51,8 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           </StyledProfileImageSection>
         </section>
       </StyledContainer>
-      <Modal title="로그인 및 회원 가입" close={closeModal} isOpen={isModalOpen}>
-        <LoginModalContent />
-      </Modal>
+
+      <LoginModal close={closeModal} isOpen={isModalOpen} />
     </>
   );
 }

@@ -8,8 +8,7 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import Modal from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface RestaurantCardProps {
@@ -66,9 +65,8 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           </StyledProfileImageSection>
         </StyledInfoSection>
       </StyledContainer>
-      <Modal title="로그인 및 회원 가입" isOpen={isModalOpen} close={closeModal}>
-        <LoginModalContent />
-      </Modal>
+
+      <LoginModal isOpen={isModalOpen} close={closeModal} />
     </>
   );
 }

@@ -20,17 +20,15 @@ function Toast() {
 
   return (
     <Portal close={close} isOpen={isOpen}>
-      {isOpen && (
-        <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
-          {image && (
-            <picture>
-              <StyledToastSource type="image/webp" srcSet={`${getImgUrl(image.url, 'webp')}`} />
-              <StyledToastImg src={`${getImgUrl(image.url, 'jpeg')}`} alt={image.alt} />
-            </picture>
-          )}
-          <StyledToastText>{text}</StyledToastText>
-        </StyledToastWrapper>
-      )}
+      <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
+        {image && (
+          <picture>
+            <StyledToastSource type="image/webp" srcSet={`${getImgUrl(image.url, 'webp')}`} />
+            <StyledToastImg src={`${getImgUrl(image.url, 'jpeg')}`} alt={image.alt} />
+          </picture>
+        )}
+        <StyledToastText>{text}</StyledToastText>
+      </StyledToastWrapper>
     </Portal>
   );
 }

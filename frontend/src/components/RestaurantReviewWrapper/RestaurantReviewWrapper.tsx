@@ -4,7 +4,6 @@ import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 import Modal from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
 import ReviewForm from '../ReviewForm/ReviewForm';
 import Pencil from '~/assets/icons/pencil.svg';
 
@@ -48,7 +47,7 @@ function RestaurantReviewWrapper() {
 
       <Modal title={getTitle(formType)} isOpen={isModalOpen} close={closeModal}>
         <>
-          {formType === '' && <LoginModalContent />}
+          {/* {formType === '' && <LoginModalContent />} */}
           {formType === 'create' && <ReviewForm type="create" />}
           {formType === 'all' && <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />}
           {formType === 'update' && <ReviewForm type="update" reviewId={reviewId} />}
