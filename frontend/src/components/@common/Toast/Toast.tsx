@@ -23,8 +23,9 @@ function Toast() {
       <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
         {image && (
           <picture>
-            <StyledToastSource type="image/webp" srcSet={`${getImgUrl(image.url, 'webp')}`} />
-            <StyledToastImg src={`${getImgUrl(image.url, 'jpeg')}`} alt={image.alt} />
+            <source type="images/webp" srcSet={getImgUrl(image.url, 'webp')} />
+            <source type="images/jpeg" srcSet={getImgUrl(image.url, 'jpeg')} />
+            <StyledToastImg src={getImgUrl(image.url, 'webp')} alt="음식점" loading="lazy" />
           </picture>
         )}
         <StyledToastText>{text}</StyledToastText>
@@ -43,10 +44,6 @@ const styledToastImgVariable = css`
 `;
 
 const StyledToastImg = styled.img`
-  ${styledToastImgVariable}
-`;
-
-const StyledToastSource = styled.source`
   ${styledToastImgVariable}
 `;
 

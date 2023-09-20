@@ -1,5 +1,5 @@
-import { MouseEvent } from 'react';
 import styled, { css } from 'styled-components';
+
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import getImgUrl from '~/utils/image';
 
@@ -11,7 +11,7 @@ interface WaterMarkImageProps {
 }
 
 function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
-  const onClickWaterMark = (e: MouseEvent) => {
+  const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
@@ -21,8 +21,9 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
   return (
     <StyledWaterMarkImage type={type}>
       <picture>
-        <StyledSource type="images/webp" srcSet={`${getImgUrl(imageUrl, 'webp')}`} />
-        <StyledImage src={`${getImgUrl(imageUrl, 'jpeg')}`} alt="음식점" loading="lazy" />
+        <source type="images/webp" srcSet={getImgUrl(imageUrl, 'webp')} />
+        <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
+        <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
       </picture>
       {waterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
@@ -58,10 +59,6 @@ const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
 `;
 
 const StyledImage = styled.img`
-  ${styledImgCssVariable}
-`;
-
-const StyledSource = styled.source`
   ${styledImgCssVariable}
 `;
 
