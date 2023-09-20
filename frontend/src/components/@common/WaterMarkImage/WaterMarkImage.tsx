@@ -21,8 +21,9 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
   return (
     <StyledWaterMarkImage type={type}>
       <picture>
-        <StyledSource type="images/webp" srcSet={`${getImgUrl(imageUrl, 'webp')}`} />
-        <StyledImage src={`${getImgUrl(imageUrl, 'jpeg')}`} alt="음식점" loading="lazy" />
+        <source type="images/webp" srcSet={`${getImgUrl(imageUrl, 'webp')}`} />
+        <source type="images/jpeg" srcSet={`${getImgUrl(imageUrl, 'jpeg')}`} />
+        <StyledImage src={`${getImgUrl(imageUrl, 'webp')}`} alt="음식점" loading="lazy" />
       </picture>
       {waterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
@@ -61,9 +62,9 @@ const StyledImage = styled.img`
   ${styledImgCssVariable}
 `;
 
-const StyledSource = styled.source`
-  ${styledImgCssVariable}
-`;
+// const StyledSource = styled.source`
+//   ${styledImgCssVariable}
+// `;
 
 const StyledWaterMark = styled.div`
   position: absolute;
