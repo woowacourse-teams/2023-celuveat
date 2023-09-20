@@ -34,7 +34,7 @@ const commonRules = [
     test: /\.(jpg|jpeg|gif|png|ico)?$/,
     type: 'asset',
     generator: {
-      filename: 'images/[name].[ext]',
+      filename: 'images/[name][ext]',
     },
   },
   {
@@ -53,6 +53,8 @@ const commonRules = [
 module.exports = (env, args) => {
   const { TARGET_ENV } = env;
 
+  const isProd = args.mode === 'production';
+
   return {
     mode: args.mode,
     ...commonConfig,
@@ -61,7 +63,7 @@ module.exports = (env, args) => {
         ...commonRules,
         {
           test: /\.css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
         },
       ],
     },
