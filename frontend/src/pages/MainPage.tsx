@@ -3,11 +3,12 @@ import { styled, css } from 'styled-components';
 
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import MainPageNavBar from '~/components/MainPageNavBar';
+import MainPageNavBar, { MainPageNavBarSkeleton } from '~/components/MainPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import MobileMainPage from './MobileMainPage';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
+import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 
 function MainPage() {
   const { isMobile } = useMediaQuery();
@@ -28,7 +29,7 @@ function MainPage() {
 
   return (
     <>
-      <Suspense fallback={<div>로딩중...</div>}>
+      <Suspense fallback={<MainPageNavBarSkeleton navItemLength={RESTAURANT_CATEGORY.length} />}>
         <MainPageNavBar />
       </Suspense>
       <StyledLayout isMapExpanded={isMapExpanded}>
