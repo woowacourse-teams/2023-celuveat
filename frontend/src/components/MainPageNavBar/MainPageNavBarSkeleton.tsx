@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 import { NavItemSkeleton } from '../@common/NavItem';
 
-function MainPageNavBarSkeleton() {
+interface MainPageNavBarSkeletonProps {
+  navItemLength: number;
+}
+
+function MainPageNavBarSkeleton({ navItemLength }: MainPageNavBarSkeletonProps) {
   return (
     <StyledNavBar>
       <NavItemSkeleton />
       <StyledLine />
       <div>
-        {Array.from({ length: 11 }, () => (
+        {Array.from({ length: navItemLength }, () => (
           <NavItemSkeleton />
         ))}
       </div>
