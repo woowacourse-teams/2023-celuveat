@@ -1,6 +1,7 @@
-import { MouseEvent } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
+
 import getImgUrl from '~/utils/image';
 
 interface WaterMarkImageProps {
@@ -11,7 +12,7 @@ interface WaterMarkImageProps {
 }
 
 function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
-  const onClickWaterMark = (e: MouseEvent) => {
+  const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
