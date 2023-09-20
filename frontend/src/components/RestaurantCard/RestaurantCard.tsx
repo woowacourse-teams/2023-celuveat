@@ -21,7 +21,7 @@ interface RestaurantCardProps {
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
-  const { isModalOpen, closeModal, openModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
+  const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
 
