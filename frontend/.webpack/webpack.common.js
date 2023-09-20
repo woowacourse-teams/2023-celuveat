@@ -1,16 +1,12 @@
 const path = require('path');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
-const Dotenv = require('dotenv-webpack');
-
 module.exports = {
-  mode: 'production',
+  mode: process.env.NODE_ENV,
   entry: ['./src/index.tsx'],
   output: {
     path: path.resolve(__dirname, '../dist/'),
     publicPath: '/',
+    filename: '[name].[chunkhash:8].js',
     clean: true,
   },
   resolve: {
@@ -61,15 +57,4 @@ module.exports = {
     historyApiFallback: true,
     allowedHosts: 'all',
   },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: 'index.html',
-    }),
-    new ForkTsCheckerWebpackPlugin(),
-    new Dotenv({
-      path: path.resolve(__dirname, `../.dev.env`),
-    }),
-  ],
 };
