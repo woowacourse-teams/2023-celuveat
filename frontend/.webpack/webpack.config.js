@@ -1,9 +1,9 @@
 const path = require('path');
-const commonConfig = require('./webpack.common.js');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const commonConfig = require('./webpack.common.js');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const commonPlugins = [
   new HtmlWebpackPlugin({
@@ -11,13 +11,60 @@ const commonPlugins = [
     filename: 'index.html',
   }),
   new ForkTsCheckerWebpackPlugin(),
+  new MiniCssExtractPlugin({
+    filename: 'fonts/font.css',
+  }),
+];
+
+const commonRules = [
+  {
+    test: /\.(ts|tsx)$/,
+    use: [
+      'babel-loader',
+      {
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        },
+      },
+    ],
+    exclude: /node_modules/,
+  },
+  {
+    test: /\.(jpg|jpeg|gif|png|ico)?$/,
+    type: 'asset',
+    generator: {
+      filename: 'images/[name].[ext]',
+    },
+  },
+  {
+    test: /\.(woff|woff2|eot|ttf|otf)?$/,
+    type: 'asset',
+    generator: {
+      filename: 'fonts/[name][ext]',
+    },
+  },
+  {
+    test: /\.svg$/,
+    use: ['@svgr/webpack'],
+  },
 ];
 
 module.exports = (env, args) => {
   const { TARGET_ENV } = env;
 
   return {
+    mode: args.mode,
     ...commonConfig,
+    module: {
+      rules: [
+        ...commonRules,
+        {
+          test: /\.css$/i,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        },
+      ],
+    },
     plugins: [
       ...commonPlugins,
       new Dotenv({

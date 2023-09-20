@@ -5,6 +5,8 @@ import App from '~/App';
 import GlobalStyles from './styles/GlobalStyles';
 import { worker } from './mocks/browser';
 
+import '~/assets/fonts/font.css';
+
 const DEV = process.env.NODE_ENV === 'development';
 
 if (DEV) {
