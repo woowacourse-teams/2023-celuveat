@@ -146,7 +146,6 @@ function RestaurantDetail() {
                     <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
                       <Copy width={16} />
                       복사
-
                     </button>
                   </div>
                   <div>카테고리 : {category}</div>
