@@ -1,8 +1,8 @@
 import { rest } from 'msw';
 
-import restaurants from '../data/restaurants';
-import celebs from '../data/celebs';
-import { profile } from '../data/user';
+import restaurants from '../../data/restaurants';
+import celebs from '../../data/celebs';
+import { profile } from '../../data/user';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
