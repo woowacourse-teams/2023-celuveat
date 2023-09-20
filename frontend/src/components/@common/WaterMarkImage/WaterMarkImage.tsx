@@ -21,9 +21,9 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
   return (
     <StyledWaterMarkImage type={type}>
       <picture>
-        <source type="images/webp" srcSet={`${getImgUrl(imageUrl, 'webp')}`} />
-        <source type="images/jpeg" srcSet={`${getImgUrl(imageUrl, 'jpeg')}`} />
-        <StyledImage src={`${getImgUrl(imageUrl, 'webp')}`} alt="음식점" loading="lazy" />
+        <source type="images/webp" srcSet={getImgUrl(imageUrl, 'webp')} />
+        <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
+        <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
       </picture>
       {waterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
@@ -35,16 +35,6 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
 }
 
 export default WaterMarkImage;
-
-const styledImgCssVariable = css`
-  position: absolute;
-  inset: 0;
-
-  object-fit: cover;
-
-  width: 100%;
-  height: 100%;
-`;
 
 const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
   ${paintSkeleton}
@@ -59,12 +49,14 @@ const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
 `;
 
 const StyledImage = styled.img`
-  ${styledImgCssVariable}
-`;
+  position: absolute;
+  inset: 0;
 
-// const StyledSource = styled.source`
-//   ${styledImgCssVariable}
-// `;
+  object-fit: cover;
+
+  width: 100%;
+  height: 100%;
+`;
 
 const StyledWaterMark = styled.div`
   position: absolute;

@@ -23,8 +23,9 @@ function Toast() {
         <StyledToastWrapper isSuccess={isSuccess} isMobile={isMobile}>
           {image && (
             <picture>
-              <StyledToastSource type="image/webp" srcSet={`${getImgUrl(image.url, 'webp')}`} />
-              <StyledToastImg src={`${getImgUrl(image.url, 'jpeg')}`} alt={image.alt} />
+              <source type="images/webp" srcSet={getImgUrl(image.url, 'webp')} />
+              <source type="images/jpeg" srcSet={getImgUrl(image.url, 'jpeg')} />
+              <StyledToastImg src={getImgUrl(image.url, 'webp')} alt="음식점" loading="lazy" />
             </picture>
           )}
           <StyledToastText>{text}</StyledToastText>
@@ -36,19 +37,11 @@ function Toast() {
 
 export default Toast;
 
-const styledToastImgVariable = css`
+const StyledToastImg = styled.img`
   width: 44px;
   height: 44px;
 
   border-radius: ${BORDER_RADIUS.sm};
-`;
-
-const StyledToastImg = styled.img`
-  ${styledToastImgVariable}
-`;
-
-const StyledToastSource = styled.source`
-  ${styledToastImgVariable}
 `;
 
 const StyledToastText = styled.span`
