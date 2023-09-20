@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const Dotenv = require('dotenv-webpack');
 const commonConfig = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -48,12 +49,18 @@ const commonRules = [
     test: /\.svg$/,
     use: ['@svgr/webpack'],
   },
+  new MiniCssExtractPlugin({
+    filename: 'fonts/font.css',
+  }),
 ];
 
 module.exports = (env, args) => {
   const { TARGET_ENV } = env;
 
+  const isProd = args.mode === 'production';
+
   return {
+    mode: args.mode,
     mode: args.mode,
     ...commonConfig,
     module: {
