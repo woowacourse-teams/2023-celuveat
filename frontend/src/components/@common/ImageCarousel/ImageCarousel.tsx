@@ -5,7 +5,7 @@ import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import WaterMarkImage from '../WaterMarkImage';
-import useTouchMoveDirection from '~/hooks/useTouchMoveDirection';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ImageCarouselProps {
   images: RestaurantImage[];
@@ -13,45 +13,58 @@ interface ImageCarouselProps {
 }
 
 function ImageCarousel({ images, type }: ImageCarouselProps) {
-  const ref = useRef();
-  const { movingDirection } = useTouchMoveDirection(ref);
+  const ref = useRef<HTMLDivElement>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const { isMobile } = useMediaQuery();
+
+  const handleScroll = () => {
+    const index = Math.round(ref.current.scrollLeft / ref.current.clientWidth);
+    setCurrentIndex(index);
+  };
 
   const goToPrevious: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    setCurrentIndex(prevIndex => prevIndex - 1);
+    setCurrentIndex(currentIndex - 1);
   };
+
   const goToNext: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    setCurrentIndex(prevIndex => prevIndex + 1);
+    setCurrentIndex(currentIndex + 1);
   };
 
   useEffect(() => {
-    if (movingDirection.X === 'left' && currentIndex !== images.length - 1) setCurrentIndex(prevIndex => prevIndex + 1);
-    if (movingDirection.X === 'right' && currentIndex !== 0) setCurrentIndex(prevIndex => prevIndex - 1);
-  }, [movingDirection.X]);
+    ref.current.scrollTo({
+      left: currentIndex * ref.current.clientWidth,
+      behavior: 'smooth',
+    });
+  }, [currentIndex]);
+
+  useEffect(() => {
+    ref.current.addEventListener('scrollend', handleScroll);
+    ref.current.addEventListener('touchend', handleScroll);
+  }, []);
 
   return (
     <StyledCarouselContainer type={type}>
-      <StyledCarouselSlide currentIndex={currentIndex} ref={ref}>
-        {images.map(({ id, name, author }) => (
-          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} />
+      <StyledCarouselSlide ref={ref} isMobile={isMobile}>
+        {images.map(({ id, name, author, sns }) => (
+          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} sns={sns} />
         ))}
       </StyledCarouselSlide>
-      {currentIndex !== 0 && (
+      {currentIndex !== 0 && !isMobile && (
         <StyledLeftButton type="button" onClick={goToPrevious}>
           <LeftBracket width={10} height={10} />
         </StyledLeftButton>
       )}
-      {currentIndex !== images.length - 1 && (
+      {currentIndex !== images.length - 1 && !isMobile && (
         <StyledRightButton type="button" onClick={goToNext}>
           <RightBracket width={10} height={10} />
         </StyledRightButton>
       )}
       {images.length > 1 && (
-        <StyledDots currentIndex={currentIndex}>
-          {Array.from({ length: images.length }, () => (
-            <StyledDot />
+        <StyledDots>
+          {images.map((_, index) => (
+            <StyledDot isActive={index === currentIndex} />
           ))}
         </StyledDots>
       )}
@@ -92,10 +105,6 @@ const StyledCarouselContainer = styled.div<{ type: 'list' | 'map' }>`
     transform: translateY(-50%);
     box-shadow: var(--shadow);
     outline: none;
-
-    &:hover {
-      transform: translateY(-50%) scale(1.04);
-    }
   }
 
   &:hover {
@@ -109,6 +118,10 @@ const StyledCarouselContainer = styled.div<{ type: 'list' | 'map' }>`
       }
     }
   }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledLeftButton = styled.button`
@@ -119,36 +132,27 @@ const StyledRightButton = styled.button`
   right: 12px;
 `;
 
-const StyledCarouselSlide = styled.div<{ currentIndex: number }>`
+const StyledCarouselSlide = styled.div<{ isMobile: boolean }>`
   display: flex;
 
   width: 100%;
-
-  transition: transform 0.3s ease-in-out;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
 `;
 
-const StyledDots = styled.div<{ currentIndex: number }>`
+const StyledDots = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0 0.5rem;
+  gap: 0 0.6rem;
 
   position: absolute;
   bottom: 12px;
 
   width: 100%;
-
-  ${({ currentIndex }) => css`
-    & > span:nth-child(${currentIndex + 1}) {
-      opacity: 1;
-      transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-      transform: scale(1.1);
-    }
-  `}
 `;
 
-const StyledDot = styled.span`
+const StyledDot = styled.div<{ isActive: boolean }>`
   width: 6px;
   height: 6px;
 
@@ -157,4 +161,9 @@ const StyledDot = styled.span`
 
   opacity: 0.2;
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      opacity: 1;
+    `}
 `;

@@ -1,10 +1,7 @@
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import useModalState from '~/hooks/store/useModalState';
 import TextButton from '../@common/Button';
 
-function DeleteButton() {
-  const reviewId = useModalState(state => state.targetId);
-
+function DeleteButton({ reviewId }: { reviewId: number }) {
   const { deleteReview } = useRestaurantReview();
 
   const onDeleteReview: React.MouseEventHandler<HTMLButtonElement> = e => {

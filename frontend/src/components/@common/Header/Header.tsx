@@ -1,82 +1,72 @@
-import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import Logo from '~/assets/icons/logo.svg';
-import { Modal, ModalContent } from '~/components/@common/Modal';
+import { useQueryClient } from '@tanstack/react-query';
+
 import InfoDropDown from '~/components/InfoDropDown';
-import LoginModalContent from '~/components/LoginModalContent';
-import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
-import useTokenStore from '~/hooks/store/useTokenState';
-import useBooleanState from '~/hooks/useBooleanState';
-import { isEmptyString } from '~/utils/compare';
-import useMediaQuery from '~/hooks/useMediaQuery';
+import LoginModal from '~/components/LoginModal';
 import SearchBar from '~/components/SearchBar';
-import { getLogout } from '~/api/oauth';
+
+import useBooleanState from '~/hooks/useBooleanState';
+
+import Logo from '~/assets/icons/logo.svg';
+
+import type { ProfileData } from '~/@types/api.types';
+import { getLogout } from '~/api/user';
 
 function Header() {
-  const { isMobile } = useMediaQuery();
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const qc = useQueryClient();
   const navigator = useNavigate();
-  const { id, celebId } = useParams();
-  const [token, clearToken, oauth] = useTokenStore(state => [state.token, state.clearToken, state.oauth]);
-
-  const options = useMemo(() => (isEmptyString(token) ? OPTION_FOR_NOT_USER : OPTION_FOR_USER), [token]);
+  const { pathname } = useLocation();
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
-
+    const profileData: ProfileData = qc.getQueryData(['profile']);
     if (currentOption === '로그인') openModal();
-
     if (currentOption === '위시리스트') navigator('/restaurants/like');
-
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
-
     if (currentOption === '로그아웃') {
-      if (oauth !== '') {
-        getLogout(oauth);
-      }
-
-      clearToken();
+      getLogout(profileData.oauthServer);
       window.location.reload();
     }
   };
 
+  const isHome = pathname === '/';
+
   return (
     <>
-      <StyledHeader isMobile={isMobile}>
+      <StyledHeader>
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {!(isMobile || id || celebId) && (
+        {isHome && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
         )}
-        <InfoDropDown options={options} externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+
+        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
       </StyledHeader>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
-          <LoginModalContent />
-        </ModalContent>
-      </Modal>
+
+      <LoginModal close={closeModal} isOpen={isModalOpen} />
     </>
   );
 }
 
 export default Header;
 
-const StyledHeader = styled.header<{ isMobile: boolean }>`
+const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  position: ${({ isMobile }) => (isMobile ? 'fixed' : 'sticky')};
+  position: sticky;
   top: 0;
   z-index: 20;
 
   width: 100%;
-  height: ${({ isMobile }) => (isMobile ? '60px' : '80px')};
+  height: 80px;
 
   padding: 1.2rem 2.4rem;
 

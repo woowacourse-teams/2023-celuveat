@@ -1,49 +1,66 @@
-import { styled, css } from 'styled-components';
 import React, { useEffect, useState } from 'react';
+import { styled, css } from 'styled-components';
+import { shallow } from 'zustand/shallow';
+import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '../RestaurantCard';
 import { FONT_SIZE } from '~/styles/common';
 import RestaurantCardListSkeleton from './RestaurantCardListSkeleton';
-
-import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import PageNationBar from '../@common/PageNationBar';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
-interface RestaurantCardListProps {
-  restaurantDataList: RestaurantListData | null;
-  loading: boolean;
-  setHoveredId: React.Dispatch<React.SetStateAction<number>>;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-}
+import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
 
-function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurrentPage }: RestaurantCardListProps) {
+import FilterSelectBox from '../FilterSelectBox';
+import { getRestaurants } from '~/api/restaurant';
+
+function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
   const [prevCardNumber, setPrevCardNumber] = useState(18);
+  const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort, setSort] =
+    useRestaurantsQueryStringState(
+      state => [
+        state.boundary,
+        state.celebId,
+        state.currentPage,
+        state.restaurantCategory,
+        state.setCurrentPage,
+        state.sort,
+        state.setSort,
+      ],
+      shallow,
+    );
+
+  const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
+    queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
+  });
+
+  const [setHoveredId] = useHoveredRestaurantState(state => [state.setId]);
 
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
     const pageValue = e.currentTarget.value;
     window.scrollTo(0, 0);
 
-    if (pageValue === 'prev') return setCurrentPage(prev => prev - 1);
-    if (pageValue === 'next') return setCurrentPage(prev => prev + 1);
+    if (pageValue === 'prev') return setCurrentPage(currentPage - 1);
+    if (pageValue === 'next') return setCurrentPage(currentPage + 1);
     return setCurrentPage(Number(pageValue) - 1);
   };
+
+  useEffect(() => {
+    if (isMobile) setSort('distance');
+  }, []);
 
   useEffect(() => {
     if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);
   }, [restaurantDataList?.currentElementsCount]);
 
-  if (!restaurantDataList || loading)
+  if (isLoading)
     return (
       <StyledSkeleton>
-        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />{' '}
-        {restaurantDataList && (
-          <PageNationBar
-            totalPage={restaurantDataList.totalPage}
-            currentPage={restaurantDataList.currentPage + 1}
-            clickPageButton={clickPageButton}
-          />
-        )}
+        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />
       </StyledSkeleton>
     );
 
@@ -52,7 +69,10 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
       {restaurantDataList.content.length !== 0 ? (
         <>
           {!isMobile && (
-            <StyledCardListHeader>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledCardListHeader>
+            <StyledCardListHeader>
+              <StyledRestaurantCount>음식점 수 {restaurantDataList.totalElementsCount} 개</StyledRestaurantCount>
+              <FilterSelectBox />
+            </StyledCardListHeader>
           )}
           <StyledRestaurantCardList isMobile={isMobile}>
             {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
@@ -77,7 +97,7 @@ function RestaurantCardList({ restaurantDataList, loading, setHoveredId, setCurr
   );
 }
 
-export default React.memo(RestaurantCardList);
+export default RestaurantCardList;
 
 const StyledSkeleton = styled.div`
   padding-bottom: 3.2rem;
@@ -95,7 +115,15 @@ const StyledDescription = styled.div`
   font-size: ${FONT_SIZE.md};
 `;
 
-const StyledCardListHeader = styled.p`
+const StyledCardListHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+`;
+
+const StyledRestaurantCount = styled.span`
   font-size: ${FONT_SIZE.md};
   font-weight: 700;
 `;
@@ -106,22 +134,18 @@ const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
 
   height: 100%;
 
-  grid-template-columns: 1fr 1fr 1fr;
-
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
   ${({ isMobile }) =>
     isMobile
       ? css`
-          grid-template-columns: 1fr 1fr;
-
-          @media screen and (width <= 550px) {
-            grid-template-columns: 1fr;
-          }
+          grid-template-columns: 1fr;
         `
       : css`
+          grid-template-columns: 1fr 1fr 1fr;
+
+          @media screen and (width <= 1240px) {
+            grid-template-columns: 1fr 1fr;
+          }
+
           @media screen and (width <= 743px) {
             grid-template-columns: 1fr;
           }

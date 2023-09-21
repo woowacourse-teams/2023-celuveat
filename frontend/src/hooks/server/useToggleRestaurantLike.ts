@@ -4,10 +4,10 @@ import { useCallback } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
-import { postRestaurantLike } from '~/api/oauth';
 
 import type { Restaurant } from '../../@types/restaurant.types';
 import type { RestaurantListData } from '../../@types/api.types';
+import { postRestaurantLike } from '~/api/user';
 
 const useToggleRestaurantLike = (restaurant: Restaurant) => {
   const queryClient = useQueryClient();
@@ -50,7 +50,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
       const message = `위시리스트에 ${!restaurant.isLiked ? '저장' : '삭제'}되었습니다.`;
       const imgUrl = restaurant.images[0].name;
 
-      onSuccess(message, imgUrl);
+      onSuccess(message, { url: imgUrl, alt: `좋아요한 ${restaurant.name}` });
     },
 
     onSettled: () => {
@@ -63,7 +63,7 @@ const useToggleRestaurantLike = (restaurant: Restaurant) => {
     close();
   }, []);
 
-  return { isModalOpen, closeModal, toggleRestaurantLike };
+  return { isModalOpen, openModal, closeModal, toggleRestaurantLike };
 };
 
 export default useToggleRestaurantLike;

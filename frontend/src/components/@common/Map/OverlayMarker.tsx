@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import { MouseEvent, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
 import RestaurantCard from '~/components/RestaurantCard';
@@ -10,19 +11,23 @@ import Love from '~/assets/icons/love.svg';
 import type { Quadrant } from '~/utils/getQuadrant';
 import type { Restaurant } from '~/@types/restaurant.types';
 import type { Celeb } from '~/@types/celeb.types';
+import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import { FONT_SIZE } from '~/styles/common';
 
 interface OverlayMarkerProps {
   celeb: Celeb;
-  map?: google.maps.Map;
+  map: google.maps.Map;
   restaurant: Restaurant;
   quadrant: Quadrant;
-  isRestaurantHovered: boolean;
 }
 
-function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }: OverlayMarkerProps) {
-  const { lat, lng } = restaurant;
+function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps) {
+  const { lat, lng, id: restaurantId } = restaurant;
   const [isClicked, setIsClicked] = useState(false);
   const ref = useRef();
+  const [hoveredId] = useHoveredRestaurantState(state => [state.id]);
+  const { isMobile } = useMediaQuery();
   useOnClickOutside(ref, () => setIsClicked(false));
 
   const clickMarker = () => {
@@ -35,22 +40,42 @@ function OverlayMarker({ celeb, restaurant, map, quadrant, isRestaurantHovered }
 
   return (
     map && (
-      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || isRestaurantHovered ? 18 : 0}>
+      <Overlay position={{ lat, lng }} map={map} zIndex={isClicked || hoveredId === restaurantId ? 18 : 0}>
         <StyledMarkerContainer ref={ref} data-cy={`${restaurant.name} 오버레이`}>
           <StyledMarker
             onClick={clickMarker}
             isClicked={isClicked}
-            isRestaurantHovered={isRestaurantHovered}
+            isRestaurantHovered={hoveredId === restaurantId}
+            isMobile={isMobile}
             data-cy={`${restaurant.name} 마커`}
           >
-            <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="100%" />
-            {restaurant.isLiked && (
+            {isMobile &&
+              (isClicked ? (
+                <>
+                  <Link to={`/restaurants/${restaurant.id}?celebId=${celeb.id}`}>
+                    <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="24px" />
+                  </Link>
+                  <Link to={`/restaurants/${restaurant.id}?celebId=${celeb.id}`}>
+                    <StyledRestaurantInfo>
+                      <span>{restaurant.name}</span>
+                      <span>{restaurant.category}</span>
+                    </StyledRestaurantInfo>
+                  </Link>
+                </>
+              ) : (
+                <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="24px" />
+              ))}
+
+            {!isMobile && <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size="32px" />}
+
+            {false && (
               <StyledLikeButton aria-label="좋아요" type="button">
                 <Love width={20} fill="red" fillOpacity={0.8} aria-hidden="true" />
               </StyledLikeButton>
             )}
           </StyledMarker>
-          {isClicked && (
+
+          {isClicked && !isMobile && (
             <StyledModal quadrant={quadrant} onClick={clickModal}>
               <RestaurantCard restaurant={restaurant} type="map" celebs={[celeb]} size="0" />
             </StyledModal>
@@ -76,34 +101,6 @@ const scaleUp = keyframes`
   }
 `;
 
-const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: relative;
-
-  width: 36px;
-  height: 36px;
-
-  border: ${({ isClicked, isRestaurantHovered }) =>
-    isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid transparent'};
-  border-radius: 50%;
-
-  transition: transform 0.2s ease-in-out;
-  transform: ${({ isClicked }) => (isClicked ? 'scale(1.4)' : 'scale(1)')};
-
-  &:hover {
-    transform: scale(1.4);
-  }
-
-  ${({ isRestaurantHovered }) =>
-    isRestaurantHovered &&
-    css`
-      animation: ${scaleUp} 0.2s ease-in-out forwards;
-    `}
-`;
-
 const fadeInAnimation = keyframes`
   from {
     opacity: 0;
@@ -111,6 +108,60 @@ const fadeInAnimation = keyframes`
   to {
     opacity: 1;
   }
+`;
+
+const StyledMarker = styled.div<{ isClicked: boolean; isRestaurantHovered: boolean; isMobile: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  ${({ isMobile, isClicked, isRestaurantHovered }) =>
+    isMobile
+      ? css`
+          gap: 0 0.4rem;
+
+          padding: ${isClicked ? '0.4rem 1.2rem 0.4rem 0.4rem' : '0'};
+
+          ${isClicked
+            ? css`
+                border: 1.8px solid var(--white);
+              `
+            : css`
+                border: 1.8px solid var(--white);
+              `};
+
+          border-radius: 50px;
+          background-color: var(--white);
+          box-shadow: var(--map-shadow);
+
+          & > a:last-child {
+            font-size: ${FONT_SIZE.sm};
+            font-weight: 700;
+            text-decoration: none;
+          }
+        `
+      : css`
+          width: 36px;
+          height: 36px;
+
+          border: ${isClicked || isRestaurantHovered ? '3px solid var(--orange-2)' : '3px solid var(--white)'};
+          border-radius: 50%;
+
+          transition: transform 0.2s ease-in-out;
+          transform: ${isClicked ? 'scale(1.4)' : 'scale(1)'};
+          box-shadow: var(--map-shadow);
+
+          &:hover {
+            transform: scale(1.4);
+          }
+
+          ${isRestaurantHovered &&
+          css`
+            animation: ${scaleUp} 0.2s ease-in-out forwards;
+          `}
+        `}
 `;
 
 const StyledModal = styled.div<{ quadrant: Quadrant }>`
@@ -124,7 +175,7 @@ const StyledModal = styled.div<{ quadrant: Quadrant }>`
   background-color: #fff;
 
   animation: ${fadeInAnimation} 100ms ease-in;
-  box-shadow: 0 4px 6px rgb(0 0 0 / 20%);
+  box-shadow: var(--map-shadow);
 `;
 
 const StyledLikeButton = styled.button`
@@ -134,4 +185,15 @@ const StyledLikeButton = styled.button`
 
   border: none;
   background-color: transparent;
+`;
+
+const StyledRestaurantInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > :last-child {
+    color: var(--gray-3);
+    font-size: 1rem;
+    font-weight: 400;
+  }
 `;

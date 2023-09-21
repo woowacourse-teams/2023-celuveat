@@ -5,9 +5,9 @@ import { FONT_SIZE } from '~/styles/common';
 
 import RestaurantWishItem from '~/components/RestaurantWishItem/RestaurantWishItem';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { getRestaurantWishList } from '~/api/oauth';
 
 import type { RestaurantData } from '~/@types/api.types';
+import { getRestaurantWishList } from '~/api/user';
 
 function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
@@ -57,22 +57,18 @@ const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
 
   height: 100%;
 
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
   ${({ isMobile }) =>
     isMobile
       ? css`
-          grid-template-columns: 1fr 1fr;
-
-          @media screen and (width <= 550px) {
-            grid-template-columns: 1fr;
-          }
+          grid-template-columns: 1fr;
         `
       : css`
+          grid-template-columns: 1fr 1fr 1fr;
+
+          @media screen and (width <= 1240px) {
+            grid-template-columns: 1fr 1fr;
+          }
+
           @media screen and (width <= 743px) {
             grid-template-columns: 1fr;
           }

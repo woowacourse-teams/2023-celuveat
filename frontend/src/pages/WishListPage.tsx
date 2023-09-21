@@ -1,40 +1,23 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
-import PopUpContainer from '~/components/PopUpContainer';
 import RestaurantWishList from '~/components/RestaurantWishList';
-import useTokenState from '~/hooks/store/useTokenState';
+import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { isEmptyString } from '~/utils/compare';
+import { FONT_SIZE } from '~/styles/common';
 
 function WishListPage() {
   const { isMobile } = useMediaQuery();
 
-  const token = useTokenState(state => state.token);
-  const navigator = useNavigate();
-
-  useEffect(() => {
-    if (isEmptyString(token)) {
-      navigator('/signUp');
-    }
-  }, []);
-
   return (
-    <StyledWishListPageWrapper>
-      <div>
-        <Header />
+    <LoginErrorHandleComponent>
+      <StyledWishListPageWrapper>
         <StyledMobileLayout>
           <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
           <RestaurantWishList />
         </StyledMobileLayout>
-      </div>
-      <Footer />
-      <PopUpContainer />
-    </StyledWishListPageWrapper>
+      </StyledWishListPageWrapper>
+    </LoginErrorHandleComponent>
   );
 }
 
@@ -67,6 +50,6 @@ const StyledTitle = styled.h3<{ isMobile: boolean }>`
   ${({ isMobile }) =>
     isMobile &&
     css`
-      margin-top: 6rem;
+      font-size: ${FONT_SIZE.lg};
     `}
 `;

@@ -37,6 +37,8 @@
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
     "import/extensions": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off"
   }
 }

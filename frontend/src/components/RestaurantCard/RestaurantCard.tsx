@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -7,8 +8,7 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import { Modal, ModalContent } from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface RestaurantCardProps {
@@ -23,10 +23,12 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
+  const navigate = useNavigate();
+
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
   const onClick = () => {
-    window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+    navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
   };
 
   const toggle: MouseEventHandler<HTMLButtonElement> = e => {
@@ -51,7 +53,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageViewer>
-        <section>
+        <StyledInfoSection type={type}>
           <StyledInfo>
             <StyledCategory>{category}</StyledCategory>
             <StyledName role="columnheader">{name}</StyledName>
@@ -61,13 +63,10 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size={size} />}
           </StyledProfileImageSection>
-        </section>
+        </StyledInfoSection>
       </StyledContainer>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
-          <LoginModalContent />
-        </ModalContent>
-      </Modal>
+
+      <LoginModal isOpen={isModalOpen} close={closeModal} />
     </>
   );
 }
@@ -115,6 +114,7 @@ const StyledAddress = styled.span`
   ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.md};
+  line-height: 20px;
 `;
 
 const StyledCategory = styled.span`
@@ -138,4 +138,8 @@ const LikeButton = styled.button`
   &:hover {
     transform: scale(1.2);
   }
+`;
+
+const StyledInfoSection = styled.section<{ type: 'list' | 'map' }>`
+  padding: ${({ type }) => (type === 'list' ? 'none' : '0.8rem')};
 `;
