@@ -1,5 +1,5 @@
 import { styled, css, keyframes } from 'styled-components';
-import { MouseEvent, useRef, useState } from 'react';
+import { MouseEvent, memo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
