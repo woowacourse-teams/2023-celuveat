@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
 type SortingWay = 'distance' | 'like';

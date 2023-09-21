@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import NavItem from '~/components/@common/NavItem/NavItem';
 import { isEqual } from '~/utils/compare';
 

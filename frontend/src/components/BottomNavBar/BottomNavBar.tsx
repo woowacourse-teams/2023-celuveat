@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import NavItem from '../@common/NavItem';
 import LoveIcon from '~/assets/icons/love.svg';

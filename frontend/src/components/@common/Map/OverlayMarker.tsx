@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import { styled, css, keyframes } from 'styled-components';
 import { MouseEvent, memo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileImage from '../ProfileImage';

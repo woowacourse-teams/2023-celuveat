@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { FONT_SIZE } from '~/styles/common';

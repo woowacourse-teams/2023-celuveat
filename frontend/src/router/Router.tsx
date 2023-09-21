@@ -1,8 +1,8 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { lazy } from 'react';
-import Root from './Root';
 
+const Root = lazy(() => import('./Root'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
 const RestaurantDetail = lazy(() => import('~/pages/RestaurantDetail'));
 const SignUpPage = lazy(() => import('~/pages/SignUpPage'));

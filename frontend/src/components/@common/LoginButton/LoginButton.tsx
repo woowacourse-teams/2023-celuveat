@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import React from 'react';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 

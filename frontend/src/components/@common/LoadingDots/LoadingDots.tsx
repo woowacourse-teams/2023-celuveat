@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import Dot from '~/assets/icons/dot.svg';
 
 function LoadingDots() {
