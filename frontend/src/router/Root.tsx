@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import Footer from '~/components/@common/Footer';
 import { Header, MobileHeader } from '~/components/@common/Header';
