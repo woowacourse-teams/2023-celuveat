@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { RestaurantReview } from '~/@types/api.types';
 
 import RestaurantReviewItem from '~/components/RestaurantReviewItem';

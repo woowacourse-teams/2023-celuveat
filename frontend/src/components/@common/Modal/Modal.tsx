@@ -1,5 +1,5 @@
 import { cloneElement, useRef } from 'react';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import Exit from '~/assets/icons/exit.svg';
 import Portal from '~/components/@common/Portal';

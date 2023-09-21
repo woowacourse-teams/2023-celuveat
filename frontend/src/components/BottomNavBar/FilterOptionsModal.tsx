@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import CelebIcon from '~/assets/icons/celeb.svg';
 import TextButton from '../@common/Button';

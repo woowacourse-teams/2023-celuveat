@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { getAccessToken } from '~/api/user';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
 

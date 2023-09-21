@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 
 import TextButton from '~/components/@common/Button';
 import useDeleteUser from '~/hooks/server/useDeleteUser';

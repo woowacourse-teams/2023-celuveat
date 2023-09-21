@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import NavItem from '../@common/NavItem';
 import ProfileImage from '../@common/ProfileImage';
 import CelebIcon from '~/assets/icons/celeb.svg';
