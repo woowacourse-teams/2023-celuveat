@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useRef } from 'react';
 import styled from 'styled-components';
 import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
@@ -7,6 +8,7 @@ import InfoButton from '~/components/@common/InfoButton';
 import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
 import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useBooleanState from '~/hooks/useBooleanState';
+import useOnClickOutside from '~/hooks/useOnClickOutside';
 
 interface DropDownProps {
   isOpen?: boolean;
@@ -15,7 +17,9 @@ interface DropDownProps {
 }
 
 function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps) {
-  const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
+  const { value: isShow, toggle: onToggleDropDown, setFalse: closeDropDown } = useBooleanState(isOpen);
+  const ref = useRef();
+  useOnClickOutside(ref, closeDropDown);
 
   const { data, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
@@ -30,7 +34,7 @@ function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps)
 
   return (
     <StyledInfoDropDown aria-hidden>
-      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown} aria-label={label}>
+      <StyledInfoButtonWrapper ref={ref} onClick={onToggleDropDown} aria-label={label}>
         <InfoButton profile={data} isShow={isShow} isSuccess={isSuccess} />
       </StyledInfoButtonWrapper>
 
