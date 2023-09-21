@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 import { BORDER_RADIUS, paintSkeleton } from '~/styles/common';
 

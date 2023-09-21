@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
 import { FONT_SIZE } from '~/styles/common';

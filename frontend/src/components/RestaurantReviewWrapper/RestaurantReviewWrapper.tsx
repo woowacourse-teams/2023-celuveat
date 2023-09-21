@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';

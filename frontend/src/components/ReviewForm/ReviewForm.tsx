@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { RestaurantReviewData } from '~/@types/api.types';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import TextButton from '../@common/Button';

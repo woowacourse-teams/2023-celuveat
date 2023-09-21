@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import Cel from '~/assets/icons/celuveat_cel.svg';
 import Luv from '~/assets/icons/celuveat_luv.svg';
 import Eat from '~/assets/icons/celuveat_eat.svg';
