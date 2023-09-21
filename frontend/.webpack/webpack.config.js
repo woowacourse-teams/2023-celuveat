@@ -15,6 +15,9 @@ const commonPlugins = [
   new MiniCssExtractPlugin({
     filename: 'fonts/font.css',
   }),
+  // new BundleAnalyzerPlugin({
+  //   analyzerMode: 'static',
+  // }),
 ];
 
 const commonRules = [

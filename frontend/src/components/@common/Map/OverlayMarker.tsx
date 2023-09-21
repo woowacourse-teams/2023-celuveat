@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
-import { MouseEvent, useRef, useState } from 'react';
+import { MouseEvent, memo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileImage from '../ProfileImage';
 import Overlay from './Overlay/Overlay';
@@ -86,7 +86,14 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   );
 }
 
-export default OverlayMarker;
+function areEqual(prevProps: OverlayMarkerProps, nextProps: OverlayMarkerProps) {
+  const { restaurant: prevRestaurant, celeb: prevCeleb } = prevProps;
+  const { restaurant: nextRestaurant, celeb: nextCeleb } = nextProps;
+
+  return prevRestaurant.id === nextRestaurant.id && prevCeleb.id === nextCeleb.id;
+}
+
+export default memo(OverlayMarker, areEqual);
 
 const StyledMarkerContainer = styled.div`
   position: relative;

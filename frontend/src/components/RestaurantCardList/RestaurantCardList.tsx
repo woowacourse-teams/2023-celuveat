@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { styled, css } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
@@ -17,7 +17,6 @@ import { getRestaurants } from '~/api/restaurant';
 
 function RestaurantCardList() {
   const { isMobile } = useMediaQuery();
-  const [prevCardNumber, setPrevCardNumber] = useState(18);
   const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort, setSort] =
     useRestaurantsQueryStringState(
       state => [
@@ -32,9 +31,10 @@ function RestaurantCardList() {
       shallow,
     );
 
-  const { data: restaurantDataList, isLoading } = useQuery<RestaurantListData>({
+  const { data: restaurantDataList } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
     queryFn: () => getRestaurants({ boundary, celebId, category: restaurantCategory, page: currentPage, sort }),
+    keepPreviousData: true,
   });
 
   const [setHoveredId] = useHoveredRestaurantState(state => [state.setId]);
@@ -53,14 +53,10 @@ function RestaurantCardList() {
     if (isMobile) setSort('distance');
   }, []);
 
-  useEffect(() => {
-    if (restaurantDataList) setPrevCardNumber(restaurantDataList.currentElementsCount);
-  }, [restaurantDataList?.currentElementsCount]);
-
-  if (isLoading)
+  if (!restaurantDataList)
     return (
       <StyledSkeleton>
-        <RestaurantCardListSkeleton cardNumber={prevCardNumber} />
+        <RestaurantCardListSkeleton cardNumber={restaurantDataList?.content?.length || 18} />
       </StyledSkeleton>
     );
 
@@ -76,7 +72,13 @@ function RestaurantCardList() {
           )}
           <StyledRestaurantCardList isMobile={isMobile}>
             {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
-              <RestaurantCard restaurant={restaurant} celebs={celebs} size="42px" setHoveredId={setHoveredId} />
+              <RestaurantCard
+                key={`${restaurant.id}${celebs[0].id}`}
+                restaurant={restaurant}
+                celebs={celebs}
+                size="42px"
+                setHoveredId={setHoveredId}
+              />
             ))}
           </StyledRestaurantCardList>
           <PageNationBar
