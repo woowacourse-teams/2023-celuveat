@@ -11,7 +11,7 @@ export const getRestaurants = async (queryParams: RestaurantsQueryParams) => {
 };
 
 export const getRestaurantDetail = async (restaurantId: string, celebId: string) => {
-  const response = await apiClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
+  const response = await apiUserClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
   return response.data;
 };
 
