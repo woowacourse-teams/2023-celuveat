@@ -5,6 +5,8 @@ import App from '~/App';
 import GlobalStyles from './styles/GlobalStyles';
 import { worker } from './mocks/browser';
 
+import '~/assets/fonts/font.css';
+
 if (process.env.NODE_ENV === 'development') worker.start();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
