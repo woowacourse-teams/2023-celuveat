@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { paintSkeleton } from '~/styles/common';
 
 interface ProfileImageProps extends React.HTMLAttributes<HTMLImageElement> {
   name: string;
@@ -13,6 +14,7 @@ function ProfileImage({ name = '셀럽', imageUrl, size, ...props }: ProfileImag
 export default ProfileImage;
 
 const StyledProfile = styled.img<{ size: string }>`
+  ${paintSkeleton}
   width: ${({ size }) => size || 'auto'};
   height: ${({ size }) => size || 'auto'};
 

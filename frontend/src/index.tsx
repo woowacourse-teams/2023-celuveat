@@ -10,7 +10,14 @@ import '~/assets/fonts/font.css';
 if (process.env.NODE_ENV === 'development') worker.start();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 root.render(
   <>
