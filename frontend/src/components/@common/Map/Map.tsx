@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import MapContent from './MapContent';
 import OverlayMyLocation from './OverlayMyLocation';
@@ -101,6 +101,8 @@ function Map({ toggleMapExpand }: MapProps) {
     toggleMapExpand();
   };
 
+  const setMapLoadingState = (state: boolean) => setLoading(state);
+
   return (
     <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} render={render} language="ko" libraries={['places']}>
       <MapContent
@@ -110,7 +112,7 @@ function Map({ toggleMapExpand }: MapProps) {
         zoom={zoom}
         center={center}
       >
-        <OverlayMarkerList center={currentCenter} />
+        <OverlayMarkerList center={currentCenter} setMapLoadingState={setMapLoadingState} />
         {myPosition && <OverlayMyLocation position={myPosition} />}
         {loading && (
           <StyledLoadingUI>
@@ -141,6 +143,17 @@ function Map({ toggleMapExpand }: MapProps) {
 
 export default Map;
 
+const fadeIn = keyframes`
+  from {
+    scale: 0.8;
+    opacity: 0;
+  }
+  to {
+    scale:1;
+    opacity: 1;
+  }
+`;
+
 const StyledLoadingUI = styled.div`
   ${mapUIBase}
   position: absolute;
@@ -149,6 +162,8 @@ const StyledLoadingUI = styled.div`
 
   width: 82px;
   height: 40px;
+
+  animation: ${fadeIn} 0.4s ease-in;
 `;
 
 const StyledMyPositionButtonUI = styled.button`
