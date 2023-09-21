@@ -1,11 +1,11 @@
 import getQueryString from '~/utils/getQueryString';
-import { apiClient } from './apiClient';
+import { apiClient, apiUserClient } from './apiClient';
 import type { RestaurantListData } from '~/@types/api.types';
 import type { RestaurantsQueryParams } from '~/@types/restaurant.types';
 
 export const getRestaurants = async (queryParams: RestaurantsQueryParams) => {
   const queryString = getQueryString(queryParams);
-  const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+  const response = await apiUserClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
   return response.data;
 };
@@ -16,7 +16,7 @@ export const getRestaurantDetail = async (restaurantId: string, celebId: string)
 };
 
 export const getNearByRestaurant = async (restaurantId: string) => {
-  const response = await apiClient.get(`/restaurants/${restaurantId}/nearby`);
+  const response = await apiUserClient.get(`/restaurants/${restaurantId}/nearby`);
   return response.data;
 };
 
