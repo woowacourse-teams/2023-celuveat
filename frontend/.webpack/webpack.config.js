@@ -4,6 +4,7 @@ const commonConfig = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const commonPlugins = [
   new HtmlWebpackPlugin({
@@ -13,6 +14,9 @@ const commonPlugins = [
   new ForkTsCheckerWebpackPlugin(),
   new MiniCssExtractPlugin({
     filename: 'fonts/font.css',
+  }),
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
   }),
 ];
 
