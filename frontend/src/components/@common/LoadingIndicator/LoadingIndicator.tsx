@@ -65,7 +65,6 @@ const bounceAnimation = keyframes`
 const StyledBouncing = styled.div<{ size: number }>`
   position: relative;
   top: 0;
-  left: ${({ size }) => `${size}px`};
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};

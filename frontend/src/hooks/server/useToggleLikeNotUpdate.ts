@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
-import { postRestaurantLike } from '~/api/oauth';
+import { postRestaurantLike } from '~/api/user';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -18,6 +18,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     }),
     shallow,
   );
+  // const queryClient = useQueryClient();
 
   const toggleLike = useMutation({
     mutationFn: postRestaurantLike,
@@ -35,7 +36,8 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
       const imgUrl = restaurant.images[0].name;
 
       toggleIsLiked();
-      onSuccess(message, imgUrl);
+      onSuccess(message, { url: imgUrl, alt: `좋아요한 ${restaurant.name}` });
+      // queryClient.invalidateQueries({ queryKey: ['restaurantDetail'] });
     },
   });
 
@@ -44,7 +46,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     close();
   }, []);
 
-  return { isModalOpen, closeModal, isLiked, toggleRestaurantLike };
+  return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike };
 };
 
 export default useToggleLikeNotUpdate;

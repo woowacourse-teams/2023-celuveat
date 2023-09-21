@@ -28,9 +28,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.16.1'
-          
+
       - name: 🍔 Get npm cache directory
-        id: npm-cache-dir 
+        id: npm-cache-dir
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
       - uses: actions/cache@v3
         id: npm-cache
@@ -61,5 +61,5 @@ jobs:
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 React 프로젝트 빌드
-        run: yarn build
+        run: yarn build:prod
         working-directory: ${{ env.working-directory }}

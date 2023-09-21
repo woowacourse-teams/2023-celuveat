@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import NavItem from '~/components/@common/NavButton/NavButton';
+import NavItem from '~/components/@common/NavItem/NavItem';
 import { isEqual } from '~/utils/compare';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';

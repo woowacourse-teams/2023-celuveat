@@ -86,9 +86,6 @@ const base = css`
     display: flex;
     flex-direction: column;
 
-    position: fixed !important;
-    top: 72px !important;
-
     padding: 1.6rem;
 
     border: 1px solid var(--gray-2);

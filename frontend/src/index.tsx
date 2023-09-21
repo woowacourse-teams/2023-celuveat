@@ -5,14 +5,11 @@ import App from '~/App';
 import GlobalStyles from './styles/GlobalStyles';
 import { worker } from './mocks/browser';
 
-const PROD = process.env.NODE_ENV === 'production';
+import '~/assets/fonts/font.css';
 
-if (!PROD) {
-  worker.start();
-}
+if (process.env.NODE_ENV === 'development') worker.start();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-
 const queryClient = new QueryClient();
 
 root.render(
@@ -20,7 +17,7 @@ root.render(
     <GlobalStyles />
     <QueryClientProvider client={queryClient}>
       <App />
-      {!PROD && <ReactQueryDevtools />}
+      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
     </QueryClientProvider>
   </>,
 );

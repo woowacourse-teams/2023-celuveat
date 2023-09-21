@@ -1,13 +1,12 @@
 import { styled } from 'styled-components';
 import { MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import PopUpContainer from '~/components/PopUpContainer';
-import { Modal, ModalContent } from '~/components/@common/Modal';
-import LoginModalContent from '~/components/LoginModalContent';
+import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 import type { Celeb } from '~/@types/celeb.types';
@@ -21,8 +20,9 @@ interface RestaurantWishItemProps {
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
   const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const navigate = useNavigate();
 
-  const openDetail = () => window.open(`/restaurants/${id}?celebId=${celebs[0].id}`, '_blank');
+  const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
 
   const toggle: MouseEventHandler = e => {
     e.stopPropagation();
@@ -32,7 +32,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
 
   return (
     <>
-      <StyledContainer onClick={openDetail}>
+      <StyledContainer onClick={onClick}>
         <StyledImageViewer>
           <ImageCarousel images={images} type="list" />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
@@ -49,14 +49,10 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
           <StyledProfileImageSection>
             {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
-          <PopUpContainer />
         </section>
       </StyledContainer>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="로그인 및 회원 가입" closeModal={closeModal}>
-          <LoginModalContent />
-        </ModalContent>
-      </Modal>
+
+      <LoginModal close={closeModal} isOpen={isModalOpen} />
     </>
   );
 }
@@ -104,6 +100,7 @@ const StyledAddress = styled.span`
   ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.md};
+  line-height: 20px;
 `;
 
 const StyledCategory = styled.span`

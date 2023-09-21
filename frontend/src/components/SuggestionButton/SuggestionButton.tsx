@@ -2,11 +2,11 @@ import { styled } from 'styled-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useBooleanState from '~/hooks/useBooleanState';
-import { Modal, ModalContent } from '../@common/Modal';
+import Modal from '../@common/Modal';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
 import Pencil from '~/assets/icons/pencil.svg';
-import { postRevisedInfo } from '~/api';
+import { postRevisedInfo } from '~/api/restaurant';
 
 const labels = [
   '레스토랑이 폐점했어요.',
@@ -41,33 +41,32 @@ function SuggestionButton() {
 
   return (
     <>
-      <button type="button" onClick={openModal}>
+      <StyledButton type="button" onClick={openModal}>
         <Pencil width={16} />
         <div>정보 수정 제안하기</div>
-      </button>
-      <Modal>
-        <ModalContent isShow={isModalOpen} title="정보 수정 제안" closeModal={closeModal}>
-          <StyledForm onSubmit={handleSubmit}>
-            <h5>수정 항목</h5>
-            <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
-            <StyledUnorderedList>
-              {labels.map(label => (
-                <StyledListItem>
-                  <CheckBox value={label} onChange={clickCheckBox} />
-                  <span>{label}</span>
-                </StyledListItem>
-              ))}
-              <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
-            </StyledUnorderedList>
-            <TextButton
-              type="submit"
-              text="등록하기"
-              onClick={handleSubmit}
-              colorType="light"
-              disabled={!checkedItems.length && !textareaValue}
-            />
-          </StyledForm>
-        </ModalContent>
+      </StyledButton>
+
+      <Modal title="정보 수정 제안" close={closeModal} isOpen={isModalOpen}>
+        <StyledForm onSubmit={handleSubmit}>
+          <h5>수정 항목</h5>
+          <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
+          <StyledUnorderedList>
+            {labels.map(label => (
+              <StyledListItem>
+                <CheckBox value={label} onChange={clickCheckBox} />
+                <span>{label}</span>
+              </StyledListItem>
+            ))}
+            <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
+          </StyledUnorderedList>
+          <TextButton
+            type="submit"
+            text="등록하기"
+            onClick={handleSubmit}
+            colorType="light"
+            disabled={!checkedItems.length && !textareaValue}
+          />
+        </StyledForm>
       </Modal>
     </>
   );
@@ -126,5 +125,23 @@ const CheckBox = styled.input.attrs({ type: 'checkbox' })`
     background-color: var(--primary-6);
     background-image: url('~/assets/icons/checked-icon.svg');
     background-size: cover;
+  }
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0 1.2rem;
+
+  margin: 2rem auto 0;
+
+  border: none;
+  background: none;
+
+  & > div {
+    color: var(--gray-3);
+    font-family: SUIT-Medium, sans-serif;
+    font-size: 1.4rem;
+    text-decoration-line: underline;
   }
 `;

@@ -1,36 +1,42 @@
+import { Suspense, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { MouseEventHandler } from 'react';
+
+import ImageGrid from '~/components/@common/ImageGrid';
+import VideoCarousel from '~/components/@common/VideoCarousel';
+import RestaurantCard from '~/components/RestaurantCard';
+import MapContent from '~/components/@common/Map/MapContent';
+import ProfileImageList from '~/components/@common/ProfileImageList';
+import SuggestionButton from '~/components/SuggestionButton';
+import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
+import ImageCarousel from '~/components/@common/ImageCarousel';
+
 import View from '~/assets/icons/view.svg';
 import Copy from '~/assets/icons/copy.svg';
 import Love from '~/assets/icons/black-love.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 
-import Footer from '~/components/@common/Footer';
-import Header from '~/components/@common/Header';
-import ImageGrid from '~/components/@common/ImageGrid';
 import { BORDER_RADIUS, FONT_SIZE, hideScrollBar, paintSkeleton } from '~/styles/common';
-import VideoCarousel from '~/components/@common/VideoCarousel';
-import RestaurantCard from '~/components/RestaurantCard';
-import MapContent from '~/components/@common/Map/MapContent';
-import ProfileImageList from '~/components/@common/ProfileImageList';
-import { getCelebVideo, getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api';
-import type { RestaurantDetailData, RestaurantListData, VideoList } from '~/@types/api.types';
-import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
-import SuggestionButton from '~/components/SuggestionButton';
-import RestaurantDetailLikeButton from '~/components/RestaurantDetailLikeButton';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import ImageCarousel from '~/components/@common/ImageCarousel';
-import PopUpContainer from '~/components/PopUpContainer';
+import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
+
+import type { RestaurantData, RestaurantListData, VideoList } from '~/@types/api.types';
+import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
+import useScrollDirection from '~/hooks/useScrollDirection';
+import { getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
+import { getCelebVideo } from '~/api/celeb';
 
 function RestaurantDetail() {
+  const layoutRef = useRef();
+  const sheetRef = useRef<HTMLDivElement>();
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+  const scrollDirection = useScrollDirection();
 
   const {
     data: {
@@ -50,9 +56,10 @@ function RestaurantDetail() {
       lng,
     } = {},
     isSuccess: isSuccessRestaurantDetail,
-  } = useQuery<RestaurantDetailData>({
+  } = useQuery<RestaurantData>({
     queryKey: ['restaurantDetail', restaurantId, celebId],
     queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    cacheTime: 0,
   });
 
   const { data: nearByRestaurant, isSuccess: isSuccessNearByRestaurant } = useQuery<RestaurantListData>({
@@ -71,12 +78,12 @@ function RestaurantDetail() {
   });
 
   const openNewWindow =
-    (url: string): MouseEventHandler<HTMLButtonElement> =>
+    (url: string): React.MouseEventHandler<HTMLButtonElement> =>
     () =>
       window.open(url, '_blank');
 
   const copyClipBoard =
-    (text: string): MouseEventHandler<HTMLButtonElement> =>
+    (text: string): React.MouseEventHandler<HTMLButtonElement> =>
     async () => {
       try {
         await navigator.clipboard.writeText(text);
@@ -88,153 +95,163 @@ function RestaurantDetail() {
 
   return (
     <>
-      <Header />
-      <>
-        <StyledMainRestaurantDetail isMobile={isMobile}>
-          {isSuccessRestaurantDetail && (
-            <>
-              <StyledDetailHeader tabIndex={0}>
-                <h3>{name}</h3>
-                <div role="group">
-                  <div aria-label={`조회수 ${viewCount}`}>
-                    <View width={18} aria-hidden /> <span aria-hidden>{viewCount}</span>
-                  </div>
-                  <div aria-label={`좋아요수 ${viewCount}`}>
-                    <Love width={18} aria-hidden /> <span aria-hidden>{likeCount}</span>
-                  </div>
+      <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
+        {isSuccessRestaurantDetail && (
+          <>
+            <StyledDetailHeader tabIndex={0}>
+              <h3>{name}</h3>
+              <div role="group">
+                <div aria-label={`조회수 ${viewCount}`}>
+                  <View width={18} aria-hidden /> <span aria-hidden>{viewCount}</span>
                 </div>
-              </StyledDetailHeader>
-              {isMobile ? (
-                <ImageCarousel type="list" images={images} />
-              ) : (
-                <ImageGrid images={images.map(({ name: url, author }) => ({ waterMark: author, url }))} />
-              )}
-              <StyledDetailAndLink isMobile={isMobile}>
-                <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">
-                  <div>
-                    <div>
-                      <h4>셀럽, {celebs[0].name} 이(가) 다녀간 맛집</h4>
-                      <div>
-                        <div>{celebs[0].youtubeChannelName}</div>
-                        <div>|</div>
-                        <button
-                          type="button"
-                          onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}
-                        >
-                          <Youtube width={18} />
-                          <div>유튜브 바로가기</div>
-                        </button>
-                      </div>
-                    </div>
-                    <ProfileImageList celebs={celebs} size="56px" />
-                  </div>
-                  <div>
-                    <div>
-                      <div>주소 : {roadAddress}</div>
-                      <button aria-label="주소 복사" type="button" onClick={copyClipBoard(roadAddress)}>
-                        <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
-                      </button>
-                    </div>
-                    <div>
-                      <div>전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}</div>
-                      <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
-                        <Copy width={16} />
-                        <div aria-hidden>복사하기</div>
-                      </button>
-                    </div>
-                    <div>카테고리 : {category}</div>
-                  </div>
-                  {isSuccessRestaurantVideo && (
-                    <StyledMainVideo>
-                      <h5>영상으로 보기</h5>
-                      <iframe
-                        title={`${restaurantVideo.content[0].name}의 영상`}
-                        src={`https://www.youtube.com/embed/${restaurantVideo.content[0].youtubeVideoKey}`}
-                        allow="encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </StyledMainVideo>
-                  )}
-                </StyledDetailInfo>
-                <StyledLinkContainer isMobile={isMobile} tabIndex={0}>
-                  <StyledMainLinkContainer isMobile={isMobile}>
-                    <button type="button" onClick={openNewWindow(naverMapUrl)}>
-                      <Naver width={32} />
-                      <div>네이버 지도로 보기</div>
-                    </button>
-                    <RestaurantDetailLikeButton
-                      restaurant={{
-                        id,
-                        distance,
-                        name,
-                        images,
-                        roadAddress,
-                        isLiked,
-                        category,
-                        phoneNumber,
-                        naverMapUrl,
-                        lat,
-                        lng,
-                      }}
-                    />
-                  </StyledMainLinkContainer>
-                  <SuggestionButton />
-                </StyledLinkContainer>
-              </StyledDetailAndLink>
-            </>
-          )}
-          <StyledVideoSection>
-            {isSuccessRestaurantVideo && restaurantVideo.totalElementsCount > 1 && (
-              <VideoCarousel
-                title={`이외에 ${restaurantVideo.currentElementsCount - 1}명의 셀럽이 다녀갔어요!`}
-                videos={restaurantVideo.content.slice(1)}
-              />
-            )}
-            {isSuccessCelebVideo && isSuccessCelebVideo && (
-              <VideoCarousel
-                title="이 셀럽의 다른 음식점 영상"
-                videos={celebVideo.content.filter(({ videoId }) => videoId !== restaurantVideo?.content[0].videoId)}
-              />
-            )}
-          </StyledVideoSection>
-          {isSuccessNearByRestaurant && nearByRestaurant.totalElementsCount > 0 && (
-            <StyledNearByRestaurant>
-              <h5>주변 다른 식당</h5>
-              <ul>
-                {nearByRestaurant.content.map(restaurant => (
-                  <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
-                ))}
-              </ul>
-            </StyledNearByRestaurant>
-          )}
-          <RestaurantReviewWrapper />
-          {isSuccessRestaurantDetail && (
-            <StyledMapSection>
-              <h5>위치 확인하기</h5>
-              <div>
-                <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
-                  <MapContent
-                    center={{ lat, lng }}
-                    zoom={17}
-                    style={{ width: '100%', height: isMobile ? '300px' : '600px' }}
-                    markers={[{ lat, lng }]}
-                  />
-                </Wrapper>
+                <div aria-label={`좋아요수 ${viewCount}`}>
+                  <Love width={18} aria-hidden /> <span aria-hidden>{likeCount}</span>
+                </div>
               </div>
-            </StyledMapSection>
+            </StyledDetailHeader>
+            {isMobile ? (
+              <ImageCarousel type="list" images={images} />
+            ) : (
+              <ImageGrid images={images.map(({ name: url, author, sns }) => ({ waterMark: author, url, sns }))} />
+            )}
+            <StyledDetailAndLink isMobile={isMobile}>
+              <StyledDetailInfo isMobile={isMobile} tabIndex={0} aria-label="음식정 상세 정보">
+                <div>
+                  <div>
+                    <h4>{celebs[0].name}</h4>
+                    <div>
+                      <div>{celebs[0].youtubeChannelName}</div>
+                      <div>|</div>
+                      <button
+                        type="button"
+                        onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}
+                      >
+                        <Youtube width={28} />
+                        <div>유튜브 바로가기</div>
+                      </button>
+                    </div>
+                  </div>
+                  <ProfileImageList celebs={celebs} size="56px" />
+                </div>
+                <div>
+                  <div>
+                    주소 : {roadAddress}
+                    <button aria-label="주소 복사" type="button" onClick={copyClipBoard(roadAddress)}>
+                      <Copy width={16} />
+                      복사
+                    </button>
+                  </div>
+                  <div>
+                    전화번호 : {phoneNumber === '' ? '아직 등록되지 않았어요.' : phoneNumber}
+                    <button aria-label="전화번호 복사" type="button" onClick={copyClipBoard(phoneNumber)}>
+                      <Copy width={16} />
+                      복사
+                    </button>
+                  </div>
+                  <div>카테고리 : {category}</div>
+                </div>
+                {isSuccessRestaurantVideo && (
+                  <StyledMainVideo>
+                    <h5>영상으로 보기</h5>
+                    <iframe
+                      title={`${restaurantVideo.content[0].name}의 영상`}
+                      src={`https://www.youtube.com/embed/${restaurantVideo.content[0].youtubeVideoKey}`}
+                      allow="encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </StyledMainVideo>
+                )}
+              </StyledDetailInfo>
+              <StyledLinkContainer isMobile={isMobile} tabIndex={0}>
+                <StyledMainLinkContainer isMobile={isMobile}>
+                  <RestaurantDetailLikeButton
+                    restaurant={{
+                      id,
+                      distance,
+                      name,
+                      images,
+                      roadAddress,
+                      isLiked,
+                      category,
+                      phoneNumber,
+                      naverMapUrl,
+                      lat,
+                      lng,
+                      likeCount,
+                      viewCount,
+                    }}
+                  />
+                  <button type="button" onClick={openNewWindow(naverMapUrl)}>
+                    <Naver width={32} />
+                    <div>네이버 지도로 보기</div>
+                  </button>
+                </StyledMainLinkContainer>
+                <SuggestionButton />
+              </StyledLinkContainer>
+            </StyledDetailAndLink>
+          </>
+        )}
+        <StyledVideoSection>
+          {isSuccessRestaurantVideo && restaurantVideo.totalElementsCount > 1 && (
+            <VideoCarousel
+              title={`이외에 ${restaurantVideo.currentElementsCount - 1}명의 셀럽이 다녀갔어요!`}
+              videos={restaurantVideo.content.slice(1)}
+            />
           )}
-        </StyledMainRestaurantDetail>
-        <Footer />
-      </>
+          {isSuccessCelebVideo && isSuccessCelebVideo && (
+            <VideoCarousel
+              title="이 셀럽의 다른 음식점 영상"
+              videos={celebVideo.content.filter(({ videoId }) => videoId !== restaurantVideo?.content[0].videoId)}
+            />
+          )}
+        </StyledVideoSection>
+        {isSuccessNearByRestaurant && nearByRestaurant.totalElementsCount > 0 && (
+          <StyledNearByRestaurant>
+            <h5>주변 다른 식당</h5>
+            <ul>
+              {nearByRestaurant.content.map(restaurant => (
+                <StyledRestaurantCardContainer>
+                  <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+                </StyledRestaurantCardContainer>
+              ))}
+            </ul>
+          </StyledNearByRestaurant>
+        )}
+        <Suspense fallback={<div>Loading...</div>}>
+          <ReviewModalProvider>
+            <RestaurantReviewWrapper />
+          </ReviewModalProvider>
+        </Suspense>
+        {isSuccessRestaurantDetail && (
+          <StyledMapSection>
+            <h5>위치 확인하기</h5>
+            <div>
+              <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
+                <MapContent
+                  center={{ lat, lng }}
+                  zoom={17}
+                  style={{ width: '100%', height: isMobile ? '300px' : '600px' }}
+                  markers={[{ lat, lng }]}
+                  gestureHandling="cooperative"
+                />
+              </Wrapper>
+            </div>
+
+            {isMobile && (
+              <>
+                <StyledButton type="button" onClick={openNewWindow(naverMapUrl)}>
+                  <Naver width={32} />
+                  <div>네이버 지도로 보기</div>
+                </StyledButton>
+                <SuggestionButton />
+              </>
+            )}
+          </StyledMapSection>
+        )}
+      </StyledMainRestaurantDetail>
       {isMobile && isSuccessRestaurantDetail && (
-        <StyledMobileBottomSheet>
-          <SuggestionButton />
+        <StyledMobileBottomSheet ref={sheetRef} movingDirection={scrollDirection.y}>
           <StyledMainLinkContainer isMobile={isMobile}>
-            <button type="button" onClick={openNewWindow(naverMapUrl)}>
-              <Naver width={32} />
-              <div>네이버 지도로 보기</div>
-            </button>
             <RestaurantDetailLikeButton
               restaurant={{
                 id,
@@ -247,11 +264,12 @@ function RestaurantDetail() {
                 phoneNumber,
                 naverMapUrl,
                 lat,
+                viewCount,
+                likeCount,
                 lng,
               }}
             />
           </StyledMainLinkContainer>
-          <PopUpContainer />
         </StyledMobileBottomSheet>
       )}
     </>
@@ -267,18 +285,13 @@ const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
     isMobile
       ? css`
           position: sticky;
-          top: 60px;
 
-          margin: 0 1.2rem 24rem;
+          margin: 0 1.2rem 2rem;
         `
       : css`
           max-width: 1240px;
 
-          margin: 0 auto;
-
-          @media screen and (width <= 1340px) {
-            margin: 0 5rem;
-          }
+          margin: 0 auto 8rem;
         `}
 `;
 
@@ -368,17 +381,19 @@ const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
     border-bottom: 1px solid var(--gray-2);
 
     & > div {
-      display: flex;
-      align-items: center;
-      gap: 0 1.2rem;
+      display: inline-block;
+
+      line-height: 20px;
 
       & > button {
-        display: flex;
-        align-items: center;
-        gap: 0 0.4rem;
-
         border: none;
         background: none;
+
+        color: #60bf48;
+
+        vertical-align: -1px;
+
+        text-align: start;
       }
     }
   }
@@ -426,24 +441,6 @@ const StyledLinkContainer = styled.aside<{ isMobile: boolean }>`
 
           width: 33%;
         `}
-
-  & > button:last-child {
-    display: flex;
-    align-items: center;
-    gap: 0 1.2rem;
-
-    margin: 2rem auto 0;
-
-    border: none;
-    background: none;
-
-    & > div {
-      color: var(--gray-3);
-      font-family: SUIT-Medium, sans-serif;
-      font-size: 1.4rem;
-      text-decoration-line: underline;
-    }
-  }
 `;
 
 const StyledMainLinkContainer = styled.div<{ isMobile: boolean }>`
@@ -488,11 +485,11 @@ const StyledMainLinkContainer = styled.div<{ isMobile: boolean }>`
     }
 
     &:first-child {
-      background: #03c75a;
+      background: var(--red-2);
     }
 
     &:nth-child(2) {
-      background: var(--red-2);
+      background: #03c75a;
     }
   }
 `;
@@ -523,7 +520,6 @@ const StyledMapSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem 0;
-  margin-bottom: 4.8rem;
 
   & > div {
     border-radius: ${BORDER_RADIUS.md};
@@ -531,7 +527,9 @@ const StyledMapSection = styled.section`
   }
 `;
 
-const StyledMobileBottomSheet = styled.section`
+const StyledMobileBottomSheet = styled.section<{
+  movingDirection: string;
+}>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -539,26 +537,31 @@ const StyledMobileBottomSheet = styled.section`
 
   width: 100%;
 
-  & > *:first-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0 1.2rem;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ movingDirection }) => (movingDirection === 'up' ? 'translateY(100%)' : 'translateY(0)')};
+`;
 
-    position: absolute;
-    top: -30px;
-    right: calc(50% - 80px);
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0 4rem;
 
-    width: 160px;
-    height: 24px;
+  padding: 1.6rem 3.2rem;
 
-    box-shadow: var(--shadow);
+  border: none;
+  border-radius: ${BORDER_RADIUS.md};
+  background: #03c75a;
 
-    border: none;
-    border-radius: ${BORDER_RADIUS.sm};
-    background: var(--white);
+  font-family: SUIT-Medium, sans-serif;
+  font-size: ${FONT_SIZE.md};
 
-    color: var(--gray-2);
-    font-size: ${FONT_SIZE.sm};
+  & > div {
+    color: var(--white);
   }
+`;
+
+const StyledRestaurantCardContainer = styled.div`
+  border-radius: 12px;
+
+  box-shadow: var(--map-shadow);
 `;

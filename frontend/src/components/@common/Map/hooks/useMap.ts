@@ -9,6 +9,7 @@ interface UseDrawMapProps {
   onIdle?: (map: google.maps.Map) => void;
   onClick?: (e: google.maps.MapMouseEvent) => void;
   markers?: Coordinate[];
+  gestureHandling: 'greedy' | 'cooperative';
 }
 
 const styles = [
@@ -161,7 +162,7 @@ const styles = [
   },
 ];
 
-const useMap = ({ center, zoom, onClick, onIdle, markers }: UseDrawMapProps) => {
+const useMap = ({ center, zoom, onClick, onIdle, markers, gestureHandling }: UseDrawMapProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map>(null);
 
@@ -171,9 +172,10 @@ const useMap = ({ center, zoom, onClick, onIdle, markers }: UseDrawMapProps) => 
         center,
         zoom,
         disableDefaultUI: true,
-        gestureHandling: 'greedy',
+        gestureHandling,
         styles,
         clickableIcons: false,
+        minZoom: 7,
       });
 
       markers?.forEach(

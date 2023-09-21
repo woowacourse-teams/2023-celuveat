@@ -1,23 +1,32 @@
+import { useQuery } from '@tanstack/react-query';
+import { useRef } from 'react';
 import styled from 'styled-components';
+import { ProfileData } from '~/@types/api.types';
+import { getProfile } from '~/api/user';
 
 import InfoButton from '~/components/@common/InfoButton';
 import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
+import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
 import useBooleanState from '~/hooks/useBooleanState';
-
-interface Option {
-  id: number;
-  value: string;
-}
+import useOnClickOutside from '~/hooks/useOnClickOutside';
 
 interface DropDownProps {
-  options: Option[];
   isOpen?: boolean;
   externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
   label: string;
 }
 
-function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropDownProps) {
-  const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
+function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps) {
+  const { value: isShow, toggle: onToggleDropDown, setFalse: closeDropDown } = useBooleanState(isOpen);
+  const ref = useRef();
+  useOnClickOutside(ref, closeDropDown);
+
+  const { data, isSuccess } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
+
+  const options = isSuccess ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
 
   const onSelection = () => (event?: React.MouseEvent<HTMLLIElement>) => {
     if (externalOnClick) externalOnClick(event);
@@ -25,8 +34,8 @@ function InfoDropDown({ options, externalOnClick, isOpen = false, label }: DropD
 
   return (
     <StyledInfoDropDown aria-hidden>
-      <StyledInfoButtonWrapper onClick={onToggleDropDown} onBlur={onCloseDropDown} aria-label={label}>
-        <InfoButton isShow={isShow} />
+      <StyledInfoButtonWrapper ref={ref} onClick={onToggleDropDown} aria-label={label}>
+        <InfoButton profile={data} isShow={isShow} isSuccess={isSuccess} />
       </StyledInfoButtonWrapper>
 
       {isShow && (
