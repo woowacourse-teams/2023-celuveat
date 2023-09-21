@@ -4,11 +4,9 @@ import type { RestaurantListData } from '~/@types/api.types';
 import type { RestaurantsQueryParams } from '~/@types/restaurant.types';
 
 export const getRestaurants = async (queryParams: RestaurantsQueryParams) => {
-
   if (queryParams.boundary) {
     const queryString = getQueryString(queryParams);
     const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
-
 
     return response.data;
   }
@@ -16,7 +14,7 @@ export const getRestaurants = async (queryParams: RestaurantsQueryParams) => {
 };
 
 export const getRestaurantDetail = async (restaurantId: string, celebId: string) => {
-  const response = await apiClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
+  const response = await apiUserClient.get(`/restaurants/${restaurantId}?celebId=${celebId}`);
   return response.data;
 };
 
