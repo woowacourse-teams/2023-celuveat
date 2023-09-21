@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -98,7 +98,7 @@ function RestaurantDetail() {
       <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
         {isSuccessRestaurantDetail && (
           <>
-            <StyledDetailHeader tabIndex={0}>
+            <StyledDetailHeader tabIndex={0} isMobile={isMobile}>
               <h3>{name}</h3>
               <div role="group">
                 <div aria-label={`조회수 ${viewCount}`}>
@@ -217,11 +217,10 @@ function RestaurantDetail() {
             </ul>
           </StyledNearByRestaurant>
         )}
-        <Suspense fallback={<div>Loading...</div>}>
-          <ReviewModalProvider>
-            <RestaurantReviewWrapper />
-          </ReviewModalProvider>
-        </Suspense>
+
+        <ReviewModalProvider>
+          <RestaurantReviewWrapper />
+        </ReviewModalProvider>
         {isSuccessRestaurantDetail && (
           <StyledMapSection>
             <h5>위치 확인하기</h5>
@@ -281,6 +280,7 @@ export default RestaurantDetail;
 const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
+
   ${({ isMobile }) =>
     isMobile
       ? css`
@@ -295,7 +295,7 @@ const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
         `}
 `;
 
-const StyledDetailHeader = styled.section`
+const StyledDetailHeader = styled.section<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.8rem 0;
@@ -315,6 +315,12 @@ const StyledDetailHeader = styled.section`
       gap: 0 0.8rem;
     }
   }
+
+  ${({ isMobile }) =>
+    isMobile &&
+    css`
+      margin-top: 4.4rem;
+    `}
 `;
 
 const StyledDetailAndLink = styled.section<{ isMobile: boolean }>`
