@@ -58,9 +58,9 @@ public class RestaurantSimpleResponseDao {
     ) {
         List<Long> restaurantIds = restaurants.map(RestaurantWithDistance::id).toList();
         Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
-        Map<Long, List<RestaurantImage>> restaurantMap = getImagesGroupByRestaurantsId(restaurantIds);
+        Map<Long, List<RestaurantImage>> restaurantImageMap = getImagesGroupByRestaurantsId(restaurantIds);
         return RestaurantSimpleResponse.of(
-                restaurants, celebsMap, restaurantMap
+                restaurants, celebsMap, restaurantImageMap
         );
     }
 
