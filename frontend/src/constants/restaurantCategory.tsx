@@ -1,4 +1,4 @@
-import Ijakaya from '~/assets/icons/restaurantCategory/ijakaya.svg';
+import Izakaya from '~/assets/icons/restaurantCategory/izakaya.svg';
 import Japanese from '~/assets/icons/restaurantCategory/japanese.svg';
 import Korean from '~/assets/icons/restaurantCategory/korean.svg';
 import Meat from '~/assets/icons/restaurantCategory/meat.svg';
@@ -25,7 +25,7 @@ const RESTAURANT_CATEGORY: Category[] = [
   { label: '양식', icon: <Pasta /> },
   { label: '와인', icon: <Wine /> },
   { label: '육류,고기요리', icon: <Meat /> },
-  { label: '이자카야', icon: <Ijakaya /> },
+  { label: '이자카야', icon: <Izakaya /> },
   { label: '돼지고기구이', icon: <Pig /> },
   { label: '요리주점', icon: <Pub /> },
 ];
