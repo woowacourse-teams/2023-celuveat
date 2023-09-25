@@ -106,7 +106,7 @@ class RestaurantReviewServiceTest {
         // then
         Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
         assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
-        assertThat(savedRestaurant.ratingTotal()).isEqualTo(8.0);
+        assertThat(savedRestaurant.totalRating()).isEqualTo(8.0);
     }
 
     @Test
@@ -166,8 +166,8 @@ class RestaurantReviewServiceTest {
         // then
         Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
         assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
-        assertThat(savedRestaurant.ratingTotal()).isNotEqualTo(10.0);
-        assertThat(savedRestaurant.ratingTotal()).isEqualTo(6.0);
+        assertThat(savedRestaurant.totalRating()).isNotEqualTo(10.0);
+        assertThat(savedRestaurant.totalRating()).isEqualTo(6.0);
     }
 
     @Test
@@ -217,7 +217,7 @@ class RestaurantReviewServiceTest {
         // then
         Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
         assertThat(savedRestaurant.reviewCount()).isEqualTo(0);
-        assertThat(savedRestaurant.ratingTotal()).isEqualTo(0.0);
+        assertThat(savedRestaurant.totalRating()).isEqualTo(0.0);
     }
 
     @Test
