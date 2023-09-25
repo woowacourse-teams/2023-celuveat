@@ -4,6 +4,7 @@ const commonConfig = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const commonPlugins = [
@@ -67,6 +68,7 @@ module.exports = (env, args) => {
       new Dotenv({
         path: path.resolve(__dirname, `../.${TARGET_ENV}.env`),
       }),
+      new RefreshWebpackPlugin(),
     ],
   };
 };
