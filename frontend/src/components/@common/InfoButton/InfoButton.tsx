@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 
 import Menu from '~/assets/icons/etc/menu.svg';
 import User from '~/assets/icons/etc/user.svg';

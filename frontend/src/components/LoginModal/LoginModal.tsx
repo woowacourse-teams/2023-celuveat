@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import LoginButton from '~/components/@common/LoginButton';
 import Modal from '../@common/Modal';
 

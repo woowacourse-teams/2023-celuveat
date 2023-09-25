@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import Overlay from './Overlay/Overlay';
 import type { Coordinate } from '~/@types/map.types';
 

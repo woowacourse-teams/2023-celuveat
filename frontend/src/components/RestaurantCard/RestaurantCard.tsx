@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
@@ -27,9 +27,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
 
   const onMouseEnter = () => setHoveredId(restaurant.id);
   const onMouseLeave = () => setHoveredId(null);
-  const onClick = () => {
-    navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
-  };
+  const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
 
   const toggle: MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
@@ -71,7 +69,14 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   );
 }
 
-export default RestaurantCard;
+function areEqual(prevProps: RestaurantCardProps, nextProps: RestaurantCardProps) {
+  const { restaurant: prevRestaurant, celebs: prevCelebs } = prevProps;
+  const { restaurant: nextRestaurant, celebs: nextCelebs } = nextProps;
+
+  return prevRestaurant.id === nextRestaurant.id && prevCelebs[0].id === nextCelebs[0].id;
+}
+
+export default memo(RestaurantCard, areEqual);
 
 const StyledContainer = styled.li`
   display: flex;

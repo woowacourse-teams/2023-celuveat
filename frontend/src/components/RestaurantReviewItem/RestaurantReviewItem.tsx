@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
 import ProfileImage from '~/components/@common/ProfileImage';
 

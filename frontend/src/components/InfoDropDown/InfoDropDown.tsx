@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
 

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { MouseEvent, useState } from 'react';
 
 import CelebIcon from '~/assets/icons/celeb.svg';
