@@ -218,8 +218,7 @@ public class SeedData {
                 restaurant.naverMapUrl(),
                 restaurant.viewCount(),
                 distance,
-                0L, // likeCount
-                false // isLiked
+                0L // likeCount
         );
     }
 

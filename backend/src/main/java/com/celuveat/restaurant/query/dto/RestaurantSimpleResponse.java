@@ -54,14 +54,15 @@ public record RestaurantSimpleResponse(
     public static Page<RestaurantSimpleResponse> of(
             Page<RestaurantWithDistance> restaurants,
             Map<Long, List<Celeb>> celebsMap,
-            Map<Long, List<RestaurantImage>> restaurantMap
+            Map<Long, List<RestaurantImage>> restaurantMap,
+            Map<Long, Boolean> isLikedMap
     ) {
         return restaurants.map(restaurant ->
                 RestaurantSimpleResponse.builder()
                         .restaurant(restaurant)
                         .celebs(celebsMap.get(restaurant.id()))
                         .restaurantImages(restaurantMap.get(restaurant.id()))
-                        .isLiked(restaurant.isLiked())
+                        .isLiked(isLikedMap.get(restaurant.id()))
                         .likeCount(restaurant.likeCount())
                         .build()
         );
