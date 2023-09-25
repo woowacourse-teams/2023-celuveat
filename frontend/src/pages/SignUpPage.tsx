@@ -19,7 +19,7 @@ function SignUpPage() {
       </StyledIconWrapper>
       <StyledLoginButtonBox>
         <StyledHomeButton onClick={clickHomeButton}>비회원으로 이용하기</StyledHomeButton>
-        <StyledLine>-------------------- sign in --------------------</StyledLine>
+        <StyledLine> or </StyledLine>
         <LoginButton type="kakao" />
         <LoginButton type="google" />
       </StyledLoginButtonBox>
@@ -31,10 +31,12 @@ export default SignUpPage;
 
 const StyledContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 4.8rem;
 
-  height: 100vh;
+  height: calc(100vh - 44px);
 
   background-color: var(--primary-6);
 `;
@@ -44,8 +46,6 @@ const StyledIconWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-
-  margin-bottom: 10rem;
 `;
 
 const StyledName = styled.h2`
@@ -57,9 +57,6 @@ const StyledLoginButtonBox = styled.div`
   flex-direction: column;
   justify-content: end;
   align-items: center;
-
-  position: absolute;
-  bottom: 1%;
 
   width: 100%;
 
@@ -79,8 +76,8 @@ const StyledHomeButton = styled.button`
   box-shadow: var(--shadow);
 `;
 
-const StyledLine = styled.span`
-  margin: 1.6rem 0;
+const StyledLine = styled.div`
+  margin: 1.2rem 0;
 
   color: var(--white);
   font-size: ${FONT_SIZE.md};
