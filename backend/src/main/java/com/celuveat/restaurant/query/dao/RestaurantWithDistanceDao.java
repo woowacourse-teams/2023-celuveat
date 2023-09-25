@@ -3,10 +3,7 @@ package com.celuveat.restaurant.query.dao;
 import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
-import static com.celuveat.restaurant.command.domain.QRestaurantLike.restaurantLike;
 import static com.celuveat.video.command.domain.QVideo.video;
-import static com.querydsl.core.types.dsl.Expressions.as;
-import static com.querydsl.jpa.JPAExpressions.select;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
@@ -38,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantWithDistanceDao {
 
     private static final NumberPath<Double> distanceColumn = Expressions.numberPath(Double.class, "distance");
-    private static final NumberPath<Long> likeCountColumn = Expressions.numberPath(Long.class, "likeCount");
 
     private final JPAQueryFactory query;
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
@@ -63,10 +59,7 @@ public class RestaurantWithDistanceDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(middleLat, middleLng).as(distanceColumn),
-                        (as(select(restaurantLike.count())
-                                .from(restaurantLike)
-                                .where(restaurantLike.restaurant.id.eq(restaurant.id))
-                                .groupBy(restaurant.id), likeCountColumn))
+                        restaurant.likeCount
                 ))
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -80,6 +73,7 @@ public class RestaurantWithDistanceDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
         JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -141,7 +135,7 @@ public class RestaurantWithDistanceDao {
                 .map(RestaurantSortType::from)
                 .orElse(RestaurantSortType.DISTANCE);
         if (sortType == RestaurantSortType.LIKE_COUNT) {
-            return likeCountColumn.desc();
+            return restaurant.likeCount.desc();
         }
         return distanceColumn.asc();
     }
@@ -164,10 +158,7 @@ public class RestaurantWithDistanceDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(standard.latitude(), standard.longitude()).as(RestaurantWithDistanceDao.distanceColumn),
-                        select(restaurantLike.count())
-                                .from(restaurantLike)
-                                .where(restaurantLike.restaurant.id.eq(restaurant.id))
-                                .groupBy(restaurant.id)
+                        restaurant.likeCount
                 ))
                 .from(restaurant)
                 .where(

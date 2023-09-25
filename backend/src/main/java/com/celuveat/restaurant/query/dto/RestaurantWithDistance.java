@@ -11,6 +11,6 @@ public record RestaurantWithDistance(
         String naverMapUrl,
         Integer viewCount,
         Double distance,
-        Long likeCount
+        int likeCount
 ) {
 }

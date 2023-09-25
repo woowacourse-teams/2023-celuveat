@@ -2,6 +2,7 @@ package com.celuveat.restaurant.command.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +36,18 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String naverMapUrl;
 
-    private Integer viewCount;
+    private int viewCount;
+
+    private int likeCount;
+
+    public RestaurantLike clickLike(OauthMember member) {
+        this.likeCount += 1;
+        return new RestaurantLike(this, member);
+    }
+
+    public void cancelLike() {
+        this.likeCount -= 1;
+    }
 
     public void increaseViewCount() {
         this.viewCount += 1;
@@ -71,5 +83,9 @@ public class Restaurant extends BaseEntity {
 
     public Integer viewCount() {
         return viewCount;
+    }
+
+    public int likeCount() {
+        return likeCount;
     }
 }
