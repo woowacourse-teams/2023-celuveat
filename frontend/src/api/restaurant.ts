@@ -6,7 +6,7 @@ import type { RestaurantsQueryParams } from '~/@types/restaurant.types';
 export const getRestaurants = async (queryParams: RestaurantsQueryParams) => {
   if (queryParams.boundary) {
     const queryString = getQueryString(queryParams);
-    const response = await apiClient.get<RestaurantListData>(`/restaurants?${queryString}`);
+    const response = await apiUserClient.get<RestaurantListData>(`/restaurants?${queryString}`);
 
     return response.data;
   }
