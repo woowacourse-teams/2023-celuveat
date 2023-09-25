@@ -23,15 +23,7 @@ const commonPlugins = [
 const commonRules = [
   {
     test: /\.(ts|tsx)$/,
-    use: [
-      'babel-loader',
-      {
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-        },
-      },
-    ],
+    use: ['babel-loader'],
     exclude: /node_modules/,
   },
   {

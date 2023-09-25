@@ -37,7 +37,7 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
-    "@babel/preset-typescript": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.15",
     "@storybook/addon-essentials": "^7.0.25",
     "@storybook/addon-interactions": "^7.0.25",
     "@storybook/addon-links": "^7.0.25",
