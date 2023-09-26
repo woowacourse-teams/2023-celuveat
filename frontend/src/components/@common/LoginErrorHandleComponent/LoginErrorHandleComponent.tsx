@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
 
@@ -10,6 +10,7 @@ interface LoginErrorHandleComponentProps {
 
 function LoginErrorHandleComponent({ children }: LoginErrorHandleComponentProps) {
   const navigator = useNavigate();
+  const { pathname } = useLocation();
 
   const { isLoading, isFetching, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
@@ -19,7 +20,7 @@ function LoginErrorHandleComponent({ children }: LoginErrorHandleComponentProps)
 
   useEffect(() => {
     if (!isFetching && !isSuccess) {
-      navigator('/signUp');
+      navigator('/signUp', { state: { from: pathname } });
     }
   }, [isFetching, isSuccess]);
 

@@ -1,5 +1,5 @@
 import { styled, css } from 'styled-components';
-import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
@@ -8,6 +8,7 @@ import Google from '~/assets/icons/oauth/google.svg';
 import { Oauth } from '~/@types/oauth.types';
 
 import { FONT_SIZE } from '~/styles/common';
+import usePathNameState from '~/hooks/store/usePathnameState';
 
 interface LoginButtonProps {
   type: Oauth;
@@ -20,7 +21,12 @@ const LoginIcon: Record<string, React.ReactNode> = {
 };
 
 function LoginButton({ type }: LoginButtonProps) {
+  const location = useLocation();
+  const setPath = usePathNameState(state => state.setPath);
+
   const onClick = () => {
+    setPath(location.pathname === '/signUp' ? location.state.from : location.pathname);
+
     if (process.env.NODE_ENV === 'development') {
       window.location.href = 'https://d.api.celuveat.com/login/local?id=abc';
       window.location.href = '/oauth/redirect/kakao?code=12312421';

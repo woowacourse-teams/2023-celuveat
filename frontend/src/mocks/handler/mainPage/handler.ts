@@ -86,7 +86,6 @@ export const MainPageSuccessHandler = [
     const currentDate = new Date();
     const sixHoursInMilliseconds = 6 * 60 * 60 * 1000;
     const expirationDate = new Date(currentDate.getTime() + sixHoursInMilliseconds);
-    window.location.href = '/';
 
     return res(ctx.cookie('JSESSION', `${code}`, { expires: expirationDate }), ctx.status(200));
   }),

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { getAccessToken } from '~/api/user';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
+import usePathNameState from '~/hooks/store/usePathnameState';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
@@ -12,6 +13,7 @@ interface OauthRedirectProps {
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
   const navigator = useNavigate();
+  const path = usePathNameState(state => state.path);
 
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
@@ -19,7 +21,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
   const oauthTokenMutation = useMutation({
     mutationFn: () => getAccessToken(type, code),
     onSuccess: () => {
-      navigator('/');
+      navigator(path);
     },
     onError: () => {
       navigator('/');
@@ -40,7 +42,7 @@ function OauthRedirectPage({ type }: OauthRedirectProps) {
           throw new Error('Network response was not ok');
         }
 
-        navigator('/');
+        navigator(path);
       });
     }
   }, []);

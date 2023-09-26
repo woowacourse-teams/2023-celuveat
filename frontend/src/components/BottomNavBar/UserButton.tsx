@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserIcon from '~/assets/icons/etc/user.svg';
 import ProfileImage from '../@common/ProfileImage';
@@ -9,12 +9,13 @@ import type { ProfileData } from '~/@types/api.types';
 
 function UserButton() {
   const navigator = useNavigate();
+  const location = useLocation();
   const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
   });
 
-  const clickLogin = () => navigator('/signUp');
+  const clickLogin = () => navigator('/signUp', { state: { from: location.pathname } });
 
   const clickLogout = () => {
     getLogout(profile.oauthServer);
