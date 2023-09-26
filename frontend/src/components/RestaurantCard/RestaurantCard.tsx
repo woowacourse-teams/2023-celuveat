@@ -20,7 +20,7 @@ interface RestaurantCardProps {
 }
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
-  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
+  const { id, images, name, roadAddress, category, phoneNumber, likeCount } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
@@ -59,6 +59,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
             <StyledAddress>{phoneNumber}</StyledAddress>
           </StyledInfo>
           <StyledProfileImageSection>
+            <span>좋아요 {likeCount.toLocaleString()}개</span>
             {celebs && <ProfileImageList celebs={celebs} size={size} />}
           </StyledProfileImageSection>
         </StyledInfoSection>
@@ -123,12 +124,26 @@ const StyledAddress = styled.span`
 `;
 
 const StyledCategory = styled.span`
+  display: flex;
+  justify-content: space-between;
+
   color: var(--gray-3);
   font-size: ${FONT_SIZE.sm};
 `;
 
 const StyledProfileImageSection = styled.div`
-  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  min-width: fit-content;
+
+  & > span {
+    font-size: ${FONT_SIZE.sm};
+    font-weight: 700;
+    padding-top: 0.4rem;
+  }
 `;
 
 const LikeButton = styled.button`

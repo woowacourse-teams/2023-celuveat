@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import CategoryNavbar from './CategoryNavbar';
-import FastFood from '~/assets/icons/fastFood.svg';
+import Izakaya from '~/assets/icons/restaurantCategory/izakaya.svg';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface Category {
@@ -11,43 +11,43 @@ interface Category {
 const categories: Category[] = [
   {
     label: '일식당',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '한식',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '초밥,롤',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '생선회',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '양식',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '육류,고기요리',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '이자카야',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '돼지고기구이',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '요리주점',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
   {
     label: '와인',
-    icon: <FastFood />,
+    icon: <Izakaya />,
   },
 ];
 
