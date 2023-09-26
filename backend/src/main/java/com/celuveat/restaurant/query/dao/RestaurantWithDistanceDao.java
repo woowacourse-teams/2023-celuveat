@@ -39,7 +39,6 @@ public class RestaurantWithDistanceDao {
     private final JPAQueryFactory query;
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
 
-
     public Page<RestaurantWithDistance> search(
             RestaurantSearchCond restaurantSearchCond,
             LocationSearchCond locationSearchCond,
@@ -86,7 +85,6 @@ public class RestaurantWithDistanceDao {
                 );
         return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
     }
-
 
     private double calculateMiddle(double x, double y) {
         return (x + y) / 2.0;

@@ -354,7 +354,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.searchNearBy(
                 1L,
                 specificDistance,
-
                 PageRequest.of(0, 4)
         );
 

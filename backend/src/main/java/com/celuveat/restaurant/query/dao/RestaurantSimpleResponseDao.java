@@ -1,9 +1,12 @@
 package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
@@ -15,11 +18,10 @@ import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import io.micrometer.common.lang.Nullable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,21 +73,14 @@ public class RestaurantSimpleResponseDao {
     }
 
     private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
-        Map<Long, Boolean> isLikedMap = new HashMap<>();
-        if (memberId == null) {
-            for (Long restaurantId : restaurantIds) {
-                isLikedMap.put(restaurantId, false);
-            }
-            return isLikedMap;
-        }
-        List<RestaurantLike> rl = restaurantLikeQueryDaoSupport.findAllByMemberIdAndRestaurantIdsIn(memberId,
-                restaurantIds);
-        Map<Long, List<RestaurantLike>> existLike = rl.stream()
-                .collect(Collectors.groupingBy(it -> it.restaurant().id()));
-        for (Long restaurantId : restaurantIds) {
-            isLikedMap.put(restaurantId, existLike.containsKey(restaurantId));
-        }
-        return isLikedMap;
+        Set<Long> likedRestaurantIds = restaurantLikeQueryDaoSupport
+                    .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
+                    .stream()
+                    .map(RestaurantLike::restaurant)
+                    .map(BaseEntity::id)
+                    .collect(toSet());
+        return restaurantIds.stream()
+                .collect(toMap(identity(), likedRestaurantIds::contains));
     }
 
     private Map<Long, List<Celeb>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
