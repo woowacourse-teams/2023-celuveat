@@ -8,7 +8,7 @@ interface ParamTypes extends CoordinateBoundary {
   sort: 'distance' | 'like';
 }
 
-const getQueryString = ({ boundary, celebId, category, page, sort }: RestaurantsQueryParams) => {
+export const getRestaurantQueryString = ({ boundary, celebId, category, page, sort }: RestaurantsQueryParams) => {
   let params: ParamTypes = { ...boundary, sort };
 
   if (celebId !== -1) params = { ...params, celebId: String(celebId) };
