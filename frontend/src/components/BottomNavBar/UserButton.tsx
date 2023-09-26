@@ -4,12 +4,15 @@ import { styled } from 'styled-components';
 import UserIcon from '~/assets/icons/etc/user.svg';
 import ProfileImage from '../@common/ProfileImage';
 import NavItem from '../@common/NavItem';
-import { getLogout, getProfile } from '~/api/user';
+import { getProfile } from '~/api/user';
 import type { ProfileData } from '~/@types/api.types';
+import useAuth from '~/hooks/server/useAuth';
 
 function UserButton() {
   const navigator = useNavigate();
   const location = useLocation();
+  const { doLogoutMutation } = useAuth();
+
   const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: () => getProfile(),
@@ -17,18 +20,13 @@ function UserButton() {
 
   const clickLogin = () => navigator('/signUp', { state: { from: location.pathname } });
 
-  const clickLogout = () => {
-    getLogout(profile.oauthServer);
-    window.location.href = '/';
-  };
-
   const clickLoginNavItem = () => {
     if (!isLogin) {
       clickLogin();
       return;
     }
 
-    clickLogout();
+    doLogoutMutation(profile.oauthServer);
   };
 
   return (
