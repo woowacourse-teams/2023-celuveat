@@ -22,4 +22,15 @@ export const getRestaurantQueryString = ({ boundary, celebId, category, page, so
   return queryString;
 };
 
-export default getQueryString;
+const getQuerySting = () => {
+  const result: string[] = [];
+  const searchParams = new URLSearchParams(window.location.search);
+
+  searchParams.forEach((value, key) => {
+    result.push(`${key}=${value}`);
+  });
+
+  return result.length > 0 ? `?${result.join('&')}` : '';
+};
+
+export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting()}`;
