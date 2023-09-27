@@ -10,9 +10,10 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 interface ImageCarouselProps {
   images: RestaurantImage[];
   type: 'list' | 'map';
+  showWaterMark?: boolean;
 }
 
-function ImageCarousel({ images, type }: ImageCarouselProps) {
+function ImageCarousel({ images, type, showWaterMark = true }: ImageCarouselProps) {
   const ref = useRef<HTMLDivElement>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const { isMobile } = useMediaQuery();
@@ -48,7 +49,14 @@ function ImageCarousel({ images, type }: ImageCarouselProps) {
     <StyledCarouselContainer type={type}>
       <StyledCarouselSlide ref={ref} isMobile={isMobile}>
         {images.map(({ id, name, author, sns }) => (
-          <WaterMarkImage key={id} imageUrl={name} waterMark={author} type={type} sns={sns} />
+          <WaterMarkImage
+            key={id}
+            imageUrl={name}
+            waterMark={author}
+            type={type}
+            sns={sns}
+            showWaterMark={showWaterMark}
+          />
         ))}
       </StyledCarouselSlide>
       {currentIndex !== 0 && !isMobile && (

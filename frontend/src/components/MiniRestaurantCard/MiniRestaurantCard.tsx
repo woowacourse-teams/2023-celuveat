@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { MouseEventHandler, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
@@ -14,9 +14,17 @@ interface MiniRestaurantCardProps {
   restaurant: Restaurant;
   celebs: Celeb[];
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
+  flexColumn?: boolean;
+  showWaterMark?: boolean;
 }
 
-function MiniRestaurantCard({ restaurant, celebs, setHoveredId = () => {} }: MiniRestaurantCardProps) {
+function MiniRestaurantCard({
+  restaurant,
+  celebs,
+  flexColumn = false,
+  showWaterMark = true,
+  setHoveredId = () => {},
+}: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
@@ -41,19 +49,21 @@ function MiniRestaurantCard({ restaurant, celebs, setHoveredId = () => {} }: Min
         data-cy="음식점 카드"
         aria-label={`${name} 카드`}
         tabIndex={0}
+        flexColumn={flexColumn}
       >
         <StyledImageSection>
-          <ImageCarousel images={images} type="map" />
+          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} />
           <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </LikeButton>
         </StyledImageSection>
         <StyledInfoSection>
-          <StyledInfo>
+          <StyledInfoTopSection>
             <StyledName role="columnheader">{name}</StyledName>
-            <StyledCategory>{category}</StyledCategory>
-            <StyledAddress>{roadAddress}</StyledAddress>
-          </StyledInfo>
+            <StyledRating>⭐️ 5</StyledRating>
+          </StyledInfoTopSection>
+          <StyledCategory>{category}</StyledCategory>
+          <StyledAddress>{roadAddress}</StyledAddress>
         </StyledInfoSection>
       </StyledContainer>
 
@@ -71,17 +81,15 @@ function areEqual(prevProps: MiniRestaurantCardProps, nextProps: MiniRestaurantC
 
 export default memo(MiniRestaurantCard, areEqual);
 
-const StyledContainer = styled.li`
+const StyledContainer = styled.li<{ flexColumn: boolean }>`
   display: flex;
-  flex-direction: column;
-  justify-content: start;
 
-  min-width: 240px;
-  height: 185px;
-
-  border: 1px solid #eaeaea;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
+  ${({ flexColumn }) =>
+    flexColumn &&
+    css`
+      flex-direction: column;
+      justify-content: start;
+    `}
 
   cursor: pointer;
 `;
@@ -89,11 +97,11 @@ const StyledContainer = styled.li`
 const StyledImageSection = styled.section`
   position: relative;
 
-  min-height: 108px;
-  overflow-y: hidden;
+  width: 198px;
+  min-width: 150px;
 `;
 
-const StyledInfo = styled.div`
+const StyledInfoSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -102,7 +110,7 @@ const StyledInfo = styled.div`
 
   width: 100%;
 
-  padding: 0.4rem;
+  padding: 0.8rem;
 `;
 
 const StyledName = styled.h5`
@@ -125,18 +133,12 @@ const StyledCategory = styled.span`
   font-size: ${FONT_SIZE.sm};
 `;
 
-const StyledProfileImageSection = styled.div`
+const StyledRating = styled.span`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
 
-  min-width: fit-content;
-
-  & > span {
-    font-size: ${FONT_SIZE.sm};
-    font-weight: 700;
-  }
+  color: var(--gray-3);
+  font-size: ${FONT_SIZE.sm};
 `;
 
 const LikeButton = styled.button`
@@ -153,6 +155,8 @@ const LikeButton = styled.button`
   }
 `;
 
-const StyledInfoSection = styled.section`
-  padding: 0.8rem;
+const StyledInfoTopSection = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

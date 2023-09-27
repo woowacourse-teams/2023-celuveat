@@ -7,9 +7,10 @@ interface WaterMarkImageProps {
   imageUrl?: string;
   type: 'list' | 'map';
   sns: string;
+  showWaterMark?: boolean;
 }
 
-function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
+function WaterMarkImage({ waterMark, imageUrl, type, sns, showWaterMark = true }: WaterMarkImageProps) {
   const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -24,7 +25,7 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
         <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
         <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
       </picture>
-      {waterMark && (
+      {waterMark && showWaterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
           {waterMark}
         </StyledWaterMark>

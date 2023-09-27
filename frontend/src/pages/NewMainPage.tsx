@@ -59,9 +59,9 @@ function NewMainPage() {
       <div>
         <StyledSubTitle>인기있는 맛집</StyledSubTitle>
         <StyledPopularRestaurantBox>
-          <MiniRestaurantCard {...args} />
-          <MiniRestaurantCard {...args} />
-          <MiniRestaurantCard {...args} />
+          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
+          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
+          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
         </StyledPopularRestaurantBox>
       </div>
       <div>
@@ -102,7 +102,7 @@ const StyledContainer = styled.div`
   width: 100vw;
   overflow-x: hidden;
 
-  padding: 10rem 1.2rem;
+  padding: 5.6rem 1.2rem;
 `;
 
 const StyledBanner = styled.div`
@@ -226,7 +226,7 @@ const args = {
     images: [
       {
         id: 383,
-        name: 'a251dG91cl9ncm91bWV0X-unm-yii-ydgOyInOuMgOq1rV8x.jpeg',
+        name: 'eW91bmNoZW9sam9vX-yEnOumsOuCmeyngF8x',
         author: '@knutour_groumet',
         sns: 'INSTAGRAM',
       },
