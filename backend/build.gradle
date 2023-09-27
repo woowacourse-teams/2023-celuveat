@@ -42,6 +42,10 @@ dependencies {
     implementation "com.querydsl:querydsl-core"
     implementation "com.querydsl:querydsl-collections"
 
+    // FOR AWS S3
+    implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation 'software.amazon.awssdk:s3control'
+
     implementation 'org.hibernate:hibernate-spatial:6.2.5.Final'
 
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
