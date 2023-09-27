@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.fixture;
 
+import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
@@ -155,7 +156,7 @@ public class RestaurantFixture {
                         restaurant.phoneNumber(),
                         restaurant.naverMapUrl(),
                         restaurant.viewCount(),
-                        null,
+                        0,
                         false,
                         restaurant.likeCount(),
                         videos.get(restaurant).stream().map(Video::celeb).map(celeb -> new CelebQueryResponse(
@@ -166,7 +167,7 @@ public class RestaurantFixture {
                         )).toList(),
                         images.get(restaurant).stream().map(image -> new RestaurantImageQueryResponse(
                                 image.id(),
-                                image.name(),
+                                Base64Util.encode(image.name()),
                                 image.author(),
                                 image.socialMedia().name()
                         )).toList()

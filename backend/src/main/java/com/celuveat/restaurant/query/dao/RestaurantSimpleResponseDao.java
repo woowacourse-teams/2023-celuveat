@@ -2,13 +2,14 @@ package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
 import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
@@ -17,7 +18,7 @@ import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
-import io.micrometer.common.lang.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -57,6 +58,16 @@ public class RestaurantSimpleResponseDao {
     ) {
         Page<RestaurantWithDistance> restaurants =
                 restaurantWithDistanceDao.searchNearBy(restaurantId, distance, pageable);
+        return toSimpleResponse(memberId, restaurants);
+    }
+
+    public Page<RestaurantSimpleResponse> findAllByAddress(
+            AddressSearchCond addressSearchCond,
+            Pageable pageable,
+            @Nullable Long memberId
+    ) {
+        Page<RestaurantWithDistance> restaurants =
+                restaurantWithDistanceDao.searchByAddress(addressSearchCond, pageable);
         return toSimpleResponse(memberId, restaurants);
     }
 

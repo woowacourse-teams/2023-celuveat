@@ -3,6 +3,7 @@ package com.celuveat.restaurant.query;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
@@ -53,6 +54,14 @@ public class RestaurantQueryService {
             return response;
         }
         return RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId(celebId, response);
+    }
+
+    public Page<RestaurantSimpleResponse> findAllByAddress(
+            AddressSearchCond addressSearchCond,
+            Pageable pageable,
+            @Nullable Long memberId
+    ) {
+        return restaurantSimpleResponseDao.findAllByAddress(addressSearchCond, pageable, memberId);
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
