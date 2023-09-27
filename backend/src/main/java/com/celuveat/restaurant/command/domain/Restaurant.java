@@ -23,6 +23,9 @@ public class Restaurant extends BaseEntity {
     private String category;
 
     @Column(nullable = false)
+    private String superCategory;
+
+    @Column(nullable = false)
     private String roadAddress;
 
     @Column(nullable = false)
@@ -81,6 +84,10 @@ public class Restaurant extends BaseEntity {
 
     public String category() {
         return category;
+    }
+
+    public String superCategory() {
+        return superCategory;
     }
 
     public String roadAddress() {

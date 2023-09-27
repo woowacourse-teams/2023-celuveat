@@ -77,7 +77,8 @@ class AdminServiceTest {
                 TAB + "12.3456" +
                 TAB + "12.3456" +
                 TAB + 음식점_이름 + ".png" +
-                TAB + "인스타 아이디";
+                TAB + "인스타 아이디" +
+                TAB + "슈퍼 카테고리";
     }
 
     @Nested
