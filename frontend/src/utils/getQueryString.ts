@@ -12,25 +12,15 @@ export const getRestaurantQueryString = ({ boundary, celebId, category, page, so
   let params: ParamTypes = { ...boundary, sort };
 
   if (celebId !== -1) params = { ...params, celebId: String(celebId) };
-
   if (category !== '전체') params = { ...params, category };
-
   if (page !== 0) params = { ...params, page: String(page) };
 
-  const queryString = new URLSearchParams(Object.assign(params)).toString();
-
-  return queryString;
+  return getQuerySting(Object.assign(params));
 };
 
-const getQuerySting = () => {
-  const result: string[] = [];
-  const searchParams = new URLSearchParams(window.location.search);
-
-  searchParams.forEach((value, key) => {
-    result.push(`${key}=${value}`);
-  });
-
-  return result.length > 0 ? `?${result.join('&')}` : '';
+const getQuerySting = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
+  const searchParams = new URLSearchParams(target);
+  return searchParams.toString();
 };
 
-export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting()}`;
+export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting(window.location.search)}`;
