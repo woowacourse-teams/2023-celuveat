@@ -10,4 +10,6 @@ public interface RestaurantReviewLikeRepository extends JpaRepository<Restaurant
             RestaurantReview restaurantReview,
             OauthMember member
     );
+
+    void deleteAllByRestaurantReview(RestaurantReview review);
 }

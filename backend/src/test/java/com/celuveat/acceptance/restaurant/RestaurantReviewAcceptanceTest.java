@@ -11,15 +11,20 @@ import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_작성_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_조회_요청을_보낸다;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.사진_2장이_포함된_리뷰_작성_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.응답을_검증한다;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.이미지를_생성한다;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
+import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("음식점 리뷰 인수테스트")
 public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
@@ -31,7 +36,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         음식점을_저장한다(음식점);
         var 오도 = 멤버("오도");
         var 세션_아이디 = 회원가입하고_로그인한다(오도);
-        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id());
+        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0);
 
         // when
         var 응답 = 리뷰_작성_요청을_보낸다(요청, 세션_아이디);
@@ -53,10 +58,10 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         var 말랑 = 멤버("말랑");
         var 말랑_세션_아이디 = 회원가입하고_로그인한다(말랑);
 
-        var 요청1 = 리뷰_요청("리뷰1", 음식점.id());
-        var 요청2 = 리뷰_요청("리뷰2", 음식점.id());
-        var 요청3 = 리뷰_요청("리뷰3", 음식점.id());
-        var 요청4 = 리뷰_요청("리뷰4", 음식점.id());
+        var 요청1 = 리뷰_요청("리뷰1", 음식점.id(), 5.0);
+        var 요청2 = 리뷰_요청("리뷰2", 음식점.id(), 5.0);
+        var 요청3 = 리뷰_요청("리뷰3", 음식점.id(), 5.0);
+        var 요청4 = 리뷰_요청("리뷰4", 음식점.id(), 5.0);
         리뷰_작성_요청을_보낸다(요청1, 도기_세션_아이디);
         리뷰_작성_요청을_보낸다(요청2, 로이스_세션_아이디);
         리뷰_작성_요청을_보낸다(요청3, 말랑_세션_아이디);
@@ -83,7 +88,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         var 도기_세션_아이디 = 회원가입하고_로그인한다(도기);
         var 음식점_리뷰 = 음식점_리뷰(오도, 음식점);
         var 음식점_리뷰_아이디 = 음식점_리뷰를_저장한다(음식점_리뷰);
-        var 리뷰_수정_요청 = 리뷰_수정_요청("리뷰 수정 요청");
+        var 리뷰_수정_요청 = 리뷰_수정_요청("리뷰 수정 요청", 5.0);
 
         // when
         var 응답 = 리뷰_수정_요청을_보낸다(리뷰_수정_요청, 도기_세션_아이디, 음식점_리뷰_아이디);
@@ -101,7 +106,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         var 세션_아이디 = 회원가입하고_로그인한다(오도);
         var 음식점_리뷰 = 음식점_리뷰(오도, 음식점);
         var 음식점_리뷰_아이디 = 음식점_리뷰를_저장한다(음식점_리뷰);
-        var 리뷰_수정_요청 = 리뷰_수정_요청("리뷰 수정 요청");
+        var 리뷰_수정_요청 = 리뷰_수정_요청("리뷰 수정 요청", 5.0);
 
         // when
         var 응답 = 리뷰_수정_요청을_보낸다(리뷰_수정_요청, 세션_아이디, 음식점_리뷰_아이디);
@@ -125,5 +130,23 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
 
         // then
         응답_상태를_검증한다(응답, 내용_없음);
+    }
+
+    @Test
+    void 음식점_리뷰에_사진을_첨부한다_작성한다() throws IOException {
+        // given
+        var 음식점 = 음식점("오도음식점");
+        음식점을_저장한다(음식점);
+        var 오도 = 멤버("오도");
+        var 세션_아이디 = 회원가입하고_로그인한다(오도);
+        List<MultipartFile> 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
+        이미지_업로드를_설정한다(리뷰_이미지);
+        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, 리뷰_이미지);
+
+        // when
+        var 응답 = 사진_2장이_포함된_리뷰_작성_요청을_보낸다(요청, 세션_아이디);
+
+        // then
+        응답_상태를_검증한다(응답, 생성됨);
     }
 }

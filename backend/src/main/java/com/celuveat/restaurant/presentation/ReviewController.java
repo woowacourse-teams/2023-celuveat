@@ -3,6 +3,7 @@ package com.celuveat.restaurant.presentation;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.auth.Auth;
+import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantReviewLikeService;
 import com.celuveat.restaurant.command.application.RestaurantReviewReportService;
 import com.celuveat.restaurant.command.application.RestaurantReviewService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reviews")
 public class ReviewController {
 
+    private final ImageUploadClient imageUploadClient;
     private final RestaurantReviewService restaurantReviewService;
-    private final RestaurantReviewQueryService restaurantReviewQueryService;
     private final RestaurantReviewLikeService restaurantReviewLikeService;
+    private final RestaurantReviewQueryService restaurantReviewQueryService;
     private final RestaurantReviewReportService restaurantReviewReportService;
 
     @GetMapping
@@ -43,9 +46,10 @@ public class ReviewController {
 
     @PostMapping
     ResponseEntity<Void> writeReview(
-            @RequestBody SaveReviewRequest request,
+            @ModelAttribute SaveReviewRequest request,
             @Auth Long memberId
     ) {
+        imageUploadClient.upload(request.images()); //TODO: 이미지 업로드 로직 수정
         restaurantReviewService.create(request.toCommand(memberId));
         return ResponseEntity.status(CREATED).build();
     }
