@@ -1,23 +1,39 @@
 package com.celuveat.restaurant.query.dao;
 
+import static com.celuveat.celeb.fixture.CelebFixture.백종원;
+import static com.celuveat.celeb.fixture.CelebFixture.성시경;
+import static com.celuveat.celeb.fixture.CelebFixture.셀럽들;
+import static com.celuveat.celeb.fixture.CelebFixture.핫둘제주;
 import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
+import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진들;
+import static com.celuveat.video.fixture.VideoFixture.영상;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
+import com.celuveat.common.TestData;
+import com.celuveat.common.TestDataInserter;
 import com.celuveat.common.util.StringUtil;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.fixture.RestaurantFixture.지역별_음식점;
+import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
+import com.celuveat.video.command.domain.Video;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -35,6 +51,9 @@ import org.springframework.data.domain.PageRequest;
 class RestaurantWithDistanceDaoTest {
 
     private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
+
+    @Autowired
+    private TestDataInserter testDataInserter;
 
     @Autowired
     private SeedData seedData;
@@ -345,6 +364,54 @@ class RestaurantWithDistanceDaoTest {
                 .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
                 .extracting(RestaurantWithDistance::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
+    }
+
+    @Test
+    void 주소로_음식점_검색() {
+        // given
+        Map<String, Celeb> 셀럽들 = 셀럽들(성시경(), 핫둘제주(), 백종원());
+        List<Restaurant> 음식점들 = new ArrayList<>();
+        List<Restaurant> 제주_음식점들 = 지역별_음식점.제주_음식점들();
+        List<Restaurant> 압구정_음식점들 = 지역별_음식점.압구정_음식점들();
+        음식점들.addAll(제주_음식점들);
+        음식점들.addAll(압구정_음식점들);
+        Map<Restaurant, List<RestaurantImage>> 음식점_사진들 = 음식점사진들(음식점들);
+        Map<Restaurant, List<Video>> 영상들 = new HashMap<>();
+        for (Restaurant restaurant : 제주_음식점들) {
+            영상들.put(restaurant, List.of(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주"))));
+        }
+        for (Restaurant restaurant : 압구정_음식점들) {
+            List<Video> videos = new ArrayList<>();
+            videos.add(영상(restaurant, 셀럽들.get("성시경")));
+            videos.add(영상(restaurant, 셀럽들.get("백종원")));
+            영상들.put(restaurant, videos);
+        }
+        TestData testData = TestData.builder()
+                .celebs(셀럽들.values().stream().toList())
+                .restaurants(음식점들)
+                .restaurantImages(음식점_사진들)
+                .videos(영상들)
+                .build();
+        testDataInserter.insertData(testData);
+
+        // when
+        Page<RestaurantWithDistance> restaurantWithDistances = restaurantWithDistanceDao.searchByAddress(
+                new AddressSearchCond(List.of(
+                        "서울 강남구 도산대로",
+                        "서울 강남구 가로수길",
+                        "서울 강남구 압구정로",
+                        "서울 강남구 논현로"
+                )),
+                PageRequest.of(0, 20)
+        );
+
+        // then
+        assertThat(restaurantWithDistances.getContent())
+                .extracting(RestaurantWithDistance::name)
+                .containsExactlyInAnyOrderElementsOf(압구정_음식점들
+                        .stream()
+                        .map(Restaurant::name)
+                        .toList());
     }
 
     @ParameterizedTest

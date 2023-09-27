@@ -27,6 +27,10 @@ public class TestDataInserter {
 
     public TestData insertData(TestDataCreator testDataCreator) {
         TestData testData = testDataCreator.create();
+        return insertData(testData);
+    }
+
+    public TestData insertData(TestData testData) {
         celebRepository.saveAll(testData.celebs());
         restaurantRepository.saveAll(testData.restaurants());
         insertImages(testData.restaurantImages());
