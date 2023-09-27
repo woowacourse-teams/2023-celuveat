@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 import NavItem from '~/components/@common/NavItem/NavItem';
-import { isEqual } from '~/utils/compare';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import { hideScrollBar } from '~/styles/common';
@@ -29,7 +28,7 @@ function CategoryNavbar({ categories, externalOnClick }: CategoryProps) {
     <StyledCategoryNavbarWrapper aria-hidden>
       {categories.map(({ icon, label }) => (
         <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
-          <NavItem label={label} icon={icon} isShow={isEqual(selected, label)} />
+          <NavItem label={label} icon={icon} isShow={selected === label} />
         </StyledNavItemButton>
       ))}
     </StyledCategoryNavbarWrapper>

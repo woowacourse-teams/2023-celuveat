@@ -1,6 +1,5 @@
 import { styled, css } from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { isEqual } from '~/utils/compare';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
@@ -25,7 +24,7 @@ const LoginIcon: Record<string, React.ReactNode> = {
 };
 
 const doLogin = (type: Oauth) => {
-  if (isEqual(process.env.NODE_ENV, 'development')) {
+  if (process.env.NODE_ENV === 'development') {
     window.location.href = MSW_LOGIN_URL;
     window.location.href = MSW_GET_OAUTH_CODE_URL;
     return;
@@ -38,9 +37,10 @@ function LoginButton({ type }: LoginButtonProps) {
   const location = useLocation();
   const setPath = usePathNameState(state => state.setPath);
 
-  const loginBeforeUrl = isEqual(location.pathname, '/signUp')
-    ? getUrlStringWithQuery(location.state.from)
-    : getUrlStringWithQuery(location.pathname);
+  const loginBeforeUrl =
+    location.pathname === '/signUp'
+      ? getUrlStringWithQuery(location.state.from)
+      : getUrlStringWithQuery(location.pathname);
 
   const onClick = () => {
     setPath(loginBeforeUrl);
