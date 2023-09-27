@@ -40,9 +40,8 @@ public class Restaurant extends BaseEntity {
 
     private int likeCount;
 
-    public RestaurantLike clickLike(OauthMember member) {
+    public void clickLike() {
         this.likeCount += 1;
-        return new RestaurantLike(this, member);
     }
 
     public void cancelLike() {

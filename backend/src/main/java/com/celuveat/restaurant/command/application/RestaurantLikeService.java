@@ -33,7 +33,7 @@ public class RestaurantLikeService {
     }
 
     private Runnable clickLike(Restaurant restaurant, OauthMember member) {
-        RestaurantLike like = restaurant.clickLike(member);
-        return () -> restaurantLikeRepository.save(like);
+        restaurant.clickLike();
+        return () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member));
     }
 }
