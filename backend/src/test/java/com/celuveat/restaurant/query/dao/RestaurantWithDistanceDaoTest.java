@@ -65,7 +65,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -91,7 +90,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, null, null),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -117,7 +115,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, category, null),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -143,7 +140,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, null, restaurantName),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -172,7 +168,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, category, null),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -200,7 +195,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -228,7 +222,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(null, category, restaurantName),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -258,7 +251,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
                 new RestaurantSearchCond(celebId, category, restaurantName),
                 전체영역_검색_범위,
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -285,7 +277,6 @@ class RestaurantWithDistanceDaoTest {
                         박스_1번_지점포함.lowLongitude(),
                         박스_1번_지점포함.highLongitude()
                 ),
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -315,7 +306,6 @@ class RestaurantWithDistanceDaoTest {
                         박스_1_2번_지점포함.lowLongitude(),
                         박스_1_2번_지점포함.highLongitude()
                 ),
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -347,7 +337,6 @@ class RestaurantWithDistanceDaoTest {
                         박스_1번_지점포함.lowLongitude(),
                         박스_1번_지점포함.highLongitude()
                 ),
-                null,
                 PageRequest.of(0, 20));
 
         // then
@@ -365,7 +354,6 @@ class RestaurantWithDistanceDaoTest {
         Page<RestaurantWithDistance> result = restaurantWithDistanceDao.searchNearBy(
                 1L,
                 specificDistance,
-                null,
                 PageRequest.of(0, 4)
         );
 

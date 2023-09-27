@@ -3,6 +3,7 @@ package com.celuveat.restaurant.query.dto;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public record RestaurantSimpleResponse(
         Integer viewCount,
         Integer distance,
         Boolean isLiked,
-        Long likeCount,
+        int likeCount,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -31,7 +32,7 @@ public record RestaurantSimpleResponse(
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
             boolean isLiked,
-            Long likeCount
+            int likeCount
     ) {
         this(
                 restaurant.id(),
@@ -45,23 +46,24 @@ public record RestaurantSimpleResponse(
                 restaurant.viewCount(),
                 restaurant.distance().intValue(),
                 isLiked,
-                (likeCount == null) ? 0 : likeCount,
+                likeCount,
                 celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+                (restaurantImages != null) ? restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList() : Collections.emptyList()
         );
     }
 
     public static Page<RestaurantSimpleResponse> of(
             Page<RestaurantWithDistance> restaurants,
             Map<Long, List<Celeb>> celebsMap,
-            Map<Long, List<RestaurantImage>> restaurantMap
+            Map<Long, List<RestaurantImage>> restaurantMap,
+            Map<Long, Boolean> isLikedMap
     ) {
         return restaurants.map(restaurant ->
                 RestaurantSimpleResponse.builder()
                         .restaurant(restaurant)
                         .celebs(celebsMap.get(restaurant.id()))
                         .restaurantImages(restaurantMap.get(restaurant.id()))
-                        .isLiked(restaurant.isLiked())
+                        .isLiked(isLikedMap.get(restaurant.id()))
                         .likeCount(restaurant.likeCount())
                         .build()
         );

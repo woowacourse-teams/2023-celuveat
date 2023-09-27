@@ -136,21 +136,21 @@ public class SeedData {
                         .celebs(List.of(말랑, 도기))
                         .restaurantImages(List.of(말랑1호점_1, 말랑1호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(말랑2호점, 9.3))
                         .celebs(List.of(말랑))
                         .restaurantImages(List.of(말랑2호점_1))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(말랑3호점, 4.2))
                         .celebs(List.of(말랑))
                         .restaurantImages(List.of(말랑3호점_1, 말랑3호점_2, 말랑3호점_3))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
 
                 RestaurantSimpleResponse.builder()
@@ -158,7 +158,7 @@ public class SeedData {
                         .celebs(List.of(도기, 오도, 로이스))
                         .restaurantImages(List.of(도기1호점_1, 도기1호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
 
                 RestaurantSimpleResponse.builder()
@@ -166,42 +166,42 @@ public class SeedData {
                         .celebs(List.of(도기))
                         .restaurantImages(List.of(도기2호점_1, 도기2호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(도기3호점, 12.1152))
                         .celebs(List.of(도기, 오도))
                         .restaurantImages(List.of(도기3호점_1, 도기3호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(오도1호점, 2.34))
                         .celebs(List.of(오도, 로이스, 말랑))
                         .restaurantImages(List.of(오도1호점_1, 오도1호점_2, 오도1호점_3))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(오도2호점, 1123.3))
                         .celebs(List.of(오도))
                         .restaurantImages(List.of(오도2호점_1, 오도2호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(로이스1호점, 11112.3))
                         .celebs(List.of(말랑, 도기, 오도, 로이스))
                         .restaurantImages(List.of(로이스1호점_1))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build(),
                 RestaurantSimpleResponse.builder()
                         .restaurant(withDistance(로이스2호점, 1852.4))
                         .celebs(List.of(로이스))
                         .restaurantImages(List.of(로이스2호점_1, 로이스2호점_2))
                         .isLiked(false)
-                        .likeCount(0L)
+                        .likeCount(0)
                         .build()
         );
     }
@@ -218,8 +218,7 @@ public class SeedData {
                 restaurant.naverMapUrl(),
                 restaurant.viewCount(),
                 distance,
-                0L, // likeCount
-                false // isLiked
+                0 // likeCount
         );
     }
 
