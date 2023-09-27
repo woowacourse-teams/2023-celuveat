@@ -45,6 +45,14 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 음식점_지역으로_검색_요청(String 지역) {
+        return given()
+                .get("/restaurants/address?value=" + 지역)
+                .then()
+                .log().all()
+                .extract();
+    }
+
     //FIXME
     public static ExtractableResponse<Response> 음식점_좋아요_정렬_검색_요청(
             RestaurantSearchCond 음식점_검색_조건,

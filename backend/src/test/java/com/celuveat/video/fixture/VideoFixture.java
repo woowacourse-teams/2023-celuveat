@@ -15,4 +15,13 @@ public class VideoFixture {
                 .youtubeUrl(영상_URL)
                 .build();
     }
+
+    public static Video 영상(Restaurant 음식점, Celeb 셀럽) {
+        return Video.builder()
+                .celeb(셀럽)
+                .restaurant(음식점)
+                .uploadDate(LocalDate.now())
+                .youtubeUrl("https://" + 음식점.name())
+                .build();
+    }
 }
