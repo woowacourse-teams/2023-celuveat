@@ -90,7 +90,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             조회_결과_좋아요순_정렬_기준을_검증한다(응답);
         }
 
-
         @Test
         void 음식점_검색_조건으로_검색한다() {
             // given
