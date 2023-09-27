@@ -11,7 +11,6 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 import ProfileImage from '../@common/ProfileImage';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import NavItem from '../@common/NavItem';
-import { isEqual } from '~/utils/compare';
 import { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface FilterOptionsModalProps {
@@ -76,7 +75,7 @@ function FilterOptionsModal({ isModalOpen, closeModal, celebOptions }: FilterOpt
                   type="button"
                   onClick={clickRestaurantCategory}
                 >
-                  <NavItem label={label} icon={icon} isShow={isEqual(category, label)} />
+                  <NavItem label={label} icon={icon} isShow={category === label} />
                 </StyledNavItemButton>
               ))}
             </li>

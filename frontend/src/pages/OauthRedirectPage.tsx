@@ -1,10 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { getAccessToken } from '~/api/user';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
-import usePathNameState from '~/hooks/store/usePathnameState';
+import useAuth from '~/hooks/server/useAuth';
 
 interface OauthRedirectProps {
   type: 'google' | 'kakao' | 'naver';
@@ -12,40 +10,16 @@ interface OauthRedirectProps {
 
 function OauthRedirectPage({ type }: OauthRedirectProps) {
   const location = useLocation();
-  const navigator = useNavigate();
-  const path = usePathNameState(state => state.path);
-
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get('code');
 
-  const oauthTokenMutation = useMutation({
-    mutationFn: () => getAccessToken(type, code),
-    onSuccess: () => {
-      navigator(path);
-    },
-    onError: () => {
-      navigator('/');
-      alert('서버 문제로 인해 로그인에 실패하였습니다.');
-    },
-  });
+  const { doLoginMutation } = useAuth();
 
   useEffect(() => {
     if (code) {
-      oauthTokenMutation.mutate();
+      doLoginMutation({ type, code });
     }
   }, [code]);
-
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      fetch('https://d.api.celuveat.com/login/local?id=abc').then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        navigator(path);
-      });
-    }
-  }, []);
 
   return (
     <StyledProcessing>
