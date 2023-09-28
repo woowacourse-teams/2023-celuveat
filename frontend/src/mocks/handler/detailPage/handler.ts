@@ -1,9 +1,10 @@
 import { rest } from 'msw';
 
-import { videos, originVideos } from '../../data/videos';
 import restaurants from '../../data/restaurants';
 import correction from '../../data/correction';
 import reviews from '../../data/reviews';
+import { profile } from './../../data/user';
+import { videos, originVideos } from '../../data/videos';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData, VideoList } from '~/@types/api.types';
@@ -66,7 +67,7 @@ export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantId/nearby', (req, res, ctx) => {
     const queryParams = req.url.searchParams;
     const { restaurantId } = req.params;
-    const page = Number(queryParams.get('page')) || 0;
+    const page: number = Number(queryParams.get('page')) || 0;
     const pageSize = 6;
 
     const restaurant = restaurants.find(({ id }) => id === Number(restaurantId));
@@ -115,6 +116,8 @@ export const DetailPageSuccessHandler = [
       memberId: 100,
       profileImageUrl: 'https://a0.muscache.com/im/pictures/user/93c7d7c8-86d9-4390-ba09-a8e6f4eb7f0f.jpg?im_w=240',
       content,
+      isLiked: false,
+      likeCount: 97,
       createdDate: `${year}-${month}-${day}`,
     });
 
@@ -155,6 +158,35 @@ export const DetailPageSuccessHandler = [
     }
 
     return res(ctx.status(204));
+  }),
+
+  rest.post('/reviews/:reviewId/like', async (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+    const { reviewId } = req.params;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
+    const review = reviews.find(review => review.id === Number(reviewId));
+
+    if (review.memberId === profile.memberId) {
+      return res(ctx.status(404), ctx.json({ message: 'Bad Request' }));
+    }
+    
+    review.isLiked ? (review['isLiked'] = false) : (review['isLiked'] = true);
+
+    return res(ctx.status(200));
+  }),
+
+  rest.post('/reviews/:reviewId/report', async (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
+    return res(ctx.status(200));
   }),
 ];
 
