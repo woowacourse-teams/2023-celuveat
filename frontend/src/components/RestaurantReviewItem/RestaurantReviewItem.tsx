@@ -11,8 +11,9 @@ import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import { FONT_SIZE } from '~/styles/common';
 
-import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
+
+import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
