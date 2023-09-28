@@ -62,6 +62,9 @@ export interface RestaurantReview {
   profileImageUrl: string;
   content: string;
   createdDate: HyphenatedDate;
+  isLiked: boolean;
+  likeCount: number;
+  reviewImageUrls: string[];
 }
 
 export interface RestaurantReviewData {

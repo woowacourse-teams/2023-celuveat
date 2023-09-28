@@ -1,8 +1,8 @@
 import type { RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
-import { apiClient, apiUserClient } from './apiClient';
+import { apiUserClient } from './apiClient';
 
 export const getRestaurantReview = async (id: string) => {
-  const response = await apiClient.get(`/reviews?restaurantId=${id}`);
+  const response = await apiUserClient.get(`/reviews?restaurantId=${id}`);
   return response.data;
 };
 
@@ -13,6 +13,16 @@ export const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
 
 export const deleteRestaurantReview = async (reviewId: number) => {
   const response = await apiUserClient.delete(`/reviews/${reviewId}`);
+  return response;
+};
+
+export const postRestaurantReviewLike = async (reviewId: number) => {
+  const response = await apiUserClient.post(`/reviews/${reviewId}/like`);
+  return response;
+};
+
+export const postRestaurantReviewReport = async (reviewId: number) => {
+  const response = await apiUserClient.post(`/reviews/${reviewId}/report`);
   return response;
 };
 
