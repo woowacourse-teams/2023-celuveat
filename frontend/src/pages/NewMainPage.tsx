@@ -1,98 +1,97 @@
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import BottomNavBar from '~/components/BottomNavBar';
-import CategoryNavbar from '~/components/CategoryNavbar';
+// import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
-import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
+// import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useBooleanState from '~/hooks/useBooleanState';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import useScrollDirection from '~/hooks/useScrollDirection';
+import { popularRestaurants } from '~/mocks/data/popularRestaurants';
 import { FONT_SIZE } from '~/styles/common';
 
 function NewMainPage() {
   const scrollDirection = useScrollDirection();
+  const navigate = useNavigate();
   const { value: isListShowed } = useBooleanState(false);
+  const { data: celebOptions } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: () => getCelebs(),
+    suspense: true,
+  });
+  const { isMobile } = useMediaQuery();
+
+  const clickCelebIcon = (id: number) => {
+    navigate(`/celeb/${id}`);
+  };
 
   return (
-    <StyledContainer>
-      <StyledBanner>배너 광고 문의 010-5258-1305</StyledBanner>
-      <div>
-        <StyledSubTitle>셀럽</StyledSubTitle>
-        <StyledIconBox>
-          <StyledCeleb>
-            <ProfileImage
-              name="제레미"
-              imageUrl="https://avatars.githubusercontent.com/u/102432453?v=4"
-              size="64px"
-              boxShadow
-            />
-            <span>제레미</span>
-          </StyledCeleb>
-          <StyledCeleb>
-            <ProfileImage
-              name="제레미"
-              imageUrl="https://avatars.githubusercontent.com/u/102432453?v=4"
-              size="64px"
-              boxShadow
-            />
-            <span>제레미</span>
-          </StyledCeleb>
-          <StyledCeleb>
-            <ProfileImage
-              name="제레미"
-              imageUrl="https://avatars.githubusercontent.com/u/102432453?v=4"
-              size="64px"
-              boxShadow
-            />
-            <span>제레미</span>
-          </StyledCeleb>
-          <StyledCeleb>
-            <ProfileImage
-              name="제레미"
-              imageUrl="https://avatars.githubusercontent.com/u/102432453?v=4"
-              size="64px"
-              boxShadow
-            />
-            <span>제레미</span>
-          </StyledCeleb>
-        </StyledIconBox>
-      </div>
-      <div>
-        <StyledSubTitle>인기있는 맛집</StyledSubTitle>
-        <StyledPopularRestaurantBox>
-          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
-          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
-          <MiniRestaurantCard {...args} flexColumn showWaterMark={false} />
-        </StyledPopularRestaurantBox>
-      </div>
-      <div>
-        <StyledSubTitle>카테고리</StyledSubTitle>
-        <StyledCategoryBox>
-          <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
-        </StyledCategoryBox>
-      </div>
-      <div>
-        <StyledSubTitle>지역</StyledSubTitle>
-        <StyledIconBox>
-          <RegionList />
-        </StyledIconBox>
-      </div>
-      <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />
-    </StyledContainer>
+    <StyledLayout>
+      <StyledContainer>
+        <StyledBanner>배너 광고 문의 010-5258-1305</StyledBanner>
+        <div>
+          <h5>셀럽 BEST</h5>
+          <StyledIconBox>
+            {celebOptions.map(celeb => {
+              const { name, profileImageUrl, id } = celeb;
+              return (
+                <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                  <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                  <span>{name}</span>
+                </StyledCeleb>
+              );
+            })}
+          </StyledIconBox>
+        </div>
+        <div>
+          <h5>셀럽잇 추천 맛집!</h5>
+          <StyledPopularRestaurantBox>
+            {popularRestaurants.map(({ celebs, ...restaurant }) => (
+              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showWaterMark={false} />
+            ))}
+          </StyledPopularRestaurantBox>
+        </div>
+        {/* <div>
+          <h5>카테고리</h5>
+          <StyledCategoryBox>
+            <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
+          </StyledCategoryBox>
+        </div> */}
+        <div>
+          <h5>어디로 가시나요?</h5>
+          <StyledIconBox>
+            <RegionList />
+          </StyledIconBox>
+        </div>
+        {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
+      </StyledContainer>
+    </StyledLayout>
   );
 }
 
 export default NewMainPage;
+
+const StyledLayout = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100vw;
+`;
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
 
-  width: 100vw;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 1500px;
 
-  padding: 5.6rem 1.2rem;
+  padding: 5.6rem 1.6rem;
+  overflow-x: hidden;
 `;
 
 const StyledBanner = styled.div`
@@ -103,13 +102,12 @@ const StyledBanner = styled.div`
   width: 100%;
   height: 120px;
 
+  border-radius: 20px;
   background-color: var(--primary-6);
 
   color: white;
   font-size: ${FONT_SIZE.lg};
 `;
-
-const StyledSubTitle = styled.h5``;
 
 const StyledIconBox = styled.div`
   display: flex;
@@ -154,83 +152,3 @@ const StyledPopularRestaurantBox = styled.div`
 const StyledCategoryBox = styled.div`
   padding: 1.6rem 0;
 `;
-
-const args = {
-  restaurant: {
-    lat: 37.5308887,
-    lng: 127.0737184,
-    id: 315,
-    name: '맛좋은순대국',
-    category: '한식',
-    roadAddress: '서울 광진구 자양번영로1길 22',
-    phoneNumber: '02-458-5737',
-    naverMapUrl: 'https://map.naver.com/v5/entry/place/17990788?c=15,0,0,0,dh',
-    viewCount: 415,
-    distance: 2586,
-    isLiked: false,
-    likeCount: 8,
-    celebs: [
-      {
-        id: 7,
-        name: '성시경 SUNG SI KYUNG',
-        youtubeChannelName: '@sungsikyung',
-        profileImageUrl:
-          'https://yt3.googleusercontent.com/vQrdlCaT4Tx1axJtSUa1oxp2zlnRxH-oMreTwWqB-2tdNFStIOrWWw-0jwPvVCUEjm_MywltBFY=s176-c-k-c0x00ffffff-no-rj',
-      },
-    ],
-    images: [
-      {
-        id: 383,
-        name: 'eW91bmNoZW9sam9vX-yEnOumsOuCmeyngF8x',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-      {
-        id: 384,
-        name: 'a251dG91cl9ncm91bWV0X-unm-yii-ydgOyInOuMgOq1rV8y.jpeg',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-      {
-        id: 1388,
-        name: 'a251dG91cl9ncm91bWV0LTE.jpeg',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-      {
-        id: 1389,
-        name: 'a251dG91cl9ncm91bWV0LTI.jpeg',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-      {
-        id: 1390,
-        name: 'a251dG91cl9ncm91bWV0LTM.jpeg',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-      {
-        id: 1391,
-        name: 'a251dG91cl9ncm91bWV0LTQ.jpeg',
-        author: '@knutour_groumet',
-        sns: 'INSTAGRAM',
-      },
-    ],
-  },
-  celebs: [
-    {
-      id: 1,
-      name: '히밥',
-      youtubeChannelName: '@heebab',
-      profileImageUrl:
-        'https://yt3.googleusercontent.com/sL5ugPfl9vvwRwhf6l5APY__BZBw8qWiwgHs-uVsMPFoD5-a4opTJIcRSyrY8aY5LEESOMWJ=s176-c-k-c0x00ffffff-no-rj',
-    },
-    {
-      id: 2,
-      name: '히밥',
-      youtubeChannelName: '@heebab',
-      profileImageUrl:
-        'https://avatars.githubusercontent.com/u/102432453?s=400&u=8844baf7325b88634e8ee0e640579b012479cff8&v=4',
-    },
-  ],
-};

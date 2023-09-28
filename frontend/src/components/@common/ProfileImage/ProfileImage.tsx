@@ -19,6 +19,7 @@ const StyledProfile = styled.img<{ size: string; boxShadow: boolean }>`
   width: ${({ size }) => size || 'auto'};
   height: ${({ size }) => size || 'auto'};
 
+  border: 1px solid #f2f2f2;
   border-radius: 50%;
   background: none;
 

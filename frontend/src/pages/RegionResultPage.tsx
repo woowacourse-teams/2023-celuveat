@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import { getRestaurantsByAddress } from '~/api/restaurant';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
 import { FONT_SIZE } from '~/styles/common';
 
-function ResultPage() {
+function RegionResultPage() {
   const { region } = useParams();
 
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
@@ -17,8 +18,10 @@ function ResultPage() {
 
   return (
     <StyledContainer>
-      <h5> ← 압구정 청담</h5>
-      <StyledResultCount>12개의 매장</StyledResultCount>
+      <Link to="/">
+        <h5> ← {RECOMMENDED_REGION[region as keyof typeof RECOMMENDED_REGION]}</h5>
+      </Link>
+      <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
       <StyledResultBox>
         {restaurantDataList &&
           restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
@@ -34,7 +37,7 @@ function ResultPage() {
   );
 }
 
-export default ResultPage;
+export default RegionResultPage;
 
 const StyledContainer = styled.div`
   display: flex;
