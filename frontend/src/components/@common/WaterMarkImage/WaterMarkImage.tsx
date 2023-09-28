@@ -64,14 +64,15 @@ const StyledImage = styled.img`
 
 const StyledWaterMark = styled.div`
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 8px;
+  left: 8px;
 
   padding: 0.4rem 0.8rem;
 
   border-radius: ${BORDER_RADIUS.xs};
-  background-color: var(--white);
 
-  color: var(--black);
+  color: var(--white);
   font-size: ${FONT_SIZE.sm};
+
+  cursor: pointer;
 `;
