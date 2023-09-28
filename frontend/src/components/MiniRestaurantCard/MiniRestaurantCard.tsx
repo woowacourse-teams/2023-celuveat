@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import { FONT_SIZE, truncateText } from '~/styles/common';
+import Star from '~/assets/icons/star.svg';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
@@ -40,6 +41,8 @@ function MiniRestaurantCard({
     toggleRestaurantLike();
   };
 
+  const rating = 5;
+
   return (
     <>
       <StyledContainer
@@ -60,7 +63,9 @@ function MiniRestaurantCard({
         <StyledInfoSection>
           <StyledInfoTopSection>
             <StyledName role="columnheader">{name}</StyledName>
-            <StyledRating>⭐️ 5</StyledRating>
+            <StyledRating>
+              <Star /> {rating.toFixed(2)}
+            </StyledRating>
           </StyledInfoTopSection>
           <StyledCategory>{category}</StyledCategory>
           <StyledAddress>{roadAddress}</StyledAddress>
@@ -136,6 +141,8 @@ const StyledCategory = styled.span`
 const StyledRating = styled.span`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
 
   color: var(--gray-3);
   font-size: ${FONT_SIZE.sm};
