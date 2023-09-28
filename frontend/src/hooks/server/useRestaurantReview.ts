@@ -19,7 +19,11 @@ import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewP
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
   const { id: restaurantId } = useParams();
-  const { onSuccess, onFailure, close } = useToastState(
+  const {
+    onSuccess: onSuccessForReview,
+    onFailure: onFailureForReview,
+    close,
+  } = useToastState(
     state => ({
       onFailure: state.onFailure,
       onSuccess: state.onSuccess,
@@ -31,10 +35,10 @@ const useRestaurantReview = () => {
   const errorHandler = (error: AxiosError) => {
     switch (error.response.status) {
       case 401:
-        onFailure('로그인 후 이용 가능합니다.');
+        onFailureForReview('로그인 후 이용 가능합니다.');
         break;
       default:
-        onFailure(error.response.data as string);
+        onFailureForReview(error.response.data as string);
         break;
     }
   };
@@ -95,8 +99,8 @@ const useRestaurantReview = () => {
       if (context.isLikedFlag === null) {
         return;
       }
-
-      onSuccess(`해당 리뷰를 추천 ${context.isLikedFlag ? '했습니다' : '취소 했습니다'}`);
+      const message = `해당 리뷰를 추천 ${context.isLikedFlag ? '했습니다' : '취소 했습니다'}`;
+      onSuccessForReview(message);
     },
 
     onError: (error: AxiosError, reviewId, context) => {
