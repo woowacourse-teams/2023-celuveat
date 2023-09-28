@@ -25,7 +25,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
 
   const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
 
-  const { clickUpdateReview, clickDeleteReview, clickReportReview, setReviewId } = useReviewModalContext();
+  const { openReviewModal, setReviewId } = useReviewModalContext();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
@@ -45,7 +45,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
               type="button"
               onClick={() => {
                 setReviewId(review.id);
-                clickUpdateReview();
+                openReviewModal('update');
               }}
             >
               수정
@@ -55,7 +55,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
               type="button"
               onClick={() => {
                 setReviewId(review.id);
-                clickDeleteReview();
+                openReviewModal('delete');
               }}
             >
               삭제
@@ -90,7 +90,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
             <StyledReviewButton
               onClick={() => {
                 setReviewId(review.id);
-                clickReportReview();
+                openReviewModal('report');
               }}
             >
               <SpeakerphoneIcon />
