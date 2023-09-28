@@ -14,15 +14,16 @@ import {
 
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '../../@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
 
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
   const { id: restaurantId } = useParams();
-  const { onFailure, onSuccess: successReviewLike } = useToastState(
+  const { onSuccess, onFailure, close } = useToastState(
     state => ({
       onFailure: state.onFailure,
       onSuccess: state.onSuccess,
+      close: state.close,
     }),
     shallow,
   );
@@ -66,19 +67,36 @@ const useRestaurantReview = () => {
       await queryClient.cancelQueries(['restaurantReview']);
       const previousReviews: RestaurantReviewData = queryClient.getQueryData(['restaurantReview', restaurantId]);
 
+      let isLikedFlag = null;
+
       queryClient.setQueryData(['restaurantReview', restaurantId], (oldReviewsQueryData: RestaurantReviewData) => {
-        const newReviewListData = oldReviewsQueryData?.reviews.map(reviewItem =>
-          reviewItem.id === reviewId ? { ...reviewItem, isLiked: !reviewItem.isLiked } : reviewItem,
-        );
+        const newReviewListData = oldReviewsQueryData?.reviews.map(reviewItem => {
+          if (reviewItem.id === reviewId) {
+            const newLikeCount = reviewItem.isLiked ? reviewItem.likeCount + 1 : reviewItem.likeCount - 1;
+            isLikedFlag = !reviewItem.isLiked;
+
+            return {
+              ...reviewItem,
+              isLiked: !reviewItem.isLiked,
+              likeCount: newLikeCount,
+            };
+          }
+
+          return reviewItem;
+        });
 
         return { ...oldReviewsQueryData, reviews: newReviewListData };
       });
 
-      return { previousReviews };
+      return { previousReviews, isLikedFlag };
     },
 
-    onSuccess: () => {
-      successReviewLike('해당 리뷰를 추천하였습니다!!');
+    onSuccess: (data, reviewId, context) => {
+      if (context.isLikedFlag === null) {
+        return;
+      }
+
+      onSuccess(`해당 리뷰를 추천 ${context.isLikedFlag ? '했습니다' : '취소 했습니다'}`);
     },
 
     onError: (error: AxiosError, reviewId, context) => {
@@ -102,10 +120,16 @@ const useRestaurantReview = () => {
     return review ? review.isLiked : null;
   };
 
+  const toggleRestaurantReviewLike = (reviewId: number) => {
+    postReviewLike.mutate(reviewId);
+    close();
+  };
+
   return {
     isLoading,
     restaurantReviewsData,
     getReviewIsLiked,
+    toggleRestaurantReviewLike,
     createReview: createReview.mutate,
     updateReview: updateReview.mutate,
     deleteReview: deleteReview.mutate,

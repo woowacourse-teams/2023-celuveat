@@ -23,7 +23,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
   const qc = useQueryClient();
   const profileData: ProfileData = qc.getQueryData(['profile']);
 
-  const { getReviewIsLiked, postReviewLike, postReviewReport } = useRestaurantReview();
+  const { getReviewIsLiked, toggleRestaurantReviewLike, postReviewReport } = useRestaurantReview();
 
   const { clickUpdateReview, clickDeleteReview, setReviewId } = useReviewModalContext();
 
@@ -81,7 +81,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
           <>
             <StyledReviewButton
               onClick={() => {
-                postReviewLike(review.id);
+                toggleRestaurantReviewLike(review.id);
               }}
             >
               <ThumpUpIcon fill={getReviewIsLiked(review.id) ? '#ff7b54' : 'white'} />

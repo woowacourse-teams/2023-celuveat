@@ -173,8 +173,14 @@ export const DetailPageSuccessHandler = [
     if (review.memberId === profile.memberId) {
       return res(ctx.status(404), ctx.json({ message: 'Bad Request' }));
     }
-    
-    review.isLiked ? (review['isLiked'] = false) : (review['isLiked'] = true);
+
+    if (review.isLiked) {
+      review['isLiked'] = false;
+      review['likeCount'] -= 1;
+    } else {
+      review['isLiked'] = true;
+      review['likeCount'] += 1;
+    }
 
     return res(ctx.status(200));
   }),
