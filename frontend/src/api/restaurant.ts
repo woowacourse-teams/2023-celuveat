@@ -28,6 +28,11 @@ export const getRestaurantVideo = async (restaurantId: string) => {
   return response.data;
 };
 
+export const getRestaurantsByAddress = async (region: string) => {
+  const response = await apiClient.get(`/address?value=${region}`);
+  return response.data;
+};
+
 export const postRevisedInfo = async ({
   restaurantId,
   data,
