@@ -1,8 +1,11 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { lazy } from 'react';
+import RegionResultPage from '~/pages/RegionResultPage';
+import CelebResultPage from '~/pages/CelebResultPage';
 
 const Root = lazy(() => import('./Root'));
+const MapPage = lazy(() => import('~/pages/MapPage'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
 const RestaurantDetail = lazy(() => import('~/pages/RestaurantDetail'));
 const SignUpPage = lazy(() => import('~/pages/SignUpPage'));
@@ -19,6 +22,9 @@ function Router() {
       // errorElement: <NotFound />,
       children: [
         { index: true, element: <MainPage /> },
+        { path: '/map', element: <MapPage /> },
+        { path: '/result/:region', element: <RegionResultPage /> },
+        { path: '/celeb/:celebId', element: <CelebResultPage /> },
         { path: '/policy', element: <PrivacyPolicy /> },
         { path: '/restaurants/:id', element: <RestaurantDetail /> },
         { path: '/signUp', element: <SignUpPage /> },

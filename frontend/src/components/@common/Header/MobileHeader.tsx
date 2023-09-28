@@ -8,7 +8,7 @@ import Logo from '~/assets/icons/logo-icon.svg';
 function MobileHeader() {
   const { pathname } = useLocation();
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/map';
 
   return (
     <StyledTopNavBar isHome={isHome}>
