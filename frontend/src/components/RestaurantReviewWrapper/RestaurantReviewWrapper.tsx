@@ -32,6 +32,7 @@ function RestaurantReviewWrapper() {
     if (type === 'all') return '리뷰 모두 보기';
     return null;
   };
+  const { totalElementsCount: reviewCount, reviews } = restaurantReviewsData;
 
   return (
     <>

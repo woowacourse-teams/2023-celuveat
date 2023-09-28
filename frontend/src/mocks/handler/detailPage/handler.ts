@@ -96,7 +96,7 @@ export const DetailPageSuccessHandler = [
   }),
 
   rest.get('/reviews', (req, res, ctx) => {
-    const reviewsData = { reviews, totalElementCounts: reviews.length };
+    const reviewsData = { reviews, totalElementsCount: reviews.length };
 
     return res(ctx.status(200), ctx.json(reviewsData));
   }),
