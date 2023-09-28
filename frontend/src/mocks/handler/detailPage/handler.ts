@@ -187,6 +187,7 @@ export const DetailPageSuccessHandler = [
 
   rest.post('/reviews/:reviewId/report', async (req, res, ctx) => {
     const { JSESSION } = req.cookies;
+    const { content } = await req.json();
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));

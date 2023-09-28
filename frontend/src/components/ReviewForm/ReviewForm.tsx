@@ -8,7 +8,7 @@ import TextButton from '../@common/Button';
 import { FONT_SIZE } from '~/styles/common';
 
 interface ReviewFormProps {
-  type: 'create' | 'update';
+  type: 'create' | 'update' | 'report';
   reviewId?: number;
 }
 
@@ -20,17 +20,26 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
   const [text, setText] = useState('');
 
-  const { createReview, updateReview } = useRestaurantReview();
+  const { createReview, updateReview, postReviewReport } = useRestaurantReview();
 
   const onCreateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
+
     createReview({ content: text, restaurantId: Number(restaurantId) });
     window.location.reload();
   };
 
   const onUpdateReview: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
+
     updateReview({ reviewId, body: { content: text } });
+    window.location.reload();
+  };
+
+  const onReportReview: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.preventDefault();
+
+    postReviewReport({ reviewId, content: text });
     window.location.reload();
   };
 
@@ -53,6 +62,15 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
           type="submit"
           onClick={onCreateReview}
           text="등록하기"
+          colorType="dark"
+          disabled={text.length === 0}
+        />
+      )}
+      {type === 'report' && (
+        <TextButton
+          type="submit"
+          onClick={onReportReview}
+          text="신고하기"
           colorType="dark"
           disabled={text.length === 0}
         />

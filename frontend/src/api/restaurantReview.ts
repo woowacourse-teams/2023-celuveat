@@ -21,8 +21,8 @@ export const postRestaurantReviewLike = async (reviewId: number) => {
   return response;
 };
 
-export const postRestaurantReviewReport = async (reviewId: number) => {
-  const response = await apiUserClient.post(`/reviews/${reviewId}/report`);
+export const postRestaurantReviewReport = async ({ reviewId, content }: { reviewId: number; content: string }) => {
+  const response = await apiUserClient.post(`/reviews/${reviewId}/report`, { content });
   return response;
 };
 

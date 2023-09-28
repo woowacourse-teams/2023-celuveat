@@ -23,9 +23,9 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
   const qc = useQueryClient();
   const profileData: ProfileData = qc.getQueryData(['profile']);
 
-  const { getReviewIsLiked, toggleRestaurantReviewLike, postReviewReport } = useRestaurantReview();
+  const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
 
-  const { clickUpdateReview, clickDeleteReview, setReviewId } = useReviewModalContext();
+  const { clickUpdateReview, clickDeleteReview, clickReportReview, setReviewId } = useReviewModalContext();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
@@ -87,7 +87,12 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
               <ThumpUpIcon fill={getReviewIsLiked(review.id) ? '#ff7b54' : 'white'} />
               <span>추천 {getReviewIsLiked(review.id) ? '취소' : '하기'}</span>
             </StyledReviewButton>
-            <StyledReviewButton onClick={() => postReviewReport(review.id)}>
+            <StyledReviewButton
+              onClick={() => {
+                setReviewId(review.id);
+                clickReportReview();
+              }}
+            >
               <SpeakerphoneIcon />
               <span>신고하기</span>
             </StyledReviewButton>

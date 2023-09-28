@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { styled } from 'styled-components';
+
 import Alert from '~/assets/icons/alert.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
@@ -27,6 +28,7 @@ function RestaurantReviewWrapper() {
     if (type === 'create') return '리뷰 작성하기';
     if (type === 'update') return '리뷰 수정하기';
     if (type === 'delete') return '리뷰 삭제하기';
+    if (type === 'report') return '리뷰 신고하기';
     if (type === 'all') return '리뷰 모두 보기';
     return null;
   };
@@ -51,6 +53,7 @@ function RestaurantReviewWrapper() {
         <Modal title={getTitle(formType)} isOpen={isModalOpen} close={closeModal}>
           <>
             {formType === 'create' && <ReviewForm type="create" />}
+            {formType === 'report' && <ReviewForm type="report" reviewId={reviewId} />}
             {formType === 'all' && (
               <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />
             )}

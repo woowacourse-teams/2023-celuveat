@@ -12,6 +12,7 @@ interface ReviewModalContextState {
   closeModal: VoidFunction;
   clickUpdateReview: VoidFunction;
   clickDeleteReview: VoidFunction;
+  clickReportReview: VoidFunction;
   openCreateReview: VoidFunction;
   openShowAll: VoidFunction;
 }
@@ -22,7 +23,6 @@ export const useReviewModalContext = () => useContext(ReviewModalContext);
 
 function ReviewModalProvider({ children }: { children: React.ReactNode }) {
   const qc = useQueryClient();
-
   const profileData: ProfileData = qc.getQueryData(['profile']);
   const [formType, setFormType] = useState('');
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -44,6 +44,16 @@ function ReviewModalProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       setFormType('update');
+      openModal();
+    },
+    clickReportReview: () => {
+      if (!profileData) {
+        setFormType('');
+
+        openModal();
+        return;
+      }
+      setFormType('report');
       openModal();
     },
     clickDeleteReview: () => {
