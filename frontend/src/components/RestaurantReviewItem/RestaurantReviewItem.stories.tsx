@@ -1,9 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import RestaurantReviewItem from '~/components/RestaurantReviewItem';
+import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
 const meta: Meta<typeof RestaurantReviewItem> = {
   title: 'RestaurantReviewItem',
   component: RestaurantReviewItem,
+  decorators: [
+    Story => (
+      <ReviewModalProvider>
+        <Story />
+      </ReviewModalProvider>
+    ),
+  ],
 };
 
 export default meta;
@@ -22,6 +30,13 @@ export const Default: Story = {
       데크 테이블과 정원 테이블에서의 티타임 역시 아주 좋았어요 사장님도 친절하시고 고양이 금자는 귀여워요 머리는 내주나 궁디팡팡은 하지말라하심 ㅋㅋ
       아지트삼아 사계절 모두 가보고싶은 곳입니다 ♥`,
       createdDate: '2023-08-13',
+      likeCount: 97,
+      isLiked: false,
+      reviewImageUrls: [
+        'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
+        'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+        'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      ],
     },
   },
 };
