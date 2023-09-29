@@ -20,7 +20,6 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -175,19 +174,10 @@ public class RestaurantWithDistanceDao {
     }
 
     private BooleanExpression restaurantAddressIn(List<String> addresses) {
-        if (addresses.size() == 1) {
-            return restaurant.roadAddress.startsWith(addresses.get(0));
-        }
-
-        List<BooleanExpression> conditions = new ArrayList<>();
-        for (String address : addresses) {
-            conditions.add(restaurant.roadAddress.startsWith(address));
-        }
-        BooleanExpression orConditions = conditions.remove(0);
-        for (BooleanExpression condition : conditions) {
-            orConditions = orConditions.or(condition);
-        }
-        return orConditions;
+        return addresses.stream()
+                .map(restaurant.roadAddress::startsWith)
+                .reduce(BooleanExpression::or)
+                .orElse(null);
     }
 
     public Page<RestaurantWithDistance> searchNearBy(
