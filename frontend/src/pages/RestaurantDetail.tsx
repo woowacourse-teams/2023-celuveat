@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -92,6 +92,10 @@ function RestaurantDetail() {
         alert('클립보드에 저장하는데 문제가 생겼어요.');
       }
     };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   return (
     <>
@@ -300,7 +304,7 @@ const StyledDetailHeader = styled.section<{ isMobile: boolean }>`
   flex-direction: column;
   gap: 0.8rem 0;
 
-  padding: 2.4rem 0;
+  padding: 1.2rem 0 2.4rem;
 
   & > div {
     display: flex;
@@ -315,12 +319,6 @@ const StyledDetailHeader = styled.section<{ isMobile: boolean }>`
       gap: 0 0.8rem;
     }
   }
-
-  ${({ isMobile }) =>
-    isMobile &&
-    css`
-      margin-top: 4.4rem;
-    `}
 `;
 
 const StyledDetailAndLink = styled.section<{ isMobile: boolean }>`
@@ -570,4 +568,12 @@ const StyledRestaurantCardContainer = styled.div`
   border-radius: 12px;
 
   box-shadow: var(--map-shadow);
+`;
+
+const StyledPreviousPageButton = styled.button`
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  outline: none;
 `;

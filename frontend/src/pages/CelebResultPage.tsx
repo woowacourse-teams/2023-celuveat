@@ -62,7 +62,7 @@ const StyledContainer = styled.div`
   width: 100vw;
   overflow-x: hidden;
 
-  padding: 5.6rem 1.2rem;
+  padding: 1.6rem 1.2rem;
 `;
 
 const StyledResultCount = styled.span`

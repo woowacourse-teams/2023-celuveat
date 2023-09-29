@@ -93,7 +93,7 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 1500px;
 
-  padding: 5.6rem 1.6rem;
+  padding: 1.6rem;
   overflow-x: hidden;
 `;
 
