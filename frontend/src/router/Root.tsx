@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { styled } from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import Footer from '~/components/@common/Footer';
 import { Header, MobileHeader } from '~/components/@common/Header';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
@@ -24,6 +24,7 @@ function Root() {
         <Outlet />
         {!isMobile && <Footer />}
       </Suspense>
+      <ScrollRestoration />
       <Toast />
     </>
   );
