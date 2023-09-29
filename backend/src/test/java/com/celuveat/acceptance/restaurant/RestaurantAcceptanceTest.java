@@ -51,12 +51,8 @@ import com.celuveat.common.TestData;
 import com.celuveat.common.TestDataCreator;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.fixture.RestaurantFixture.지역별_음식점;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
-import com.celuveat.video.command.domain.Video;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -192,30 +188,21 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         private final Map<String, Celeb> 셀럽들 = 셀럽들(성시경(), 핫둘제주(), 백종원());
         private final List<Restaurant> 제주_음식점들 = 지역별_음식점.제주_음식점들();
         private final List<Restaurant> 압구정_음식점들 = 지역별_음식점.압구정_음식점들();
-        private final Map<Restaurant, List<RestaurantImage>> 음식점_사진들 = new HashMap<>();
-        private final Map<Restaurant, List<Video>> 영상들 = new HashMap<>();
+        private TestData testData = new TestData();
 
         private final TestDataCreator testDataCreator = () -> {
-            List<Restaurant> 음식점들 = new ArrayList<>();
-            음식점들.addAll(제주_음식점들);
-            음식점들.addAll(압구정_음식점들);
-            음식점_사진들.putAll(음식점사진들(음식점들));
+            testData.addCelebs(셀럽들);
+            testData.addRestaurants(제주_음식점들);
+            testData.addRestaurants(압구정_음식점들);
+            testData.addImages(음식점사진들(testData.restaurants()));
             for (Restaurant restaurant : 제주_음식점들) {
-                영상들.put(restaurant, List.of(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주"))));
+                testData.addVideo(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주")));
             }
             for (Restaurant restaurant : 압구정_음식점들) {
-                List<Video> videos = new ArrayList<>();
-                videos.add(영상(restaurant, 셀럽들.get("성시경")));
-                videos.add(영상(restaurant, 셀럽들.get("백종원")));
-                영상들.put(restaurant, videos);
+                testData.addVideo(영상(restaurant, 셀럽들.get("성시경")));
+                testData.addVideo(영상(restaurant, 셀럽들.get("백종원")));
             }
-
-            return TestData.builder()
-                    .celebs(셀럽들.values().stream().toList())
-                    .restaurants(음식점들)
-                    .restaurantImages(음식점_사진들)
-                    .videos(영상들)
-                    .build();
+            return testData;
         };
 
         @BeforeEach
@@ -226,7 +213,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 지역으로_음식점을_검색한다() {
             // given
-            var 예상_응답 = toSimpleResponse(압구정_음식점들, 영상들, 음식점_사진들);
+            var 예상_응답 = toSimpleResponse(압구정_음식점들, testData.videoWithRestaurant(), testData.imageWithRestaurant());
 
             // when
             var 응답 = 음식점_지역으로_검색_요청("압구정,청담");

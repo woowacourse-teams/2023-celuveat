@@ -375,16 +375,14 @@ class RestaurantWithDistanceDaoTest {
         List<Restaurant> 압구정_음식점들 = 지역별_음식점.압구정_음식점들();
         음식점들.addAll(제주_음식점들);
         음식점들.addAll(압구정_음식점들);
-        Map<Restaurant, List<RestaurantImage>> 음식점_사진들 = 음식점사진들(음식점들);
-        Map<Restaurant, List<Video>> 영상들 = new HashMap<>();
+        List<RestaurantImage> 음식점_사진들 = 음식점사진들(음식점들);
+        List<Video> 영상들 = new ArrayList<>();
         for (Restaurant restaurant : 제주_음식점들) {
-            영상들.put(restaurant, List.of(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주"))));
+            영상들.add(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주")));
         }
         for (Restaurant restaurant : 압구정_음식점들) {
-            List<Video> videos = new ArrayList<>();
-            videos.add(영상(restaurant, 셀럽들.get("성시경")));
-            videos.add(영상(restaurant, 셀럽들.get("백종원")));
-            영상들.put(restaurant, videos);
+            영상들.add(영상(restaurant, 셀럽들.get("성시경")));
+            영상들.add(영상(restaurant, 셀럽들.get("백종원")));
         }
         TestData testData = TestData.builder()
                 .celebs(셀럽들.values().stream().toList())

@@ -1,14 +1,12 @@
 package com.celuveat.common;
 
 import com.celuveat.celeb.command.domain.CelebRepository;
-import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.command.domain.VideoRepository;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ActiveProfiles;
@@ -38,21 +36,17 @@ public class TestDataInserter {
         return testData;
     }
 
-    private void insertImages(Map<Restaurant, List<RestaurantImage>> images) {
+    private void insertImages(List<RestaurantImage> images) {
         if (images == null) {
             return;
         }
-        for (List<RestaurantImage> value : images.values()) {
-            restaurantImageRepository.saveAll(value);
-        }
+        restaurantImageRepository.saveAll(images);
     }
 
-    private void insertVideos(Map<Restaurant, List<Video>> videos) {
+    private void insertVideos(List<Video> videos) {
         if (videos == null) {
             return;
         }
-        for (List<Video> value : videos.values()) {
-            videoRepository.saveAll(value);
-        }
+        videoRepository.saveAll(videos);
     }
 }
