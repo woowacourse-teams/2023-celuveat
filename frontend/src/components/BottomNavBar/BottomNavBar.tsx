@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import WishListIcon from '~/assets/icons/black-love.svg';
 import HomeIcon from '~/assets/icons/home.svg';
-import UserIcon from '~/assets/icons/user-vector.svg';
+import SignInIcon from '~/assets/icons/sign-in.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
 
@@ -34,7 +34,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
         <MapIcon />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickLogin}>
-        <UserIcon />
+        <SignInIcon />
       </StyledNavBarButton>
     </StyledBottomNavBar>
   );
