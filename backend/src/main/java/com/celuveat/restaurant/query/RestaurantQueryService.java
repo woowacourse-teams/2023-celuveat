@@ -1,5 +1,8 @@
 package com.celuveat.restaurant.query;
 
+import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstByCelebId;
+import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId;
+
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
@@ -9,7 +12,6 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSea
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.query.mapper.RestaurantRelocator;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class RestaurantQueryService {
     ) {
         RestaurantDetailResponse response =
                 restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
-        return RestaurantRelocator.relocateCelebDataFirstByCelebId(celebId, response);
+        return relocateCelebDataFirstByCelebId(celebId, response);
     }
 
     public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
@@ -53,7 +55,7 @@ public class RestaurantQueryService {
         if (celebId == null) {
             return response;
         }
-        return RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId(celebId, response);
+        return relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 
     public Page<RestaurantSimpleResponse> findAllByAddress(

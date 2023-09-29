@@ -53,6 +53,7 @@ public record AddressSearchCondRequest(
     }
 
     private static class BadRequestException extends BaseException {
+
         private final BadRequestExceptionType badRequestExceptionType;
 
         private BadRequestException(String value) {
@@ -68,6 +69,7 @@ public record AddressSearchCondRequest(
     private record BadRequestExceptionType(
             String value
     ) implements BaseExceptionType {
+
         @Override
         public HttpStatus httpStatus() {
             return HttpStatus.BAD_REQUEST;
