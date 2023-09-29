@@ -121,6 +121,7 @@ const StyledInfoSection = styled.section`
 const StyledName = styled.h5`
   ${truncateText(1)}
   font-size: ${FONT_SIZE.md};
+  line-height: 20px;
 `;
 
 const StyledAddress = styled.span`
