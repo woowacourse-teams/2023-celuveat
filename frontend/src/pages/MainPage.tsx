@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import BottomNavBar from '~/components/BottomNavBar';
@@ -30,10 +29,6 @@ function MainPage() {
   const clickCelebIcon = (id: number) => {
     navigate(`/celeb/${id}`);
   };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <StyledLayout>

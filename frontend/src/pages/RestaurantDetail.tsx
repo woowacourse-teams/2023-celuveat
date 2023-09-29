@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -92,10 +92,6 @@ function RestaurantDetail() {
         alert('클립보드에 저장하는데 문제가 생겼어요.');
       }
     };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <>
