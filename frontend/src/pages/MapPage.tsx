@@ -6,7 +6,7 @@ import RestaurantCardList from '~/components/RestaurantCardList';
 import MainPageNavBar, { MainPageNavBarSkeleton } from '~/components/MainPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import MobileMainPage from './MobileMainPage';
+import MobileMapPage from './MobileMapPage';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 
@@ -23,7 +23,7 @@ function MapPage() {
           </StyledProcessing>
         }
       >
-        <MobileMainPage />
+        <MobileMapPage />
       </Suspense>
     );
 

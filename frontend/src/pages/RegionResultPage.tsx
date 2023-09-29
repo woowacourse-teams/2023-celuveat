@@ -22,9 +22,7 @@ function RegionResultPage() {
       <Link to="/" style={{ textDecoration: 'none' }}>
         <h5> ← {RECOMMENDED_REGION[region as keyof typeof RECOMMENDED_REGION]}</h5>
       </Link>
-      <StyledBanner>
-        <img src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
-      </StyledBanner>
+      <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
       <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
       <StyledResultBox>
         {restaurantDataList &&
@@ -49,7 +47,6 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100vw;
-  overflow-x: hidden;
 
   padding: 5.6rem 1.2rem;
 `;
@@ -64,14 +61,12 @@ const StyledResultBox = styled.div`
   gap: 2.4rem;
 `;
 
-const StyledBanner = styled.div`
-  display: flex;
-  align-items: center;
-
+const StyledBanner = styled.img`
   width: 100%;
-  max-height: 150px;
+  max-height: 160px;
+
+  overflow: hidden;
+  object-fit: cover;
 
   border-radius: 12px;
-  object-fit: cover;
-  overflow: hidden;
 `;

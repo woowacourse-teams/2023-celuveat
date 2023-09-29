@@ -56,9 +56,9 @@ function MiniRestaurantCard({
       >
         <StyledImageSection>
           <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} />
-          <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
+          <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
-          </LikeButton>
+          </StyledLikeButton>
         </StyledImageSection>
         <StyledInfoSection>
           <StyledInfoTopSection>
@@ -148,10 +148,10 @@ const StyledRating = styled.span`
   font-size: ${FONT_SIZE.sm};
 `;
 
-const LikeButton = styled.button`
+const StyledLikeButton = styled.button`
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 4%;
+  right: 1%;
   z-index: 8;
 
   border: none;

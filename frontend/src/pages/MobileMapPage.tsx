@@ -13,7 +13,7 @@ import Footer from '~/components/@common/Footer';
 import Map from '~/components/@common/Map';
 import BottomNavBar from '~/components/BottomNavBar/BottomNavBar';
 
-function MobileMainPage() {
+function MobileMapPage() {
   const ref = useRef();
   const scrollDirection = useScrollDirection();
   const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
@@ -22,7 +22,7 @@ function MobileMainPage() {
   useScrollBlock(ref);
 
   return (
-    <StyledMobileMainPageContainer>
+    <StyledMobileMapPageContainer>
       {isListShowed ? (
         <StyledToggleButton
           type="button"
@@ -50,13 +50,13 @@ function MobileMainPage() {
         </div>
         <Map />
       </StyledMobileLayout>
-    </StyledMobileMainPageContainer>
+    </StyledMobileMapPageContainer>
   );
 }
 
-export default MobileMainPage;
+export default MobileMapPage;
 
-const StyledMobileMainPageContainer = styled.div`
+const StyledMobileMapPageContainer = styled.div`
   width: 100%;
   height: 100vh;
 `;
@@ -90,17 +90,14 @@ const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolea
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.8rem;
 
   position: fixed;
   bottom: 88px;
-
-  gap: 0.8rem;
+  left: calc(50% - 50px);
+  z-index: 20;
 
   width: 100px;
-
-  z-index: 20;
-  left: calc(50% - 50px);
-
   height: 40px;
 
   border: none;

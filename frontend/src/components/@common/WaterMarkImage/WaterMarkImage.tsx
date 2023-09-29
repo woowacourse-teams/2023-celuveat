@@ -64,8 +64,8 @@ const StyledImage = styled.img`
 
 const StyledWaterMark = styled.div`
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 1%;
+  left: 1%;
 
   padding: 0.4rem 0.8rem;
 
@@ -73,6 +73,7 @@ const StyledWaterMark = styled.div`
 
   color: var(--white);
   font-size: ${FONT_SIZE.sm};
+  font-weight: 700;
 
   cursor: pointer;
 `;
