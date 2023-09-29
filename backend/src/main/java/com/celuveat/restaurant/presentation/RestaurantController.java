@@ -72,18 +72,6 @@ public class RestaurantController {
         return ResponseEntity.ok(PageResponse.from(result));
     }
 
-    @GetMapping("/address")
-    ResponseEntity<PageResponse<RestaurantSimpleResponse>> findByAddress(
-            @LooseAuth Long memberId,
-            @ModelAttribute AddressSearchCondRequest addressSearchCondRequest,
-            @PageableDefault(size = 18) Pageable pageable
-    ) {
-        Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllByAddress(
-                addressSearchCondRequest.toCondition(), pageable, memberId
-        );
-        return ResponseEntity.ok(PageResponse.from(result));
-    }
-
     @GetMapping("/like")
     ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
         List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(

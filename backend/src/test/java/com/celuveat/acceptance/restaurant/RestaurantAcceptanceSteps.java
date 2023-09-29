@@ -48,7 +48,7 @@ public class RestaurantAcceptanceSteps {
     public static ExtractableResponse<Response> 음식점_지역으로_검색_요청(String 지역) {
         return given()
                 .queryParam("value", 지역)
-                .get("/restaurants/address")
+                .get("/address")  // TODO : 임시방편임, 수정 필요
                 .then()
                 .log().all()
                 .extract();
