@@ -5,6 +5,7 @@ import { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import { getRestaurantsByAddress } from '~/api/restaurant';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
+import { SERVER_IMG_URL } from '~/constants/url';
 import { FONT_SIZE } from '~/styles/common';
 
 function RegionResultPage() {
@@ -18,9 +19,12 @@ function RegionResultPage() {
 
   return (
     <StyledContainer>
-      <Link to="/">
+      <Link to="/" style={{ textDecoration: 'none' }}>
         <h5> ← {RECOMMENDED_REGION[region as keyof typeof RECOMMENDED_REGION]}</h5>
       </Link>
+      <StyledBanner>
+        <img src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
+      </StyledBanner>
       <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
       <StyledResultBox>
         {restaurantDataList &&
@@ -58,4 +62,16 @@ const StyledResultBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+`;
+
+const StyledBanner = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  max-height: 150px;
+
+  border-radius: 12px;
+  object-fit: cover;
+  overflow: hidden;
 `;

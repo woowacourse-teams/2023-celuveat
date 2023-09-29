@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
 import { getRestaurants } from '~/api/restaurant';
+import ProfileImage from '~/components/@common/ProfileImage';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import { CELEB } from '~/constants/celeb';
 import { FONT_SIZE } from '~/styles/common';
@@ -25,9 +26,16 @@ function CelebResultPage() {
 
   return (
     <StyledContainer>
-      <Link to="/">
-        <h5> ← {CELEB[Number(celebId) as keyof typeof CELEB]}</h5>
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <h5> ← {CELEB[Number(celebId) as keyof typeof CELEB].name} 추천 맛집</h5>
       </Link>
+      <StyledBanner>
+        <ProfileImage
+          imageUrl={CELEB[Number(celebId) as keyof typeof CELEB].profileImageUrl}
+          name={CELEB[Number(celebId) as keyof typeof CELEB].name}
+          size="72px"
+        />
+      </StyledBanner>
       <StyledResultCount>{restaurantDataList && restaurantDataList.totalElementsCount}개의 매장</StyledResultCount>
       <StyledResultBox>
         {restaurantDataList &&
@@ -65,4 +73,12 @@ const StyledResultBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+`;
+
+const StyledBanner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
 `;
