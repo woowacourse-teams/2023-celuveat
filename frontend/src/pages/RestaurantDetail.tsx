@@ -569,11 +569,3 @@ const StyledRestaurantCardContainer = styled.div`
 
   box-shadow: var(--map-shadow);
 `;
-
-const StyledPreviousPageButton = styled.button`
-  border: none;
-  background: transparent;
-
-  cursor: pointer;
-  outline: none;
-`;
