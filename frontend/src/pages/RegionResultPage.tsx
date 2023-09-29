@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
@@ -16,6 +17,10 @@ function RegionResultPage() {
     queryFn: () => getRestaurantsByAddress(region),
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <StyledContainer>
