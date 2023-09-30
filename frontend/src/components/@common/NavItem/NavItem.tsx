@@ -29,6 +29,7 @@ const StyledNavItem = styled.div<{ isShow: boolean; isInteractive: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.8rem;
 
   width: 68px;
 

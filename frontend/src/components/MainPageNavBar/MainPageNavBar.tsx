@@ -40,7 +40,7 @@ function MainPageNavBar() {
     <StyledNavBar>
       <CelebDropDown celebs={[OPTION_FOR_CELEB_ALL, ...celebOptions]} externalOnClick={clickCeleb} />
       <StyledLine />
-      <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
+      <CategoryNavbar categories={Object.values(RESTAURANT_CATEGORY)} externalOnClick={clickRestaurantCategory} />
     </StyledNavBar>
   );
 }

@@ -29,7 +29,7 @@ function MapPage() {
 
   return (
     <>
-      <Suspense fallback={<MainPageNavBarSkeleton navItemLength={RESTAURANT_CATEGORY.length} />}>
+      <Suspense fallback={<MainPageNavBarSkeleton navItemLength={Object.values(RESTAURANT_CATEGORY).length} />}>
         <MainPageNavBar />
       </Suspense>
       <StyledLayout isMapExpanded={isMapExpanded}>

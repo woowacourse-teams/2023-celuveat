@@ -56,6 +56,7 @@ const StyledCategoryNavbarWrapper = styled.ul<{ grid: boolean }>`
       ? css`
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(64px, auto));
+          grid-row-gap: 24px;
         `
       : css`
           display: flex;

@@ -13,6 +13,6 @@ type Story = StoryObj<typeof CategoryNavbar>;
 
 export const Default: Story = {
   args: {
-    categories: RESTAURANT_CATEGORY,
+    categories: Object.values(RESTAURANT_CATEGORY),
   },
 };
