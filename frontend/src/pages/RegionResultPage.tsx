@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import { Region } from '~/@types/region.types';
 import { getRestaurantsByAddress } from '~/api/restaurant';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
@@ -9,7 +10,7 @@ import { SERVER_IMG_URL } from '~/constants/url';
 import { FONT_SIZE } from '~/styles/common';
 
 function RegionResultPage() {
-  const { region } = useParams();
+  const { region } = useParams<{ region: Region }>();
 
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
     queryKey: ['restaurantsFilteredByRegion', region],
@@ -20,7 +21,7 @@ function RegionResultPage() {
   return (
     <StyledContainer>
       <Link to="/" style={{ textDecoration: 'none' }}>
-        <h5> ← {RECOMMENDED_REGION[region as keyof typeof RECOMMENDED_REGION]}</h5>
+        <h5> ← {RECOMMENDED_REGION[region]}</h5>
       </Link>
       <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
       <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>

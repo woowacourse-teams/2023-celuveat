@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import { CelebId } from '~/@types/celeb.types';
 import { getRestaurants } from '~/api/restaurant';
 import ProfileImage from '~/components/@common/ProfileImage';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
@@ -27,12 +28,12 @@ function CelebResultPage() {
   return (
     <StyledContainer>
       <Link to="/" style={{ textDecoration: 'none' }}>
-        <h5> ← {CELEB[Number(celebId) as keyof typeof CELEB].name} 추천 맛집</h5>
+        <h5> ← {CELEB[Number(celebId) as CelebId].name} 추천 맛집</h5>
       </Link>
       <StyledBanner>
         <ProfileImage
-          imageUrl={CELEB[Number(celebId) as keyof typeof CELEB].profileImageUrl}
-          name={CELEB[Number(celebId) as keyof typeof CELEB].name}
+          imageUrl={CELEB[Number(celebId) as CelebId].profileImageUrl}
+          name={CELEB[Number(celebId) as CelebId].name}
           size="72px"
         />
       </StyledBanner>
