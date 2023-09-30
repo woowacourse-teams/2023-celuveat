@@ -3,28 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
-import BottomNavBar from '~/components/BottomNavBar';
-// import CategoryNavbar from '~/components/CategoryNavbar';
+import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
-// import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import useBooleanState from '~/hooks/useBooleanState';
-import useMediaQuery from '~/hooks/useMediaQuery';
-import useScrollDirection from '~/hooks/useScrollDirection';
+import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { popularRestaurants } from '~/mocks/data/popularRestaurants';
 import { FONT_SIZE } from '~/styles/common';
 import Banner from '~/assets/banner/banner.svg';
 
 function MainPage() {
-  const scrollDirection = useScrollDirection();
   const navigate = useNavigate();
-  const { value: isListShowed } = useBooleanState(false);
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
     queryFn: () => getCelebs(),
     suspense: true,
   });
-  const { isMobile } = useMediaQuery();
 
   const clickCelebIcon = (id: number) => {
     navigate(`/celeb/${id}`);
@@ -58,12 +51,12 @@ function MainPage() {
             ))}
           </StyledPopularRestaurantBox>
         </div>
-        {/* <div>
+        <div>
           <h5>카테고리</h5>
           <StyledCategoryBox>
             <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
           </StyledCategoryBox>
-        </div> */}
+        </div>
         <div>
           <h5>어디로 가시나요?</h5>
           <StyledIconBox>
@@ -71,7 +64,6 @@ function MainPage() {
           </StyledIconBox>
         </div>
       </StyledContainer>
-      {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
     </StyledLayout>
   );
 }
@@ -145,6 +137,6 @@ const StyledPopularRestaurantBox = styled.div`
   padding: 1.6rem 0.8rem;
 `;
 
-// const StyledCategoryBox = styled.div`
-//   padding: 1.6rem 0;
-// `;
+const StyledCategoryBox = styled.div`
+  padding: 1.6rem 0;
+`;

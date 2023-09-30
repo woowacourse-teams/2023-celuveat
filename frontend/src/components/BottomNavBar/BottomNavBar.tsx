@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import WishListIcon from '~/assets/icons/black-love.svg';
 import HomeIcon from '~/assets/icons/home.svg';
 import SignInIcon from '~/assets/icons/sign-in.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
@@ -18,7 +17,6 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   const clickHome = () => navigator('/');
   const clickMap = () => navigator('/map');
   const clickLogin = () => navigator('/signup');
-  const clickWishList = () => navigator('/restaurants/like');
 
   useScrollBlock(ref);
 
@@ -27,9 +25,6 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
       <StyledNavBarButton onClick={clickHome}>
         <HomeIcon />
       </StyledNavBarButton>
-      {/* <StyledNavBarButton onClick={clickWishList}>
-        <WishListIcon />
-      </StyledNavBarButton> */}
       <StyledNavBarButton onClick={clickMap}>
         <MapIcon />
       </StyledNavBarButton>
@@ -47,7 +42,7 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
   justify-content: space-evenly;
   align-items: center;
 
-  position: fixed;
+  position: sticky;
   bottom: 0;
   z-index: 20;
 

@@ -11,7 +11,6 @@ import ListIcon from '~/assets/icons/list.svg';
 import RestaurantCardList from '~/components/RestaurantCardList';
 import Footer from '~/components/@common/Footer';
 import Map from '~/components/@common/Map';
-import BottomNavBar from '~/components/BottomNavBar/BottomNavBar';
 
 function MobileMapPage() {
   const ref = useRef();
@@ -41,8 +40,6 @@ function MobileMapPage() {
         </StyledToggleButton>
       )}
 
-      <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />
-
       <StyledMobileLayout isListShowed={isListShowed}>
         <div>
           <RestaurantCardList />
@@ -66,7 +63,7 @@ const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
   top: 88px;
 
   width: 100vw;
-  height: calc(100vh - 88px - 64px);
+  height: calc(100vh - 88px - 48px);
 
   & > div:first-child {
     position: absolute;

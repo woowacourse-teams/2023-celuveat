@@ -47,7 +47,8 @@ const StyledContainer = styled.div`
   flex-direction: column;
   gap: 2.4rem;
 
-  width: 100vw;
+  width: 100%;
+  min-height: 100vh;
 
   padding: 1.6rem 1.2rem;
 `;
