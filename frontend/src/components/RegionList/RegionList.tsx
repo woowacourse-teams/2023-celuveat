@@ -52,6 +52,8 @@ const StyledRegion = styled.div<{ imgUrl: string }>`
   background-size: cover;
 
   overflow: hidden;
+
+  cursor: pointer;
 `;
 
 const StyledMask = styled.div`
