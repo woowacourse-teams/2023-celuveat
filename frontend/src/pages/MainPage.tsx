@@ -89,7 +89,7 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 1500px;
+  max-width: 1200px;
 
   padding: 1.6rem;
   overflow-x: hidden;
@@ -97,10 +97,13 @@ const StyledContainer = styled.div`
 
 const StyledBanner = styled.div`
   width: 100%;
+  max-height: 200px;
 
   border-radius: 20px;
   object-fit: cover;
   overflow: hidden;
+
+  background-color: var(--primary-6);
 `;
 
 const StyledIconBox = styled.div`
@@ -127,6 +130,8 @@ const StyledCeleb = styled.div`
   gap: 0.8rem;
 
   font-size: ${FONT_SIZE.sm};
+
+  cursor: pointer;
 `;
 
 const StyledPopularRestaurantBox = styled.div`
