@@ -112,6 +112,8 @@ const StyledContainer = styled.div<{ isMobile: boolean }>`
 `;
 
 const StyledInput = styled.input<{ isMobile: boolean }>`
+  padding: 0 1.2rem;
+
   border: none;
   background-color: transparent;
 

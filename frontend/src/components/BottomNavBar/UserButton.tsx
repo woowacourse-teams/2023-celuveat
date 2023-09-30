@@ -32,12 +32,9 @@ function UserButton() {
   return (
     <StyledNavBarButton type="button" onClick={clickLoginNavItem}>
       {isLogin ? (
-        <NavItem
-          label="로그아웃"
-          icon={<ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />}
-        />
+        <NavItem icon={<ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />} />
       ) : (
-        <NavItem label="로그인" icon={<UserIcon width={24} />} />
+        <NavItem icon={<UserIcon height={28} />} />
       )}
     </StyledNavBarButton>
   );

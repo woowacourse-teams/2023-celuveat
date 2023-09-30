@@ -8,7 +8,7 @@ import Logo from '~/assets/icons/logo-icon.svg';
 function MobileHeader() {
   const { pathname } = useLocation();
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/map';
 
   return (
     <StyledTopNavBar isHome={isHome}>
@@ -35,7 +35,8 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   flex-direction: column;
   align-items: center;
 
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 100;
 
   width: 100%;
@@ -44,7 +45,6 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   padding: 0 0.8rem;
 
   background-color: var(--white);
-  box-shadow: var(--map-shadow);
 
   & > header {
     display: flex;

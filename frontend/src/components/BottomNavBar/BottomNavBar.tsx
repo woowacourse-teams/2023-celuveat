@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import NavItem from '../@common/NavItem';
-import LoveIcon from '~/assets/icons/love.svg';
-import UserButton from './UserButton';
-import FilterButton from './FilterButton';
+import HomeIcon from '~/assets/icons/home.svg';
+import SignInIcon from '~/assets/icons/sign-in.svg';
+import MapIcon from '~/assets/icons/navmap.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
 
 interface BottomNavBarProps {
@@ -15,18 +14,23 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
 
-  const clickWishList = () => navigator('/restaurants/like');
+  const clickHome = () => navigator('/');
+  const clickMap = () => navigator('/map');
+  const clickLogin = () => navigator('/signup');
 
   useScrollBlock(ref);
 
   return (
     <StyledBottomNavBar isHide={isHide} ref={ref}>
-      <StyledNavBarButton type="button" onClick={clickWishList}>
-        <NavItem label="위시리스트" icon={<LoveIcon width={24} />} />
+      <StyledNavBarButton onClick={clickHome}>
+        <HomeIcon />
       </StyledNavBarButton>
-
-      <FilterButton />
-      <UserButton />
+      <StyledNavBarButton onClick={clickMap}>
+        <MapIcon />
+      </StyledNavBarButton>
+      <StyledNavBarButton onClick={clickLogin}>
+        <SignInIcon />
+      </StyledNavBarButton>
     </StyledBottomNavBar>
   );
 }
@@ -35,15 +39,15 @@ export default BottomNavBar;
 
 const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
 
-  position: fixed;
+  position: sticky;
   bottom: 0;
   z-index: 20;
 
   width: 100vw;
-  height: 64px;
+  height: 48px;
 
   background-color: var(--white);
 
@@ -54,9 +58,10 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
   transition: 0.4s ease-in-out;
 `;
 
-const StyledNavBarButton = styled.button`
-  border: none;
-  outline: none;
+const StyledNavBarButton = styled.div`
+  display: flex;
+  justify-content: center;
 
-  background: none;
+  width: 28px;
+  max-width: 28px;
 `;

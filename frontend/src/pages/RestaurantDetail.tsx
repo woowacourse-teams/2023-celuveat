@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -25,18 +25,15 @@ import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
 import type { RestaurantData, RestaurantListData, VideoList } from '~/@types/api.types';
 import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
-import useScrollDirection from '~/hooks/useScrollDirection';
 import { getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
 import { getCelebVideo } from '~/api/celeb';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
-  const sheetRef = useRef<HTMLDivElement>();
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
-  const scrollDirection = useScrollDirection();
 
   const {
     data: {
@@ -92,6 +89,10 @@ function RestaurantDetail() {
         alert('클립보드에 저장하는데 문제가 생겼어요.');
       }
     };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   return (
     <>
@@ -249,27 +250,26 @@ function RestaurantDetail() {
         )}
       </StyledMainRestaurantDetail>
       {isMobile && isSuccessRestaurantDetail && (
-        <StyledMobileBottomSheet ref={sheetRef} movingDirection={scrollDirection.y}>
-          <StyledMainLinkContainer isMobile={isMobile}>
-            <RestaurantDetailLikeButton
-              restaurant={{
-                id,
-                distance,
-                name,
-                images,
-                roadAddress,
-                isLiked,
-                category,
-                phoneNumber,
-                naverMapUrl,
-                lat,
-                viewCount,
-                likeCount,
-                lng,
-              }}
-            />
-          </StyledMainLinkContainer>
-        </StyledMobileBottomSheet>
+        <StyledMobileLikeButtonBox>
+          <RestaurantDetailLikeButton
+            showText={false}
+            restaurant={{
+              id,
+              distance,
+              name,
+              images,
+              roadAddress,
+              isLiked,
+              category,
+              phoneNumber,
+              naverMapUrl,
+              lat,
+              viewCount,
+              likeCount,
+              lng,
+            }}
+          />
+        </StyledMobileLikeButtonBox>
       )}
     </>
   );
@@ -300,7 +300,7 @@ const StyledDetailHeader = styled.section<{ isMobile: boolean }>`
   flex-direction: column;
   gap: 0.8rem 0;
 
-  padding: 2.4rem 0;
+  padding: 1.2rem 0 2.4rem;
 
   & > div {
     display: flex;
@@ -315,12 +315,6 @@ const StyledDetailHeader = styled.section<{ isMobile: boolean }>`
       gap: 0 0.8rem;
     }
   }
-
-  ${({ isMobile }) =>
-    isMobile &&
-    css`
-      margin-top: 4.4rem;
-    `}
 `;
 
 const StyledDetailAndLink = styled.section<{ isMobile: boolean }>`
@@ -533,20 +527,6 @@ const StyledMapSection = styled.section`
   }
 `;
 
-const StyledMobileBottomSheet = styled.section<{
-  movingDirection: string;
-}>`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-
-  width: 100%;
-
-  transition: transform 0.3s ease-in-out;
-  transform: ${({ movingDirection }) => (movingDirection === 'up' ? 'translateY(100%)' : 'translateY(0)')};
-`;
-
 const StyledButton = styled.button`
   display: flex;
   align-items: center;
@@ -570,4 +550,37 @@ const StyledRestaurantCardContainer = styled.div`
   border-radius: 12px;
 
   box-shadow: var(--map-shadow);
+`;
+
+const StyledMobileLikeButtonBox = styled.div`
+  display: flex;
+  justify-content: end;
+
+  position: sticky;
+  bottom: 60px;
+
+  padding: 0 2.4rem;
+
+  & > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 64px;
+    height: 64px;
+
+    border: none;
+    border-radius: 50%;
+
+    font-family: SUIT-Medium, sans-serif;
+    font-size: ${FONT_SIZE.md};
+
+    & > div {
+      color: var(--white);
+    }
+
+    &:first-child {
+      background: var(--red-2);
+    }
+  }
 `;

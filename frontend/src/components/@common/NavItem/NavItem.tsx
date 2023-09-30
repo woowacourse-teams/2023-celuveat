@@ -3,7 +3,7 @@ import { styled, css } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
 interface NavItemProps {
-  label: string;
+  label?: string;
   icon: React.ReactNode;
   isShow?: boolean;
 }
@@ -12,9 +12,11 @@ function NavItem({ icon, label, isShow = false }: NavItemProps) {
   return (
     <StyledNavItem isShow={isShow} aria-selected={isShow}>
       <div>{icon}</div>
-      <div>
-        <span>{label}</span>
-      </div>
+      {label && (
+        <div>
+          <span>{label}</span>
+        </div>
+      )}
     </StyledNavItem>
   );
 }

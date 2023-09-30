@@ -1,97 +1,142 @@
-import { Suspense } from 'react';
-import { styled, css } from 'styled-components';
-
-import Map from '~/components/@common/Map';
-import RestaurantCardList from '~/components/RestaurantCardList';
-import MainPageNavBar, { MainPageNavBarSkeleton } from '~/components/MainPageNavBar';
-import useBooleanState from '~/hooks/useBooleanState';
-import useMediaQuery from '~/hooks/useMediaQuery';
-import MobileMainPage from './MobileMainPage';
-import LoadingIndicator from '~/components/@common/LoadingIndicator';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { getCelebs } from '~/api/celeb';
+import ProfileImage from '~/components/@common/ProfileImage';
+import CategoryNavbar from '~/components/CategoryNavbar';
+import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import RegionList from '~/components/RegionList';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
+import { popularRestaurants } from '~/mocks/data/popularRestaurants';
+import { FONT_SIZE } from '~/styles/common';
+import Banner from '~/assets/banner/banner.svg';
 
 function MainPage() {
-  const { isMobile } = useMediaQuery();
-  const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
+  const navigate = useNavigate();
+  const { data: celebOptions } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: () => getCelebs(),
+    suspense: true,
+  });
 
-  if (isMobile)
-    return (
-      <Suspense
-        fallback={
-          <StyledProcessing>
-            <LoadingIndicator size={32} />
-          </StyledProcessing>
-        }
-      >
-        <MobileMainPage />
-      </Suspense>
-    );
+  const clickCelebIcon = (id: number) => {
+    navigate(`/celeb/${id}`);
+  };
 
   return (
-    <>
-      <Suspense fallback={<MainPageNavBarSkeleton navItemLength={RESTAURANT_CATEGORY.length} />}>
-        <MainPageNavBar />
-      </Suspense>
-      <StyledLayout isMapExpanded={isMapExpanded}>
-        <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList />
-        </StyledLeftSide>
-        <StyledRightSide>
-          <Map toggleMapExpand={toggleExpandedMap} />
-        </StyledRightSide>
-      </StyledLayout>
-    </>
+    <StyledLayout>
+      <StyledContainer>
+        <StyledBanner>
+          <Banner />
+        </StyledBanner>
+        <div>
+          <h5>셀럽 BEST</h5>
+          <StyledIconBox>
+            {celebOptions.map(celeb => {
+              const { name, profileImageUrl, id } = celeb;
+              return (
+                <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                  <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                  <span>{name}</span>
+                </StyledCeleb>
+              );
+            })}
+          </StyledIconBox>
+        </div>
+        <div>
+          <h5>셀럽잇 추천 맛집!</h5>
+          <StyledPopularRestaurantBox>
+            {popularRestaurants.map(({ celebs, ...restaurant }) => (
+              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showWaterMark={false} />
+            ))}
+          </StyledPopularRestaurantBox>
+        </div>
+        <div>
+          <h5>카테고리</h5>
+          <StyledCategoryBox>
+            <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
+          </StyledCategoryBox>
+        </div>
+        <div>
+          <h5>어디로 가시나요?</h5>
+          <StyledIconBox>
+            <RegionList />
+          </StyledIconBox>
+        </div>
+      </StyledContainer>
+    </StyledLayout>
   );
 }
 
 export default MainPage;
 
-const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
-  display: grid;
+const StyledLayout = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 100vw;
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
 
   width: 100%;
-  height: 100%;
-  grid-template-columns: 63vw 37vw;
+  max-width: 1500px;
 
-  ${({ isMapExpanded }) =>
-    isMapExpanded &&
-    css`
-      grid-template-columns: 100vw;
-    `}
+  padding: 1.6rem;
+  overflow-x: hidden;
+`;
 
-  @media screen and (width <= 1240px) {
-    grid-template-columns: 55vw 45vw;
+const StyledBanner = styled.div`
+  width: 100%;
 
-    ${({ isMapExpanded }) =>
-      isMapExpanded &&
-      css`
-        grid-template-columns: 100vw;
-      `}
+  border-radius: 20px;
+  object-fit: cover;
+  overflow: hidden;
+`;
+
+const StyledIconBox = styled.div`
+  display: flex;
+  gap: 2rem;
+
+  width: 100%;
+
+  padding: 1.6rem 0.8rem;
+
+  justify-items: flex-start;
+
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
-const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
-  z-index: 0;
-
-  ${({ isMapExpanded }) =>
-    isMapExpanded &&
-    css`
-      display: none;
-    `}
-`;
-
-const StyledRightSide = styled.section`
-  position: sticky;
-  top: 160px;
-
-  width: 100%;
-  height: calc(100vh - 160px);
-`;
-
-const StyledProcessing = styled.div`
+const StyledCeleb = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 0.8rem;
 
-  height: 100vh;
+  font-size: ${FONT_SIZE.sm};
+`;
+
+const StyledPopularRestaurantBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  padding: 1.6rem 0.8rem;
+`;
+
+const StyledCategoryBox = styled.div`
+  padding: 1.6rem 0;
 `;
