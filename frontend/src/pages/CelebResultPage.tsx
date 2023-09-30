@@ -22,14 +22,13 @@ function CelebResultPage() {
         page: 0,
         sort: 'like',
       }),
-    keepPreviousData: true,
   });
 
   return (
     <StyledContainer>
-      <Link to="/" style={{ textDecoration: 'none' }}>
+      <StyledLink to="/">
         <h5> ← {CELEB[Number(celebId) as CelebId].name} 추천 맛집</h5>
-      </Link>
+      </StyledLink>
       <StyledBanner>
         <ProfileImage
           imageUrl={CELEB[Number(celebId) as CelebId].profileImageUrl}
@@ -65,6 +64,10 @@ const StyledContainer = styled.div`
   overflow-x: hidden;
 
   padding: 1.6rem 1.2rem;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const StyledResultCount = styled.span`
