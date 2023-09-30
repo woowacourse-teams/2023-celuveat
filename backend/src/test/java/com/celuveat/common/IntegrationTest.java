@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Transactional
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @Sql("/truncate.sql")
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public @interface IntegrationTest {
 }
