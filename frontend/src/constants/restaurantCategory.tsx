@@ -1,4 +1,5 @@
 import All from '~/assets/icons/category/all.svg';
+import Asian from '~/assets/icons/category/asian.svg';
 import Korean from '~/assets/icons/category/korean.svg';
 import Chinese from '~/assets/icons/category/chinese.svg';
 import Japanese from '~/assets/icons/category/japanese.svg';
@@ -28,7 +29,8 @@ const RESTAURANT_CATEGORY: Record<string, Category> = {
   western: { label: '양식', icon: <Spaghetti /> },
   seafood: { label: '회,수산물', icon: <Sushi /> },
   beef: { label: '고기', icon: <Beef /> },
-  asian: { label: '아시안', icon: <Noodle /> },
+  asian: { label: '아시안', icon: <Asian /> },
+  noodle: { label: '면류', icon: <Noodle /> },
   snackbar: { label: '분식', icon: <Snackbar /> },
   fastfood: { label: '패스트푸드', icon: <Pizza /> },
   desert: { label: '커피,디저트', icon: <Bakery /> },
