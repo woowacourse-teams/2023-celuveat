@@ -33,6 +33,8 @@ const StyledNavItem = styled.div<{ isShow: boolean; isInteractive: boolean }>`
 
   width: 68px;
 
+  padding: 0.4rem;
+
   border: none;
   background: none;
 
@@ -47,64 +49,20 @@ const StyledNavItem = styled.div<{ isShow: boolean; isInteractive: boolean }>`
     height: 40px;
   }
 
-  & > *:first-child > svg {
-    fill: ${({ isInteractive, isShow }) => (isInteractive && isShow ? 'var(--black)' : '#717171')};
-  }
-
-  & > * > * {
-    color: ${({ isInteractive, isShow }) => (isInteractive && isShow ? 'var(--black)' : '#717171')};
-  }
-
   ${({ isInteractive }) =>
     isInteractive &&
     css`
-      &:hover > *:first-child > svg {
-        fill: var(--black);
-      }
-
-      &:hover > * > * {
-        color: var(--black);
+      &:hover {
+        border-radius: 12px;
+        background-color: var(--gray-1);
       }
     `}
 
   ${({ isInteractive, isShow }) =>
-    isInteractive && isShow
-      ? css`
-          & > div:last-child {
-            position: relative;
-
-            &::after {
-              position: absolute;
-              top: calc(100% + 10px);
-              z-index: -1;
-
-              height: 2px;
-
-              background-color: var(--black);
-              white-space: nowrap;
-              inset-inline: 0;
-              content: '';
-            }
-          }
-        `
-      : css`
-          &:hover {
-            & > div:last-child {
-              position: relative;
-
-              &::after {
-                position: absolute;
-                top: calc(100% + 10px);
-                z-index: -1;
-
-                height: 2px;
-
-                background: var(--gray-2);
-                white-space: nowrap;
-                inset-inline: 0;
-                content: '';
-              }
-            }
-          }
-        `};
+    isInteractive &&
+    isShow &&
+    css`
+      border-radius: 12px;
+      background-color: var(--gray-1);
+    `};
 `;

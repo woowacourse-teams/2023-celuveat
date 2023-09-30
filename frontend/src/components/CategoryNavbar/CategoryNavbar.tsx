@@ -15,9 +15,16 @@ interface CategoryProps {
   externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
   includeAll?: boolean;
   grid?: boolean;
+  isInteractive?: boolean;
 }
 
-function CategoryNavbar({ categories, externalOnClick, includeAll = true, grid = false }: CategoryProps) {
+function CategoryNavbar({
+  categories,
+  externalOnClick,
+  includeAll = true,
+  grid = false,
+  isInteractive = false,
+}: CategoryProps) {
   const [selected, setSelected] = useState<RestaurantCategory>('전체');
 
   const clickCategory = (value: RestaurantCategory) => (event?: React.MouseEvent<HTMLElement>) => {
@@ -32,7 +39,7 @@ function CategoryNavbar({ categories, externalOnClick, includeAll = true, grid =
         if (!includeAll && label === '전체') return null;
         return (
           <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
-            <NavItem label={label} icon={icon} isShow={selected === label} />
+            <NavItem label={label} icon={icon} isShow={selected === label} isInteractive={isInteractive} />
           </StyledNavItemButton>
         );
       })}
