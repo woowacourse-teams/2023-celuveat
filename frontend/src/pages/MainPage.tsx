@@ -51,17 +51,18 @@ function MainPage() {
             ))}
           </StyledPopularRestaurantBox>
         </div>
-        <div>
-          <h5>카테고리</h5>
-          <StyledCategoryBox>
-            <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
-          </StyledCategoryBox>
-        </div>
+
         <div>
           <h5>어디로 가시나요?</h5>
           <StyledIconBox>
             <RegionList />
           </StyledIconBox>
+        </div>
+        <div>
+          <h5>카테고리</h5>
+          <StyledCategoryBox>
+            <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} includeAll={false} grid />
+          </StyledCategoryBox>
         </div>
       </StyledContainer>
     </StyledLayout>

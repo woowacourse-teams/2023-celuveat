@@ -6,11 +6,12 @@ interface NavItemProps {
   label?: string;
   icon: React.ReactNode;
   isShow?: boolean;
+  isInteractive?: boolean;
 }
 
-function NavItem({ icon, label, isShow = false }: NavItemProps) {
+function NavItem({ icon, label, isShow = false, isInteractive = false }: NavItemProps) {
   return (
-    <StyledNavItem isShow={isShow} aria-selected={isShow}>
+    <StyledNavItem isShow={isShow} aria-selected={isShow} isInteractive={isInteractive}>
       <div>{icon}</div>
       {label && (
         <div>
@@ -23,7 +24,7 @@ function NavItem({ icon, label, isShow = false }: NavItemProps) {
 
 export default NavItem;
 
-const StyledNavItem = styled.div<{ isShow: boolean }>`
+const StyledNavItem = styled.div<{ isShow: boolean; isInteractive: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,23 +47,27 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
   }
 
   & > *:first-child > svg {
-    fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
-  }
-
-  &:hover > *:first-child > svg {
-    fill: var(--black);
+    fill: ${({ isInteractive, isShow }) => (isInteractive && isShow ? 'var(--black)' : '#717171')};
   }
 
   & > * > * {
-    color: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
+    color: ${({ isInteractive, isShow }) => (isInteractive && isShow ? 'var(--black)' : '#717171')};
   }
 
-  &:hover > * > * {
-    color: var(--black);
-  }
+  ${({ isInteractive }) =>
+    isInteractive &&
+    css`
+      &:hover > *:first-child > svg {
+        fill: var(--black);
+      }
 
-  ${({ isShow }) =>
-    isShow
+      &:hover > * > * {
+        color: var(--black);
+      }
+    `}
+
+  ${({ isInteractive, isShow }) =>
+    isInteractive && isShow
       ? css`
           & > div:last-child {
             position: relative;
