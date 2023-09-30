@@ -7,6 +7,8 @@ import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 import TextButton from '../@common/Button';
 import { FONT_SIZE } from '~/styles/common';
 import { ReviewSubmitButtonType } from '~/@types/review.types';
+import type { StarRate } from '~/components/@common/StarRating/StarRating';
+import StarRating from '~/components/@common/StarRating/StarRating';
 
 const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
@@ -24,8 +26,15 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const qc = useQueryClient();
   const reviewData: RestaurantReviewData = qc.getQueryData(['restaurantReview', restaurantId]);
   const [text, setText] = useState('');
+  const [rate, setRate] = useState<StarRate>(0);
 
   const { createReview, updateReview, postReviewReport } = useRestaurantReview();
+
+  const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {
+    const clickedStarRate = Number(e.currentTarget.dataset.rate) as StarRate;
+
+    setRate(clickedStarRate);
+  };
 
   const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
     setText(e.target.value);
@@ -60,6 +69,8 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
   return (
     <StyledReviewFormContainer>
+      <span>별점 등록 ({rate}/5)</span>
+      <StarRating rate={rate} onRateClick={onClickStarRate} />
       <StyledTextArea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
       <TextButton
         type="submit"

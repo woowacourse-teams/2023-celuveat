@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+
 import EmptyLeftStarIcon from '~/assets/icons/star/empty-left-star-icon.svg';
 import EmptyRightStarIcon from '~/assets/icons/star/empty-right-star-icon.svg';
 import FilledLeftStarIcon from '~/assets/icons/star/filled-left-star-icon.svg';
@@ -9,27 +10,32 @@ interface HalfStarProps {
   isLeft: boolean;
   isFilled: boolean;
   rateNumber: StarRate;
+  onRateClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function HalfStar({ isLeft, isFilled, rateNumber }: HalfStarProps) {
+function HalfStar({ isLeft, isFilled, rateNumber, onRateClick }: HalfStarProps) {
   if (isLeft) {
     return (
-      <StyledIsHalfStyleWrapper data-rate={rateNumber}>
+      <StyleHalfStarButton type="button" data-rate={rateNumber} onClick={onRateClick}>
         {isFilled ? <FilledLeftStarIcon /> : <EmptyLeftStarIcon />}
-      </StyledIsHalfStyleWrapper>
+      </StyleHalfStarButton>
     );
   }
 
   return (
-    <StyledIsHalfStyleWrapper data-rate={rateNumber}>
+    <StyleHalfStarButton type="button" onClick={onRateClick} data-rate={rateNumber}>
       {isFilled ? <FilledRightStarIcon /> : <EmptyRightStarIcon />}
-    </StyledIsHalfStyleWrapper>
+    </StyleHalfStarButton>
   );
 }
 
 export default HalfStar;
 
-const StyledIsHalfStyleWrapper = styled.div`
-  display: flex;
-  gap: 0;
+const StyleHalfStarButton = styled.button`
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  background: none;
+  outline: none;
 `;

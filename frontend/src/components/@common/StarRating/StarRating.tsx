@@ -8,16 +8,17 @@ const starRateList: StarRate[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
 
 interface StarRatingProps extends ComponentPropsWithoutRef<'div'> {
   rate: StarRate;
+  onRateClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function StarRating({ rate, ...restProps }: StarRatingProps) {
+function StarRating({ rate, onRateClick, ...restProps }: StarRatingProps) {
   return (
     <StyledStarRatingWrapper {...restProps}>
       {starRateList.map((starRate, idx) => {
         const isLeft = idx % 2 === 0;
         const isFilled = starRate <= rate;
 
-        return <Star isLeft={isLeft} isFilled={isFilled} rateNumber={starRate} />;
+        return <Star isLeft={isLeft} isFilled={isFilled} rateNumber={starRate} onRateClick={onRateClick} />;
       })}
     </StyledStarRatingWrapper>
   );
@@ -30,7 +31,7 @@ const StyledStarRatingWrapper = styled.div`
 
   width: 100%;
 
-  div:nth-child(2n-1) {
-    margin-left: 0.6rem;
+  button:nth-child(2n-1) {
+    margin-left: 1.2rem;
   }
 `;
