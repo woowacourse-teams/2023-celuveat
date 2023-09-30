@@ -25,13 +25,10 @@ import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("Oauth 관련 서비스(OauthService) 은(는)")
 class OauthServiceTest {
 

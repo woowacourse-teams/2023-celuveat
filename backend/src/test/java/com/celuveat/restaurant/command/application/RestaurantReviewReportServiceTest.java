@@ -16,13 +16,10 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReviewReportRepos
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 리뷰 신고 서비스(RestaurantReviewReportService) 은(는)")
 class RestaurantReviewReportServiceTest {
 

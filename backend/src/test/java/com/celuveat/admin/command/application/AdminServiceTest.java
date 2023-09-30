@@ -29,8 +29,6 @@ import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.video.command.domain.VideoRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 @DisplayName("어드민 서비스(AdminService) 은(는)")
-@DisplayNameGeneration(ReplaceUnderscores.class)
 class AdminServiceTest {
 
     @Autowired

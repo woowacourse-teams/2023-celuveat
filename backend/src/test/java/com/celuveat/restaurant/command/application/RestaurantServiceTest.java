@@ -7,13 +7,10 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("RestaurantService(음식점 서비스) 은(는)")
 class RestaurantServiceTest {
 

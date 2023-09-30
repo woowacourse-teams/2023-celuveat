@@ -44,8 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,7 +53,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 조회용 서비스(RestaurantQueryService) 은(는)")
 class RestaurantQueryServiceTest {
 

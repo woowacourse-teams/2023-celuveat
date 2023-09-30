@@ -13,13 +13,10 @@ import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 좋아요 서비스(RestaurantLikeService) 은(는)")
 class RestaurantLikeServiceTest {
 

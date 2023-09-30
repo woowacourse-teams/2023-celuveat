@@ -10,8 +10,6 @@ import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
 import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("영상 조회용 서비스(VideoQueryService) 은(는)")
 class VideoQueryServiceTest {
 

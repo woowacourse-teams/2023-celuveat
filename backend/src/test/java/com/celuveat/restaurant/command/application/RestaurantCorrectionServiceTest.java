@@ -7,13 +7,10 @@ import com.celuveat.restaurant.command.application.dto.SuggestCorrectionRequestC
 import com.celuveat.restaurant.command.domain.correction.RestaurantCorrection;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 수정 서비스(RestaurantCorrectionService) 은(는)")
 class RestaurantCorrectionServiceTest {
 

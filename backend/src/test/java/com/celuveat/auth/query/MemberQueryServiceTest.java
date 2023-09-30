@@ -8,13 +8,10 @@ import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.auth.query.dto.MemberProfileResponse;
 import com.celuveat.common.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("멤버 조회용 서비스(MemberQueryService) 은(는)")
 class MemberQueryServiceTest {
 
