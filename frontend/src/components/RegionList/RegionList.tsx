@@ -15,7 +15,11 @@ function RegionList() {
   return (
     <>
       {REGION_LIST.map((region: Region) => (
-        <StyledRegion onClick={() => clickIcon(region)} imgUrl={`${SERVER_IMG_URL}regions/${region}.jpeg`}>
+        <StyledRegion
+          onClick={() => clickIcon(region)}
+          imgUrl={`${SERVER_IMG_URL}regions/${region}.jpeg`}
+          aria-label={RECOMMENDED_REGION[region]}
+        >
           <StyledRegionName>
             {RECOMMENDED_REGION[region].split(',').map(item => (
               <>
