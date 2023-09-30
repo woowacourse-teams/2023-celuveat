@@ -1,17 +1,18 @@
-import { ForwardedRef, forwardRef } from 'react';
 import { styled } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
-interface ImageFormProps extends React.ComponentPropsWithRef<'input'> {
+interface ImageFormProps extends React.ComponentPropsWithoutRef<'input'> {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const ImageForm = forwardRef(({ onChange, ...restProps }: ImageFormProps, ref: ForwardedRef<HTMLInputElement>) => (
-  <StyledButton>
-    +
-    <input type="file" ref={ref} onChange={onChange} {...restProps} />
-  </StyledButton>
-));
+function ImageForm({ onChange, ...restProps }: ImageFormProps) {
+  return (
+    <StyledButton>
+      +
+      <input type="file" onChange={onChange} {...restProps} />
+    </StyledButton>
+  );
+}
 
 export default ImageForm;
 

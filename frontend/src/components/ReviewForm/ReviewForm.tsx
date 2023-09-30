@@ -2,13 +2,18 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { RestaurantReviewData } from '~/@types/api.types';
+
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import TextButton from '../@common/Button';
+
 import { FONT_SIZE } from '~/styles/common';
-import { ReviewSubmitButtonType } from '~/@types/review.types';
-import type { StarRate } from '~/components/@common/StarRating/StarRating';
+
 import StarRating from '~/components/@common/StarRating/StarRating';
+import ReviewImageForm from '~/components/ReviewImageForm';
+import TextButton from '~/components/@common/Button';
+
+import type { StarRate } from '~/components/@common/StarRating/StarRating';
+import type { RestaurantReviewData } from '~/@types/api.types';
+import type { ReviewSubmitButtonType } from '~/@types/review.types';
 
 const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
@@ -26,9 +31,30 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const qc = useQueryClient();
   const reviewData: RestaurantReviewData = qc.getQueryData(['restaurantReview', restaurantId]);
   const [text, setText] = useState('');
+  const [images, setImages] = useState<string[]>([]);
   const [rate, setRate] = useState<StarRate>(0);
 
   const { createReview, updateReview, postReviewReport } = useRestaurantReview();
+
+  const deleteReviewImage = (reviewImageId: number) => {
+    setImages(images.filter((_, id) => id !== reviewImageId));
+  };
+
+  const onUploadReviewImage: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImages([...images, reader.result as string]);
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      setImages(null);
+    }
+  };
 
   const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {
     const clickedStarRate = Number(e.currentTarget.dataset.rate) as StarRate;
@@ -42,6 +68,15 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
   const submitReviewForm: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
+
+    const formData = new FormData();
+
+    images.forEach(image => {
+      formData.append('images', image);
+    });
+
+    formData.append('text', text);
+    formData.append('rate', String(rate));
 
     switch (type) {
       case 'create':
@@ -71,6 +106,8 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
     <StyledReviewFormContainer>
       <span>별점 등록 ({rate}/5)</span>
       <StarRating rate={rate} onRateClick={onClickStarRate} />
+      <span>사진 등록하기</span>
+      <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />
       <StyledTextArea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
       <TextButton
         type="submit"
