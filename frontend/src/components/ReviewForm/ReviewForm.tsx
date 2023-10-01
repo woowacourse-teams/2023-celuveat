@@ -10,24 +10,25 @@ import StarRating from '~/components/@common/StarRating/StarRating';
 import ReviewImageForm from '~/components/ReviewImageForm';
 import TextButton from '~/components/@common/Button';
 
+import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
+
 import type { StarRate } from '~/components/@common/StarRating/StarRating';
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
 
-const SUBMIT_BUTTON_TEXT = {
+export const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
   update: '수정하기',
-  report: '신고하기',
 } as const;
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
-  reviewId?: number;
 }
 
-function ReviewForm({ type, reviewId }: ReviewFormProps) {
+function ReviewForm({ type }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
+  const { reviewId } = useReviewModalContext();
 
-  const { restaurantReviewsData, createReview, updateReview, postReviewReport } = useRestaurantReview();
+  const { restaurantReviewsData, createReview, updateReview } = useRestaurantReview();
 
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
@@ -96,9 +97,6 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
       case 'update':
         updateReview({ reviewId, body: formData });
         break;
-      case 'report':
-        postReviewReport({ reviewId, content: text });
-        break;
       default:
         throw new Error('해당 타입의 review Form은 지원하지 않습니다.');
     }
@@ -110,11 +108,7 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
       <StarRating rate={rate} onRateClick={onClickStarRate} />
 
       <StyledReviewFormItemText>후기 작성하기</StyledReviewFormItemText>
-      <StyledTextArea
-        placeholder={type === 'report' ? '신고 사유를 작성해주세요' : '음식점을 다녀간 후기를 들려주세요'}
-        value={text}
-        onChange={onChange}
-      />
+      <StyledTextArea placeholder="음식점을 다녀간 후기를 들려주세요" value={text} onChange={onChange} />
 
       <StyledReviewFormItemText>사진 등록하기</StyledReviewFormItemText>
       <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />

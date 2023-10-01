@@ -1,7 +1,7 @@
 import Modal from '~/components/@common/Modal';
 import LoginModal from '~/components/LoginModal';
 import RestaurantReviewList from '~/components/RestaurantReviewList';
-import { ReviewForm, ReviewDeleteForm } from '~/components/ReviewForm';
+import { ReviewForm, ReviewDeleteForm, ReviewReportForm } from '~/components/ReviewForm';
 
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
@@ -16,7 +16,7 @@ const REVIEW_FORM_TITLE = {
 
 function ReviewModal() {
   const { restaurantReviewsData } = useRestaurantReview();
-  const { formType, isModalOpen, reviewId, closeModal } = useReviewModalContext();
+  const { formType, isModalOpen, closeModal } = useReviewModalContext();
 
   if (formType === null) {
     return <LoginModal isOpen={isModalOpen} close={closeModal} />;
@@ -27,10 +27,10 @@ function ReviewModal() {
       <Modal title={REVIEW_FORM_TITLE[formType]} isOpen={isModalOpen} close={closeModal}>
         <>
           {formType === 'create' && <ReviewForm type="create" />}
-          {formType === 'report' && <ReviewForm type="report" reviewId={reviewId} />}
-          {formType === 'all' && <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />}
-          {formType === 'update' && <ReviewForm type="update" reviewId={reviewId} />}
+          {formType === 'update' && <ReviewForm type="update" />}
           {formType === 'delete' && <ReviewDeleteForm />}
+          {formType === 'report' && <ReviewReportForm />}
+          {formType === 'all' && <RestaurantReviewList reviews={restaurantReviewsData.reviews} isModal={isModalOpen} />}
         </>
       </Modal>
     </div>
