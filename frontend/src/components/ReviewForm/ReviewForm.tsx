@@ -33,9 +33,15 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const [images, setImages] = useState<string[]>([]);
   const [rate, setRate] = useState<StarRate>(0);
 
-  const deleteReviewImage = (reviewImageId: number) => {
-    setImages(images.filter((_, id) => id !== reviewImageId));
-  };
+  const isSubmitDisabled = text.length === 0 || rate === 0;
+
+  useEffect(() => {
+    if (type === 'update') {
+      const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
+      setText(targetReview.content);
+      setImages(targetReview.reviewImageUrls);
+    }
+  }, [restaurantReviewsData]);
 
   const onUploadReviewImage: React.ChangeEventHandler<HTMLInputElement> = e => {
     const file = e.target.files[0];
@@ -53,6 +59,10 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
     }
   };
 
+  const deleteReviewImage = (reviewImageId: number) => {
+    setImages(images.filter((_, id) => id !== reviewImageId));
+  };
+
   const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {
     const clickedStarRate = Number(e.currentTarget.dataset.rate) as StarRate;
 
@@ -63,14 +73,20 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
     setText(e.target.value);
   };
 
-  const submitReviewForm: React.MouseEventHandler<HTMLButtonElement> = e => {
-    e.preventDefault();
-
+  const makeReviewFormData = () => {
     const formData = new FormData();
 
     formData.append('images', JSON.stringify(images));
     formData.append('content', text);
     formData.append('rate', String(rate));
+
+    return formData;
+  };
+
+  const submitReviewForm: React.MouseEventHandler<HTMLButtonElement> = e => {
+    e.preventDefault();
+
+    const formData = makeReviewFormData();
 
     switch (type) {
       case 'create':
@@ -86,17 +102,7 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
       default:
         throw new Error('해당 타입의 review Form은 지원하지 않습니다.');
     }
-
-    window.location.reload();
   };
-
-  useEffect(() => {
-    if (type === 'update') {
-      const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
-      setText(targetReview.content);
-      setImages(targetReview.reviewImageUrls);
-    }
-  }, [restaurantReviewsData]);
 
   return (
     <StyledReviewFormContainer>
@@ -118,7 +124,7 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
         onClick={submitReviewForm}
         text={SUBMIT_BUTTON_TEXT[type]}
         colorType="dark"
-        disabled={text.length === 0}
+        disabled={isSubmitDisabled}
       />
     </StyledReviewFormContainer>
   );
