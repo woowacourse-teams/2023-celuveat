@@ -13,6 +13,7 @@ import {
 } from '~/api/restaurantReview';
 
 import useToastState from '~/hooks/store/useToastState';
+import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import type { RestaurantReviewData } from '~/@types/api.types';
 
@@ -31,6 +32,8 @@ const useRestaurantReview = () => {
     }),
     shallow,
   );
+
+  const { closeModal } = useReviewModalContext();
 
   const errorHandler = (error: AxiosError) => {
     switch (error.response.status) {
@@ -51,16 +54,39 @@ const useRestaurantReview = () => {
 
   const createReview = useMutation({
     mutationFn: postRestaurantReview,
+    onSuccess: () => {
+      closeModal();
+      queryClient.invalidateQueries({
+        queryKey: ['restaurantReview', restaurantId],
+      });
+      onSuccessForReview('리뷰가 성공적으로 작성되었습니다');
+    },
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
     mutationFn: patchRestaurantReview,
+    onSuccess: () => {
+      closeModal();
+      queryClient.invalidateQueries({
+        queryKey: ['restaurantReview', restaurantId],
+      });
+      onSuccessForReview('작성하신 리뷰를 수정하였습니다');
+    },
+
     onError: errorHandler,
   });
 
   const deleteReview = useMutation({
-    mutationFn: (reviewId: number) => deleteRestaurantReview(reviewId),
+    mutationFn: deleteRestaurantReview,
+    onSuccess: () => {
+      closeModal();
+      queryClient.invalidateQueries({
+        queryKey: ['restaurantReview', restaurantId],
+      });
+      onSuccessForReview('작성하신 리뷰를 삭제하였습니다');
+    },
+
     onError: errorHandler,
   });
 
@@ -114,6 +140,10 @@ const useRestaurantReview = () => {
 
   const postReviewReport = useMutation({
     mutationFn: postRestaurantReviewReport,
+    onSuccess: () => {
+      closeModal();
+      onSuccessForReview('신고가 접수되었습니다');
+    },
     onError: errorHandler,
   });
 
@@ -123,21 +153,30 @@ const useRestaurantReview = () => {
     return review ? review.isLiked : null;
   };
 
-  const toggleRestaurantReviewLike = (reviewId: number) => {
-    postReviewLike.mutate(reviewId);
-    close();
-  };
-
   return {
     isLoading,
     restaurantReviewsData,
     getReviewIsLiked,
-    toggleRestaurantReviewLike,
-    createReview: createReview.mutate,
-    updateReview: updateReview.mutate,
-    deleteReview: deleteReview.mutate,
-    postReviewLike: postReviewLike.mutate,
-    postReviewReport: postReviewReport.mutate,
+    toggleRestaurantReviewLike: (reviewId: number) => {
+      postReviewLike.mutate(reviewId);
+      close();
+    },
+    createReview: (body: FormData) => {
+      createReview.mutate(body);
+      close();
+    },
+    updateReview: ({ reviewId, body }: { reviewId: number; body: FormData }) => {
+      updateReview.mutate({ reviewId, body });
+      close();
+    },
+    deleteReview: (reviewId: number) => {
+      deleteReview.mutate(reviewId);
+      close();
+    },
+    postReviewReport: ({ reviewId, content }: { reviewId: number; content: string }) => {
+      postReviewReport.mutate({ reviewId, content });
+      close();
+    },
   };
 };
 
