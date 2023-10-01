@@ -12,10 +12,11 @@ interface ReviewImageFormProps {
 
 function ReviewImageForm({ images, upload, deleteImage }: ReviewImageFormProps) {
   const hasImage = images.length > 0;
+  const isLimitImageCount = images.length === 3;
 
   return (
     <StyledReviewImageFormWrapper>
-      <ImageForm onChange={upload} />
+      {!isLimitImageCount && <ImageForm onChange={upload} />}
       {hasImage &&
         images.map((image, id) => (
           <StyledImageWrapper>
