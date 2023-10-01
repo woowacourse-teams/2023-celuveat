@@ -1,18 +1,17 @@
-import type { RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
-import { apiUserClient } from './apiClient';
+import { apiUserClient, apiUserFilesClient } from './apiClient';
 
 export const getRestaurantReview = async (id: string) => {
   const response = await apiUserClient.get(`/reviews?restaurantId=${id}`);
   return response.data;
 };
 
-export const postRestaurantReview = async (body: RestaurantReviewPostBody) => {
-  const response = await apiUserClient.post(`/reviews`, body);
+export const postRestaurantReview = async (body: FormData) => {
+  const response = await apiUserFilesClient.post(`/reviews`, body);
   return response;
 };
 
 export const deleteRestaurantReview = async (reviewId: number) => {
-  const response = await apiUserClient.delete(`/reviews/${reviewId}`);
+  const response = await apiUserFilesClient.delete(`/reviews/${reviewId}`);
   return response;
 };
 
@@ -26,13 +25,7 @@ export const postRestaurantReviewReport = async ({ reviewId, content }: { review
   return response;
 };
 
-export const patchRestaurantReview = async ({
-  reviewId,
-  body,
-}: {
-  reviewId: number;
-  body: RestaurantReviewPatchBody;
-}) => {
-  const response = await apiUserClient.patch(`/reviews/${reviewId}`, body);
+export const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: FormData }) => {
+  const response = await apiUserFilesClient.patch(`/reviews/${reviewId}`, body);
   return response;
 };

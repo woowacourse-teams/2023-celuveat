@@ -14,7 +14,7 @@ import {
 
 import useToastState from '~/hooks/store/useToastState';
 
-import type { RestaurantReviewData, RestaurantReviewPatchBody, RestaurantReviewPostBody } from '~/@types/api.types';
+import type { RestaurantReviewData } from '~/@types/api.types';
 
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
@@ -50,13 +50,12 @@ const useRestaurantReview = () => {
   });
 
   const createReview = useMutation({
-    mutationFn: (body: RestaurantReviewPostBody) => postRestaurantReview(body),
+    mutationFn: postRestaurantReview,
     onError: errorHandler,
   });
 
   const updateReview = useMutation({
-    mutationFn: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) =>
-      patchRestaurantReview({ reviewId, body }),
+    mutationFn: patchRestaurantReview,
     onError: errorHandler,
   });
 

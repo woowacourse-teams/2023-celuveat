@@ -36,6 +36,12 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
   const { createReview, updateReview, postReviewReport } = useRestaurantReview();
 
+  const resetFormData = () => {
+    setText('');
+    setImages([]);
+    setRate(0);
+  };
+
   const deleteReviewImage = (reviewImageId: number) => {
     setImages(images.filter((_, id) => id !== reviewImageId));
   };
@@ -71,19 +77,17 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
 
     const formData = new FormData();
 
-    images.forEach(image => {
-      formData.append('images', image);
-    });
-
-    formData.append('text', text);
+    formData.append('images', JSON.stringify(images));
+    formData.append('content', text);
     formData.append('rate', String(rate));
 
     switch (type) {
       case 'create':
-        createReview({ content: text, restaurantId: Number(restaurantId) });
+        formData.append('restaurantId', restaurantId);
+        createReview(formData);
         break;
       case 'update':
-        updateReview({ reviewId, body: { content: text } });
+        updateReview({ reviewId, body: formData });
         break;
       case 'report':
         postReviewReport({ reviewId, content: text });
@@ -92,6 +96,8 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
         throw new Error('해당 타입의 review Form은 지원하지 않습니다.');
     }
 
+    resetFormData();
+
     window.location.reload();
   };
 
@@ -99,6 +105,7 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
     if (type === 'update') {
       const targetReview = reviewData?.reviews.find(review => review.id === reviewId);
       setText(targetReview.content);
+      setImages(targetReview.reviewImageUrls);
     }
   }, [reviewData]);
 
