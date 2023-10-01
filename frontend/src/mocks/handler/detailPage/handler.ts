@@ -125,6 +125,7 @@ export const DetailPageSuccessHandler = [
       content,
       isLiked: false,
       likeCount: 97,
+      rate,
       createdDate: `${year}-${month}-${day}` as HyphenatedDate,
       reviewImageUrls: makeImage(images.length),
     });

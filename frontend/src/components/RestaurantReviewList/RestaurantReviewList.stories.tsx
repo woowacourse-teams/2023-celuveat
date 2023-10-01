@@ -24,6 +24,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-02-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -43,6 +44,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-25',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -57,6 +59,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2014-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -71,6 +74,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2023-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -85,6 +89,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -99,6 +104,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -113,6 +119,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -127,6 +134,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -141,6 +149,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',

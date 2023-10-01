@@ -12,8 +12,8 @@ import TextButton from '~/components/@common/Button';
 
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
-import type { StarRate } from '~/components/@common/StarRating/StarRating';
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
+import type { StarRate } from '~/@types/api.types';
 
 export const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
@@ -39,6 +39,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   useEffect(() => {
     if (type === 'update') {
       const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
+      setRate(targetReview.rate);
       setText(targetReview.content);
       setImages(targetReview.reviewImageUrls);
     }

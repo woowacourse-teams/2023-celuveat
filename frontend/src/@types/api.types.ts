@@ -55,6 +55,8 @@ export interface VideoList {
   currentElementsCount: number;
 }
 
+export type StarRate = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+
 export interface RestaurantReview {
   id: number;
   nickname: string;
@@ -64,6 +66,7 @@ export interface RestaurantReview {
   createdDate: HyphenatedDate;
   isLiked: boolean;
   likeCount: number;
+  rate: StarRate;
   reviewImageUrls: string[];
 }
 

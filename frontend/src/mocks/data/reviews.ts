@@ -13,6 +13,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-02-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -32,6 +33,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-25',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -47,6 +49,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2014-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 4,
     reviewImageUrls: [],
   },
   {
@@ -58,6 +61,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2023-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 3,
     reviewImageUrls: [
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
       'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
@@ -73,6 +77,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 4.5,
     reviewImageUrls: [],
   },
   {
@@ -84,6 +89,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [],
   },
   {
@@ -95,6 +101,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    rate: 5,
     reviewImageUrls: [],
   },
   {
@@ -105,6 +112,7 @@ const reviews: RestaurantReview[] = [
     content: '이 집 맛있네요22',
     createdDate: '2022-01-23',
     isLiked: false,
+    rate: 5,
     likeCount: 97,
     reviewImageUrls: [],
   },
@@ -116,6 +124,7 @@ const reviews: RestaurantReview[] = [
     content: '이 집 맛있네요22',
     createdDate: '2022-01-23',
     isLiked: false,
+    rate: 5,
     likeCount: 97,
     reviewImageUrls: [],
   },
