@@ -1,24 +1,27 @@
 import { ComponentPropsWithoutRef } from 'react';
 import { styled } from 'styled-components';
-import Star from '~/components/@common/Star/Star';
+import HalfStar from '~/components/@common/Star/HalfStar';
 
-export type StarRate = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+import type { StarRate } from '~/@types/api.types';
 
 const starRateList: StarRate[] = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
 
 interface StarRatingProps extends ComponentPropsWithoutRef<'div'> {
   rate: StarRate;
-  onRateClick: React.MouseEventHandler<HTMLButtonElement>;
+  size?: `${number}px`;
+  onRateClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function StarRating({ rate, onRateClick, ...restProps }: StarRatingProps) {
+function StarRating({ rate, onRateClick, size = '20px', ...restProps }: StarRatingProps) {
   return (
     <StyledStarRatingWrapper {...restProps}>
       {starRateList.map((starRate, idx) => {
         const isLeft = idx % 2 === 0;
         const isFilled = starRate <= rate;
 
-        return <Star isLeft={isLeft} isFilled={isFilled} rateNumber={starRate} onRateClick={onRateClick} />;
+        return (
+          <HalfStar size={size} isLeft={isLeft} isFilled={isFilled} rateNumber={starRate} onRateClick={onRateClick} />
+        );
       })}
     </StyledStarRatingWrapper>
   );
@@ -29,9 +32,9 @@ export default StarRating;
 const StyledStarRatingWrapper = styled.div`
   display: flex;
 
-  width: 100%;
+  width: max-content;
 
-  button:nth-child(2n-1) {
-    margin-left: 1.2rem;
+  button:nth-child(2n) {
+    margin-right: 1.2rem;
   }
 `;

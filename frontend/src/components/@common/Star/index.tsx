@@ -1,3 +1,3 @@
-import Star from '~/components/@common/Star/Star';
+import HalfStar from '~/components/@common/Star/HalfStar';
 
-export default Star;
+export default HalfStar;

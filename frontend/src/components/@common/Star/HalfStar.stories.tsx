@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Star from './Star';
+import Star from './HalfStar';
 
 const meta: Meta<typeof Star> = {
   title: 'Star',
