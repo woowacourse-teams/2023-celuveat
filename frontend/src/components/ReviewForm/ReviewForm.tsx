@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -12,7 +11,6 @@ import ReviewImageForm from '~/components/ReviewImageForm';
 import TextButton from '~/components/@common/Button';
 
 import type { StarRate } from '~/components/@common/StarRating/StarRating';
-import type { RestaurantReviewData } from '~/@types/api.types';
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
 
 const SUBMIT_BUTTON_TEXT = {
@@ -28,19 +26,12 @@ interface ReviewFormProps {
 
 function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
-  const qc = useQueryClient();
-  const reviewData: RestaurantReviewData = qc.getQueryData(['restaurantReview', restaurantId]);
+
+  const { restaurantReviewsData, createReview, updateReview, postReviewReport } = useRestaurantReview();
+
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [rate, setRate] = useState<StarRate>(0);
-
-  const { createReview, updateReview, postReviewReport } = useRestaurantReview();
-
-  const resetFormData = () => {
-    setText('');
-    setImages([]);
-    setRate(0);
-  };
 
   const deleteReviewImage = (reviewImageId: number) => {
     setImages(images.filter((_, id) => id !== reviewImageId));
@@ -96,26 +87,32 @@ function ReviewForm({ type, reviewId }: ReviewFormProps) {
         throw new Error('해당 타입의 review Form은 지원하지 않습니다.');
     }
 
-    resetFormData();
-
     window.location.reload();
   };
 
   useEffect(() => {
     if (type === 'update') {
-      const targetReview = reviewData?.reviews.find(review => review.id === reviewId);
+      const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
       setText(targetReview.content);
       setImages(targetReview.reviewImageUrls);
     }
-  }, [reviewData]);
+  }, [restaurantReviewsData]);
 
   return (
     <StyledReviewFormContainer>
-      <span>별점 등록 ({rate}/5)</span>
+      <StyledReviewFormItemText>별점 등록하기 ({rate}/5)</StyledReviewFormItemText>
       <StarRating rate={rate} onRateClick={onClickStarRate} />
-      <span>사진 등록하기</span>
+
+      <StyledReviewFormItemText>후기 작성하기</StyledReviewFormItemText>
+      <StyledTextArea
+        placeholder={type === 'report' ? '신고 사유를 작성해주세요' : '음식점을 다녀간 후기를 들려주세요'}
+        value={text}
+        onChange={onChange}
+      />
+
+      <StyledReviewFormItemText>사진 등록하기</StyledReviewFormItemText>
       <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />
-      <StyledTextArea placeholder="여기에 리뷰를 적어주세요." value={text} onChange={onChange} />
+
       <TextButton
         type="submit"
         onClick={submitReviewForm}
@@ -132,21 +129,30 @@ export default ReviewForm;
 const StyledReviewFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 3.6rem 0;
+  gap: 2rem 0;
 
   width: 100%;
 `;
 
 const StyledTextArea = styled.textarea`
-  height: 30vh;
+  height: 300px;
 
   padding: 0.8rem;
 
-  border: none;
+  border: 5px solid var(--gray-2);
   border-radius: 10px;
   background-color: var(--gray-2);
 
   font-size: ${FONT_SIZE.md};
   text-align: start;
   resize: vertical;
+
+  &:focus {
+    border: 5px solid #ff7b54;
+  }
+`;
+
+const StyledReviewFormItemText = styled.span`
+  font-size: ${FONT_SIZE.lg};
+  font-weight: bold;
 `;
