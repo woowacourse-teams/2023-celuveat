@@ -95,7 +95,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
               }}
             >
               <SpeakerphoneIcon />
-              <span>신고하기</span>
+              <span>신고 하기</span>
             </StyledReviewButton>
           </>
         )}
@@ -140,13 +140,15 @@ const StyledReviewButton = styled.button`
     margin-left: 0.5rem;
   }
 
-  &:hover {
-    & > span {
-      color: #ff7b54;
-    }
+  @media (hover: hover) {
+    &:hover {
+      & > span {
+        color: #ff7b54;
+      }
 
-    & > svg {
-      fill: #ff7b54;
+      & > svg {
+        fill: #ff7b54;
+      }
     }
   }
 `;
