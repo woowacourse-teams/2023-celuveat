@@ -10,6 +10,11 @@ export const postRestaurantReview = async (body: FormData) => {
   return response;
 };
 
+export const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: FormData }) => {
+  const response = await apiUserFilesClient.patch(`/reviews/${reviewId}`, body);
+  return response;
+};
+
 export const deleteRestaurantReview = async (reviewId: number) => {
   const response = await apiUserFilesClient.delete(`/reviews/${reviewId}`);
   return response;
@@ -22,10 +27,5 @@ export const postRestaurantReviewLike = async (reviewId: number) => {
 
 export const postRestaurantReviewReport = async ({ reviewId, content }: { reviewId: number; content: string }) => {
   const response = await apiUserClient.post(`/reviews/${reviewId}/report`, { content });
-  return response;
-};
-
-export const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: FormData }) => {
-  const response = await apiUserFilesClient.patch(`/reviews/${reviewId}`, body);
   return response;
 };

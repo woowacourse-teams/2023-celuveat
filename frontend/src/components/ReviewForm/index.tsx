@@ -1,4 +1,4 @@
-import DeleteButton from '~/components/ReviewForm/DeleteButton';
+import ReviewDeleteForm from '~/components/ReviewForm/ReviewDeleteForm';
 import ReviewForm from '~/components/ReviewForm/ReviewForm';
 
-export { DeleteButton, ReviewForm };
+export { ReviewDeleteForm, ReviewForm };
