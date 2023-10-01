@@ -8,6 +8,8 @@ import { videos, originVideos } from '../../data/videos';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData, VideoList } from '~/@types/api.types';
+import { HyphenatedDate } from '~/@types/date.types';
+import { parseFormDataForReview } from '~/mocks/utils';
 
 export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantsId', (req, res, ctx) => {
@@ -103,22 +105,28 @@ export const DetailPageSuccessHandler = [
 
   rest.post('/reviews', async (req, res, ctx) => {
     const { JSESSION } = req.cookies;
-    const { content, restaurantId } = await req.json();
+    const { images, content, rate, restaurantId } = parseFormDataForReview(req.body as string);
 
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
 
+    // 사용자가 올린 이미지를 CDN에 저장, 그로 인한 url 변경하는 동작을 msw 코드로 구현
+    const makeImage = (count: number) => {
+      return Array.from({ length: count }).map(() => 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503');
+    };
+
     reviews.push({
       id: reviews.length + 1,
-      nickname: 'msw',
-      memberId: 100,
+      nickname: '푸만능',
+      memberId: 1,
       profileImageUrl: 'https://a0.muscache.com/im/pictures/user/93c7d7c8-86d9-4390-ba09-a8e6f4eb7f0f.jpg?im_w=240',
       content,
       isLiked: false,
       likeCount: 97,
-      createdDate: `${year}-${month}-${day}`,
+      createdDate: `${year}-${month}-${day}` as HyphenatedDate,
+      reviewImageUrls: makeImage(images.length),
     });
 
     if (JSESSION === undefined) {
@@ -131,13 +139,17 @@ export const DetailPageSuccessHandler = [
   rest.patch('/reviews/:reviewId', async (req, res, ctx) => {
     const { reviewId } = req.params;
     const { JSESSION } = req.cookies;
-    const { content } = await req.json();
+
+    const { images, content, rate } = parseFormDataForReview(req.body as string);
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
     }
 
-    reviews.find(({ id }) => Number(reviewId) === id)['content'] = content;
+    const review = reviews.find(({ id }) => Number(reviewId) === id);
+
+    review['content'] = content;
+    review['reviewImageUrls'] = images;
 
     return res(ctx.status(204));
   }),

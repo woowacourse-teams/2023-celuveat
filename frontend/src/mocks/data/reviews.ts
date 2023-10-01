@@ -1,4 +1,6 @@
-const reviews = [
+import { RestaurantReview } from '~/@types/api.types';
+
+const reviews: RestaurantReview[] = [
   {
     id: 1,
     nickname: '오도',
@@ -45,6 +47,7 @@ const reviews = [
     createdDate: '2014-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
   {
     id: 4,
@@ -70,6 +73,7 @@ const reviews = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
   {
     id: 6,
@@ -80,6 +84,7 @@ const reviews = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
   {
     id: 7,
@@ -90,6 +95,7 @@ const reviews = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
   {
     id: 8,
@@ -100,6 +106,7 @@ const reviews = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
   {
     id: 9,
@@ -110,6 +117,7 @@ const reviews = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
+    reviewImageUrls: [],
   },
 ];
 
