@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import GroupIcon from '~/assets/icons/etc/groups.svg';
 import ThumpUpIcon from '~/assets/icons/etc/thumb-up.svg';
@@ -14,6 +14,8 @@ import { FONT_SIZE } from '~/styles/common';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
+import { getProfile } from '~/api/user';
+import StarRating from '~/components/@common/StarRating';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -21,8 +23,10 @@ interface RestaurantReviewItemProps {
 }
 
 function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) {
-  const qc = useQueryClient();
-  const profileData: ProfileData = qc.getQueryData(['profile']);
+  const { data: profileData } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+  });
 
   const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
 
@@ -40,6 +44,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
             <StyledCreateDated>{review.createdDate}</StyledCreateDated>
           </StyledProfileInfoWrapper>
         </StyledProfileWrapper>
+
         {isUsersReview && (
           <StyledButtonContainer>
             <button
@@ -64,6 +69,16 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
           </StyledButtonContainer>
         )}
       </StyledProfileAndButton>
+      <StyledStarRatingWrapper>
+        <StarRating rate={review.rate} size="12px" />
+        <StyledStarRatingText>{review.rate}</StyledStarRatingText>
+      </StyledStarRatingWrapper>
+      <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
+      <StyledReviewImgWrapper>
+        {review?.reviewImageUrls?.map((reviewImageUrl, idx) => (
+          <StyledReviewImg src={reviewImageUrl} alt={`${review.nickname}이 쓴 리뷰 사진${idx}`} />
+        ))}
+      </StyledReviewImgWrapper>
       <StyledReviewLikeCountWrapper>
         <div>
           <GroupIcon />
@@ -71,12 +86,6 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
           명이 추천했어요
         </div>
       </StyledReviewLikeCountWrapper>
-      <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
-      <StyledReviewImgWrapper>
-        {review?.reviewImageUrls?.map((reviewImageUrl, idx) => (
-          <StyledReviewImg src={reviewImageUrl} alt={`${review.nickname}이 쓴 리뷰 사진${idx}`} />
-        ))}
-      </StyledReviewImgWrapper>
       <StyledReviewButtonsWrapper>
         {!isUsersReview && (
           <>
@@ -105,6 +114,18 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
 }
 
 export default RestaurantReviewItem;
+
+const StyledStarRatingWrapper = styled.div`
+  margin-top: 1.2rem;
+
+  display: flex;
+`;
+
+const StyledStarRatingText = styled.span`
+  color: #ff7b54;
+  font-size: 26px;
+  font-weight: bold;
+`;
 
 const StyledReviewImg = styled.img`
   width: 150px;
