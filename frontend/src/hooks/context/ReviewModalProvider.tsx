@@ -1,9 +1,8 @@
 import { createContext, useContext, useMemo, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import useBooleanState from '~/hooks/useBooleanState';
+import useCheckLogin from '~/hooks/server/useCheckLogin';
 
-import type { ProfileData } from '~/@types/api.types';
 import type { ReviewFormType } from '~/@types/review.types';
 
 interface ReviewModalContextState {
@@ -25,8 +24,7 @@ interface ReviewModalProviderProps {
 }
 
 function ReviewModalProvider({ children }: ReviewModalProviderProps) {
-  const qc = useQueryClient();
-  const profileData: ProfileData = qc.getQueryData(['profile']);
+  const { isLogin } = useCheckLogin();
 
   const [formType, setFormType] = useState<ReviewFormType>(null);
   const [reviewId, setReviewId] = useState(null);
@@ -34,7 +32,7 @@ function ReviewModalProvider({ children }: ReviewModalProviderProps) {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
   const openReviewModal = (reviewFormType: ReviewFormType) => {
-    if (!profileData && reviewFormType !== 'all') {
+    if (!isLogin && reviewFormType !== 'all') {
       setFormType(null);
       openModal();
       return;
@@ -46,7 +44,7 @@ function ReviewModalProvider({ children }: ReviewModalProviderProps) {
 
   const value = useMemo(
     () => ({ reviewId, formType, isModalOpen, setReviewId, openModal, closeModal, openReviewModal }),
-    [reviewId, formType, isModalOpen],
+    [reviewId, formType, isModalOpen, openReviewModal, setReviewId, openModal, closeModal],
   );
 
   return <ReviewModalContext.Provider value={value}>{children}</ReviewModalContext.Provider>;
