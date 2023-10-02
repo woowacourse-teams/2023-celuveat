@@ -4,6 +4,7 @@ import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.video.command.domain.QVideo.video;
+import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
@@ -91,7 +92,7 @@ public class RestaurantWithDistanceDao {
     }
 
     private NumberExpression<Double> distance(double latitude, double longitude) {
-        return Expressions.numberTemplate(Double.class,
+        return numberTemplate(Double.class,
                 """
                         6371 * acos(cos(radians({1})) * cos(radians({0}.latitude))
                         * cos(radians({0}.longitude) - radians({2}))
@@ -138,6 +139,46 @@ public class RestaurantWithDistanceDao {
         return distanceColumn.asc();
     }
 
+    public Page<RestaurantWithDistance> searchByAddress(
+            AddressSearchCond addressSearchCond,
+            Pageable pageable
+    ) {
+        List<RestaurantWithDistance> resultList = query.selectDistinct(Projections.constructor(
+                        RestaurantWithDistance.class,
+                        restaurant.id,
+                        restaurant.name,
+                        restaurant.category,
+                        restaurant.roadAddress,
+                        restaurant.latitude,
+                        restaurant.longitude,
+                        restaurant.phoneNumber,
+                        restaurant.naverMapUrl,
+                        restaurant.viewCount,
+                        numberTemplate(Double.class, "0"),
+                        restaurant.likeCount
+                ))
+                .from(restaurant)
+                .where(
+                        restaurantAddressIn(addressSearchCond.addresses)
+                ).orderBy(restaurant.likeCount.desc(), restaurant.id.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
+                .from(restaurant)
+                .where(
+                        restaurantAddressIn(addressSearchCond.addresses)
+                );
+        return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression restaurantAddressIn(List<String> addresses) {
+        return addresses.stream()
+                .map(restaurant.roadAddress::startsWith)
+                .reduce(BooleanExpression::or)
+                .orElse(null);
+    }
 
     public Page<RestaurantWithDistance> searchNearBy(
             Long restaurantId,
@@ -212,6 +253,11 @@ public class RestaurantWithDistanceDao {
             Double highLatitude,
             Double lowLongitude,
             Double highLongitude
+    ) {
+    }
+
+    public record AddressSearchCond(
+            List<String> addresses
     ) {
     }
 }

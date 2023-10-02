@@ -21,6 +21,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_아이디를_가져온다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_조회수_예상_응답;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_지역으로_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_회원_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과_좋아요순_정렬_기준을_검증한다;
@@ -32,15 +33,29 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.celeb.fixture.CelebFixture.백종원;
+import static com.celuveat.celeb.fixture.CelebFixture.성시경;
+import static com.celuveat.celeb.fixture.CelebFixture.셀럽들;
+import static com.celuveat.celeb.fixture.CelebFixture.핫둘제주;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.toSimpleResponse;
+import static com.celuveat.restaurant.fixture.RestaurantImageFixture.음식점사진들;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
+import static com.celuveat.video.fixture.VideoFixture.영상;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
+import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.SeedData;
+import com.celuveat.common.TestData;
+import com.celuveat.common.TestDataCreator;
+import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.fixture.RestaurantFixture.지역별_음식점;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,6 +66,9 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private SeedData seedData;
+
+    @Autowired
+    private TestDataInserter testDataInserter;
 
     @Nested
     class 음식점_검색 {
@@ -89,7 +107,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             // then
             조회_결과_좋아요순_정렬_기준을_검증한다(응답);
         }
-
 
         @Test
         void 음식점_검색_조건으로_검색한다() {
@@ -162,6 +179,47 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             모든_음식점에_좋아요가_눌렸는지_확인한다(요청_결과);
+        }
+    }
+
+    @Nested
+    class 지역으로_음식점_검색 {
+
+        private final Map<String, Celeb> 셀럽들 = 셀럽들(성시경(), 핫둘제주(), 백종원());
+        private final List<Restaurant> 제주_음식점들 = 지역별_음식점.제주_음식점들();
+        private final List<Restaurant> 압구정_음식점들 = 지역별_음식점.압구정_음식점들();
+        private TestData testData = new TestData();
+
+        private final TestDataCreator testDataCreator = () -> {
+            testData.addCelebs(셀럽들);
+            testData.addRestaurants(제주_음식점들);
+            testData.addRestaurants(압구정_음식점들);
+            testData.addImages(음식점사진들(testData.restaurants()));
+            for (Restaurant restaurant : 제주_음식점들) {
+                testData.addVideo(영상("제주 url1", restaurant, 셀럽들.get("핫둘제주")));
+            }
+            for (Restaurant restaurant : 압구정_음식점들) {
+                testData.addVideo(영상(restaurant, 셀럽들.get("성시경")));
+                testData.addVideo(영상(restaurant, 셀럽들.get("백종원")));
+            }
+            return testData;
+        };
+
+        @BeforeEach
+        void setUp() {
+            testDataInserter.insertData(testDataCreator);
+        }
+
+        @Test
+        void 지역으로_음식점을_검색한다() {
+            // given
+            var 예상_응답 = toSimpleResponse(압구정_음식점들, testData.videoWithRestaurant(), testData.imageWithRestaurant());
+
+            // when
+            var 응답 = 음식점_지역으로_검색_요청("압구정,청담");
+
+            // then
+            조회_결과를_검증한다(예상_응답, 응답);
         }
     }
 
