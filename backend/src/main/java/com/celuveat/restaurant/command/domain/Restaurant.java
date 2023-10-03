@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
+import org.geolatte.geom.Point;
 
 @Entity
 @Builder
@@ -36,7 +36,7 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String naverMapUrl;
 
-    private Point point;
+    private Point<?> point;
 
     private int viewCount;
 
@@ -90,7 +90,7 @@ public class Restaurant extends BaseEntity {
         return likeCount;
     }
 
-    public Point point() {
+    public Point<?> point() {
         return point;
     }
 }
