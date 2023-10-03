@@ -3,6 +3,8 @@ package com.celuveat.restaurant.query;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstByCelebId;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId;
 
+import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao.DistrictCodeCond;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
@@ -10,6 +12,7 @@ import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearch
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import jakarta.annotation.Nullable;
@@ -28,6 +31,7 @@ public class RestaurantQueryService {
     private final RestaurantDetailResponseDao restaurantDetailResponseDao;
     private final RestaurantSimpleResponseDao restaurantSimpleResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
+    private final RestaurantByAddressResponseDao restaurantByAddressResponseDao;
 
     public RestaurantDetailResponse findRestaurantDetailById(
             Long restaurantId,
@@ -64,6 +68,13 @@ public class RestaurantQueryService {
             @Nullable Long memberId
     ) {
         return restaurantSimpleResponseDao.findAllByAddress(addressSearchCond, pageable, memberId);
+    }
+
+    public Page<RestaurantByAddressResponse> findAllByAddressV2(
+            DistrictCodeCond cond,
+            Pageable pageable
+    ) {
+        return restaurantByAddressResponseDao.find(cond, pageable);
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(

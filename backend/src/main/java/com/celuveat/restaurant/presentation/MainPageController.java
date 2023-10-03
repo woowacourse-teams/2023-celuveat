@@ -3,7 +3,9 @@ package com.celuveat.restaurant.presentation;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.restaurant.presentation.dto.AddressSearchCondRequest;
+import com.celuveat.restaurant.presentation.dto.DistrictCodeCondRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
+import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,17 @@ public class MainPageController {
     ) {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllByAddress(
                 addressSearchCondRequest.toCondition(), pageable, memberId
+        );
+        return ResponseEntity.ok(PageResponse.from(result));
+    }
+
+    @GetMapping("/address/v2")
+    ResponseEntity<PageResponse<RestaurantByAddressResponse>> findByAddress(
+            @ModelAttribute DistrictCodeCondRequest districtCodeCondRequest,
+            @PageableDefault(size = 18) Pageable pageable
+    ) {
+        Page<RestaurantByAddressResponse> result = restaurantQueryService.findAllByAddressV2(
+                districtCodeCondRequest.toCondition(), pageable
         );
         return ResponseEntity.ok(PageResponse.from(result));
     }
