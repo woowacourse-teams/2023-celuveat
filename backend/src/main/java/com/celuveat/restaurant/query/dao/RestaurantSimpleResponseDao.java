@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RestaurantSimpleResponseDao {
 
     private final RestaurantWithDistanceDao restaurantWithDistanceDao;
@@ -85,11 +85,11 @@ public class RestaurantSimpleResponseDao {
 
     private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
         Set<Long> likedRestaurantIds = restaurantLikeQueryDaoSupport
-                    .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
-                    .stream()
-                    .map(RestaurantLike::restaurant)
-                    .map(BaseEntity::id)
-                    .collect(toSet());
+                .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
+                .stream()
+                .map(RestaurantLike::restaurant)
+                .map(BaseEntity::id)
+                .collect(toSet());
         return restaurantIds.stream()
                 .collect(toMap(identity(), likedRestaurantIds::contains));
     }
