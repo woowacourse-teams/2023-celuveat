@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
+import imageCompression from 'browser-image-compression';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
@@ -13,16 +14,23 @@ import TextButton from '~/components/@common/Button';
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
-import type { StarRate } from '~/@types/api.types';
+import type { ReviewUploadImageType, StarRate } from '~/@types/api.types';
+import { changeImgFileExtension } from '~/utils/image';
+
+interface ReviewFormProps {
+  type: ReviewSubmitButtonType;
+}
 
 export const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
   update: '수정하기',
 } as const;
 
-interface ReviewFormProps {
-  type: ReviewSubmitButtonType;
-}
+const options = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 350,
+  useWebWorker: true,
+};
 
 function ReviewForm({ type }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
@@ -45,19 +53,19 @@ function ReviewForm({ type }: ReviewFormProps) {
     }
   }, [restaurantReviewsData]);
 
-  const onUploadReviewImage: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const file = e.target.files[0];
+  const onUploadReviewImage: React.ChangeEventHandler<HTMLInputElement> = async e => {
+    const imageFile = e.target.files[0];
 
-    if (file) {
-      const reader = new FileReader();
+    const blob = new Blob([imageFile], { type: 'image/webp' });
+    const webpFile = new File([blob], changeImgFileExtension(imageFile.name), { type: 'image/webp' });
 
-      reader.onloadend = () => {
-        setImages([...images, reader.result as string]);
-      };
+    try {
+      const compressedFile = await imageCompression(webpFile, options);
+      const compressedImageUrl = URL.createObjectURL(compressedFile);
 
-      reader.readAsDataURL(file);
-    } else {
-      setImages(null);
+      setImages([...images, { imgUrl: compressedImageUrl, imgFile: compressedFile }]);
+    } catch (error) {
+      setImages([]);
     }
   };
 
@@ -78,7 +86,10 @@ function ReviewForm({ type }: ReviewFormProps) {
   const makeReviewFormData = () => {
     const formData = new FormData();
 
-    formData.append('images', JSON.stringify(images));
+    images.forEach(image => {
+      formData.append('images', image.imgFile);
+    });
+
     formData.append('content', text);
     formData.append('rate', String(rate));
 
