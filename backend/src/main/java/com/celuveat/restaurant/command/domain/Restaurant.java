@@ -2,13 +2,13 @@ package com.celuveat.restaurant.command.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Builder
@@ -35,6 +35,8 @@ public class Restaurant extends BaseEntity {
 
     @Column(nullable = false)
     private String naverMapUrl;
+
+    private Point point;
 
     private int viewCount;
 
@@ -86,5 +88,9 @@ public class Restaurant extends BaseEntity {
 
     public int likeCount() {
         return likeCount;
+    }
+
+    public Point point() {
+        return point;
     }
 }
