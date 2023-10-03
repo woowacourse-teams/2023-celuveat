@@ -44,7 +44,7 @@ function ReviewModalProvider({ children }: ReviewModalProviderProps) {
 
   const value = useMemo(
     () => ({ reviewId, formType, isModalOpen, setReviewId, openModal, closeModal, openReviewModal }),
-    [reviewId, formType, isModalOpen, openReviewModal, setReviewId, openModal, closeModal],
+    [reviewId, formType, isModalOpen, isLogin],
   );
 
   return <ReviewModalContext.Provider value={value}>{children}</ReviewModalContext.Provider>;
