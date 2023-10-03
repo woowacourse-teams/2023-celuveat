@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.Geometry;
 
 @Entity
 @Builder
@@ -20,7 +20,7 @@ public class AdministrativeDistrict {
     private Long id;
 
     @Column(nullable = false)
-    private Polygon polygon;
+    private Geometry polygon;
 
     @Column(unique = true, nullable = false)
     private String code;
