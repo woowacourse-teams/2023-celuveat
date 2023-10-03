@@ -26,9 +26,18 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -46,8 +55,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -61,8 +76,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -76,8 +97,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -91,8 +118,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -106,8 +139,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -121,8 +160,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -136,8 +181,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
   {
@@ -151,8 +202,14 @@ const reviews: RestaurantReview[] = [
     likeCount: 97,
     rate: 5,
     reviewImageUrls: [
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eb798a177.jpg.view',
-      'https://image.msscdn.net/data/estimate/659554_0/gallery_5da1eaf70e6f7.jpg.view',
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
+      {
+        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgFile: 'asdf' as unknown as Blob,
+      },
     ],
   },
 ];

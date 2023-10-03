@@ -27,11 +27,10 @@ interface ReviewFormProps {
 function ReviewForm({ type }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
   const { reviewId } = useReviewModalContext();
-
   const { restaurantReviewsData, createReview, updateReview } = useRestaurantReview();
 
   const [text, setText] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<ReviewUploadImageType[]>([]);
   const [rate, setRate] = useState<StarRate>(0);
 
   const isSubmitDisabled = text.length === 0 || rate === 0;
@@ -39,6 +38,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   useEffect(() => {
     if (type === 'update') {
       const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
+
       setRate(targetReview.rate);
       setText(targetReview.content);
       setImages(targetReview.reviewImageUrls);
