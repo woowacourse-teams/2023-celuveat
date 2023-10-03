@@ -47,7 +47,7 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("음식점 조회용 레포지토리(RestaurantWithDistanceDao) 은(는)")
+@DisplayName("음식점 조회용 Dao(RestaurantWithDistanceDao) 은(는)")
 class RestaurantWithDistanceDaoTest {
 
     private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
