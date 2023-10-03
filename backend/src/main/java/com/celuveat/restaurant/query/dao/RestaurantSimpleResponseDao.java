@@ -9,7 +9,6 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
@@ -58,16 +57,6 @@ public class RestaurantSimpleResponseDao {
     ) {
         Page<RestaurantWithDistance> restaurants =
                 restaurantWithDistanceDao.searchNearBy(restaurantId, distance, pageable);
-        return toSimpleResponse(memberId, restaurants);
-    }
-
-    public Page<RestaurantSimpleResponse> findAllByAddress(
-            AddressSearchCond addressSearchCond,
-            Pageable pageable,
-            @Nullable Long memberId
-    ) {
-        Page<RestaurantWithDistance> restaurants =
-                restaurantWithDistanceDao.searchByAddress(addressSearchCond, pageable);
         return toSimpleResponse(memberId, restaurants);
     }
 
