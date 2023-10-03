@@ -6,10 +6,11 @@ import reviews from '../../data/reviews';
 import { profile } from './../../data/user';
 import { videos, originVideos } from '../../data/videos';
 
+import { makeImage } from '~/mocks/utils';
+
 import type { Celeb } from '~/@types/celeb.types';
-import type { RestaurantData, VideoList } from '~/@types/api.types';
-import { HyphenatedDate } from '~/@types/date.types';
-import { parseFormDataForReview } from '~/mocks/utils';
+import type { HyphenatedDate } from '~/@types/date.types';
+import type { RestaurantData, RestaurantReview, VideoList } from '~/@types/api.types';
 
 export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantsId', (req, res, ctx) => {
@@ -105,29 +106,24 @@ export const DetailPageSuccessHandler = [
 
   rest.post('/reviews', async (req, res, ctx) => {
     const { JSESSION } = req.cookies;
-    const { images, content, rate, restaurantId } = parseFormDataForReview(req.body as string);
+    const formData = await req.body;
 
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
 
-    // 사용자가 올린 이미지를 CDN에 저장, 그로 인한 url 변경하는 동작을 msw 코드로 구현
-    const makeImage = (count: number) => {
-      return Array.from({ length: count }).map(() => 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503');
-    };
-
     reviews.push({
       id: reviews.length + 1,
       nickname: '푸만능',
       memberId: 1,
       profileImageUrl: 'https://a0.muscache.com/im/pictures/user/93c7d7c8-86d9-4390-ba09-a8e6f4eb7f0f.jpg?im_w=240',
-      content,
+      content: 'MSW는 formdata지원을 안한다나 어쩐다나',
       isLiked: false,
       likeCount: 97,
-      rate,
+      rate: 4,
       createdDate: `${year}-${month}-${day}` as HyphenatedDate,
-      reviewImageUrls: makeImage(images.length),
+      reviewImageUrls: makeImage(3),
     });
 
     if (JSESSION === undefined) {
@@ -141,16 +137,14 @@ export const DetailPageSuccessHandler = [
     const { reviewId } = req.params;
     const { JSESSION } = req.cookies;
 
-    const { images, content, rate } = parseFormDataForReview(req.body as string);
-
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
     }
 
     const review = reviews.find(({ id }) => Number(reviewId) === id);
 
-    review['content'] = content;
-    review['reviewImageUrls'] = images;
+    review['content'] = 'MSW는 formdata지원을 안한다나 어쩐다나';
+    review['reviewImageUrls'] = makeImage(2);
 
     return res(ctx.status(204));
   }),

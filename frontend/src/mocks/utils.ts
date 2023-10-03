@@ -1,40 +1,7 @@
-interface FormDataObject {
-  [key: string]: any;
-}
-
-// FormData 코드 디코딩하는 로직
-export const parseFormDataForReview = (formDataString: string): FormDataObject => {
-  const formDataArray: string[] = formDataString.split('\n').filter(line => line.trim() !== '');
-  const formDataObject: FormDataObject = {};
-
-  for (let i = 0; i < formDataArray.length; i++) {
-    const line: string = formDataArray[i];
-    const [name, value]: string[] = line.split(': ').map(item => item.trim());
-
-    if (name === 'Content-Disposition') {
-      const [, paramName]: RegExpMatchArray | null = value.match(/name="(.+?)"/);
-      if (paramName) {
-        i++;
-        const paramValue: string = formDataArray[i].trim();
-        formDataObject[paramName] = paramValue;
-      }
-    }
-  }
-
-  // 문자열 배열을 배열로 변환
-  if (formDataObject['images']) {
-    formDataObject['images'] = JSON.parse(formDataObject['images']);
-  }
-
-  // rate: 문자 -> 숫자
-  if (formDataObject['rate']) {
-    formDataObject['rate'] = parseInt(formDataObject['rate']);
-  }
-
-  // restaurantId: 문자 -> 숫자
-  if (formDataObject['restaurantId']) {
-    formDataObject['restaurantId'] = parseInt(formDataObject['restaurantId']);
-  }
-
-  return formDataObject;
+// 사용자가 올린 이미지를 CDN에 저장, 그로 인한 url 변경하는 동작을 msw 코드로 구현
+export const makeImage = (count: number) => {
+  return Array.from({ length: count }).map(() => ({
+    imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+    imgFile: 'asdf' as unknown as Blob,
+  }));
 };
