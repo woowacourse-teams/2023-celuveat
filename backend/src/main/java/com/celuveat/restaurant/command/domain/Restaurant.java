@@ -42,6 +42,10 @@ public class Restaurant extends BaseEntity {
 
     private int likeCount;
 
+    private int reviewCount;
+
+    private double ratingTotal;
+
     public void clickLike() {
         this.likeCount += 1;
     }
@@ -92,5 +96,13 @@ public class Restaurant extends BaseEntity {
 
     public Point<?> point() {
         return point;
+    }
+
+    public int reviewCount() {
+        return reviewCount;
+    }
+
+    public Double ratingTotal() {
+        return ratingTotal;
     }
 }

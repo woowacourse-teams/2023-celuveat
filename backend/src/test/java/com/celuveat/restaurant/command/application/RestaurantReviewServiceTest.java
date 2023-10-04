@@ -5,19 +5,24 @@ import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PE
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.willDoNothing;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseException;
 import com.celuveat.common.exception.BaseExceptionType;
+import com.celuveat.common.infra.aws.AwsS3ImageUploadClient;
 import com.celuveat.restaurant.command.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.command.application.dto.SaveReviewRequestCommand;
 import com.celuveat.restaurant.command.application.dto.UpdateReviewRequestCommand;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewImageRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +30,9 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -42,6 +50,12 @@ class RestaurantReviewServiceTest {
 
     @Autowired
     private OauthMemberRepository oauthMemberRepository;
+
+    @Autowired
+    private RestaurantReviewImageRepository restaurantReviewImageRepository;
+
+    @MockBean
+    private AwsS3ImageUploadClient imageUploadClient;
 
     private Restaurant restaurant;
     private Restaurant otherRestaurant;
@@ -146,5 +160,38 @@ class RestaurantReviewServiceTest {
 
         // then
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void 리뷰를_사진과_함께_저장한다() {
+        // given
+        MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
+        MultipartFile imageB = getMockImageFile("imageB", "imageB.webp");
+        SaveReviewRequestCommand command =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, List.of(imageA, imageB));
+        willDoNothing().given(imageUploadClient).upload(imageA);
+        willDoNothing().given(imageUploadClient).upload(imageB);
+        RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0);
+
+        // when
+        Long reviewId = restaurantReviewService.create(command);
+
+        // then
+        RestaurantReview savedReview = restaurantReviewRepository.getById(reviewId);
+        List<RestaurantReviewImage> reviewImages
+                = restaurantReviewImageRepository.findRestaurantReviewImagesByRestaurantReview(savedReview);
+        
+        assertThat(savedReview).usingRecursiveComparison()
+                .ignoringFields("id", "createdDate")
+                .isEqualTo(expected);
+        assertThat(reviewImages).hasSize(2);
+        assertThat(reviewImages).extracting("name")
+                .containsExactlyInAnyOrder("imageA", "imageB");
+    }
+
+    private MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
+        return new MockMultipartFile(
+                name, originalFilename, "multipart/form-data", name.getBytes()
+        );
     }
 }

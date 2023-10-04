@@ -2,8 +2,10 @@ package com.celuveat.common.infra.aws;
 
 import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.common.infra.AwsS3Property;
-import java.io.IOException;
+import com.celuveat.common.util.Base64Util;
+import com.celuveat.common.util.FileNameUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -17,12 +19,20 @@ public class AwsS3ImageUploadClient implements ImageUploadClient {
     private final S3Client s3Client;
     private final AwsS3Property awsS3Property;
 
-    public void upload(MultipartFile file) throws IOException {
+    @SneakyThrows
+    public void upload(MultipartFile file) {
+        String encodedFileName = getEncodedFileName(file);
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(awsS3Property.bucket())
-                .key(awsS3Property.key() + file.getOriginalFilename())
+                .key(awsS3Property.key() + encodedFileName)
                 .build();
         RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
         s3Client.putObject(putObjectRequest, requestBody);
+    }
+
+    private String getEncodedFileName(MultipartFile file) {
+        String rawFileName = FileNameUtil.removeExtension(file.getOriginalFilename());
+        String encodeWithoutExtension = Base64Util.encode(rawFileName);
+        return FileNameUtil.attachWebpExtension(encodeWithoutExtension);
     }
 }
