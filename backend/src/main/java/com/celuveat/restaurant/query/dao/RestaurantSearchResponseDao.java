@@ -84,6 +84,7 @@ public class RestaurantSearchResponseDao {
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
+                        restaurant.superCategory,
                         restaurant.roadAddress,
                         restaurant.latitude,
                         restaurant.longitude,
@@ -130,8 +131,8 @@ public class RestaurantSearchResponseDao {
         return celebId == null ? null : celeb.id.eq(celebId);
     }
 
-    private BooleanExpression restaurantCategoryEqual(String category) {
-        return StringUtils.isBlank(category) ? null : restaurant.category.eq(category);
+    private BooleanExpression restaurantCategoryEqual(String superCategory) {
+        return StringUtils.isBlank(superCategory) ? null : restaurant.superCategory.eq(superCategory);
     }
 
     private BooleanExpression restaurantNameLike(String restaurantName) {
@@ -195,6 +196,7 @@ public class RestaurantSearchResponseDao {
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
+                        restaurant.superCategory,
                         restaurant.roadAddress,
                         restaurant.latitude,
                         restaurant.longitude,
@@ -241,6 +243,7 @@ public class RestaurantSearchResponseDao {
                                 restaurant.id,
                                 restaurant.name,
                                 restaurant.category,
+                                restaurant.superCategory,
                                 restaurant.roadAddress,
                                 restaurant.latitude,
                                 restaurant.longitude,

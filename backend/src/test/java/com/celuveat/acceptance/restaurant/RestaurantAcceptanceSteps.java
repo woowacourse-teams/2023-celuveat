@@ -203,6 +203,7 @@ public class RestaurantAcceptanceSteps {
                 restaurantWithCelebsAndImagesSimpleResponse.getId(),
                 restaurantWithCelebsAndImagesSimpleResponse.getName(),
                 restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getSuperCategory(),
                 restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
@@ -313,7 +314,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/restaurants/{restaurantId}", restaurantId)
-                .then()
+                .then().log().all()
                 .extract();
     }
 
@@ -389,6 +390,7 @@ public class RestaurantAcceptanceSteps {
                 restaurantWithCelebsAndImagesSimpleResponse.getId(),
                 restaurantWithCelebsAndImagesSimpleResponse.getName(),
                 restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getSuperCategory(),
                 restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),

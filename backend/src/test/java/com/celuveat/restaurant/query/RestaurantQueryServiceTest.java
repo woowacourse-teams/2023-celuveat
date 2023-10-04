@@ -156,15 +156,16 @@ class RestaurantQueryServiceTest {
         // given
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:오도1호점";
+        String superCategory = "superCategory:오도1호점";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
+            if (restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
-                new RestaurantSearchCond(null, category, null),
+                new RestaurantSearchCond(null, superCategory, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
                 null
@@ -215,19 +216,19 @@ class RestaurantQueryServiceTest {
         // given
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 1L;
-        String category = "category:오도1호점";
+        String superCategory = "superCategory:오도1호점";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream()
-                    .map(CelebQueryResponse::id)
+            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
                     .toList();
-            if (list.contains(celebId) && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
+            if (list.contains(celebId) && restaurantWithCelebsAndImagesSimpleResponse.getSuperCategory()
+                    .equals(superCategory)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
-                new RestaurantSearchCond(celebId, category, null),
+                new RestaurantSearchCond(celebId, superCategory, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
                 null
@@ -283,6 +284,7 @@ class RestaurantQueryServiceTest {
         // given
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:말랑2호점";
+        String superCategory = "superCategory:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
             if (restaurantWithCelebsAndImagesSimpleResponse.getName()
@@ -294,7 +296,7 @@ class RestaurantQueryServiceTest {
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
-                new RestaurantSearchCond(null, category, restaurantName),
+                new RestaurantSearchCond(null, superCategory, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
                 null
@@ -316,6 +318,7 @@ class RestaurantQueryServiceTest {
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 2L;
         String category = "category:로이스1호점";
+        String superCategory = "superCategory:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
             if (restaurantWithCelebsAndImagesSimpleResponse.getName()
@@ -328,7 +331,7 @@ class RestaurantQueryServiceTest {
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
-                new RestaurantSearchCond(celebId, category, restaurantName),
+                new RestaurantSearchCond(celebId, superCategory, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 100),
                 null
@@ -552,6 +555,7 @@ class RestaurantQueryServiceTest {
                 restaurantWithCelebsAndImagesSimpleResponse.getId(),
                 restaurantWithCelebsAndImagesSimpleResponse.getName(),
                 restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getSuperCategory(),
                 restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
@@ -714,6 +718,7 @@ class RestaurantQueryServiceTest {
                     restaurant.id(),
                     restaurant.name(),
                     restaurant.category(),
+                    restaurant.superCategory(),
                     restaurant.roadAddress(),
                     restaurant.latitude(),
                     restaurant.longitude(),
@@ -809,6 +814,7 @@ class RestaurantQueryServiceTest {
                     restaurantWithCelebsAndImagesSimpleResponse.getId(),
                     restaurantWithCelebsAndImagesSimpleResponse.getName(),
                     restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getSuperCategory(),
                     restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
                     restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
                     restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),

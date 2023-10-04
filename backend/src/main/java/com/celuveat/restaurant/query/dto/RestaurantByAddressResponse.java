@@ -12,6 +12,7 @@ public class RestaurantByAddressResponse {
     private Long id;
     private String name;
     private String category;
+    private String superCategory;
     private String roadAddress;
     @JsonProperty("lat")
     private Double latitude;
@@ -27,7 +28,8 @@ public class RestaurantByAddressResponse {
 
     public RestaurantByAddressResponse(
             Long id, String name,
-            String category, String roadAddress,
+            String category, String superCategory,
+            String roadAddress,
             Double latitude, Double longitude,
             String phoneNumber, String naverMapUrl,
             int viewCount, int likeCount
@@ -35,6 +37,7 @@ public class RestaurantByAddressResponse {
         this.id = id;
         this.name = name;
         this.category = category;
+        this.superCategory = superCategory;
         this.roadAddress = roadAddress;
         this.latitude = latitude;
         this.longitude = longitude;
