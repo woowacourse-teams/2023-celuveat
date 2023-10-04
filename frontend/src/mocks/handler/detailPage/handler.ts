@@ -121,7 +121,7 @@ export const DetailPageSuccessHandler = [
       content: 'MSW는 formdata지원을 안한다나 어쩐다나',
       isLiked: false,
       likeCount: 97,
-      rate: 4,
+      rating: 4,
       createdDate: `${year}-${month}-${day}` as HyphenatedDate,
       reviewImageUrls: makeImage(3),
     });

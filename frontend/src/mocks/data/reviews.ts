@@ -13,7 +13,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-02-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -42,7 +42,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-25',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -67,7 +67,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2014-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 4,
+    rating: 4,
     reviewImageUrls: [],
   },
   {
@@ -79,7 +79,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2023-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 3,
+    rating: 3,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -104,7 +104,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 4.5,
+    rating: 4.5,
     reviewImageUrls: [],
   },
   {
@@ -116,7 +116,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [],
   },
   {
@@ -128,7 +128,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [],
   },
   {
@@ -139,7 +139,7 @@ const reviews: RestaurantReview[] = [
     content: '이 집 맛있네요22',
     createdDate: '2022-01-23',
     isLiked: false,
-    rate: 5,
+    rating: 5,
     likeCount: 97,
     reviewImageUrls: [],
   },
@@ -151,7 +151,7 @@ const reviews: RestaurantReview[] = [
     content: '이 집 맛있네요22',
     createdDate: '2022-01-23',
     isLiked: false,
-    rate: 5,
+    rating: 5,
     likeCount: 97,
     reviewImageUrls: [],
   },

@@ -39,15 +39,15 @@ function ReviewForm({ type }: ReviewFormProps) {
 
   const [text, setText] = useState('');
   const [images, setImages] = useState<ReviewUploadImageType[]>([]);
-  const [rate, setRate] = useState<StarRate>(0);
+  const [rating, setRating] = useState<StarRate>(0);
 
-  const isSubmitDisabled = text.length === 0 || rate === 0;
+  const isSubmitDisabled = text.length === 0 || rating === 0;
 
   useEffect(() => {
     if (type === 'update') {
       const targetReview = restaurantReviewsData?.reviews.find(review => review.id === reviewId);
 
-      setRate(targetReview.rate);
+      setRating(targetReview.rating);
       setText(targetReview.content);
       setImages(targetReview.reviewImageUrls);
     }
@@ -76,7 +76,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {
     const clickedStarRate = Number(e.currentTarget.dataset.rate) as StarRate;
 
-    setRate(clickedStarRate);
+    setRating(clickedStarRate);
   };
 
   const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
@@ -91,7 +91,7 @@ function ReviewForm({ type }: ReviewFormProps) {
     });
 
     formData.append('content', text);
-    formData.append('rate', String(rate));
+    formData.append('rate', String(rating));
 
     return formData;
   };
@@ -116,8 +116,8 @@ function ReviewForm({ type }: ReviewFormProps) {
 
   return (
     <StyledReviewFormContainer>
-      <StyledReviewFormItemText>별점 등록하기 ({rate}/5)</StyledReviewFormItemText>
-      <StarRating rate={rate} onRateClick={onClickStarRate} />
+      <StyledReviewFormItemText>별점 등록하기 ({rating}/5)</StyledReviewFormItemText>
+      <StarRating rate={rating} onRateClick={onClickStarRate} />
 
       <StyledReviewFormItemText>후기 작성하기</StyledReviewFormItemText>
       <StyledTextArea placeholder="음식점을 다녀간 후기를 들려주세요" value={text} onChange={onChange} />

@@ -24,7 +24,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-02-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -53,7 +53,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-25',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -74,7 +74,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2014-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -95,7 +95,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2023-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -116,7 +116,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -137,7 +137,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -158,7 +158,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -179,7 +179,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
@@ -200,7 +200,7 @@ const reviews: RestaurantReview[] = [
     createdDate: '2022-01-23',
     isLiked: false,
     likeCount: 97,
-    rate: 5,
+    rating: 5,
     reviewImageUrls: [
       {
         imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',

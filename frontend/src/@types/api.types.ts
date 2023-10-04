@@ -71,7 +71,7 @@ export interface RestaurantReview {
   createdDate: HyphenatedDate;
   isLiked: boolean;
   likeCount: number;
-  rate: StarRate;
+  rating: StarRate;
   reviewImageUrls: ReviewUploadImageType[];
 }
 

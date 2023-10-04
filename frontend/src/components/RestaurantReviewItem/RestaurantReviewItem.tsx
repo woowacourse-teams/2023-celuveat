@@ -70,8 +70,8 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
         )}
       </StyledProfileAndButton>
       <StyledStarRatingWrapper>
-        <StarRating rate={review.rate} size="12px" />
-        <StyledStarRatingText>{review.rate}</StyledStarRatingText>
+        <StarRating rate={review.rating} size="12px" />
+        <StyledStarRatingText>{review.rating}</StyledStarRatingText>
       </StyledStarRatingWrapper>
       <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
       <StyledReviewImgWrapper>
