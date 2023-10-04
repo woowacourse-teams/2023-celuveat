@@ -264,7 +264,6 @@ public class RestaurantSearchResponseDao {
                     .findFirst()
                     .orElseThrow(() -> new RestaurantException(RestaurantExceptionType.UNSUPPORTED_SORT_PROPERTY));
         }
-
     }
 
     public record RestaurantSearchCond(
