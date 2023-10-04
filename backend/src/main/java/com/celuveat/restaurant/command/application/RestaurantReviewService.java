@@ -37,6 +37,7 @@ public class RestaurantReviewService {
         RestaurantReview restaurantReview =
                 new RestaurantReview(command.content(), member, restaurant, command.rating());
         uploadImagesIfExist(command.images(), restaurantReview);
+        restaurant.addReviewRating(restaurantReview.rating());
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
@@ -55,12 +56,17 @@ public class RestaurantReviewService {
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
+        Restaurant restaurant = review.restaurant();
+        restaurant.deleteReviewRating(review.rating());
         review.updateContent(command.content(), command.memberId(), command.rating());
+        restaurant.addReviewRating(command.rating());
     }
 
     public void delete(DeleteReviewCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
         review.checkOwner(command.memberId());
+        Restaurant restaurant = review.restaurant();
+        restaurant.deleteReviewRating(review.rating());
         restaurantReviewRepository.delete(review);
     }
 }

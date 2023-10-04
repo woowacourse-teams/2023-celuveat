@@ -92,6 +92,24 @@ class RestaurantReviewServiceTest {
     }
 
     @Test
+    void 리뷰를_저장하면_음식점에_전체_평점과_리뷰수를_증가시킨다() {
+        // given
+        SaveReviewRequestCommand commandA =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+        SaveReviewRequestCommand commandB =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 3.0, null);
+
+        // when
+        restaurantReviewService.create(commandA);
+        restaurantReviewService.create(commandB);
+
+        // then
+        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
+        assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
+        assertThat(savedRestaurant.ratingTotal()).isEqualTo(8.0);
+    }
+
+    @Test
     void 다른_사람의_리뷰를_수정하려하면_예외가_발생한다() {
         // given
         SaveReviewRequestCommand saveCommand =
@@ -121,12 +139,35 @@ class RestaurantReviewServiceTest {
 
         // when
         restaurantReviewService.update(updateCommand);
-        RestaurantReview result = restaurantReviewRepository.getById(reviewId);
 
         // then
+        RestaurantReview result = restaurantReviewRepository.getById(reviewId);
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id", "createdDate")
                 .isEqualTo(expected);
+    }
+
+
+    @Test
+    void 리뷰를_수정하면_음식점의_전체_평점이_변경된다() {
+        // given
+        SaveReviewRequestCommand saveCommandA =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+        restaurantReviewService.create(saveCommandA);
+        SaveReviewRequestCommand saveCommandB =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+        Long reviewId = restaurantReviewService.create(saveCommandB);
+        UpdateReviewRequestCommand updateCommand =
+                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 1.0);
+
+        // when
+        restaurantReviewService.update(updateCommand);
+
+        // then
+        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
+        assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
+        assertThat(savedRestaurant.ratingTotal()).isNotEqualTo(10.0);
+        assertThat(savedRestaurant.ratingTotal()).isEqualTo(6.0);
     }
 
     @Test
@@ -163,6 +204,23 @@ class RestaurantReviewServiceTest {
     }
 
     @Test
+    void 리뷰를_삭제하면_음식점의_전체_평점과_리뷰수가_감소한다() {
+        // given
+        SaveReviewRequestCommand saveCommand =
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+        Long reviewId = restaurantReviewService.create(saveCommand);
+        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
+
+        // when
+        restaurantReviewService.delete(deleteCommand);
+
+        // then
+        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
+        assertThat(savedRestaurant.reviewCount()).isEqualTo(0);
+        assertThat(savedRestaurant.ratingTotal()).isEqualTo(0.0);
+    }
+
+    @Test
     void 리뷰를_사진과_함께_저장한다() {
         // given
         MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
@@ -180,7 +238,7 @@ class RestaurantReviewServiceTest {
         RestaurantReview savedReview = restaurantReviewRepository.getById(reviewId);
         List<RestaurantReviewImage> reviewImages
                 = restaurantReviewImageRepository.findRestaurantReviewImagesByRestaurantReview(savedReview);
-        
+
         assertThat(savedReview).usingRecursiveComparison()
                 .ignoringFields("id", "createdDate")
                 .isEqualTo(expected);
