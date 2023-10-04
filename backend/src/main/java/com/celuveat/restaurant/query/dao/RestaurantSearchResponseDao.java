@@ -22,7 +22,6 @@ import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
-import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -37,7 +36,6 @@ import jakarta.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.LongSupplier;
 import lombok.RequiredArgsConstructor;
@@ -206,12 +204,12 @@ public class RestaurantSearchResponseDao {
                 .fetch();
     }
 
-    private BooleanExpression restaurantIdNotEqual(Long id) {
-        return restaurant.id.ne(id);
-    }
-
     private BooleanExpression distanceMinOrEqual(Restaurant standard, int distance) {
         return distance(standard.latitude(), standard.longitude()).loe(distance);
+    }
+
+    private BooleanExpression restaurantIdNotEqual(Long id) {
+        return restaurant.id.ne(id);
     }
 
     private LongSupplier totalCountSupplier(long restaurantId, int distance, Restaurant standard) {
@@ -245,23 +243,11 @@ public class RestaurantSearchResponseDao {
     }
 
     private Map<Long, List<CelebQueryResponse>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
-        List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        Map<Long, List<Video>> restaurantVideos = groupBySameOrder(videos, video -> video.restaurant().id());
-        return restaurantVideos.entrySet()
+        List<CelebQueryResponse> list = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds)
                 .stream()
-                .map(it -> Map.entry(it.getKey(), videosToCelebs(it)))
-                .collect(toMap(
-                        Entry::getKey,
-                        Entry::getValue
-                ));
-    }
-
-    private List<CelebQueryResponse> videosToCelebs(Entry<Long, List<Video>> idWithVideosEntry) {
-        return idWithVideosEntry.getValue()
-                .stream()
-                .map(Video::celeb)
-                .map(CelebQueryResponse::of)
+                .map(it -> CelebQueryResponse.from(it.restaurant().id(), it.celeb()))
                 .toList();
+        return groupBySameOrder(list, CelebQueryResponse::restaurantId);
     }
 
     private Map<Long, List<RestaurantImageQueryResponse>> getImagesGroupByRestaurantsId(List<Long> restaurantIds) {

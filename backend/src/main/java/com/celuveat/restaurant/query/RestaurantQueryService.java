@@ -49,10 +49,7 @@ public class RestaurantQueryService {
             @Nullable Long memberId
     ) {
         Page<RestaurantSearchResponse> response = restaurantSearchResponseDao.findAll(
-                restaurantCond,
-                locationCond,
-                pageable,
-                memberId
+                restaurantCond, locationCond, pageable, memberId
         );
         Long celebId = restaurantCond.celebId();
         if (celebId == null) {
@@ -75,12 +72,7 @@ public class RestaurantQueryService {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantSearchResponseDao.findNearBy(
-                restaurantId,
-                distance,
-                pageable,
-                memberId
-        );
+        return restaurantSearchResponseDao.findNearBy(restaurantId, distance, pageable, memberId);
     }
 
     public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {

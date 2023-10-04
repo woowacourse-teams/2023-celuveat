@@ -217,7 +217,8 @@ class RestaurantQueryServiceTest {
         Long celebId = 1L;
         String category = "category:오도1호점";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream().map(CelebQueryResponse::id)
+            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream()
+                    .map(CelebQueryResponse::id)
                     .toList();
             if (list.contains(celebId) && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
@@ -249,9 +250,11 @@ class RestaurantQueryServiceTest {
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream().map(CelebQueryResponse::id)
+            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream()
+                    .map(CelebQueryResponse::id)
                     .toList();
-            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName()
+                    .contains(StringUtil.removeAllBlank(restaurantName))
                     && list.contains(celebId)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -282,7 +285,8 @@ class RestaurantQueryServiceTest {
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName()
+                    .contains(StringUtil.removeAllBlank(restaurantName))
                     && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -314,7 +318,8 @@ class RestaurantQueryServiceTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName()
+                    .contains(StringUtil.removeAllBlank(restaurantName))
                     && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)
                     && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
@@ -631,7 +636,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result.celebs().get(0))
                 .usingRecursiveComparison()
-                .isEqualTo(targetCeleb);
+                .isEqualTo(CelebQueryResponse.from(로이스2호점.id(), targetCeleb));
         assertThat(result.images().get(0).author())
                 .isEqualTo(targetCeleb.name());
     }
@@ -718,6 +723,7 @@ class RestaurantQueryServiceTest {
                     likeCount,
                     isLiked,
                     celebs.stream().map(it -> new CelebQueryResponse(
+                            restaurant.id(),
                             it.id(),
                             it.name(),
                             it.youtubeChannelName(),

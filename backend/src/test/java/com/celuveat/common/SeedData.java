@@ -160,7 +160,10 @@ public class SeedData {
                 distance,
                 0 // likeCount
         );
-        response.setCelebs(celebs.stream().map(CelebQueryResponse::of).toList());
+        List<CelebQueryResponse> celebQueryResponses = celebs.stream()
+                .map(it -> CelebQueryResponse.from(restaurant.id(), it))
+                .toList();
+        response.setCelebs(celebQueryResponses);
         response.setImages(images.stream().map(RestaurantImageQueryResponse::of).toList());
         return response;
     }
