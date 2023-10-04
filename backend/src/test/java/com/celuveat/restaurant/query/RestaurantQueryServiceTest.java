@@ -715,8 +715,8 @@ class RestaurantQueryServiceTest {
                     restaurant.naverMapUrl(),
                     restaurant.viewCount(),
                     null,
-                    isLiked,
                     likeCount,
+                    isLiked,
                     celebs.stream().map(it -> new CelebQueryResponse(
                             it.id(),
                             it.name(),
@@ -807,8 +807,8 @@ class RestaurantQueryServiceTest {
                     restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
                     restaurantWithCelebsAndImagesSimpleResponse.viewCount() + value,
                     restaurantWithCelebsAndImagesSimpleResponse.distance(),
-                    restaurantWithCelebsAndImagesSimpleResponse.isLiked(),
                     restaurantWithCelebsAndImagesSimpleResponse.likeCount(),
+                    restaurantWithCelebsAndImagesSimpleResponse.isLiked(),
                     restaurantWithCelebsAndImagesSimpleResponse.celebs(),
                     restaurantWithCelebsAndImagesSimpleResponse.images()
             );

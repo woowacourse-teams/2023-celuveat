@@ -210,8 +210,8 @@ public class RestaurantAcceptanceSteps {
                 restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
                 restaurantWithCelebsAndImagesSimpleResponse.viewCount() + viewCountValue,
                 restaurantWithCelebsAndImagesSimpleResponse.distance(),
-                isLiked,
                 restaurantWithCelebsAndImagesSimpleResponse.likeCount() + likeCountValue,
+                isLiked,
                 restaurantWithCelebsAndImagesSimpleResponse.celebs(),
                 restaurantWithCelebsAndImagesSimpleResponse.images()
         );
@@ -246,7 +246,9 @@ public class RestaurantAcceptanceSteps {
         List<RestaurantImageQueryResponse> images = new ArrayList<>(response.images());
         Collections.swap(celebs, celebIndex1, celebIndex2);
         Collections.swap(images, imageIndex1, imageIndex2);
-        return RestaurantSearchResponse.of(response, celebs, images);
+        response.setCelebs(celebs);
+        response.setImages(images);
+        return response;
     }
 
     public static List<Long> 음식점_아이디를_가져온다(RestaurantSearchResponse... 음식점들) {

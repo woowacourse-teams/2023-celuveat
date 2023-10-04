@@ -1,94 +1,120 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.celeb.command.domain.Celeb;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import lombok.Builder;
-import org.springframework.data.domain.Page;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public record RestaurantSearchResponse(
-        Long id,
-        String name,
-        String category,
-        String roadAddress,
-        @JsonProperty("lat") Double latitude,
-        @JsonProperty("lng") Double longitude,
-        String phoneNumber,
-        String naverMapUrl,
-        Integer viewCount,
-        Integer distance,
-        Boolean isLiked,
-        int likeCount,
-        List<CelebQueryResponse> celebs,
-        List<RestaurantImageQueryResponse> images
-) {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class RestaurantSearchResponse {
 
-    @Builder
+    private Long id;
+    private String name;
+    private String category;
+    private String roadAddress;
+    @JsonProperty("lat")
+    private Double latitude;
+    @JsonProperty("lng")
+    private Double longitude;
+    private String phoneNumber;
+    private String naverMapUrl;
+    private Integer viewCount;
+    private Integer distance;
+    private int likeCount;
+    private boolean isLiked;
+    private List<CelebQueryResponse> celebs = new ArrayList<>();
+    private List<RestaurantImageQueryResponse> images = new ArrayList<>();
+
     public RestaurantSearchResponse(
-            RestaurantWithDistance restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages,
-            boolean isLiked,
+            Long id, String name,
+            String category, String roadAddress,
+            Double latitude, Double longitude,
+            String phoneNumber, String naverMapUrl,
+            Integer viewCount, Double distance,
             int likeCount
     ) {
-        this(
-                restaurant.id(),
-                restaurant.name(),
-                restaurant.category(),
-                restaurant.roadAddress(),
-                restaurant.latitude(),
-                restaurant.longitude(),
-                restaurant.phoneNumber(),
-                restaurant.naverMapUrl(),
-                restaurant.viewCount(),
-                restaurant.distance().intValue(),
-                isLiked,
-                likeCount,
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                (restaurantImages != null) ? restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList() : Collections.emptyList()
-        );
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.roadAddress = roadAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.phoneNumber = phoneNumber;
+        this.naverMapUrl = naverMapUrl;
+        this.viewCount = viewCount;
+        this.distance = distance.intValue();
+        this.likeCount = likeCount;
     }
 
-    public static Page<RestaurantSearchResponse> of(
-            Page<RestaurantWithDistance> restaurants,
-            Map<Long, List<Celeb>> celebsMap,
-            Map<Long, List<RestaurantImage>> restaurantMap,
-            Map<Long, Boolean> isLikedMap
-    ) {
-        return restaurants.map(restaurant ->
-                RestaurantSearchResponse.builder()
-                        .restaurant(restaurant)
-                        .celebs(celebsMap.get(restaurant.id()))
-                        .restaurantImages(restaurantMap.get(restaurant.id()))
-                        .isLiked(isLikedMap.get(restaurant.id()))
-                        .likeCount(restaurant.likeCount())
-                        .build()
-        );
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
-    public static RestaurantSearchResponse of(
-            RestaurantSearchResponse other,
-            List<CelebQueryResponse> celebs,
-            List<RestaurantImageQueryResponse> restaurantImages
-    ) {
-        return new RestaurantSearchResponse(
-                other.id,
-                other.name,
-                other.category,
-                other.roadAddress,
-                other.latitude,
-                other.longitude,
-                other.phoneNumber,
-                other.naverMapUrl,
-                other.viewCount,
-                other.distance,
-                other.isLiked,
-                other.likeCount,
-                celebs,
-                restaurantImages
-        );
+    public void setCelebs(List<CelebQueryResponse> celebs) {
+        this.celebs = celebs;
+    }
+
+    public void setImages(List<RestaurantImageQueryResponse> images) {
+        this.images = images;
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String category() {
+        return category;
+    }
+
+    public String roadAddress() {
+        return roadAddress;
+    }
+
+    public Double latitude() {
+        return latitude;
+    }
+
+    public Double longitude() {
+        return longitude;
+    }
+
+    public String phoneNumber() {
+        return phoneNumber;
+    }
+
+    public String naverMapUrl() {
+        return naverMapUrl;
+    }
+
+    public Integer viewCount() {
+        return viewCount;
+    }
+
+    public Integer distance() {
+        return distance;
+    }
+
+    public int likeCount() {
+        return likeCount;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public List<CelebQueryResponse> celebs() {
+        return celebs;
+    }
+
+    public List<RestaurantImageQueryResponse> images() {
+        return images;
     }
 }

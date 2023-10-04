@@ -4,6 +4,7 @@ import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
 import static com.celuveat.common.util.StringUtil.removeAllBlank;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
+import static com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSortType.LIKE_COUNT;
 import static com.celuveat.video.command.domain.QVideo.video;
 import static com.querydsl.core.types.dsl.Expressions.numberTemplate;
 import static java.util.function.Function.identity;
@@ -20,8 +21,9 @@ import com.celuveat.restaurant.exception.RestaurantExceptionType;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
+import com.celuveat.restaurant.query.dto.CelebQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
-import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import com.querydsl.core.types.OrderSpecifier;
@@ -39,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.LongSupplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,8 +69,22 @@ public class RestaurantSearchResponseDao {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        List<RestaurantWithDistance> resultList = query.selectDistinct(Projections.constructor(
-                        RestaurantWithDistance.class,
+        List<RestaurantSearchResponse> resultList = findRestaurants(restaurantCond, locationCond, pageable);
+        LongSupplier totalCountSupplier = totalCountSupplier(restaurantCond, locationCond);
+        Page<RestaurantSearchResponse> restaurants = PageableExecutionUtils.getPage(
+                resultList, pageable, totalCountSupplier
+        );
+        settingCelebAndImageAndLiked(memberId, restaurants);
+        return restaurants;
+    }
+
+    private List<RestaurantSearchResponse> findRestaurants(
+            RestaurantSearchCond restaurantCond,
+            LocationSearchCond locationCond,
+            Pageable pageable
+    ) {
+        return query.selectDistinct(Projections.constructor(
+                        RestaurantSearchResponse.class,
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
@@ -92,20 +109,6 @@ public class RestaurantSearchResponseDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-        JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
-                .from(restaurant)
-                .join(video).on(video.restaurant.eq(restaurant))
-                .join(celeb).on(celeb.eq(video.celeb))
-                .where(
-                        celebIdEqual(restaurantCond.celebId),
-                        restaurantCategoryEqual(restaurantCond.category),
-                        restaurantNameLike(restaurantCond.restaurantName),
-                        restaurantInArea(locationCond)
-                );
-        Page<RestaurantWithDistance> restaurants = PageableExecutionUtils.getPage(resultList, pageable,
-                countQuery::fetchOne);
-        return toSimpleResponse(memberId, restaurants);
     }
 
     private NumberExpression<Double> distance(double latitude, double longitude) {
@@ -119,24 +122,15 @@ public class RestaurantSearchResponseDao {
     }
 
     private BooleanExpression celebIdEqual(Long celebId) {
-        if (celebId == null) {
-            return null;
-        }
-        return celeb.id.eq(celebId);
+        return celebId == null ? null : celeb.id.eq(celebId);
     }
 
     private BooleanExpression restaurantCategoryEqual(String category) {
-        if (StringUtils.isBlank(category)) {
-            return null;
-        }
-        return restaurant.category.eq(category);
+        return StringUtils.isBlank(category) ? null : restaurant.category.eq(category);
     }
 
     private BooleanExpression restaurantNameLike(String restaurantName) {
-        if (StringUtils.isBlank(restaurantName)) {
-            return null;
-        }
-        return restaurant.name.contains(removeAllBlank(restaurantName));
+        return StringUtils.isBlank(restaurantName) ? null : restaurant.name.contains(removeAllBlank(restaurantName));
     }
 
     private BooleanExpression restaurantInArea(LocationSearchCond locationSearchCond) {
@@ -150,18 +144,24 @@ public class RestaurantSearchResponseDao {
                 .findFirst()
                 .map(RestaurantSortType::from)
                 .orElse(RestaurantSortType.DISTANCE);
-        if (sortType == RestaurantSortType.LIKE_COUNT) {
+        if (sortType == LIKE_COUNT) {
             return restaurant.likeCount.desc();
         }
         return distanceColumn.asc();
     }
 
-    private BooleanExpression distanceMinOrEqual(Restaurant standard, int distance) {
-        return distance(standard.latitude(), standard.longitude()).loe(distance);
-    }
-
-    private BooleanExpression restaurantIdNotEqual(Long id) {
-        return restaurant.id.ne(id);
+    private LongSupplier totalCountSupplier(RestaurantSearchCond restaurantCond, LocationSearchCond locationCond) {
+        JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
+                .from(restaurant)
+                .join(video).on(video.restaurant.eq(restaurant))
+                .join(celeb).on(celeb.eq(video.celeb))
+                .where(
+                        celebIdEqual(restaurantCond.celebId),
+                        restaurantCategoryEqual(restaurantCond.category),
+                        restaurantNameLike(restaurantCond.restaurantName),
+                        restaurantInArea(locationCond)
+                );
+        return countQuery::fetchOne;
     }
 
     public Page<RestaurantSearchResponse> findNearBy(
@@ -171,7 +171,21 @@ public class RestaurantSearchResponseDao {
             @Nullable Long memberId
     ) {
         Restaurant standard = restaurantQueryDaoSupport.getById(restaurantId);
-        List<RestaurantWithDistance> result = query.select(Projections.constructor(RestaurantWithDistance.class,
+        List<RestaurantSearchResponse> result = findRestaurants(restaurantId, distance, pageable, standard);
+        LongSupplier totalCountSupplier = totalCountSupplier(restaurantId, distance, standard);
+        Page<RestaurantSearchResponse> restaurants = PageableExecutionUtils.getPage(result, pageable,
+                totalCountSupplier);
+        settingCelebAndImageAndLiked(memberId, restaurants);
+        return restaurants;
+    }
+
+    private List<RestaurantSearchResponse> findRestaurants(
+            long restaurantId,
+            int distance,
+            Pageable pageable,
+            Restaurant standard
+    ) {
+        return query.select(Projections.constructor(RestaurantSearchResponse.class,
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
@@ -192,27 +206,42 @@ public class RestaurantSearchResponseDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    private BooleanExpression restaurantIdNotEqual(Long id) {
+        return restaurant.id.ne(id);
+    }
+
+    private BooleanExpression distanceMinOrEqual(Restaurant standard, int distance) {
+        return distance(standard.latitude(), standard.longitude()).loe(distance);
+    }
+
+    private LongSupplier totalCountSupplier(long restaurantId, int distance, Restaurant standard) {
         JPAQuery<Long> countQuery = query.select(restaurant.count())
                 .from(restaurant)
                 .where(
                         distanceMinOrEqual(standard, distance),
                         restaurantIdNotEqual(restaurantId)
                 );
-        Page<RestaurantWithDistance> restaurants = PageableExecutionUtils.getPage(result, pageable,
-                countQuery::fetchOne);
-        return toSimpleResponse(memberId, restaurants);
+        return countQuery::fetchOne;
     }
 
-    private Page<RestaurantSearchResponse> toSimpleResponse(
-            @Nullable Long memberId, Page<RestaurantWithDistance> restaurants
+    private void settingCelebAndImageAndLiked(
+            @Nullable Long memberId, Page<RestaurantSearchResponse> restaurants
     ) {
-        List<Long> restaurantIds = restaurants.map(RestaurantWithDistance::id).toList();
+        List<Long> restaurantIds = restaurants.map(RestaurantSearchResponse::id).toList();
         Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantImageMap = getImagesGroupByRestaurantsId(restaurantIds);
         Map<Long, Boolean> isLikedMap = getIsLikedGroupByRestaurantsId(memberId, restaurantIds);
-        return RestaurantSearchResponse.of(
-                restaurants, celebsMap, restaurantImageMap, isLikedMap
-        );
+        for (RestaurantSearchResponse response : restaurants) {
+            response.setCelebs(celebsMap.get(response.id()).stream().map(CelebQueryResponse::of).toList());
+            if (restaurantImageMap.get(response.id()) != null) {
+                response.setImages(
+                        restaurantImageMap.get(response.id()).stream().map(RestaurantImageQueryResponse::of).toList()
+                );
+            }
+            response.setLiked(isLikedMap.get(response.id()));
+        }
     }
 
     private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
@@ -249,7 +278,6 @@ public class RestaurantSearchResponseDao {
                 .map(Video::celeb)
                 .toList();
     }
-
 
     @RequiredArgsConstructor
     public enum RestaurantSortType {

@@ -69,6 +69,8 @@ public class RestaurantRelocator {
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
         List<RestaurantImageQueryResponse> relocatedImages =
                 relocateImageToFirstByCeleb(targetCeleb, response.images());
-        return RestaurantSearchResponse.of(response, relocatedCelebs, relocatedImages);
+        response.setCelebs(relocatedCelebs);
+        response.setImages(relocatedImages);
+        return response;
     }
 }

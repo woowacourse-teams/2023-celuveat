@@ -135,7 +135,9 @@ public class RestaurantFixture {
     public static boolean isCelebVisited(
             Long celebId, RestaurantSearchResponse restaurantSearchResponse
     ) {
-        List<Long> celebIds = restaurantSearchResponse.celebs().stream().map(CelebQueryResponse::id)
+        List<Long> celebIds = restaurantSearchResponse.celebs()
+                .stream()
+                .map(CelebQueryResponse::id)
                 .toList();
         return celebIds.contains(celebId);
     }
@@ -157,8 +159,8 @@ public class RestaurantFixture {
                         restaurant.naverMapUrl(),
                         restaurant.viewCount(),
                         0,
-                        false,
                         restaurant.likeCount(),
+                        false,
                         videos.get(restaurant).stream().map(Video::celeb).map(celeb -> new CelebQueryResponse(
                                 celeb.id(),
                                 celeb.name(),
