@@ -63,9 +63,10 @@ public class RestaurantQueryService {
 
     public Page<RestaurantByAddressResponse> findAllByAddress(
             DistrictCodeCond cond,
-            Pageable pageable
+            Pageable pageable,
+            @Nullable Long memberId
     ) {
-        return restaurantByAddressResponseDao.find(cond, pageable);
+        return restaurantByAddressResponseDao.find(cond, pageable, memberId);
     }
 
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(

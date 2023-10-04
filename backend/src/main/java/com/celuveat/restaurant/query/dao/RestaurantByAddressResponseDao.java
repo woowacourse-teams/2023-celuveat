@@ -4,8 +4,12 @@ import static com.celuveat.administrativedistrict.domain.QAdministrativeDistrict
 import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.restaurant.command.domain.QRestaurantImage.restaurantImage;
+import static com.celuveat.restaurant.command.domain.QRestaurantLike.restaurantLike;
 import static com.celuveat.video.command.domain.QVideo.video;
+import static java.lang.Boolean.FALSE;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse.CelebInfo;
@@ -15,6 +19,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.LongSupplier;
@@ -38,14 +43,20 @@ public class RestaurantByAddressResponseDao {
             restaurant.point
     );
 
-    public Page<RestaurantByAddressResponse> find(DistrictCodeCond cond, Pageable pageable) {
+    public Page<RestaurantByAddressResponse> find(
+            DistrictCodeCond cond,
+            Pageable pageable,
+            @Nullable Long memberId
+    ) {
         List<RestaurantByAddressResponse> resultList = findRestaurants(cond, pageable);
         List<Long> ids = extractIds(resultList);
         Map<Long, List<CelebInfo>> celebs = findCelebs(ids);
         Map<Long, List<RestaurantImageInfo>> images = findImages(ids);
-        for (RestaurantByAddressResponse restaurantResponse : resultList) {
-            restaurantResponse.setCelebs(celebs.get(restaurantResponse.id()));
-            restaurantResponse.setImages(images.get(restaurantResponse.id()));
+        Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
+        for (RestaurantByAddressResponse restaurant : resultList) {
+            restaurant.setCelebs(celebs.get(restaurant.getId()));
+            restaurant.setImages(images.get(restaurant.getId()));
+            restaurant.setLiked(memberIsLikedRestaurants.get(restaurant.getId()));
         }
         return PageableExecutionUtils.getPage(resultList, pageable, totalCountSupplier(cond));
     }
@@ -76,7 +87,7 @@ public class RestaurantByAddressResponseDao {
 
     private List<Long> extractIds(List<RestaurantByAddressResponse> resultList) {
         return resultList.stream()
-                .map(RestaurantByAddressResponse::id)
+                .map(RestaurantByAddressResponse::getId)
                 .toList();
     }
 
@@ -111,6 +122,20 @@ public class RestaurantByAddressResponseDao {
                 .fetch()
                 .stream()
                 .collect(groupingBy(RestaurantImageInfo::restaurantId));
+    }
+
+    private Map<Long, Boolean> findMemberIsLikedRestaurants(List<Long> ids, @Nullable Long memberId) {
+        if (memberId == null) {
+            return ids.stream()
+                    .collect(toMap(identity(), (ignored) -> FALSE));
+        }
+        List<Long> memberLikedRestaurantIds = query.select(restaurantLike.restaurant.id)
+                .where(
+                        restaurantLike.member.id.eq(memberId),
+                        restaurantLike.restaurant.id.in(ids)
+                ).fetch();
+        return ids.stream()
+                .collect(toMap(identity(), memberLikedRestaurantIds::contains));
     }
 
     private LongSupplier totalCountSupplier(DistrictCodeCond cond) {

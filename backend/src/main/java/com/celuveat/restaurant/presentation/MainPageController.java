@@ -1,6 +1,7 @@
 package com.celuveat.restaurant.presentation;
 
 import com.celuveat.common.PageResponse;
+import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.restaurant.presentation.dto.DistrictCodeCondRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
@@ -25,10 +26,11 @@ public class MainPageController {
     @GetMapping("/address")
     ResponseEntity<PageResponse<RestaurantByAddressResponse>> findByAddress(
             @ModelAttribute DistrictCodeCondRequest districtCodeCondRequest,
-            @PageableDefault(size = 18) Pageable pageable
+            @PageableDefault(size = 18) Pageable pageable,
+            @LooseAuth Long memberId
     ) {
         Page<RestaurantByAddressResponse> result = restaurantQueryService.findAllByAddress(
-                districtCodeCondRequest.toCondition(), pageable
+                districtCodeCondRequest.toCondition(), pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
     }

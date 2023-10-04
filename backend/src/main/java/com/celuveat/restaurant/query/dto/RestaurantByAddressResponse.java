@@ -4,50 +4,56 @@ import com.celuveat.restaurant.command.domain.SocialMedia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
-public record RestaurantByAddressResponse(
-        Long id,
-        String name,
-        String category,
-        String roadAddress,
-        @JsonProperty("lat") Double latitude,
-        @JsonProperty("lng") Double longitude,
-        String phoneNumber,
-        String naverMapUrl,
-        int viewCount,
-        int likeCount,
-        List<CelebInfo> celebs,
-        List<RestaurantImageInfo> images
-) {
+@Getter
+public class RestaurantByAddressResponse {
+
+    private Long id;
+    private String name;
+    private String category;
+    private String roadAddress;
+    @JsonProperty("lat")
+    private Double latitude;
+    @JsonProperty("lng")
+    private Double longitude;
+    private String phoneNumber;
+    private String naverMapUrl;
+    private int viewCount;
+    private int likeCount;
+    private boolean isLiked;
+    private List<CelebInfo> celebs = new ArrayList<>();
+    private List<RestaurantImageInfo> images = new ArrayList<>();
 
     public RestaurantByAddressResponse(
-            Long id,
-            String name,
-            String category,
-            String roadAddress,
-            Double latitude,
-            Double longitude,
-            String phoneNumber,
-            String naverMapUrl,
-            int viewCount,
-            int likeCount
+            Long id, String name,
+            String category, String roadAddress,
+            Double latitude, Double longitude,
+            String phoneNumber, String naverMapUrl,
+            int viewCount, int likeCount
     ) {
-        this(id, name, category, roadAddress,
-                latitude, longitude,
-                phoneNumber, naverMapUrl,
-                viewCount, likeCount,
-                new ArrayList<>(),
-                new ArrayList<>());
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.roadAddress = roadAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.phoneNumber = phoneNumber;
+        this.naverMapUrl = naverMapUrl;
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
+    }
+
+    public void setLiked(boolean liked) {
+        this.isLiked = liked;
     }
 
     public void setCelebs(List<CelebInfo> celebs) {
-        this.celebs.clear();
-        this.celebs.addAll(celebs);
+        this.celebs = celebs;
     }
 
     public void setImages(List<RestaurantImageInfo> images) {
-        this.images.clear();
-        this.images.addAll(images);
+        this.images = images;
     }
 
     public record CelebInfo(
