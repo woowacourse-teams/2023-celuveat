@@ -29,6 +29,8 @@ public class RestaurantReview extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+    private Double rating;
+
     public void updateContent(String content, Long memberId) {
         checkOwner(memberId);
         this.content = content;
@@ -50,5 +52,9 @@ public class RestaurantReview extends BaseEntity {
 
     public Restaurant restaurant() {
         return restaurant;
+    }
+
+    public Double rating() {
+        return rating;
     }
 }

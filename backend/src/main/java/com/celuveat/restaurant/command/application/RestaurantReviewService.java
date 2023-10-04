@@ -25,7 +25,7 @@ public class RestaurantReviewService {
     public Long create(SaveReviewRequestCommand command) {
         OauthMember member = oauthMemberRepository.getById(command.memberId());
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
-        RestaurantReview restaurantReview = new RestaurantReview(command.content(), member, restaurant);
+        RestaurantReview restaurantReview = new RestaurantReview(command.content(), member, restaurant, 0D);
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
