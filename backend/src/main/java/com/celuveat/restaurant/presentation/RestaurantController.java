@@ -73,8 +73,7 @@ public class RestaurantController {
 
     @GetMapping("/like")
     ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(
-                memberId);
+        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(memberId);
         return ResponseEntity.ok(result);
     }
 
