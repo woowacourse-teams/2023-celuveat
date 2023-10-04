@@ -12,11 +12,11 @@ import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +57,7 @@ public class RestaurantController {
     }
 
     @GetMapping
-    ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAll(
+    ResponseEntity<PageResponse<RestaurantSearchResponse>> findAll(
             @LooseAuth Long memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
@@ -65,7 +65,7 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllWithMemberLiked(
+        Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
                 restaurantSearchCond, locationSearchCond, pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
@@ -84,13 +84,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}/nearby")
-    ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAllNearbyDistance(
+    ResponseEntity<PageResponse<RestaurantSearchResponse>> findAllNearbyDistance(
             @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
             @PageableDefault(size = 4) Pageable pageable
     ) {
-        Page<RestaurantSimpleResponse> result =
+        Page<RestaurantSearchResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                         restaurantId,
                         distance,

@@ -9,7 +9,7 @@ import java.util.Map;
 import lombok.Builder;
 import org.springframework.data.domain.Page;
 
-public record RestaurantSimpleResponse(
+public record RestaurantSearchResponse(
         Long id,
         String name,
         String category,
@@ -27,7 +27,7 @@ public record RestaurantSimpleResponse(
 ) {
 
     @Builder
-    public RestaurantSimpleResponse(
+    public RestaurantSearchResponse(
             RestaurantWithDistance restaurant,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages,
@@ -52,14 +52,14 @@ public record RestaurantSimpleResponse(
         );
     }
 
-    public static Page<RestaurantSimpleResponse> of(
+    public static Page<RestaurantSearchResponse> of(
             Page<RestaurantWithDistance> restaurants,
             Map<Long, List<Celeb>> celebsMap,
             Map<Long, List<RestaurantImage>> restaurantMap,
             Map<Long, Boolean> isLikedMap
     ) {
         return restaurants.map(restaurant ->
-                RestaurantSimpleResponse.builder()
+                RestaurantSearchResponse.builder()
                         .restaurant(restaurant)
                         .celebs(celebsMap.get(restaurant.id()))
                         .restaurantImages(restaurantMap.get(restaurant.id()))
@@ -69,12 +69,12 @@ public record RestaurantSimpleResponse(
         );
     }
 
-    public static RestaurantSimpleResponse of(
-            RestaurantSimpleResponse other,
+    public static RestaurantSearchResponse of(
+            RestaurantSearchResponse other,
             List<CelebQueryResponse> celebs,
             List<RestaurantImageQueryResponse> restaurantImages
     ) {
-        return new RestaurantSimpleResponse(
+        return new RestaurantSearchResponse(
                 other.id,
                 other.name,
                 other.category,

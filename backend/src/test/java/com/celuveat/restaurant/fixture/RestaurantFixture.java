@@ -5,7 +5,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import com.celuveat.video.command.domain.Video;
 import java.util.List;
 import java.util.Map;
@@ -133,20 +133,20 @@ public class RestaurantFixture {
     }
 
     public static boolean isCelebVisited(
-            Long celebId, RestaurantSimpleResponse restaurantSimpleResponse
+            Long celebId, RestaurantSearchResponse restaurantSearchResponse
     ) {
-        List<Long> celebIds = restaurantSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+        List<Long> celebIds = restaurantSearchResponse.celebs().stream().map(CelebQueryResponse::id)
                 .toList();
         return celebIds.contains(celebId);
     }
 
-    public static List<RestaurantSimpleResponse> toSimpleResponse(
+    public static List<RestaurantSearchResponse> toSimpleResponse(
             List<Restaurant> restaurants,
             Map<Restaurant, List<Video>> videos,
             Map<Restaurant, List<RestaurantImage>> images
     ) {
         return restaurants.stream()
-                .map(restaurant -> new RestaurantSimpleResponse(
+                .map(restaurant -> new RestaurantSearchResponse(
                         restaurant.id(),
                         restaurant.name(),
                         restaurant.category(),

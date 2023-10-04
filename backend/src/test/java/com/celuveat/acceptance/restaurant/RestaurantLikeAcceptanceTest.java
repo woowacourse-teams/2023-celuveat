@@ -23,7 +23,7 @@ import com.celuveat.common.SeedData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +94,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         조회_결과를_검증한다(예상_응답, 응답);
     }
 
-    private List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantSimpleResponse> 전체_음식점) {
+    private List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantSearchResponse> 전체_음식점) {
         return List.of(
                 전체_음식점.get(1).id(),
                 전체_음식점.get(3).id(),
@@ -107,70 +107,70 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         return restaurantLikeRepository.findByRestaurantAndMember(음식점, 멤버);
     }
 
-    private List<LikedRestaurantQueryResponse> 예상_응답(List<RestaurantSimpleResponse> 전체_음식점) {
-        RestaurantSimpleResponse restaurantSimpleResponse1 = 전체_음식점.get(1);
-        RestaurantSimpleResponse restaurantSimpleResponse2 = 전체_음식점.get(3);
-        RestaurantSimpleResponse restaurantSimpleResponse3 = 전체_음식점.get(4);
-        RestaurantSimpleResponse restaurantSimpleResponse4 = 전체_음식점.get(7);
+    private List<LikedRestaurantQueryResponse> 예상_응답(List<RestaurantSearchResponse> 전체_음식점) {
+        RestaurantSearchResponse restaurantSearchResponse1 = 전체_음식점.get(1);
+        RestaurantSearchResponse restaurantSearchResponse2 = 전체_음식점.get(3);
+        RestaurantSearchResponse restaurantSearchResponse3 = 전체_음식점.get(4);
+        RestaurantSearchResponse restaurantSearchResponse4 = 전체_음식점.get(7);
         return new ArrayList<>(List.of(
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse4),
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse3),
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse2),
-                toRestaurantLikeQueryResponse(restaurantSimpleResponse1)
+                toRestaurantLikeQueryResponse(restaurantSearchResponse4),
+                toRestaurantLikeQueryResponse(restaurantSearchResponse3),
+                toRestaurantLikeQueryResponse(restaurantSearchResponse2),
+                toRestaurantLikeQueryResponse(restaurantSearchResponse1)
         ));
     }
 
-    private List<RestaurantSimpleResponse> 좋아요_포함된_예상_응답(
-            List<RestaurantSimpleResponse> 전체_음식점) {
-        RestaurantSimpleResponse restaurantSimpleResponse1 = 전체_음식점.get(1);
-        RestaurantSimpleResponse restaurantSimpleResponse2 = 전체_음식점.get(3);
-        RestaurantSimpleResponse restaurantSimpleResponse3 = 전체_음식점.get(4);
-        RestaurantSimpleResponse restaurantSimpleResponse4 = 전체_음식점.get(7);
-        List<RestaurantSimpleResponse> expected = new ArrayList<>(전체_음식점);
-        expected.set(1, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse1)));
-        expected.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse2)));
-        expected.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse3)));
-        expected.set(7, increaseLikeCount(changeIsLikedToTrue(restaurantSimpleResponse4)));
+    private List<RestaurantSearchResponse> 좋아요_포함된_예상_응답(
+            List<RestaurantSearchResponse> 전체_음식점) {
+        RestaurantSearchResponse restaurantSearchResponse1 = 전체_음식점.get(1);
+        RestaurantSearchResponse restaurantSearchResponse2 = 전체_음식점.get(3);
+        RestaurantSearchResponse restaurantSearchResponse3 = 전체_음식점.get(4);
+        RestaurantSearchResponse restaurantSearchResponse4 = 전체_음식점.get(7);
+        List<RestaurantSearchResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(1, increaseLikeCount(changeIsLikedToTrue(restaurantSearchResponse1)));
+        expected.set(3, increaseLikeCount(changeIsLikedToTrue(restaurantSearchResponse2)));
+        expected.set(4, increaseLikeCount(changeIsLikedToTrue(restaurantSearchResponse3)));
+        expected.set(7, increaseLikeCount(changeIsLikedToTrue(restaurantSearchResponse4)));
         return expected;
     }
 
-    private RestaurantSimpleResponse changeIsLikedToTrue(
-            RestaurantSimpleResponse restaurantSimpleResponse) {
-        return new RestaurantSimpleResponse(
-                restaurantSimpleResponse.id(),
-                restaurantSimpleResponse.name(),
-                restaurantSimpleResponse.category(),
-                restaurantSimpleResponse.roadAddress(),
-                restaurantSimpleResponse.latitude(),
-                restaurantSimpleResponse.longitude(),
-                restaurantSimpleResponse.phoneNumber(),
-                restaurantSimpleResponse.naverMapUrl(),
-                restaurantSimpleResponse.viewCount(),
-                restaurantSimpleResponse.distance(),
+    private RestaurantSearchResponse changeIsLikedToTrue(
+            RestaurantSearchResponse restaurantSearchResponse) {
+        return new RestaurantSearchResponse(
+                restaurantSearchResponse.id(),
+                restaurantSearchResponse.name(),
+                restaurantSearchResponse.category(),
+                restaurantSearchResponse.roadAddress(),
+                restaurantSearchResponse.latitude(),
+                restaurantSearchResponse.longitude(),
+                restaurantSearchResponse.phoneNumber(),
+                restaurantSearchResponse.naverMapUrl(),
+                restaurantSearchResponse.viewCount(),
+                restaurantSearchResponse.distance(),
                 true,
-                restaurantSimpleResponse.likeCount(),
-                restaurantSimpleResponse.celebs(),
-                restaurantSimpleResponse.images()
+                restaurantSearchResponse.likeCount(),
+                restaurantSearchResponse.celebs(),
+                restaurantSearchResponse.images()
         );
     }
 
-    private RestaurantSimpleResponse increaseLikeCount(
-            RestaurantSimpleResponse restaurantSimpleResponse) {
-        return new RestaurantSimpleResponse(
-                restaurantSimpleResponse.id(),
-                restaurantSimpleResponse.name(),
-                restaurantSimpleResponse.category(),
-                restaurantSimpleResponse.roadAddress(),
-                restaurantSimpleResponse.latitude(),
-                restaurantSimpleResponse.longitude(),
-                restaurantSimpleResponse.phoneNumber(),
-                restaurantSimpleResponse.naverMapUrl(),
-                restaurantSimpleResponse.viewCount(),
-                restaurantSimpleResponse.distance(),
-                restaurantSimpleResponse.isLiked(),
-                restaurantSimpleResponse.likeCount() + 1,
-                restaurantSimpleResponse.celebs(),
-                restaurantSimpleResponse.images()
+    private RestaurantSearchResponse increaseLikeCount(
+            RestaurantSearchResponse restaurantSearchResponse) {
+        return new RestaurantSearchResponse(
+                restaurantSearchResponse.id(),
+                restaurantSearchResponse.name(),
+                restaurantSearchResponse.category(),
+                restaurantSearchResponse.roadAddress(),
+                restaurantSearchResponse.latitude(),
+                restaurantSearchResponse.longitude(),
+                restaurantSearchResponse.phoneNumber(),
+                restaurantSearchResponse.naverMapUrl(),
+                restaurantSearchResponse.viewCount(),
+                restaurantSearchResponse.distance(),
+                restaurantSearchResponse.isLiked(),
+                restaurantSearchResponse.likeCount() + 1,
+                restaurantSearchResponse.celebs(),
+                restaurantSearchResponse.images()
         );
     }
 }

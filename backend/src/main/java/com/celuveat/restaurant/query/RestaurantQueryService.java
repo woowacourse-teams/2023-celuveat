@@ -7,13 +7,13 @@ import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao.DistrictCodeCond;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantQueryService {
 
     private final RestaurantDetailResponseDao restaurantDetailResponseDao;
-    private final RestaurantSimpleResponseDao restaurantSimpleResponseDao;
+    private final RestaurantSearchResponseDao restaurantSearchResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
     private final RestaurantByAddressResponseDao restaurantByAddressResponseDao;
 
@@ -42,13 +42,13 @@ public class RestaurantQueryService {
         return relocateCelebDataFirstByCelebId(celebId, response);
     }
 
-    public Page<RestaurantSimpleResponse> findAllWithMemberLiked(
+    public Page<RestaurantSearchResponse> findAllWithMemberLiked(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        Page<RestaurantSimpleResponse> response = restaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> response = restaurantSearchResponseDao.findAll(
                 restaurantCond,
                 locationCond,
                 pageable,
@@ -69,13 +69,13 @@ public class RestaurantQueryService {
         return restaurantByAddressResponseDao.find(cond, pageable, memberId);
     }
 
-    public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
+    public Page<RestaurantSearchResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             long restaurantId,
             int distance,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantSimpleResponseDao.findNearBy(
+        return restaurantSearchResponseDao.findNearBy(
                 restaurantId,
                 distance,
                 pageable,

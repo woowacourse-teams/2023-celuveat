@@ -10,11 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.common.TestDataInserter;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +30,10 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("음식점 조회용 Dao(RestaurantSimpleResponseDao) 은(는)")
-class RestaurantSimpleResponseDaoTest {
+@DisplayName("음식점 조회용 Dao(RestaurantSearchResponseDao) 은(는)")
+class RestaurantSearchResponseDaoTest {
 
-    private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
+    private final List<RestaurantSearchResponse> seed = new ArrayList<>();
 
     @Autowired
     private SeedData seedData;
@@ -43,7 +42,7 @@ class RestaurantSimpleResponseDaoTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantSimpleResponseDao RestaurantSimpleResponseDao;
+    private RestaurantSearchResponseDao RestaurantSearchResponseDao;
 
     @BeforeEach
     void setUp() {
@@ -53,16 +52,16 @@ class RestaurantSimpleResponseDaoTest {
         System.out.println("=============[INSERT SEED DATA]============");
     }
 
-    private List<String> 이름_추출(List<RestaurantSimpleResponse> list) {
+    private List<String> 이름_추출(List<RestaurantSearchResponse> list) {
         return list.stream()
-                .map(RestaurantSimpleResponse::name)
+                .map(RestaurantSearchResponse::name)
                 .toList();
     }
 
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -72,24 +71,24 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(seed));
     }
 
     @Test
     void 셀럽으로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 1L;
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (isCelebVisited(celebId, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (isCelebVisited(celebId, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -99,24 +98,24 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 카테고리로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:오도1호점";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (restaurantSimpleResponse.category().equals(category)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (restaurantSearchResponse.category().equals(category)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -126,24 +125,24 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 음식점_이름_포함으로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -154,26 +153,26 @@ class RestaurantSimpleResponseDaoTest {
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 셀럽과_카테고리로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 1L;
         String category = "category:오도1호점";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (isCelebVisited(celebId, restaurantSimpleResponse)
-                    && restaurantSimpleResponse.category().equals(category)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (isCelebVisited(celebId, restaurantSearchResponse)
+                    && restaurantSearchResponse.category().equals(category)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(celebId, category, null),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -183,26 +182,26 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 셀럽과_음식점_이름으로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && isCelebVisited(celebId, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -212,26 +211,26 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 카테고리와_음식점_이름으로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantSimpleResponse.category().equals(category)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSearchResponse.category().equals(category)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -241,28 +240,28 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 셀럽과_카테고리와_음식점_이름으로_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 2L;
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (restaurantSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantSimpleResponse.category().equals(category)
-                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSearchResponse.category().equals(category)
+                    && isCelebVisited(celebId, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(celebId, category, restaurantName),
                 전체영역_검색_범위,
                 PageRequest.of(0, 20),
@@ -277,15 +276,15 @@ class RestaurantSimpleResponseDaoTest {
     @Test
     void 위치_기준으로_일정_거리내_음식점_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1번_지점포함, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -300,23 +299,23 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 위치_기준으로_일정_거리내_모든_음식점_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (isRestaurantInArea(박스_1_2번_지점포함, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
@@ -331,25 +330,25 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
     @Test
     void 셀럽과_거리_기준으로_음식점_조회_테스트() {
         // given
-        List<RestaurantSimpleResponse> expected = new ArrayList<>();
+        List<RestaurantSearchResponse> expected = new ArrayList<>();
         Long celebId = 1L;
-        for (RestaurantSimpleResponse restaurantSimpleResponse : seed) {
-            if (isRestaurantInArea(박스_1번_지점포함, restaurantSimpleResponse)
-                    && isCelebVisited(celebId, restaurantSimpleResponse)) {
-                expected.add(restaurantSimpleResponse);
+        for (RestaurantSearchResponse restaurantSearchResponse : seed) {
+            if (isRestaurantInArea(박스_1번_지점포함, restaurantSearchResponse)
+                    && isCelebVisited(celebId, restaurantSearchResponse)) {
+                expected.add(restaurantSearchResponse);
             }
         }
 
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -364,8 +363,8 @@ class RestaurantSimpleResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
-                .extracting(RestaurantSimpleResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .extracting(RestaurantSearchResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -373,7 +372,7 @@ class RestaurantSimpleResponseDaoTest {
     @ValueSource(ints = {10, 100, 1000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // when
-        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findNearBy(
+        Page<RestaurantSearchResponse> result = RestaurantSearchResponseDao.findNearBy(
                 1L,
                 specificDistance,
                 PageRequest.of(0, 4),
@@ -382,7 +381,7 @@ class RestaurantSimpleResponseDaoTest {
 
         // then
         assertThat(result.getContent())
-                .extracting(RestaurantSimpleResponse::distance)
+                .extracting(RestaurantSearchResponse::distance)
                 .allMatch(distance -> distance <= specificDistance);
     }
 }

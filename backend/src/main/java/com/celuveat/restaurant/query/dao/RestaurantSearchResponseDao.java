@@ -20,7 +20,7 @@ import com.celuveat.restaurant.exception.RestaurantExceptionType;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
@@ -50,7 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantSimpleResponseDao {
+public class RestaurantSearchResponseDao {
 
     private static final NumberPath<Double> distanceColumn = Expressions.numberPath(Double.class, "distance");
 
@@ -60,7 +60,7 @@ public class RestaurantSimpleResponseDao {
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public Page<RestaurantSimpleResponse> findAll(
+    public Page<RestaurantSearchResponse> findAll(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
@@ -164,7 +164,7 @@ public class RestaurantSimpleResponseDao {
         return restaurant.id.ne(id);
     }
 
-    public Page<RestaurantSimpleResponse> findNearBy(
+    public Page<RestaurantSearchResponse> findNearBy(
             long restaurantId,
             int distance,
             Pageable pageable,
@@ -203,14 +203,14 @@ public class RestaurantSimpleResponseDao {
         return toSimpleResponse(memberId, restaurants);
     }
 
-    private Page<RestaurantSimpleResponse> toSimpleResponse(
+    private Page<RestaurantSearchResponse> toSimpleResponse(
             @Nullable Long memberId, Page<RestaurantWithDistance> restaurants
     ) {
         List<Long> restaurantIds = restaurants.map(RestaurantWithDistance::id).toList();
         Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
         Map<Long, List<RestaurantImage>> restaurantImageMap = getImagesGroupByRestaurantsId(restaurantIds);
         Map<Long, Boolean> isLikedMap = getIsLikedGroupByRestaurantsId(memberId, restaurantIds);
-        return RestaurantSimpleResponse.of(
+        return RestaurantSearchResponse.of(
                 restaurants, celebsMap, restaurantImageMap, isLikedMap
         );
     }
