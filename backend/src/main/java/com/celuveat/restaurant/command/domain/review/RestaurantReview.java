@@ -31,9 +31,10 @@ public class RestaurantReview extends BaseEntity {
 
     private Double rating;
 
-    public void updateContent(String content, Long memberId) {
+    public void updateContent(String content, Long memberId, Double rating) {
         checkOwner(memberId);
         this.content = content;
+        this.rating = rating;
     }
 
     public void checkOwner(Long memberId) {

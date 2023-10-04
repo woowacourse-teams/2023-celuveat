@@ -13,12 +13,12 @@ import java.util.List;
 
 public class RestaurantReviewAcceptanceSteps {
 
-    public static SaveReviewRequest 리뷰_요청(String 내용, Long 음식점_아이디) {
-        return new SaveReviewRequest(내용, 음식점_아이디);
+    public static SaveReviewRequest 리뷰_요청(String 내용, Long 음식점_아이디, Double 평점) {
+        return new SaveReviewRequest(내용, 음식점_아이디, 평점, null);
     }
 
-    public static UpdateReviewRequest 리뷰_수정_요청(String 내용) {
-        return new UpdateReviewRequest(내용);
+    public static UpdateReviewRequest 리뷰_수정_요청(String 내용, Double 평점) {
+        return new UpdateReviewRequest(내용, 평점);
     }
 
     public static RestaurantReviewQueryResponse 예상_응답(Long 말랑_아이디, Long 로이스_아이디, Long 도기_아이디) {
