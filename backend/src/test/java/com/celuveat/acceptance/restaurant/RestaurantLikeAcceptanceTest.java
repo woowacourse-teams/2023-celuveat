@@ -96,10 +96,10 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
 
     private List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantSearchResponse> 전체_음식점) {
         return List.of(
-                전체_음식점.get(1).id(),
-                전체_음식점.get(3).id(),
-                전체_음식점.get(4).id(),
-                전체_음식점.get(7).id()
+                전체_음식점.get(1).getId(),
+                전체_음식점.get(3).getId(),
+                전체_음식점.get(4).getId(),
+                전체_음식점.get(7).getId()
         );
     }
 
@@ -137,40 +137,40 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
     private RestaurantSearchResponse changeIsLikedToTrue(
             RestaurantSearchResponse restaurantSearchResponse) {
         return new RestaurantSearchResponse(
-                restaurantSearchResponse.id(),
-                restaurantSearchResponse.name(),
-                restaurantSearchResponse.category(),
-                restaurantSearchResponse.roadAddress(),
-                restaurantSearchResponse.latitude(),
-                restaurantSearchResponse.longitude(),
-                restaurantSearchResponse.phoneNumber(),
-                restaurantSearchResponse.naverMapUrl(),
-                restaurantSearchResponse.viewCount(),
-                restaurantSearchResponse.distance(),
-                restaurantSearchResponse.likeCount(),
+                restaurantSearchResponse.getId(),
+                restaurantSearchResponse.getName(),
+                restaurantSearchResponse.getCategory(),
+                restaurantSearchResponse.getRoadAddress(),
+                restaurantSearchResponse.getLatitude(),
+                restaurantSearchResponse.getLongitude(),
+                restaurantSearchResponse.getPhoneNumber(),
+                restaurantSearchResponse.getNaverMapUrl(),
+                restaurantSearchResponse.getViewCount(),
+                restaurantSearchResponse.getDistance(),
+                restaurantSearchResponse.getLikeCount(),
                 true,
-                restaurantSearchResponse.celebs(),
-                restaurantSearchResponse.images()
+                restaurantSearchResponse.getCelebs(),
+                restaurantSearchResponse.getImages()
         );
     }
 
     private RestaurantSearchResponse increaseLikeCount(
             RestaurantSearchResponse restaurantSearchResponse) {
         return new RestaurantSearchResponse(
-                restaurantSearchResponse.id(),
-                restaurantSearchResponse.name(),
-                restaurantSearchResponse.category(),
-                restaurantSearchResponse.roadAddress(),
-                restaurantSearchResponse.latitude(),
-                restaurantSearchResponse.longitude(),
-                restaurantSearchResponse.phoneNumber(),
-                restaurantSearchResponse.naverMapUrl(),
-                restaurantSearchResponse.viewCount(),
-                restaurantSearchResponse.distance(),
-                restaurantSearchResponse.likeCount() + 1,
+                restaurantSearchResponse.getId(),
+                restaurantSearchResponse.getName(),
+                restaurantSearchResponse.getCategory(),
+                restaurantSearchResponse.getRoadAddress(),
+                restaurantSearchResponse.getLatitude(),
+                restaurantSearchResponse.getLongitude(),
+                restaurantSearchResponse.getPhoneNumber(),
+                restaurantSearchResponse.getNaverMapUrl(),
+                restaurantSearchResponse.getViewCount(),
+                restaurantSearchResponse.getDistance(),
+                restaurantSearchResponse.getLikeCount() + 1,
                 restaurantSearchResponse.isLiked(),
-                restaurantSearchResponse.celebs(),
-                restaurantSearchResponse.images()
+                restaurantSearchResponse.getCelebs(),
+                restaurantSearchResponse.getImages()
         );
     }
 }

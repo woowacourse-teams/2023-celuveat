@@ -108,7 +108,7 @@ public class RestaurantAcceptanceSteps {
         PageResponse<RestaurantSearchResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
         assertThat(restaurantQueryResponse.content())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -120,7 +120,7 @@ public class RestaurantAcceptanceSteps {
         PageResponse<RestaurantSearchResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
         assertThat(restaurantQueryResponse.content())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::likeCount).reversed());
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getLikeCount).reversed());
     }
 
 
@@ -129,7 +129,7 @@ public class RestaurantAcceptanceSteps {
         PageResponse<RestaurantSearchResponse> restaurantQueryResponse = 응답.as(new TypeRef<>() {
         });
         assertThat(restaurantQueryResponse.content())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .isEqualTo(예상_응답);
@@ -148,7 +148,7 @@ public class RestaurantAcceptanceSteps {
         String restaurantName = (String) 음식점_이름;
         LocationSearchCond locationSearchCond = (LocationSearchCond) 검색_영역;
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : 전체_음식점) {
-            List<Long> celebIds = restaurantWithCelebsAndImagesSimpleResponse.celebs()
+            List<Long> celebIds = restaurantWithCelebsAndImagesSimpleResponse.getCelebs()
                     .stream()
                     .map(CelebQueryResponse::id)
                     .toList();
@@ -200,20 +200,20 @@ public class RestaurantAcceptanceSteps {
             int likeCountValue
     ) {
         return new RestaurantSearchResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebsAndImagesSimpleResponse.viewCount() + viewCountValue,
-                restaurantWithCelebsAndImagesSimpleResponse.distance(),
-                restaurantWithCelebsAndImagesSimpleResponse.likeCount() + likeCountValue,
+                restaurantWithCelebsAndImagesSimpleResponse.getId(),
+                restaurantWithCelebsAndImagesSimpleResponse.getName(),
+                restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getPhoneNumber(),
+                restaurantWithCelebsAndImagesSimpleResponse.getNaverMapUrl(),
+                restaurantWithCelebsAndImagesSimpleResponse.getViewCount() + viewCountValue,
+                restaurantWithCelebsAndImagesSimpleResponse.getDistance(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLikeCount() + likeCountValue,
                 isLiked,
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
+                restaurantWithCelebsAndImagesSimpleResponse.getImages()
         );
     }
 
@@ -242,8 +242,8 @@ public class RestaurantAcceptanceSteps {
             int imageIndex1,
             int imageIndex2
     ) {
-        List<CelebQueryResponse> celebs = new ArrayList<>(response.celebs());
-        List<RestaurantImageQueryResponse> images = new ArrayList<>(response.images());
+        List<CelebQueryResponse> celebs = new ArrayList<>(response.getCelebs());
+        List<RestaurantImageQueryResponse> images = new ArrayList<>(response.getImages());
         Collections.swap(celebs, celebIndex1, celebIndex2);
         Collections.swap(images, imageIndex1, imageIndex2);
         response.setCelebs(celebs);
@@ -253,7 +253,7 @@ public class RestaurantAcceptanceSteps {
 
     public static List<Long> 음식점_아이디를_가져온다(RestaurantSearchResponse... 음식점들) {
         return Arrays.stream(음식점들)
-                .map(RestaurantSearchResponse::id)
+                .map(RestaurantSearchResponse::getId)
                 .toList();
     }
 
@@ -262,7 +262,7 @@ public class RestaurantAcceptanceSteps {
         if (restaurantName == null) {
             return true;
         }
-        return restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName));
+        return restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName));
     }
 
     private static boolean 카테고리_조건(String category,
@@ -270,7 +270,7 @@ public class RestaurantAcceptanceSteps {
         if (category == null) {
             return true;
         }
-        return restaurantWithCelebsAndImagesSimpleResponse.category().equals(category);
+        return restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category);
     }
 
     private static boolean 셀럽_조건(Long celebId, List<Long> list) {
@@ -288,16 +288,16 @@ public class RestaurantAcceptanceSteps {
             return true;
         }
 
-        return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.latitude()
-                && restaurantWithCelebsAndImagesSimpleResponse.latitude() <= locationSearchCond.highLatitude()
-                && locationSearchCond.lowLongitude() <= restaurantWithCelebsAndImagesSimpleResponse.longitude()
-                && restaurantWithCelebsAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
+        return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.getLatitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.getLatitude() <= locationSearchCond.highLatitude()
+                && locationSearchCond.lowLongitude() <= restaurantWithCelebsAndImagesSimpleResponse.getLongitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.getLongitude() <= locationSearchCond.highLongitude();
     }
 
     public static RestaurantSearchResponse 특정_이름의_음식점을_찾는다(
             List<RestaurantSearchResponse> 음식점들, String 음식점_이름) {
         return 음식점들.stream()
-                .filter(restaurantQueryResponse -> restaurantQueryResponse.name().equals(음식점_이름))
+                .filter(restaurantQueryResponse -> restaurantQueryResponse.getName().equals(음식점_이름))
                 .findAny()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -330,7 +330,7 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static void 음식점_상세_조회_실패_요청(RestaurantSearchResponse 조회_음식점) {
-        음식점_상세_조회_요청(조회_음식점.id(), 12314121L);
+        음식점_상세_조회_요청(조회_음식점.getId(), 12314121L);
     }
 
     public static RestaurantDetailResponse 상세_조회_예상_응답(
@@ -340,11 +340,11 @@ public class RestaurantAcceptanceSteps {
             boolean isLiked
     ) {
         RestaurantSearchResponse restaurantResponse = 전체_음식점.stream()
-                .filter(restaurant -> restaurant.id().equals(restaurantId))
+                .filter(restaurant -> restaurant.getId().equals(restaurantId))
                 .findAny()
                 .orElseThrow(NoSuchElementException::new);
 
-        CelebQueryResponse targetCeleb = restaurantResponse.celebs().stream()
+        CelebQueryResponse targetCeleb = restaurantResponse.getCelebs().stream()
                 .filter(celeb -> celeb.id().equals(celebId))
                 .findAny()
                 .orElseThrow(NoSuchElementException::new);
@@ -361,7 +361,7 @@ public class RestaurantAcceptanceSteps {
             CelebQueryResponse targetCeleb,
             RestaurantSearchResponse restaurantResponse
     ) {
-        List<CelebQueryResponse> celebs = new ArrayList<>(restaurantResponse.celebs());
+        List<CelebQueryResponse> celebs = new ArrayList<>(restaurantResponse.getCelebs());
         Collections.swap(celebs, 0, celebs.indexOf(targetCeleb));
         return celebs;
     }
@@ -369,7 +369,7 @@ public class RestaurantAcceptanceSteps {
     private static List<RestaurantImageQueryResponse> 셀럽_기준으로_이미지_정렬(
             String celebName, RestaurantSearchResponse restaurantResponse
     ) {
-        List<RestaurantImageQueryResponse> images = new ArrayList<>(restaurantResponse.images());
+        List<RestaurantImageQueryResponse> images = new ArrayList<>(restaurantResponse.getImages());
         RestaurantImageQueryResponse image = images.stream()
                 .filter(targetImage -> targetImage.author().equals(celebName))
                 .findFirst().orElseThrow();
@@ -384,14 +384,14 @@ public class RestaurantAcceptanceSteps {
             boolean isLiked
     ) {
         return new RestaurantDetailResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
+                restaurantWithCelebsAndImagesSimpleResponse.getId(),
+                restaurantWithCelebsAndImagesSimpleResponse.getName(),
+                restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getPhoneNumber(),
+                restaurantWithCelebsAndImagesSimpleResponse.getNaverMapUrl(),
                 0, // likeCount
                 0, // viewCount
                 isLiked,
@@ -440,11 +440,11 @@ public class RestaurantAcceptanceSteps {
         PageResponse<RestaurantSearchResponse> pageResponse = 요청_결과.as(new TypeRef<>() {
         });
         assertThat(pageResponse.content())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::distance)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getDistance)
                 .allMatch(distance -> distance <= 요청_거리);
         assertThat(pageResponse.content())
-                .extracting(RestaurantSearchResponse::id)
+                .extracting(RestaurantSearchResponse::getId)
                 .doesNotContain(기준_음식점_ID);
     }
 

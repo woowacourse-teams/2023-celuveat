@@ -65,10 +65,10 @@ public class RestaurantRelocator {
     private static RestaurantSearchResponse relocatedCelebDataFirstResponseByCelebId(
             Long celebId, RestaurantSearchResponse response
     ) {
-        CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
-        List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
+        CelebQueryResponse targetCeleb = findCelebById(celebId, response.getCelebs());
+        List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.getCelebs());
         List<RestaurantImageQueryResponse> relocatedImages =
-                relocateImageToFirstByCeleb(targetCeleb, response.images());
+                relocateImageToFirstByCeleb(targetCeleb, response.getImages());
         response.setCelebs(relocatedCelebs);
         response.setImages(relocatedImages);
         return response;

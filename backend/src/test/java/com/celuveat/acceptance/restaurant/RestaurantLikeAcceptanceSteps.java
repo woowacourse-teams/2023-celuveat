@@ -70,16 +70,16 @@ public class RestaurantLikeAcceptanceSteps {
             RestaurantSearchResponse restaurantSearchResponse
     ) {
         return new LikedRestaurantQueryResponse(
-                restaurantSearchResponse.id(),
-                restaurantSearchResponse.name(),
-                restaurantSearchResponse.category(),
-                restaurantSearchResponse.roadAddress(),
-                restaurantSearchResponse.latitude(),
-                restaurantSearchResponse.longitude(),
-                restaurantSearchResponse.phoneNumber(),
-                restaurantSearchResponse.naverMapUrl(),
-                restaurantSearchResponse.celebs(),
-                restaurantSearchResponse.images()
+                restaurantSearchResponse.getId(),
+                restaurantSearchResponse.getName(),
+                restaurantSearchResponse.getCategory(),
+                restaurantSearchResponse.getRoadAddress(),
+                restaurantSearchResponse.getLatitude(),
+                restaurantSearchResponse.getLongitude(),
+                restaurantSearchResponse.getPhoneNumber(),
+                restaurantSearchResponse.getNaverMapUrl(),
+                restaurantSearchResponse.getCelebs(),
+                restaurantSearchResponse.getImages()
         );
     }
 

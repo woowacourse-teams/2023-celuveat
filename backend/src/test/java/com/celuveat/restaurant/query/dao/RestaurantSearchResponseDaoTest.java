@@ -54,7 +54,7 @@ class RestaurantSearchResponseDaoTest {
 
     private List<String> 이름_추출(List<RestaurantSearchResponse> list) {
         return list.stream()
-                .map(RestaurantSearchResponse::name)
+                .map(RestaurantSearchResponse::getName)
                 .toList();
     }
 
@@ -71,8 +71,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(seed));
     }
 
@@ -98,8 +98,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -109,7 +109,7 @@ class RestaurantSearchResponseDaoTest {
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:오도1호점";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            if (restaurantSearchResponse.category().equals(category)) {
+            if (restaurantSearchResponse.getCategory().equals(category)) {
                 expected.add(restaurantSearchResponse);
             }
         }
@@ -125,8 +125,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -136,7 +136,7 @@ class RestaurantSearchResponseDaoTest {
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))) {
+            if (restaurantSearchResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantSearchResponse);
             }
         }
@@ -153,8 +153,8 @@ class RestaurantSearchResponseDaoTest {
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -166,7 +166,7 @@ class RestaurantSearchResponseDaoTest {
         String category = "category:오도1호점";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
             if (isCelebVisited(celebId, restaurantSearchResponse)
-                    && restaurantSearchResponse.category().equals(category)) {
+                    && restaurantSearchResponse.getCategory().equals(category)) {
                 expected.add(restaurantSearchResponse);
             }
         }
@@ -182,8 +182,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -194,7 +194,7 @@ class RestaurantSearchResponseDaoTest {
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+            if (restaurantSearchResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
                     && isCelebVisited(celebId, restaurantSearchResponse)) {
                 expected.add(restaurantSearchResponse);
             }
@@ -211,8 +211,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -223,8 +223,8 @@ class RestaurantSearchResponseDaoTest {
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantSearchResponse.category().equals(category)) {
+            if (restaurantSearchResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSearchResponse.getCategory().equals(category)) {
                 expected.add(restaurantSearchResponse);
             }
         }
@@ -240,8 +240,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -253,8 +253,8 @@ class RestaurantSearchResponseDaoTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            if (restaurantSearchResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantSearchResponse.category().equals(category)
+            if (restaurantSearchResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantSearchResponse.getCategory().equals(category)
                     && isCelebVisited(celebId, restaurantSearchResponse)) {
                 expected.add(restaurantSearchResponse);
             }
@@ -299,8 +299,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -330,8 +330,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -363,8 +363,8 @@ class RestaurantSearchResponseDaoTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
-                .extracting(RestaurantSearchResponse::name)
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
+                .extracting(RestaurantSearchResponse::getName)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -381,7 +381,7 @@ class RestaurantSearchResponseDaoTest {
 
         // then
         assertThat(result.getContent())
-                .extracting(RestaurantSearchResponse::distance)
+                .extracting(RestaurantSearchResponse::getDistance)
                 .allMatch(distance -> distance <= specificDistance);
     }
 }

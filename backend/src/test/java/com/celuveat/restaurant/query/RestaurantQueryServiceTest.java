@@ -115,7 +115,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -144,7 +144,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -157,7 +157,7 @@ class RestaurantQueryServiceTest {
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String category = "category:오도1호점";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
+            if (restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }
@@ -173,7 +173,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -186,7 +186,7 @@ class RestaurantQueryServiceTest {
         List<RestaurantSearchResponse> expected = new ArrayList<>();
         String restaurantName = " 말 랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name()
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName()
                     .contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -203,7 +203,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -217,9 +217,9 @@ class RestaurantQueryServiceTest {
         Long celebId = 1L;
         String category = "category:오도1호점";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream().map(CelebQueryResponse::id)
                     .toList();
-            if (list.contains(celebId) && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
+            if (list.contains(celebId) && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }
@@ -235,7 +235,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -249,9 +249,9 @@ class RestaurantQueryServiceTest {
         Long celebId = 2L;
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+            List<Long> list = restaurantWithCelebsAndImagesSimpleResponse.getCelebs().stream().map(CelebQueryResponse::id)
                     .toList();
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
                     && list.contains(celebId)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -268,7 +268,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -282,8 +282,8 @@ class RestaurantQueryServiceTest {
         String category = "category:말랑2호점";
         String restaurantName = "\n      말 \n랑  \n";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)) {
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
         }
@@ -299,7 +299,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -314,8 +314,8 @@ class RestaurantQueryServiceTest {
         String category = "category:로이스1호점";
         String restaurantName = "로 이스";
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
-            if (restaurantWithCelebsAndImagesSimpleResponse.name().contains(StringUtil.removeAllBlank(restaurantName))
-                    && restaurantWithCelebsAndImagesSimpleResponse.category().equals(category)
+            if (restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName))
+                    && restaurantWithCelebsAndImagesSimpleResponse.getCategory().equals(category)
                     && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -332,7 +332,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -367,7 +367,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -383,7 +383,7 @@ class RestaurantQueryServiceTest {
         for (RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse : seed) {
             if (isRestaurantInArea(박스_1_2번_지점포함, restaurantWithCelebsAndImagesSimpleResponse)
                     && isCelebVisited(celebId, restaurantWithCelebsAndImagesSimpleResponse)
-                    && restaurantWithCelebsAndImagesSimpleResponse.name()
+                    && restaurantWithCelebsAndImagesSimpleResponse.getName()
                     .contains(StringUtil.removeAllBlank(restaurantName))) {
                 expected.add(restaurantWithCelebsAndImagesSimpleResponse);
             }
@@ -405,7 +405,7 @@ class RestaurantQueryServiceTest {
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                 .usingRecursiveComparison()
                 .ignoringFields("distance")
                 .ignoringCollectionOrder()
@@ -456,10 +456,10 @@ class RestaurantQueryServiceTest {
         RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse2 = seed.get(2);
         RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse3 = seed.get(4);
         RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse4 = seed.get(9);
-        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse1.id());
-        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse2.id());
-        Restaurant 도기2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse3.id());
-        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse4.id());
+        Restaurant 말랑1호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse1.getId());
+        Restaurant 말랑3호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse2.getId());
+        Restaurant 도기2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse3.getId());
+        Restaurant 로이스2호점 = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse4.getId());
         restaurantLikeRepository.saveAll(List.of(
                 음식점_좋아요(말랑1호점, 멤버),
                 음식점_좋아요(말랑3호점, 멤버),
@@ -484,16 +484,16 @@ class RestaurantQueryServiceTest {
     private LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
             RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse) {
         return new LikedRestaurantQueryResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantWithCelebsAndImagesSimpleResponse.getId(),
+                restaurantWithCelebsAndImagesSimpleResponse.getName(),
+                restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getPhoneNumber(),
+                restaurantWithCelebsAndImagesSimpleResponse.getNaverMapUrl(),
+                restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
+                restaurantWithCelebsAndImagesSimpleResponse.getImages()
         );
     }
 
@@ -503,7 +503,7 @@ class RestaurantQueryServiceTest {
         RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse = seed.get(0);
         OauthMember oauthMember = 멤버("로이스");
         oauthMemberRepository.save(oauthMember);
-        Restaurant restaurant = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse.id());
+        Restaurant restaurant = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse.getId());
         restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
 
         // when
@@ -524,7 +524,7 @@ class RestaurantQueryServiceTest {
         RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse = seed.get(0);
         OauthMember oauthMember = 멤버("로이스");
         oauthMemberRepository.save(oauthMember);
-        Restaurant restaurant = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse.id());
+        Restaurant restaurant = restaurantRepository.getById(restaurantWithCelebsAndImagesSimpleResponse.getId());
         restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
 
         // when
@@ -544,19 +544,19 @@ class RestaurantQueryServiceTest {
             boolean isLiked
     ) {
         return new RestaurantDetailResponse(
-                restaurantWithCelebsAndImagesSimpleResponse.id(),
-                restaurantWithCelebsAndImagesSimpleResponse.name(),
-                restaurantWithCelebsAndImagesSimpleResponse.category(),
-                restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
+                restaurantWithCelebsAndImagesSimpleResponse.getId(),
+                restaurantWithCelebsAndImagesSimpleResponse.getName(),
+                restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
+                restaurantWithCelebsAndImagesSimpleResponse.getPhoneNumber(),
+                restaurantWithCelebsAndImagesSimpleResponse.getNaverMapUrl(),
                 0, // likeCount
                 0, // viewCount
                 isLiked,
-                restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                restaurantWithCelebsAndImagesSimpleResponse.images()
+                restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
+                restaurantWithCelebsAndImagesSimpleResponse.getImages()
         );
     }
 
@@ -568,7 +568,7 @@ class RestaurantQueryServiceTest {
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                restaurant.id(),
+                restaurant.getId(),
                 specificDistance,
                 PageRequest.of(0, 4),
                 null
@@ -576,11 +576,11 @@ class RestaurantQueryServiceTest {
 
         // then
         assertThat(result.getContent())
-                .extracting(RestaurantSearchResponse::distance)
+                .extracting(RestaurantSearchResponse::getDistance)
                 .allMatch(distance -> distance <= specificDistance);
         assertThat(result.getContent())
-                .extracting(RestaurantSearchResponse::name)
-                .doesNotContain(restaurant.name());
+                .extracting(RestaurantSearchResponse::getName)
+                .doesNotContain(restaurant.getName());
     }
 
     @Test
@@ -589,13 +589,13 @@ class RestaurantQueryServiceTest {
         OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
         oauthMemberRepository.save(도기);
         for (RestaurantSearchResponse restaurantSearchResponse : seed) {
-            Restaurant restaurant = restaurantRepository.getById(restaurantSearchResponse.id());
+            Restaurant restaurant = restaurantRepository.getById(restaurantSearchResponse.getId());
             restaurantLikeRepository.save(음식점_좋아요(restaurant, 도기));
         }
 
         // when
         Page<RestaurantSearchResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
-                seed.get(0).id(),
+                seed.get(0).getId(),
                 50000,
                 PageRequest.of(0, 4),
                 도기.id()
@@ -724,6 +724,7 @@ class RestaurantQueryServiceTest {
                             it.profileImageUrl())
                     ).toList(),
                     images.stream().map(it -> new RestaurantImageQueryResponse(
+                            it.restaurant().id(),
                             it.id(),
                             it.name(),
                             it.author(),
@@ -769,7 +770,7 @@ class RestaurantQueryServiceTest {
             // then
             assertThat(result).isNotEmpty();
             assertThat(result.getContent())
-                    .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                    .isSortedAccordingTo(comparing(RestaurantSearchResponse::getDistance))
                     .usingRecursiveComparison()
                     .ignoringFields("distance")
                     .ignoringCollectionOrder()
@@ -777,40 +778,40 @@ class RestaurantQueryServiceTest {
         }
 
         private void 음식점들의_조회수를_높인다() {
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.id());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse1.getId());
 
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse2.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse2.id());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse2.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse2.getId());
 
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse3.id());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse3.getId());
 
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.id());
-            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.id());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.getId());
+            restaurantService.increaseViewCount(restaurantWithCelebsAndImagesSimpleResponse4.getId());
         }
 
         private RestaurantSearchResponse increaseViewCount(
                 RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse, int value) {
             return new RestaurantSearchResponse(
-                    restaurantWithCelebsAndImagesSimpleResponse.id(),
-                    restaurantWithCelebsAndImagesSimpleResponse.name(),
-                    restaurantWithCelebsAndImagesSimpleResponse.category(),
-                    restaurantWithCelebsAndImagesSimpleResponse.roadAddress(),
-                    restaurantWithCelebsAndImagesSimpleResponse.latitude(),
-                    restaurantWithCelebsAndImagesSimpleResponse.longitude(),
-                    restaurantWithCelebsAndImagesSimpleResponse.phoneNumber(),
-                    restaurantWithCelebsAndImagesSimpleResponse.naverMapUrl(),
-                    restaurantWithCelebsAndImagesSimpleResponse.viewCount() + value,
-                    restaurantWithCelebsAndImagesSimpleResponse.distance(),
-                    restaurantWithCelebsAndImagesSimpleResponse.likeCount(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getId(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getName(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getCategory(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getRoadAddress(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getLatitude(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getLongitude(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getPhoneNumber(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getNaverMapUrl(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getViewCount() + value,
+                    restaurantWithCelebsAndImagesSimpleResponse.getDistance(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getLikeCount(),
                     restaurantWithCelebsAndImagesSimpleResponse.isLiked(),
-                    restaurantWithCelebsAndImagesSimpleResponse.celebs(),
-                    restaurantWithCelebsAndImagesSimpleResponse.images()
+                    restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getImages()
             );
         }
     }

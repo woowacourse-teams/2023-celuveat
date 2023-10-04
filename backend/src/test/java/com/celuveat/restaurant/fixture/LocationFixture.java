@@ -39,10 +39,10 @@ public class LocationFixture {
             LocationSearchCond locationSearchCond,
             RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse
     ) {
-        return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.latitude()
-                && restaurantWithCelebsAndImagesSimpleResponse.latitude() <= locationSearchCond.highLatitude()
-                && locationSearchCond.lowLongitude() <= restaurantWithCelebsAndImagesSimpleResponse.longitude()
-                && restaurantWithCelebsAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
+        return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.getLatitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.getLatitude() <= locationSearchCond.highLatitude()
+                && locationSearchCond.lowLongitude() <= restaurantWithCelebsAndImagesSimpleResponse.getLongitude()
+                && restaurantWithCelebsAndImagesSimpleResponse.getLongitude() <= locationSearchCond.highLongitude();
     }
 
     public record Point(

@@ -55,66 +55,14 @@ public class RestaurantSearchResponse {
     }
 
     public void setCelebs(List<CelebQueryResponse> celebs) {
-        this.celebs = celebs;
+        if (celebs != null) {
+            this.celebs = celebs;
+        }
     }
 
     public void setImages(List<RestaurantImageQueryResponse> images) {
-        this.images = images;
-    }
-
-    public Long id() {
-        return id;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public String category() {
-        return category;
-    }
-
-    public String roadAddress() {
-        return roadAddress;
-    }
-
-    public Double latitude() {
-        return latitude;
-    }
-
-    public Double longitude() {
-        return longitude;
-    }
-
-    public String phoneNumber() {
-        return phoneNumber;
-    }
-
-    public String naverMapUrl() {
-        return naverMapUrl;
-    }
-
-    public Integer viewCount() {
-        return viewCount;
-    }
-
-    public Integer distance() {
-        return distance;
-    }
-
-    public int likeCount() {
-        return likeCount;
-    }
-
-    public boolean isLiked() {
-        return isLiked;
-    }
-
-    public List<CelebQueryResponse> celebs() {
-        return celebs;
-    }
-
-    public List<RestaurantImageQueryResponse> images() {
-        return images;
+        if (images != null) {
+            this.images = images;
+        }
     }
 }

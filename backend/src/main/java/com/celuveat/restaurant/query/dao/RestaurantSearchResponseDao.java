@@ -11,10 +11,8 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
-import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.restaurant.exception.RestaurantExceptionType;
@@ -69,13 +67,12 @@ public class RestaurantSearchResponseDao {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        List<RestaurantSearchResponse> resultList = findRestaurants(restaurantCond, locationCond, pageable);
-        LongSupplier totalCountSupplier = totalCountSupplier(restaurantCond, locationCond);
-        Page<RestaurantSearchResponse> restaurants = PageableExecutionUtils.getPage(
-                resultList, pageable, totalCountSupplier
-        );
+        List<RestaurantSearchResponse> restaurants = findRestaurants(restaurantCond, locationCond, pageable);
         settingCelebAndImageAndLiked(memberId, restaurants);
-        return restaurants;
+        LongSupplier totalCountSupplier = totalCountSupplier(restaurantCond, locationCond);
+        return PageableExecutionUtils.getPage(
+                restaurants, pageable, totalCountSupplier
+        );
     }
 
     private List<RestaurantSearchResponse> findRestaurants(
@@ -139,7 +136,8 @@ public class RestaurantSearchResponseDao {
     }
 
     private OrderSpecifier<?> applyOrderBy(Pageable pageable) {
-        RestaurantSortType sortType = pageable.getSort().stream()
+        RestaurantSortType sortType = pageable.getSort()
+                .stream()
                 .map(Order::getProperty)
                 .findFirst()
                 .map(RestaurantSortType::from)
@@ -171,12 +169,12 @@ public class RestaurantSearchResponseDao {
             @Nullable Long memberId
     ) {
         Restaurant standard = restaurantQueryDaoSupport.getById(restaurantId);
-        List<RestaurantSearchResponse> result = findRestaurants(restaurantId, distance, pageable, standard);
-        LongSupplier totalCountSupplier = totalCountSupplier(restaurantId, distance, standard);
-        Page<RestaurantSearchResponse> restaurants = PageableExecutionUtils.getPage(result, pageable,
-                totalCountSupplier);
+        List<RestaurantSearchResponse> restaurants = findRestaurants(restaurantId, distance, pageable, standard);
         settingCelebAndImageAndLiked(memberId, restaurants);
-        return restaurants;
+        LongSupplier totalCountSupplier = totalCountSupplier(restaurantId, distance, standard);
+        return PageableExecutionUtils.getPage(
+                restaurants, pageable, totalCountSupplier
+        );
     }
 
     private List<RestaurantSearchResponse> findRestaurants(
@@ -227,35 +225,26 @@ public class RestaurantSearchResponseDao {
     }
 
     private void settingCelebAndImageAndLiked(
-            @Nullable Long memberId, Page<RestaurantSearchResponse> restaurants
+            @Nullable Long memberId, List<RestaurantSearchResponse> restaurants
     ) {
-        List<Long> restaurantIds = restaurants.map(RestaurantSearchResponse::id).toList();
-        Map<Long, List<Celeb>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
-        Map<Long, List<RestaurantImage>> restaurantImageMap = getImagesGroupByRestaurantsId(restaurantIds);
+        List<Long> restaurantIds = extractIds(restaurants);
+        Map<Long, List<CelebQueryResponse>> celebsMap = getCelebsGroupByRestaurantsId(restaurantIds);
+        Map<Long, List<RestaurantImageQueryResponse>> restaurantImageMap = getImagesGroupByRestaurantsId(restaurantIds);
         Map<Long, Boolean> isLikedMap = getIsLikedGroupByRestaurantsId(memberId, restaurantIds);
         for (RestaurantSearchResponse response : restaurants) {
-            response.setCelebs(celebsMap.get(response.id()).stream().map(CelebQueryResponse::of).toList());
-            if (restaurantImageMap.get(response.id()) != null) {
-                response.setImages(
-                        restaurantImageMap.get(response.id()).stream().map(RestaurantImageQueryResponse::of).toList()
-                );
-            }
-            response.setLiked(isLikedMap.get(response.id()));
+            response.setCelebs(celebsMap.get(response.getId()));
+            response.setImages(restaurantImageMap.get(response.getId()));
+            response.setLiked(isLikedMap.get(response.getId()));
         }
     }
 
-    private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
-        Set<Long> likedRestaurantIds = restaurantLikeQueryDaoSupport
-                .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
-                .stream()
-                .map(RestaurantLike::restaurant)
-                .map(BaseEntity::id)
-                .collect(toSet());
-        return restaurantIds.stream()
-                .collect(toMap(identity(), likedRestaurantIds::contains));
+    private List<Long> extractIds(List<RestaurantSearchResponse> resultList) {
+        return resultList.stream()
+                .map(RestaurantSearchResponse::getId)
+                .toList();
     }
 
-    private Map<Long, List<Celeb>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
+    private Map<Long, List<CelebQueryResponse>> getCelebsGroupByRestaurantsId(List<Long> restaurantIds) {
         List<Video> videos = videoQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
         Map<Long, List<Video>> restaurantVideos = groupBySameOrder(videos, video -> video.restaurant().id());
         return restaurantVideos.entrySet()
@@ -267,16 +256,32 @@ public class RestaurantSearchResponseDao {
                 ));
     }
 
-    private Map<Long, List<RestaurantImage>> getImagesGroupByRestaurantsId(List<Long> restaurantIds) {
-        List<RestaurantImage> images = restaurantImageQueryDaoSupport.findAllByRestaurantIdIn(restaurantIds);
-        return groupBySameOrder(images, image -> image.restaurant().id());
-    }
-
-    private List<Celeb> videosToCelebs(Entry<Long, List<Video>> idWithVideosEntry) {
+    private List<CelebQueryResponse> videosToCelebs(Entry<Long, List<Video>> idWithVideosEntry) {
         return idWithVideosEntry.getValue()
                 .stream()
                 .map(Video::celeb)
+                .map(CelebQueryResponse::of)
                 .toList();
+    }
+
+    private Map<Long, List<RestaurantImageQueryResponse>> getImagesGroupByRestaurantsId(List<Long> restaurantIds) {
+        List<RestaurantImageQueryResponse> images = restaurantImageQueryDaoSupport
+                .findAllByRestaurantIdIn(restaurantIds)
+                .stream()
+                .map(RestaurantImageQueryResponse::of)
+                .toList();
+        return groupBySameOrder(images, RestaurantImageQueryResponse::restaurantId);
+    }
+
+    private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
+        Set<Long> likedRestaurantIds = restaurantLikeQueryDaoSupport
+                .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
+                .stream()
+                .map(RestaurantLike::restaurant)
+                .map(BaseEntity::id)
+                .collect(toSet());
+        return restaurantIds.stream()
+                .collect(toMap(identity(), likedRestaurantIds::contains));
     }
 
     @RequiredArgsConstructor
@@ -316,6 +321,7 @@ public class RestaurantSearchResponseDao {
         public double middleLng() {
             return calculateMiddle(lowLongitude, highLongitude);
         }
+
     }
 
     private static double calculateMiddle(double x, double y) {
