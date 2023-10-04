@@ -33,15 +33,18 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.restaurant.fixture.LocationFixture.대한민국_검색_조건;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -124,6 +127,28 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
+        }
+
+        @Test
+        void 위경도_검색조건이_모두_Null_이면_전국지도로_검색한다() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 예상_응답 = 예상_응답(전체_음식점, 없음, 없음, 없음, 검색_영역(대한민국_검색_조건));
+
+            // when
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(없음));
+
+            // then
+            조회_결과를_검증한다(예상_응답, 응답);
+        }
+
+        @Test
+        void 위경도_검색조건이_몇개만_null_이면_오류이다() {
+            // when
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), new LocationSearchCondRequest(null, 10.0, null, 100.0));
+
+            // then
+            잘못된_요청_예외를_검증한다(응답);
         }
 
         @Test
