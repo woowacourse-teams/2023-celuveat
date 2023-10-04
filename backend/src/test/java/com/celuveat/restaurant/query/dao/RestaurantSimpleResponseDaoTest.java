@@ -12,10 +12,9 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.common.util.StringUtil;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
-import com.celuveat.restaurant.query.dto.RestaurantWithDistance;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +31,10 @@ import org.springframework.data.domain.PageRequest;
 
 @IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
-@DisplayName("음식점 조회용 Dao(RestaurantWithDistanceDao) 은(는)")
-class RestaurantWithDistanceDaoTest {
+@DisplayName("음식점 조회용 Dao(RestaurantSimpleResponseDao) 은(는)")
+class RestaurantSimpleResponseDaoTest {
 
     private final List<RestaurantSimpleResponse> seed = new ArrayList<>();
-
-    @Autowired
-    private TestDataInserter testDataInserter;
 
     @Autowired
     private SeedData seedData;
@@ -47,7 +43,7 @@ class RestaurantWithDistanceDaoTest {
     private EntityManager em;
 
     @Autowired
-    private RestaurantWithDistanceDao restaurantWithDistanceDao;
+    private RestaurantSimpleResponseDao RestaurantSimpleResponseDao;
 
     @BeforeEach
     void setUp() {
@@ -66,16 +62,18 @@ class RestaurantWithDistanceDaoTest {
     @Test
     void 전체_음식점_조회_테스트() {
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(seed));
     }
 
@@ -91,16 +89,18 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, null),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -116,16 +116,18 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, category, null),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -141,17 +143,19 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, null, restaurantName),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(expected.size());
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -169,16 +173,18 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(celebId, category, null),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -196,16 +202,18 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, restaurantName),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -223,16 +231,18 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, category, restaurantName),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -252,10 +262,12 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(celebId, category, restaurantName),
                 전체영역_검색_범위,
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
@@ -273,7 +285,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -281,13 +293,15 @@ class RestaurantWithDistanceDaoTest {
                         박스_1번_지점포함.lowLongitude(),
                         박스_1번_지점포함.highLongitude()
                 ),
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -302,7 +316,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(null, null, null),
                 new LocationSearchCond(
                         박스_1_2번_지점포함.lowLatitude(),
@@ -310,13 +324,15 @@ class RestaurantWithDistanceDaoTest {
                         박스_1_2번_지점포함.lowLongitude(),
                         박스_1_2번_지점포함.highLongitude()
                 ),
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -333,7 +349,7 @@ class RestaurantWithDistanceDaoTest {
         }
 
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.search(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findAll(
                 new RestaurantSearchCond(celebId, null, null),
                 new LocationSearchCond(
                         박스_1번_지점포함.lowLatitude(),
@@ -341,13 +357,15 @@ class RestaurantWithDistanceDaoTest {
                         박스_1번_지점포함.lowLongitude(),
                         박스_1번_지점포함.highLongitude()
                 ),
-                PageRequest.of(0, 20));
+                PageRequest.of(0, 20),
+                null
+        );
 
         // then
         assertThat(result).isNotEmpty();
         assertThat(result.getContent())
-                .isSortedAccordingTo(comparing(RestaurantWithDistance::distance))
-                .extracting(RestaurantWithDistance::name)
+                .isSortedAccordingTo(comparing(RestaurantSimpleResponse::distance))
+                .extracting(RestaurantSimpleResponse::name)
                 .containsExactlyInAnyOrderElementsOf(이름_추출(expected));
     }
 
@@ -355,15 +373,16 @@ class RestaurantWithDistanceDaoTest {
     @ValueSource(ints = {10, 100, 1000, 3000, 5000, 30000})
     void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
         // when
-        Page<RestaurantWithDistance> result = restaurantWithDistanceDao.searchNearBy(
+        Page<RestaurantSimpleResponse> result = RestaurantSimpleResponseDao.findNearBy(
                 1L,
                 specificDistance,
-                PageRequest.of(0, 4)
+                PageRequest.of(0, 4),
+                null
         );
 
         // then
         assertThat(result.getContent())
-                .extracting(RestaurantWithDistance::distance)
+                .extracting(RestaurantSimpleResponse::distance)
                 .allMatch(distance -> distance <= specificDistance);
     }
 }

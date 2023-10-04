@@ -29,8 +29,8 @@ import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
@@ -570,8 +570,8 @@ class RestaurantQueryServiceTest {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 restaurant.id(),
                 specificDistance,
-                null,
-                PageRequest.of(0, 4)
+                PageRequest.of(0, 4),
+                null
         );
 
         // then
@@ -597,8 +597,8 @@ class RestaurantQueryServiceTest {
         Page<RestaurantSimpleResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                 seed.get(0).id(),
                 50000,
-                도기.id(),
-                PageRequest.of(0, 4)
+                PageRequest.of(0, 4),
+                도기.id()
         );
 
         // then

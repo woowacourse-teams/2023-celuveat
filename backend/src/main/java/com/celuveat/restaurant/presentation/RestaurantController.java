@@ -12,8 +12,8 @@ import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
@@ -85,17 +85,17 @@ public class RestaurantController {
 
     @GetMapping("/{restaurantId}/nearby")
     ResponseEntity<PageResponse<RestaurantSimpleResponse>> findAllNearbyDistance(
+            @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
-            @LooseAuth Long memberId,
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSimpleResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                         restaurantId,
                         distance,
-                        memberId,
-                        pageable
+                        pageable,
+                        memberId
                 );
         return ResponseEntity.ok(PageResponse.from(result));
     }

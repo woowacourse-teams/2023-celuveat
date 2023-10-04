@@ -8,8 +8,8 @@ import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao.District
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
@@ -48,7 +48,7 @@ public class RestaurantQueryService {
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        Page<RestaurantSimpleResponse> response = restaurantSimpleResponseDao.findAllWithMemberLiked(
+        Page<RestaurantSimpleResponse> response = restaurantSimpleResponseDao.findAll(
                 restaurantCond,
                 locationCond,
                 pageable,
@@ -72,14 +72,14 @@ public class RestaurantQueryService {
     public Page<RestaurantSimpleResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             long restaurantId,
             int distance,
-            @Nullable Long memberId,
-            Pageable pageable
+            Pageable pageable,
+            @Nullable Long memberId
     ) {
-        return restaurantSimpleResponseDao.findAllNearByDistanceWithoutSpecificRestaurant(
+        return restaurantSimpleResponseDao.findNearBy(
                 restaurantId,
                 distance,
-                memberId,
-                pageable
+                pageable,
+                memberId
         );
     }
 

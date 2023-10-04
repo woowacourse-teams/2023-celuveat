@@ -1,7 +1,7 @@
 package com.celuveat.restaurant.fixture;
 
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSimpleResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 
 public class LocationFixture {
