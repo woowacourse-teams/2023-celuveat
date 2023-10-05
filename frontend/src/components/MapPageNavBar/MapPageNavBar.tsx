@@ -9,7 +9,7 @@ import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStr
 
 import { getCelebs } from '~/api/celeb';
 
-function MainPageNavBar() {
+function MapPageNavBar() {
   const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
     shallow,
@@ -44,7 +44,7 @@ function MainPageNavBar() {
   );
 }
 
-export default MainPageNavBar;
+export default MapPageNavBar;
 
 const StyledNavBar = styled.nav`
   display: flex;
