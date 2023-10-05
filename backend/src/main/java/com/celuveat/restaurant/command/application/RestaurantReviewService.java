@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class RestaurantReviewService {
 
-
     private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
@@ -37,12 +36,12 @@ public class RestaurantReviewService {
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
         RestaurantReview restaurantReview =
                 new RestaurantReview(command.content(), member, restaurant, command.rating(), 0);
-        saveReviewImagesIfExist(command.images(), restaurantReview);
+        saveReviewImages(command.images(), restaurantReview);
         restaurant.addReviewRating(restaurantReview.rating());
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
-    private void saveReviewImagesIfExist(List<MultipartFile> images, RestaurantReview review) {
+    private void saveReviewImages(List<MultipartFile> images, RestaurantReview review) {
         if (Objects.isNull(images)) {
             return;
         }

@@ -136,7 +136,7 @@ public class RestaurantReviewAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    public static MockMultipartFile 이미지를_생성한다(final String name, final String originalFilename) {
+    public static MultipartFile 이미지를_생성한다(final String name, final String originalFilename) {
         return new MockMultipartFile(
                 name, originalFilename, "multipart/form-data", originalFilename.getBytes()
         );

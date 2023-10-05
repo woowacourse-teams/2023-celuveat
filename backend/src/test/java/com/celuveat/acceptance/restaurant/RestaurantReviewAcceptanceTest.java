@@ -134,13 +134,13 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 음식점_리뷰에_사진을_첨부한다_작성한다() throws IOException {
+    void 음식점_리뷰에_사진을_첨부하여_작성한다() throws IOException {
         // given
         var 음식점 = 음식점("오도음식점");
         음식점을_저장한다(음식점);
         var 오도 = 멤버("오도");
         var 세션_아이디 = 회원가입하고_로그인한다(오도);
-        List<MultipartFile> 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
+        var 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
         이미지_업로드를_설정한다(리뷰_이미지);
         var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, 리뷰_이미지);
 
