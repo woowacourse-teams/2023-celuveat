@@ -58,12 +58,12 @@ public class Restaurant extends BaseEntity {
         this.viewCount += 1;
     }
 
-    public void addReviewRating(Double rating) {
+    public void addReviewRating(double rating) {
         this.totalRating += rating;
         this.reviewCount += 1;
     }
 
-    public void deleteReviewRating(Double rating) {
+    public void deleteReviewRating(double rating) {
         this.totalRating -= rating;
         this.reviewCount -= 1;
     }
