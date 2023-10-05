@@ -3,7 +3,7 @@ package com.celuveat.video.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class VideoResponseUtils {
+public class VideoResponseUtil {
 
     private static final Pattern YOUTUBE_VIDEO_KEY_PATTERN =
             Pattern.compile("(?:v=|/shorts/)([a-zA-Z0-9_-]+)");

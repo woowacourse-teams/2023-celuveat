@@ -5,6 +5,7 @@ import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +26,23 @@ public class AdminController {
 
     @PostMapping("/data")
     ResponseEntity<Void> saveData(@RequestBody String rawData) {
-        String[] rows = rawData.split(System.lineSeparator());
-        List<SaveDataRequest> requests = Arrays.stream(rows)
-                .map(row -> row.split(TAB, -1))
-                .map(SaveDataRequest::from)
-                .toList();
-        adminService.saveData(requests);
+        List<SaveDataRequest> request = toRequest(rawData, SaveDataRequest::from);
+        adminService.saveData(request);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/celebs")
     ResponseEntity<Void> saveCelebs(@RequestBody String rawData) {
-        String[] rows = rawData.split(System.lineSeparator());
-        List<SaveCelebRequest> requests = Arrays.stream(rows)
-                .map(row -> row.split(TAB, -1))
-                .map(SaveCelebRequest::new)
-                .toList();
-        adminService.saveCelebs(requests);
+        List<SaveCelebRequest> request = toRequest(rawData, SaveCelebRequest::new);
+        adminService.saveCelebs(request);
         return ResponseEntity.ok().build();
+    }
+
+    private <T> List<T> toRequest(String rawData, Function<String[], T> function) {
+        String[] rows = rawData.split(System.lineSeparator());
+        return Arrays.stream(rows)
+                .map(row -> row.split(TAB, -1))
+                .map(function::apply)
+                .toList();
     }
 }

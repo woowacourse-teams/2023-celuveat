@@ -5,13 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,5 +87,85 @@ public class RestaurantLikeAcceptanceSteps {
         List<LikedRestaurantQueryResponse> responseBody = 응답.as(new TypeRef<>() {
         });
         assertThat(responseBody).usingRecursiveComparison().isEqualTo(예상_응답);
+    }
+
+    public static List<LikedRestaurantQueryResponse> 예상_응답(List<RestaurantSearchResponse> 전체_음식점) {
+        RestaurantSearchResponse RestaurantSearchResponse1 = 전체_음식점.get(1);
+        RestaurantSearchResponse RestaurantSearchResponse2 = 전체_음식점.get(3);
+        RestaurantSearchResponse RestaurantSearchResponse3 = 전체_음식점.get(4);
+        RestaurantSearchResponse RestaurantSearchResponse4 = 전체_음식점.get(7);
+        return new ArrayList<>(List.of(
+                toRestaurantLikeQueryResponse(RestaurantSearchResponse4),
+                toRestaurantLikeQueryResponse(RestaurantSearchResponse3),
+                toRestaurantLikeQueryResponse(RestaurantSearchResponse2),
+                toRestaurantLikeQueryResponse(RestaurantSearchResponse1)
+        ));
+    }
+
+    public static List<RestaurantSearchResponse> 좋아요_포함된_예상_응답(
+            List<RestaurantSearchResponse> 전체_음식점) {
+        RestaurantSearchResponse RestaurantSearchResponse1 = 전체_음식점.get(1);
+        RestaurantSearchResponse RestaurantSearchResponse2 = 전체_음식점.get(3);
+        RestaurantSearchResponse RestaurantSearchResponse3 = 전체_음식점.get(4);
+        RestaurantSearchResponse RestaurantSearchResponse4 = 전체_음식점.get(7);
+        List<RestaurantSearchResponse> expected = new ArrayList<>(전체_음식점);
+        expected.set(1, increaseLikeCount(changeIsLikedToTrue(RestaurantSearchResponse1)));
+        expected.set(3, increaseLikeCount(changeIsLikedToTrue(RestaurantSearchResponse2)));
+        expected.set(4, increaseLikeCount(changeIsLikedToTrue(RestaurantSearchResponse3)));
+        expected.set(7, increaseLikeCount(changeIsLikedToTrue(RestaurantSearchResponse4)));
+        return expected;
+    }
+
+    public static RestaurantSearchResponse changeIsLikedToTrue(
+            RestaurantSearchResponse restaurantSearchResponse) {
+        return new RestaurantSearchResponse(
+                restaurantSearchResponse.id(),
+                restaurantSearchResponse.name(),
+                restaurantSearchResponse.category(),
+                restaurantSearchResponse.superCategory(),
+                restaurantSearchResponse.roadAddress(),
+                restaurantSearchResponse.latitude(),
+                restaurantSearchResponse.longitude(),
+                restaurantSearchResponse.phoneNumber(),
+                restaurantSearchResponse.naverMapUrl(),
+                restaurantSearchResponse.viewCount(),
+                restaurantSearchResponse.distance(),
+                restaurantSearchResponse.likeCount(),
+                true,
+                restaurantSearchResponse.rating(),
+                restaurantSearchResponse.celebs(),
+                restaurantSearchResponse.images()
+        );
+    }
+
+    public static RestaurantSearchResponse increaseLikeCount(
+            RestaurantSearchResponse restaurantSearchResponse) {
+        return new RestaurantSearchResponse(
+                restaurantSearchResponse.id(),
+                restaurantSearchResponse.name(),
+                restaurantSearchResponse.category(),
+                restaurantSearchResponse.superCategory(),
+                restaurantSearchResponse.roadAddress(),
+                restaurantSearchResponse.latitude(),
+                restaurantSearchResponse.longitude(),
+                restaurantSearchResponse.phoneNumber(),
+                restaurantSearchResponse.naverMapUrl(),
+                restaurantSearchResponse.viewCount(),
+                restaurantSearchResponse.distance(),
+                restaurantSearchResponse.likeCount() + 1,
+                restaurantSearchResponse.isLiked(),
+                restaurantSearchResponse.rating(),
+                restaurantSearchResponse.celebs(),
+                restaurantSearchResponse.images()
+        );
+    }
+
+    public static List<Long> 좋아요_누를_음식점_아이디를_뽑는다(List<RestaurantSearchResponse> 전체_음식점) {
+        return List.of(
+                전체_음식점.get(1).id(),
+                전체_음식점.get(3).id(),
+                전체_음식점.get(4).id(),
+                전체_음식점.get(7).id()
+        );
     }
 }

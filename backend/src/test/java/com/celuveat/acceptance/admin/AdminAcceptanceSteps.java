@@ -13,7 +13,9 @@ import java.util.List;
 
 public class AdminAcceptanceSteps {
 
-    public static final String TAB = "\t";
+    private static final String CELEB_SAVE_REQUEST_URL = "/admin/celebs";
+    private static final String DATA_SAVE_REQUEST_URL = "/admin/data";
+    private static final String TAB = "\t";
     public static final String 줄바꿈 = System.lineSeparator();
 
     public static String 데이터_입력_생성(
@@ -46,8 +48,12 @@ public class AdminAcceptanceSteps {
         return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", 인스타_아이디);
     }
 
-    public static List<SaveDataRequest> 데이터_저장_요청_생성(String input) {
-        String[] rows = input.split(System.lineSeparator());
+    public static String 영상_업로드_날짜가_잘못된_입력_생성(String 셀럽_이름, String 음식점_이름, String 영상_업로드_날짜) {
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", 영상_업로드_날짜, "");
+    }
+
+    public static List<SaveDataRequest> 데이터저장_요청_객체_생성(String rawData) {
+        String[] rows = rawData.split(System.lineSeparator());
         return Arrays.stream(rows)
                 .map(row -> row.split(TAB, -1))
                 .map(SaveDataRequest::from)
@@ -58,7 +64,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/admin/data")
+                .when().post(DATA_SAVE_REQUEST_URL)
                 .then()
                 .extract();
     }
@@ -81,7 +87,7 @@ public class AdminAcceptanceSteps {
         return given()
                 .contentType(TEXT.withCharset(UTF_8))
                 .body(data)
-                .when().post("/admin/celebs")
+                .when().post(CELEB_SAVE_REQUEST_URL)
                 .then()
                 .extract();
     }

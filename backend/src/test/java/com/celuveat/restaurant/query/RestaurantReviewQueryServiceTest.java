@@ -7,44 +7,22 @@ import static com.celuveat.restaurant.fixture.RestaurantReviewImageFixture.리�
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
-import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewImageRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@IntegrationTest
+@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 리뷰 조회용 서비스(RestaurantReviewQueryService) 은(는)")
-class RestaurantReviewQueryServiceTest {
-
-    @Autowired
-    private RestaurantReviewQueryService restaurantReviewQueryService;
-
-    @Autowired
-    private RestaurantReviewRepository restaurantReviewRepository;
-
-    @Autowired
-    private RestaurantReviewImageRepository restaurantReviewImageRepository;
-
-    @Autowired
-    private RestaurantReviewLikeRepository restaurantReviewLikeRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private OauthMemberRepository oauthMemberRepository;
+class RestaurantReviewQueryServiceTest extends IntegrationTest {
 
     @Test
     void 음식점_리뷰를_조회한다() {

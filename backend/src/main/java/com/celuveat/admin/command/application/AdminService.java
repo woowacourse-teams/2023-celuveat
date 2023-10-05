@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminService {
 
     private final CelebRepository celebRepository;
+    private final VideoRepository videoRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
-    private final VideoRepository videoRepository;
 
     public void saveData(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {

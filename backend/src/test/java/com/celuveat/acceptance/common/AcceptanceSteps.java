@@ -19,6 +19,7 @@ public class AcceptanceSteps {
     public static final HttpStatus 정상_처리 = HttpStatus.OK;
     public static final HttpStatus 생성됨 = HttpStatus.CREATED;
     public static final HttpStatus 잘못된_요청 = HttpStatus.BAD_REQUEST;
+    public static final HttpStatus 인증되지_않음 = HttpStatus.UNAUTHORIZED;
     public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
     public static final HttpStatus 찾을수_없음 = HttpStatus.NOT_FOUND;
     public static final HttpStatus 중복됨 = HttpStatus.CONFLICT;
@@ -43,15 +44,8 @@ public class AcceptanceSteps {
                 .contentType(JSON);
     }
 
-    public static ExtractableResponse<Response> 로그인을_요청한다() {
-        return given()
-                .when().get("/oauth/login/kakao?code=abcd")
-                .then()
-                .extract();
-    }
-
     public static String 세션_아이디를_가져온다(ExtractableResponse<Response> 응답) {
-        return 응답.sessionId();
+        return 응답.cookie("JSESSIONID");
     }
 
     public static void 응답_상태를_검증한다(
@@ -68,10 +62,6 @@ public class AcceptanceSteps {
         ExceptionResponse exceptionResponse = 응답.as(ExceptionResponse.class);
         assertThat(exceptionResponse.message())
                 .isEqualTo(예외_타입.errorMessage());
-    }
-
-    public static void 잘못된_요청_예외를_검증한다(ExtractableResponse<Response> 잘못된_요청_응답) {
-        assertThat(잘못된_요청_응답.statusCode()).isEqualTo(잘못된_요청.value());
     }
 
     public static <T> void 값이_존재한다(Optional<T> t) {
