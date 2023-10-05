@@ -96,6 +96,14 @@ public class RestaurantReviewAcceptanceSteps {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디, String 세션_아이디) {
+        return given(세션_아이디)
+                .queryParam("restaurantId", 음식점_아이디)
+                .when().get("/reviews")
+                .then().log().all()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> 리뷰_수정_요청을_보낸다(
             UpdateReviewRequest 요청,
             String 세션_아이디,
