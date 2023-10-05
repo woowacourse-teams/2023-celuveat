@@ -237,7 +237,7 @@ class RestaurantReviewServiceTest {
         // then
         RestaurantReview savedReview = restaurantReviewRepository.getById(reviewId);
         List<RestaurantReviewImage> reviewImages
-                = restaurantReviewImageRepository.findRestaurantReviewImagesByRestaurantReview(savedReview);
+                = restaurantReviewImageRepository.findByRestaurantReview(savedReview);
 
         assertThat(savedReview).usingRecursiveComparison()
                 .ignoringFields("id", "createdDate")

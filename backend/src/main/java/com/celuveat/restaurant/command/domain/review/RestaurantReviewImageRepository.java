@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RestaurantReviewImageRepository extends JpaRepository<RestaurantReviewImage, Long> {
 
-    List<RestaurantReviewImage> findRestaurantReviewImagesByRestaurantReview(RestaurantReview review);
+    List<RestaurantReviewImage> findByRestaurantReview(RestaurantReview review);
 
     void deleteAllByRestaurantReview(RestaurantReview review);
 }
