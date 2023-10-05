@@ -78,7 +78,7 @@ class RestaurantReviewServiceTest {
     void 리뷰를_저장한다() {
         // given
         SaveReviewRequestCommand command =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0, 0);
 
         // when
@@ -95,9 +95,9 @@ class RestaurantReviewServiceTest {
     void 리뷰를_저장하면_음식점에_전체_평점과_리뷰수를_증가시킨다() {
         // given
         SaveReviewRequestCommand commandA =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         SaveReviewRequestCommand commandB =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 3.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 3.0);
 
         // when
         restaurantReviewService.create(commandA);
@@ -113,7 +113,7 @@ class RestaurantReviewServiceTest {
     void 다른_사람의_리뷰를_수정하려하면_예외가_발생한다() {
         // given
         SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommand);
         UpdateReviewRequestCommand updateCommand =
                 new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, otherMember.id(), 5.0);
@@ -131,7 +131,7 @@ class RestaurantReviewServiceTest {
     void 리뷰를_수정한다() {
         // given
         SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommand);
         UpdateReviewRequestCommand updateCommand =
                 new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 0.0);
@@ -152,10 +152,10 @@ class RestaurantReviewServiceTest {
     void 리뷰를_수정하면_음식점의_전체_평점이_변경된다() {
         // given
         SaveReviewRequestCommand saveCommandA =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         restaurantReviewService.create(saveCommandA);
         SaveReviewRequestCommand saveCommandB =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommandB);
         UpdateReviewRequestCommand updateCommand =
                 new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 1.0);
@@ -174,7 +174,7 @@ class RestaurantReviewServiceTest {
     void 다른_사람의_리뷰를_삭제하려하면_예외가_발생한다() {
         // given
         SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommand);
         DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, otherMember.id());
 
@@ -191,7 +191,7 @@ class RestaurantReviewServiceTest {
     void 리뷰를_삭제한다() {
         // given
         SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommand);
         DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
 
@@ -207,7 +207,7 @@ class RestaurantReviewServiceTest {
     void 리뷰를_삭제하면_음식점의_전체_평점과_리뷰수가_감소한다() {
         // given
         SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, null);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
         Long reviewId = restaurantReviewService.create(saveCommand);
         DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
 
