@@ -2,6 +2,8 @@ package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
+import java.util.List;
 
 public record RestaurantReviewSingleResponse(
         Long id,
@@ -9,10 +11,15 @@ public record RestaurantReviewSingleResponse(
         String nickname,
         String profileImageUrl,
         String content,
-        String createdDate
+        String createdDate,
+        Double rating,
+        List<String> images
 ) {
 
-    public static RestaurantReviewSingleResponse from(RestaurantReview restaurantReview) {
+    public static RestaurantReviewSingleResponse of(
+            RestaurantReview restaurantReview,
+            List<RestaurantReviewImage> images
+    ) {
         OauthMember oauthMember = restaurantReview.member();
         return new RestaurantReviewSingleResponse(
                 restaurantReview.id(),
@@ -20,7 +27,9 @@ public record RestaurantReviewSingleResponse(
                 oauthMember.nickname(),
                 oauthMember.profileImageUrl(),
                 restaurantReview.content(),
-                restaurantReview.createdDate().toLocalDate().toString()
+                restaurantReview.createdDate().toLocalDate().toString(),
+                restaurantReview.rating(),
+                images.stream().map(RestaurantReviewImage::name).toList()
         );
     }
 }

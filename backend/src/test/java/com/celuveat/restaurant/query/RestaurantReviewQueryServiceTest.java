@@ -3,6 +3,7 @@ package com.celuveat.restaurant.query;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
+import static com.celuveat.restaurant.fixture.RestaurantReviewImageFixture.리뷰의_사진들;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
@@ -11,9 +12,12 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewImageRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -30,6 +34,9 @@ class RestaurantReviewQueryServiceTest {
 
     @Autowired
     private RestaurantReviewRepository restaurantReviewRepository;
+
+    @Autowired
+    private RestaurantReviewImageRepository restaurantReviewImageRepository;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -54,10 +61,15 @@ class RestaurantReviewQueryServiceTest {
         RestaurantReview review3 = 음식점_리뷰(member3, restaurant);
         RestaurantReview review4 = 음식점_리뷰(member3, restaurant);
         restaurantReviewRepository.saveAll(List.of(review1, review2, review3, review4));
-
+        Map<Long, List<RestaurantReviewImage>> 리뷰_사진들 = Map.of(
+                review1.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review1)),
+                review2.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review2)),
+                review3.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review3)),
+                review4.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review4))
+        );
         RestaurantReviewQueryResponse expected = RestaurantReviewQueryResponse.from(List.of(
                 review4, review3, review2, review1
-        ));
+        ), 리뷰_사진들);
 
         // when
         RestaurantReviewQueryResponse result =
