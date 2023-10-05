@@ -6,6 +6,7 @@ import { CelebId } from '~/@types/celeb.types';
 import { getRestaurants } from '~/api/restaurant';
 import ProfileImage from '~/components/@common/ProfileImage';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import { WHOLE_BOUNDARY } from '~/constants/boundary';
 import { CELEB } from '~/constants/celeb';
 import { FONT_SIZE } from '~/styles/common';
 
@@ -16,10 +17,8 @@ function CelebResultPage() {
     queryKey: ['restaurants', celebId],
     queryFn: () =>
       getRestaurants({
-        boundary: { lowLatitude: '32', highLatitude: '40', lowLongitude: '120', highLongitude: '132' },
+        boundary: WHOLE_BOUNDARY,
         celebId: Number(celebId),
-        category: '전체',
-        page: 0,
         sort: 'like',
       }),
   });
