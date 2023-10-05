@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { lazy } from 'react';
 import RegionResultPage from '~/pages/RegionResultPage';
 import CelebResultPage from '~/pages/CelebResultPage';
+import CategoryResultPage from '~/pages/CategoryResultPage';
 
 const Root = lazy(() => import('./Root'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
@@ -25,6 +26,7 @@ function Router() {
         { path: '/map', element: <MapPage /> },
         { path: '/region/:region', element: <RegionResultPage /> },
         { path: '/celeb/:celebId', element: <CelebResultPage /> },
+        { path: '/category/:category', element: <CategoryResultPage /> },
         { path: '/policy', element: <PrivacyPolicy /> },
         { path: '/restaurants/:id', element: <RestaurantDetail /> },
         { path: '/signUp', element: <SignUpPage /> },

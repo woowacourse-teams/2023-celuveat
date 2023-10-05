@@ -23,6 +23,12 @@ function MainPage() {
     navigate(`/celeb/${id}`);
   };
 
+  const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
+    const currentCategory = e.currentTarget.dataset.label;
+
+    navigate(`/category/${currentCategory}`);
+  };
+
   return (
     <StyledLayout>
       <StyledContainer>
@@ -63,7 +69,7 @@ function MainPage() {
           <StyledCategoryBox>
             <CategoryNavbar
               categories={Object.values(RESTAURANT_CATEGORY)}
-              externalOnClick={() => {}}
+              externalOnClick={clickRestaurantCategory}
               includeAll={false}
               grid
             />

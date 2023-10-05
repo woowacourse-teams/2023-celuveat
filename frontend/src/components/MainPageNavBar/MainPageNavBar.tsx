@@ -7,7 +7,6 @@ import CelebDropDown from '../CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
-import type { RestaurantCategory } from '~/@types/restaurant.types';
 import { getCelebs } from '~/api/celeb';
 
 function MainPageNavBar() {
@@ -23,7 +22,7 @@ function MainPageNavBar() {
   });
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
+    const currentCategory = e.currentTarget.dataset.label;
 
     setRestaurantCategory(currentCategory);
     setCurrentPage(0);
