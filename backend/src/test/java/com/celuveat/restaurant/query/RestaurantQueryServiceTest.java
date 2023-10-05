@@ -560,6 +560,7 @@ class RestaurantQueryServiceTest {
                 0, // likeCount
                 0, // viewCount
                 isLiked,
+                restaurantWithCelebsAndImagesSimpleResponse.getRating(),
                 restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
                 restaurantWithCelebsAndImagesSimpleResponse.getImages()
         );
@@ -722,6 +723,7 @@ class RestaurantQueryServiceTest {
                     null,
                     likeCount,
                     isLiked,
+                    restaurant.averageRating(),
                     celebs.stream().map(it -> new CelebQueryResponse(
                             restaurant.id(),
                             it.id(),
@@ -816,6 +818,7 @@ class RestaurantQueryServiceTest {
                     restaurantWithCelebsAndImagesSimpleResponse.getDistance(),
                     restaurantWithCelebsAndImagesSimpleResponse.getLikeCount(),
                     restaurantWithCelebsAndImagesSimpleResponse.isLiked(),
+                    restaurantWithCelebsAndImagesSimpleResponse.getRating(),
                     restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
                     restaurantWithCelebsAndImagesSimpleResponse.getImages()
             );

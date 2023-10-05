@@ -17,6 +17,7 @@ public record RestaurantDetailResponse(
         Integer likeCount,
         Integer viewCount,
         Boolean isLiked,
+        Double rating,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -40,6 +41,7 @@ public record RestaurantDetailResponse(
                 likeCount,
                 restaurant.viewCount(),
                 isLiked,
+                restaurant.averageRating(),
                 celebs,
                 restaurantImages);
     }
@@ -61,6 +63,7 @@ public record RestaurantDetailResponse(
                 other.likeCount(),
                 other.viewCount(),
                 other.isLiked(),
+                other.rating(),
                 celebs,
                 restaurantImages
         );

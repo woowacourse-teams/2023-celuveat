@@ -42,7 +42,6 @@ import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_�
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
-import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
@@ -57,9 +56,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private SeedData seedData;
-
-    @Autowired
-    private TestDataInserter testDataInserter;
 
     @Nested
     class 음식점_검색 {

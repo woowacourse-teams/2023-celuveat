@@ -26,6 +26,7 @@ public class RestaurantSearchResponse {
     private Integer distance;
     private int likeCount;
     private boolean isLiked;
+    private Double rating;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
@@ -35,7 +36,7 @@ public class RestaurantSearchResponse {
             Double latitude, Double longitude,
             String phoneNumber, String naverMapUrl,
             Integer viewCount, Double distance,
-            int likeCount
+            int likeCount, Double rating
     ) {
         this.id = id;
         this.name = name;
@@ -48,6 +49,7 @@ public class RestaurantSearchResponse {
         this.viewCount = viewCount;
         this.distance = distance.intValue();
         this.likeCount = likeCount;
+        this.rating = rating;
     }
 
     public void setLiked(boolean liked) {
