@@ -8,6 +8,7 @@ import com.celuveat.auth.command.application.OauthService;
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.celeb.command.domain.CelebRepository;
+import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
@@ -22,6 +23,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.web.multipart.MultipartFile;
 
 @Sql("/truncate.sql")
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -37,6 +40,8 @@ public abstract class AcceptanceTest {
 
     @MockBean
     protected OauthService oauthService;
+    @MockBean
+    protected ImageUploadClient imageUploadClient;
 
     @Autowired
     protected CelebRepository celebRepository;
@@ -83,5 +88,9 @@ public abstract class AcceptanceTest {
 
     private void OAuth_응답을_설정한다(OauthMember member) {
         Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
+    }
+
+    protected void 이미지_업로드를_설정한다(MultipartFile image) {
+        BDDMockito.willDoNothing().given(imageUploadClient).upload(image);
     }
 }

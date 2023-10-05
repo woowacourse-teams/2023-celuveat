@@ -11,13 +11,17 @@ import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_작성_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_조회_요청을_보낸다;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.사진_2장이_포함된_리뷰_작성_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.응답을_검증한다;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.이미지를_생성한다;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
+import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -125,5 +129,25 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
 
         // then
         응답_상태를_검증한다(응답, 내용_없음);
+    }
+
+    @Test
+    void 음식점_리뷰에_사진을_첨부한다_작성한다() throws IOException {
+        // given
+        var 음식점 = 음식점("오도음식점");
+        음식점을_저장한다(음식점);
+        var 오도 = 멤버("오도");
+        var 세션_아이디 = 회원가입하고_로그인한다(오도);
+        var 이미지1번 = 이미지를_생성한다("images", "이미지1번.wepb");
+        var 이미지2번 = 이미지를_생성한다("images", "이미지1번.wepb");
+        이미지_업로드를_설정한다(이미지1번);
+        이미지_업로드를_설정한다(이미지2번);
+        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, List.of(이미지1번, 이미지2번));
+
+        // when
+        var 응답 = 사진_2장이_포함된_리뷰_작성_요청을_보낸다(요청, 세션_아이디);
+
+        // then
+        응답_상태를_검증한다(응답, 생성됨);
     }
 }

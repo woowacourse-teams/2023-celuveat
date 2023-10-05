@@ -247,9 +247,9 @@ class RestaurantReviewServiceTest {
                 .containsExactlyInAnyOrder("imageA", "imageB");
     }
 
-    private MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
+    public MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
         return new MockMultipartFile(
-                name, originalFilename, "multipart/form-data", name.getBytes()
+                name, originalFilename, "multipart/form-data", originalFilename.getBytes()
         );
     }
 }
