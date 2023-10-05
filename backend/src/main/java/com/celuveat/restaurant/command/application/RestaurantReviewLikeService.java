@@ -9,7 +9,7 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.exception.RestaurantReviewException;
-import java.util.function.Consumer;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,17 +29,22 @@ public class RestaurantReviewLikeService {
         if (restaurantReview.member().equals(member)) {
             throw new RestaurantReviewException(CAN_NOT_LIKE_MY_REVIEW);
         }
-        restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member)
-                .ifPresentOrElse(cancelLike(restaurantReview), clickLike(restaurantReview, member));
+        Optional<RestaurantReviewLike> likeHistory =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member);
+        if (likeHistory.isPresent()) {
+            cancelLike(restaurantReview, likeHistory.get());
+            return;
+        }
+        clickLike(restaurantReview, member);
     }
 
-    private Consumer<RestaurantReviewLike> cancelLike(RestaurantReview restaurantReview) {
+    private void cancelLike(RestaurantReview restaurantReview, RestaurantReviewLike restaurantReviewLike) {
         restaurantReview.cancelLike();
-        return restaurantReviewLikeRepository::delete;
+        restaurantReviewLikeRepository.delete(restaurantReviewLike);
     }
 
-    private Runnable clickLike(RestaurantReview restaurantReview, OauthMember member) {
+    private void clickLike(RestaurantReview restaurantReview, OauthMember member) {
         restaurantReview.clickLike();
-        return () -> restaurantReviewLikeRepository.save(new RestaurantReviewLike(restaurantReview, member));
+        restaurantReviewLikeRepository.save(new RestaurantReviewLike(restaurantReview, member));
     }
 }
