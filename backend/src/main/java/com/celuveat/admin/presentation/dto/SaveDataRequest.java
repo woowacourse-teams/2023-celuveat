@@ -21,8 +21,7 @@ public record SaveDataRequest(
         String videoUploadDate,
         String latitude,
         String longitude,
-        String instagramName,
-        String superCategory
+        String instagramName
 ) {
 
     private static final int RESTAURANT_NAME = 0;
@@ -53,7 +52,6 @@ public record SaveDataRequest(
                 .latitude(data[LATITUDE])
                 .longitude(data[LONGITUDE])
                 .instagramName(data[INSTAGRAM_NAME])
-                .superCategory(data[SUPER_CATEGORY])
                 .build();
     }
 
