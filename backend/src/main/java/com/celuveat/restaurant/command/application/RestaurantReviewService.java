@@ -43,7 +43,7 @@ public class RestaurantReviewService {
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
-    private void uploadImagesIfExist(final List<MultipartFile> images, RestaurantReview review) {
+    private void uploadImagesIfExist(List<MultipartFile> images, RestaurantReview review) {
         if (Objects.isNull(images)) {
             return;
         }
