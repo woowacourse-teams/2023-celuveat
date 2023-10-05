@@ -1,9 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-
 import { lazy } from 'react';
-import RegionResultPage from '~/pages/RegionResultPage';
-import CelebResultPage from '~/pages/CelebResultPage';
-import CategoryResultPage from '~/pages/CategoryResultPage';
 
 const Root = lazy(() => import('./Root'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
@@ -14,13 +10,15 @@ const WishListPage = lazy(() => import('~/pages/WishListPage'));
 const WithdrawalPage = lazy(() => import('~/pages/WithdrawalPage'));
 const PrivacyPolicy = lazy(() => import('~/pages/PrivacyPolicyPage'));
 const OauthRedirectPage = lazy(() => import('~/pages/OauthRedirectPage'));
+const RegionResultPage = lazy(() => import('~/pages/RegionResultPage'));
+const CelebResultPage = lazy(() => import('~/pages/CelebResultPage'));
+const CategoryResultPage = lazy(() => import('~/pages/CategoryResultPage'));
 
 function Router() {
   const router = createBrowserRouter([
     {
       path: '/',
       element: <Root />,
-      // errorElement: <NotFound />,
       children: [
         { index: true, element: <MainPage /> },
         { path: '/map', element: <MapPage /> },
