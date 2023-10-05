@@ -34,10 +34,10 @@ public class RestaurantReviewAcceptanceSteps {
 
     public static RestaurantReviewQueryResponse 예상_응답(Long 말랑_아이디, Long 로이스_아이디, Long 도기_아이디) {
         return new RestaurantReviewQueryResponse(4, List.of(
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰4", null, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰3", null, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 로이스_아이디, "로이스", "abc", "리뷰2", null, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 도기_아이디, "도기", "abc", "리뷰1", null, 5.0, null)
+                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰4", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰3", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 로이스_아이디, "로이스", "abc", "리뷰2", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 도기_아이디, "도기", "abc", "리뷰1", null, 0, false, 5.0, null)
         ));
     }
 

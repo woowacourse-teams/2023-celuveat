@@ -12,14 +12,15 @@ public record RestaurantReviewQueryResponse(
 
     public static RestaurantReviewQueryResponse from(
             List<RestaurantReview> restaurantReviews,
-            Map<Long, List<RestaurantReviewImage>> restaurantReviewImages
+            Map<Long, List<RestaurantReviewImage>> restaurantReviewImages,
+            Map<Long, Boolean> isLikedByReviewId
     ) {
         List<RestaurantReviewSingleResponse> reviews = restaurantReviews.stream()
                 .map(review -> RestaurantReviewSingleResponse.of(
                         review,
-                        restaurantReviewImages.getOrDefault(review.id(), List.of()))
-                )
-                .toList();
+                        restaurantReviewImages.getOrDefault(review.id(), List.of()),
+                        isLikedByReviewId.getOrDefault(review.id(), false)
+                )).toList();
         return new RestaurantReviewQueryResponse(reviews.size(), reviews);
     }
 }

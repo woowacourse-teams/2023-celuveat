@@ -12,13 +12,16 @@ public record RestaurantReviewSingleResponse(
         String profileImageUrl,
         String content,
         String createdDate,
+        Integer likeCount,
+        Boolean isLiked,
         Double rating,
         List<String> images
 ) {
 
     public static RestaurantReviewSingleResponse of(
             RestaurantReview restaurantReview,
-            List<RestaurantReviewImage> images
+            List<RestaurantReviewImage> images,
+            boolean isLiked
     ) {
         OauthMember oauthMember = restaurantReview.member();
         return new RestaurantReviewSingleResponse(
@@ -28,6 +31,8 @@ public record RestaurantReviewSingleResponse(
                 oauthMember.profileImageUrl(),
                 restaurantReview.content(),
                 restaurantReview.createdDate().toLocalDate().toString(),
+                restaurantReview.likeCount(),
+                isLiked,
                 restaurantReview.rating(),
                 images.stream().map(RestaurantReviewImage::name).toList()
         );

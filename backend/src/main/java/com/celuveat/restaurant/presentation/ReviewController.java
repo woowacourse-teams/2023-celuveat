@@ -3,6 +3,7 @@ package com.celuveat.restaurant.presentation;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import com.celuveat.common.auth.Auth;
+import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantReviewLikeService;
 import com.celuveat.restaurant.command.application.RestaurantReviewReportService;
@@ -39,9 +40,10 @@ public class ReviewController {
 
     @GetMapping
     ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
-            @RequestParam Long restaurantId
+            @RequestParam Long restaurantId,
+            @LooseAuth Long memberId
     ) {
-        return ResponseEntity.ok(restaurantReviewQueryService.findAllByRestaurantId(restaurantId));
+        return ResponseEntity.ok(restaurantReviewQueryService.findAllByRestaurantId(restaurantId, memberId));
     }
 
     @PostMapping
