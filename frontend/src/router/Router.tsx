@@ -23,7 +23,7 @@ function Router() {
       children: [
         { index: true, element: <MainPage /> },
         { path: '/map', element: <MapPage /> },
-        { path: '/result/:region', element: <RegionResultPage /> },
+        { path: '/region/:region', element: <RegionResultPage /> },
         { path: '/celeb/:celebId', element: <CelebResultPage /> },
         { path: '/policy', element: <PrivacyPolicy /> },
         { path: '/restaurants/:id', element: <RestaurantDetail /> },
