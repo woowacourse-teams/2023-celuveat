@@ -55,17 +55,12 @@ public class RestaurantReviewService {
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        Restaurant restaurant = review.restaurant();
-        restaurant.deleteReviewRating(review.rating());
-        review.updateContent(command.content(), command.memberId(), command.rating());
-        restaurant.addReviewRating(command.rating());
+        review.update(command.content(), command.memberId(), command.rating());
     }
 
     public void delete(DeleteReviewCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.checkOwner(command.memberId());
-        Restaurant restaurant = review.restaurant();
-        restaurant.deleteReviewRating(review.rating());
+        review.delete(command.memberId());
         restaurantReviewLikeRepository.deleteAllByRestaurantReview(review);
         restaurantReviewImageRepository.deleteAllByRestaurantReview(review);
         restaurantReviewRepository.delete(review);

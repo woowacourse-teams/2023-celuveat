@@ -37,13 +37,20 @@ public class RestaurantReview extends BaseEntity {
         this(content, member, restaurant, rating, 0);
     }
 
-    public void updateContent(String content, Long memberId, Double rating) {
+    public void update(String content, Long memberId, Double updateRating) {
         checkOwner(memberId);
+        restaurant.deleteReviewRating(rating);
+        restaurant.addReviewRating(updateRating);
         this.content = content;
-        this.rating = rating;
+        this.rating = updateRating;
     }
 
-    public void checkOwner(Long memberId) {
+    public void delete(Long memberId) {
+        checkOwner(memberId);
+        restaurant.deleteReviewRating(rating);
+    }
+
+    private void checkOwner(Long memberId) {
         if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
