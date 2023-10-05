@@ -68,7 +68,7 @@ function FilterOptionsModal({ isModalOpen, closeModal, celebOptions }: FilterOpt
         {filterName === 'category' && (
           <StyledFilterItem>
             <li>
-              {Object.values(RESTAURANT_CATEGORY).map(({ icon, label }) => (
+              {RESTAURANT_CATEGORY.map(({ icon, label }) => (
                 <StyledNavItemButton
                   aria-label={label}
                   data-label={label}
