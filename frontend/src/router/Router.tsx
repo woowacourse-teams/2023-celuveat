@@ -8,7 +8,7 @@ import CategoryResultPage from '~/pages/CategoryResultPage';
 const Root = lazy(() => import('./Root'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
-const RestaurantDetail = lazy(() => import('~/pages/RestaurantDetail'));
+const RestaurantDetailPage = lazy(() => import('~/pages/RestaurantDetailPage'));
 const SignUpPage = lazy(() => import('~/pages/SignUpPage'));
 const WishListPage = lazy(() => import('~/pages/WishListPage'));
 const WithdrawalPage = lazy(() => import('~/pages/WithdrawalPage'));
@@ -28,7 +28,7 @@ function Router() {
         { path: '/celeb/:celebId', element: <CelebResultPage /> },
         { path: '/category/:category', element: <CategoryResultPage /> },
         { path: '/policy', element: <PrivacyPolicy /> },
-        { path: '/restaurants/:id', element: <RestaurantDetail /> },
+        { path: '/restaurants/:id', element: <RestaurantDetailPage /> },
         { path: '/signUp', element: <SignUpPage /> },
         { path: '/restaurants/like', element: <WishListPage /> },
         { path: '/withdrawal', element: <WithdrawalPage /> },
