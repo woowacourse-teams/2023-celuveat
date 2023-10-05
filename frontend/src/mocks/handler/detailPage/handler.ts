@@ -136,6 +136,7 @@ export const DetailPageSuccessHandler = [
   rest.patch('/reviews/:reviewId', async (req, res, ctx) => {
     const { reviewId } = req.params;
     const { JSESSION } = req.cookies;
+    const { content, rating } = await req.json();
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
@@ -143,7 +144,8 @@ export const DetailPageSuccessHandler = [
 
     const review = reviews.find(({ id }) => Number(reviewId) === id);
 
-    review['content'] = 'MSW는 formdata지원을 안한다나 어쩐다나';
+    review['content'] = content;
+    review['rating'] = rating;
     review['reviewImageUrls'] = makeImage(2);
 
     return res(ctx.status(204));

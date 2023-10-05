@@ -15,7 +15,7 @@ import {
 import useToastState from '~/hooks/store/useToastState';
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
-import type { RestaurantReviewData } from '~/@types/api.types';
+import type { RestaurantReviewData, RestaurantReviewPatchBody } from '~/@types/api.types';
 
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
@@ -165,7 +165,7 @@ const useRestaurantReview = () => {
       createReview.mutate(body);
       close();
     },
-    updateReview: ({ reviewId, body }: { reviewId: number; body: FormData }) => {
+    updateReview: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
       updateReview.mutate({ reviewId, body });
       close();
     },

@@ -86,10 +86,6 @@ function ReviewForm({ type }: ReviewFormProps) {
   const makeReviewFormData = () => {
     const formData = new FormData();
 
-    images.forEach(image => {
-      formData.append('images', image.imgFile);
-    });
-
     formData.append('content', text);
     formData.append('rate', String(rating));
 
@@ -103,11 +99,15 @@ function ReviewForm({ type }: ReviewFormProps) {
 
     switch (type) {
       case 'create':
+        images.forEach(image => {
+          formData.append('images', image.imgFile);
+        });
         formData.append('restaurantId', restaurantId);
+
         createReview(formData);
         break;
       case 'update':
-        updateReview({ reviewId, body: formData });
+        updateReview({ reviewId, body: { content: text, rating } });
         break;
       default:
         throw new Error('해당 타입의 review Form은 지원하지 않습니다.');
@@ -121,9 +121,12 @@ function ReviewForm({ type }: ReviewFormProps) {
 
       <StyledReviewFormItemText>후기 작성하기</StyledReviewFormItemText>
       <StyledTextArea placeholder="음식점을 다녀간 후기를 들려주세요" value={text} onChange={onChange} />
-
-      <StyledReviewFormItemText>사진 등록하기</StyledReviewFormItemText>
-      <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />
+      {type !== 'update' && (
+        <>
+          <StyledReviewFormItemText>사진 등록하기</StyledReviewFormItemText>
+          <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />
+        </>
+      )}
 
       <TextButton
         type="submit"

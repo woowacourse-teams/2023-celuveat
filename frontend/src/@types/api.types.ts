@@ -82,6 +82,7 @@ export interface RestaurantReviewData {
 
 export interface RestaurantReviewPatchBody {
   content: string;
+  rating: number;
 }
 
 export interface RestaurantReviewPostBody {

@@ -1,5 +1,7 @@
 import { apiUserClient, apiUserFilesClient } from './apiClient';
 
+import type { RestaurantReviewPatchBody } from '~/@types/api.types';
+
 export const getRestaurantReview = async (id: string) => {
   const response = await apiUserClient.get(`/reviews?restaurantId=${id}`);
   return response.data;
@@ -10,8 +12,14 @@ export const postRestaurantReview = async (body: FormData) => {
   return response;
 };
 
-export const patchRestaurantReview = async ({ reviewId, body }: { reviewId: number; body: FormData }) => {
-  const response = await apiUserFilesClient.patch(`/reviews/${reviewId}`, body);
+export const patchRestaurantReview = async ({
+  reviewId,
+  body,
+}: {
+  reviewId: number;
+  body: RestaurantReviewPatchBody;
+}) => {
+  const response = await apiUserClient.patch(`/reviews/${reviewId}`, body);
   return response;
 };
 
