@@ -12,6 +12,7 @@ import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImageRepository;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class RestaurantReviewService {
     private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
+    private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
     private final RestaurantReviewImageRepository restaurantReviewImageRepository;
 
     public Long create(SaveReviewRequestCommand command) {
@@ -67,6 +69,8 @@ public class RestaurantReviewService {
         review.checkOwner(command.memberId());
         Restaurant restaurant = review.restaurant();
         restaurant.deleteReviewRating(review.rating());
+        restaurantReviewLikeRepository.deleteAllByRestaurantReview(review);
+        restaurantReviewImageRepository.deleteAllByRestaurantReview(review);
         restaurantReviewRepository.delete(review);
     }
 }
