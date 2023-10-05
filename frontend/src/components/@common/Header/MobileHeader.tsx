@@ -35,8 +35,6 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   flex-direction: column;
   align-items: center;
 
-  position: sticky;
-  top: 0;
   z-index: 100;
 
   width: 100%;
