@@ -135,7 +135,7 @@ class RestaurantReviewServiceTest {
         Long reviewId = restaurantReviewService.create(saveCommand);
         UpdateReviewRequestCommand updateCommand =
                 new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 0.0);
-        RestaurantReview expected = new RestaurantReview("사장님이 초심을 잃었어요!", member, restaurant, 0.0, 0);
+        RestaurantReview expected = new RestaurantReview("사장님이 초심을 잃었어요!", member, restaurant, 0.0);
 
         // when
         restaurantReviewService.update(updateCommand);
@@ -229,7 +229,7 @@ class RestaurantReviewServiceTest {
         SaveReviewRequestCommand command =
                 new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, images);
         willDoNothing().given(imageUploadClient).upload(images);
-        RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0, 0);
+        RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0);
 
         // when
         Long reviewId = restaurantReviewService.create(command);

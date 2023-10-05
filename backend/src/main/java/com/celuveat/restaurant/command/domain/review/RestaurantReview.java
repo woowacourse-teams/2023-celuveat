@@ -33,6 +33,10 @@ public class RestaurantReview extends BaseEntity {
 
     private int likeCount;
 
+    public RestaurantReview(String content, OauthMember member, Restaurant restaurant, Double rating) {
+        this(content, member, restaurant, rating, 0);
+    }
+
     public void updateContent(String content, Long memberId, Double rating) {
         checkOwner(memberId);
         this.content = content;
