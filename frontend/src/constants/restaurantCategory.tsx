@@ -13,28 +13,28 @@ import Spaghetti from '~/assets/icons/category/spaghetti.svg';
 import Snackbar from '~/assets/icons/category/snackbar.svg';
 import Wine from '~/assets/icons/category/wine.svg';
 import World from '~/assets/icons/category/world.svg';
-import type { RestaurantCategory } from '~/@types/restaurant.types';
 
 interface Category {
-  label: RestaurantCategory;
+  label: string;
   icon: React.ReactNode;
 }
 
-const RESTAURANT_CATEGORY: Record<string, Category> = {
-  all: { label: '전체', icon: <All /> },
-  korean: { label: '한식', icon: <Korean /> },
-  soup: { label: '탕,찌개', icon: <Soup /> },
-  chinese: { label: '중식', icon: <Chinese /> },
-  japanese: { label: '일식', icon: <Japanese /> },
-  western: { label: '양식', icon: <Spaghetti /> },
-  seafood: { label: '회,수산물', icon: <Sushi /> },
-  beef: { label: '고기', icon: <Beef /> },
-  asian: { label: '아시안', icon: <Asian /> },
-  noodle: { label: '면류', icon: <Noodle /> },
-  snackbar: { label: '분식', icon: <Snackbar /> },
-  fastfood: { label: '패스트푸드', icon: <Pizza /> },
-  desert: { label: '커피,디저트', icon: <Bakery /> },
-  world: { label: '세계요리', icon: <World /> },
-  bar: { label: '주점', icon: <Wine /> },
-};
+const RESTAURANT_CATEGORY: Category[] = [
+  { label: '전체', icon: <All /> },
+  { label: '한식', icon: <Korean /> },
+  { label: '탕,찌개', icon: <Soup /> },
+  { label: '중식', icon: <Chinese /> },
+  { label: '일식', icon: <Japanese /> },
+  { label: '양식', icon: <Spaghetti /> },
+  { label: '회,수산물', icon: <Sushi /> },
+  { label: '고기', icon: <Beef /> },
+  { label: '아시안', icon: <Asian /> },
+  { label: '면류', icon: <Noodle /> },
+  { label: '분식', icon: <Snackbar /> },
+  { label: '패스트푸드', icon: <Pizza /> },
+  { label: '커피,디저트', icon: <Bakery /> },
+  { label: '세계요리', icon: <World /> },
+  { label: '주점', icon: <Wine /> },
+];
+
 export default RESTAURANT_CATEGORY;

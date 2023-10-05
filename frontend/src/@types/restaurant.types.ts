@@ -12,4 +12,4 @@ export interface RestaurantsQueryParams {
   sort: 'distance' | 'like';
 }
 
-export type RestaurantCategory = keyof typeof RESTAURANT_CATEGORY;
+export type RestaurantCategory = (typeof RESTAURANT_CATEGORY)[number]['label'];

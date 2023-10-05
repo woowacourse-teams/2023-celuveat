@@ -68,7 +68,7 @@ function MainPage() {
           <h5>카테고리</h5>
           <StyledCategoryBox>
             <CategoryNavbar
-              categories={Object.values(RESTAURANT_CATEGORY)}
+              categories={RESTAURANT_CATEGORY}
               externalOnClick={clickRestaurantCategory}
               includeAll={false}
               grid
