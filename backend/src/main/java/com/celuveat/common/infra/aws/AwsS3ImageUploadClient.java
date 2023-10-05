@@ -4,6 +4,7 @@ import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.common.infra.AwsS3Property;
 import com.celuveat.common.util.Base64Util;
 import com.celuveat.common.util.FileNameUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,14 @@ public class AwsS3ImageUploadClient implements ImageUploadClient {
                 .build();
         RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
         s3Client.putObject(putObjectRequest, requestBody);
+    }
+
+    @Override
+    public void upload(final List<MultipartFile> file) {
+        if (file == null || file.isEmpty()) {
+            return;
+        }
+        file.forEach(this::upload);
     }
 
     private String getEncodedFileName(MultipartFile file) {

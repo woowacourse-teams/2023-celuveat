@@ -20,6 +20,7 @@ import com.celuveat.video.command.domain.VideoRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -90,7 +91,7 @@ public abstract class AcceptanceTest {
         Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
     }
 
-    protected void 이미지_업로드를_설정한다(MultipartFile image) {
-        BDDMockito.willDoNothing().given(imageUploadClient).upload(image);
+    protected void 이미지_업로드를_설정한다(List<MultipartFile> images) {
+        BDDMockito.willDoNothing().given(imageUploadClient).upload(images);
     }
 }

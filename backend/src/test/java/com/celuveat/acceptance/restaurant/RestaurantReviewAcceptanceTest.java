@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("음식점 리뷰 인수테스트")
 public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
@@ -138,11 +139,9 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         음식점을_저장한다(음식점);
         var 오도 = 멤버("오도");
         var 세션_아이디 = 회원가입하고_로그인한다(오도);
-        var 이미지1번 = 이미지를_생성한다("images", "이미지1번.wepb");
-        var 이미지2번 = 이미지를_생성한다("images", "이미지1번.wepb");
-        이미지_업로드를_설정한다(이미지1번);
-        이미지_업로드를_설정한다(이미지2번);
-        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, List.of(이미지1번, 이미지2번));
+        List<MultipartFile> 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
+        이미지_업로드를_설정한다(리뷰_이미지);
+        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, 리뷰_이미지);
 
         // when
         var 응답 = 사진_2장이_포함된_리뷰_작성_요청을_보낸다(요청, 세션_아이디);

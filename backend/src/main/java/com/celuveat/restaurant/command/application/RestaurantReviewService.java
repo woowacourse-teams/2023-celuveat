@@ -2,7 +2,6 @@ package com.celuveat.restaurant.command.application;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
-import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.common.util.FileNameUtil;
 import com.celuveat.restaurant.command.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.command.application.dto.SaveReviewRequestCommand;
@@ -26,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class RestaurantReviewService {
 
-    private final ImageUploadClient imageUploadClient;
+
     private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
@@ -38,16 +37,15 @@ public class RestaurantReviewService {
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
         RestaurantReview restaurantReview =
                 new RestaurantReview(command.content(), member, restaurant, command.rating());
-        uploadImagesIfExist(command.images(), restaurantReview);
+        saveReviewImagesIfExist(command.images(), restaurantReview);
         restaurant.addReviewRating(restaurantReview.rating());
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
-    private void uploadImagesIfExist(List<MultipartFile> images, RestaurantReview review) {
+    private void saveReviewImagesIfExist(List<MultipartFile> images, RestaurantReview review) {
         if (Objects.isNull(images)) {
             return;
         }
-        images.forEach(imageUploadClient::upload);
         restaurantReviewImageRepository.saveAll(images.stream()
                 .map(MultipartFile::getOriginalFilename)
                 .map(FileNameUtil::removeExtension)

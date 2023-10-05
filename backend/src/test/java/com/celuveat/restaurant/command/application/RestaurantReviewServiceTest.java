@@ -225,10 +225,10 @@ class RestaurantReviewServiceTest {
         // given
         MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
         MultipartFile imageB = getMockImageFile("imageB", "imageB.webp");
+        List<MultipartFile> images = List.of(imageA, imageB);
         SaveReviewRequestCommand command =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, List.of(imageA, imageB));
-        willDoNothing().given(imageUploadClient).upload(imageA);
-        willDoNothing().given(imageUploadClient).upload(imageB);
+                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, images);
+        willDoNothing().given(imageUploadClient).upload(images);
         RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0);
 
         // when
