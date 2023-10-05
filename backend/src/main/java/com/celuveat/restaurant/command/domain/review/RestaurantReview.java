@@ -31,6 +31,8 @@ public class RestaurantReview extends BaseEntity {
 
     private Double rating;
 
+    private int likeCount;
+
     public void updateContent(String content, Long memberId, Double rating) {
         checkOwner(memberId);
         this.content = content;
@@ -41,6 +43,14 @@ public class RestaurantReview extends BaseEntity {
         if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
+    }
+
+    public void cancelLike() {
+        this.likeCount -= 1;
+    }
+
+    public void clickLike() {
+        this.likeCount += 1;
     }
 
     public String content() {
@@ -57,5 +67,9 @@ public class RestaurantReview extends BaseEntity {
 
     public Double rating() {
         return rating;
+    }
+
+    public int likeCount() {
+        return likeCount;
     }
 }

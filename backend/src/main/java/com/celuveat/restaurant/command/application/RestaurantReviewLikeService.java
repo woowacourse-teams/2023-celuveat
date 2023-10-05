@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RestaurantReviewLikeService {
 
-    private final RestaurantReviewRepository restaurantReviewRepository;
     private final OauthMemberRepository oauthMemberRepository;
+    private final RestaurantReviewRepository restaurantReviewRepository;
     private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
 
     public void like(Long restaurantReviewId, Long memberId) {
@@ -30,14 +30,16 @@ public class RestaurantReviewLikeService {
             throw new RestaurantReviewException(CAN_NOT_LIKE_MY_REVIEW);
         }
         restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member)
-                .ifPresentOrElse(cancelLike(), clickLike(restaurantReview, member));
+                .ifPresentOrElse(cancelLike(restaurantReview), clickLike(restaurantReview, member));
     }
 
-    private Consumer<RestaurantReviewLike> cancelLike() {
+    private Consumer<RestaurantReviewLike> cancelLike(RestaurantReview restaurantReview) {
+        restaurantReview.cancelLike();
         return restaurantReviewLikeRepository::delete;
     }
 
     private Runnable clickLike(RestaurantReview restaurantReview, OauthMember member) {
+        restaurantReview.clickLike();
         return () -> restaurantReviewLikeRepository.save(new RestaurantReviewLike(restaurantReview, member));
     }
 }
