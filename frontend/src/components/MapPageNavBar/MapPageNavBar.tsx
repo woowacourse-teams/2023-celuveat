@@ -7,10 +7,9 @@ import CelebDropDown from '../CelebDropDown/CelebDropDown';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
-import type { RestaurantCategory } from '~/@types/restaurant.types';
 import { getCelebs } from '~/api/celeb';
 
-function MainPageNavBar() {
+function MapPageNavBar() {
   const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
     state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
     shallow,
@@ -23,7 +22,7 @@ function MainPageNavBar() {
   });
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCategory = e.currentTarget.dataset.label as RestaurantCategory;
+    const currentCategory = e.currentTarget.dataset.label;
 
     setRestaurantCategory(currentCategory);
     setCurrentPage(0);
@@ -40,12 +39,12 @@ function MainPageNavBar() {
     <StyledNavBar>
       <CelebDropDown celebs={[OPTION_FOR_CELEB_ALL, ...celebOptions]} externalOnClick={clickCeleb} />
       <StyledLine />
-      <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} />
+      <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} isInteractive />
     </StyledNavBar>
   );
 }
 
-export default MainPageNavBar;
+export default MapPageNavBar;
 
 const StyledNavBar = styled.nav`
   display: flex;

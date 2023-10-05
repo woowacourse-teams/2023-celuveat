@@ -9,7 +9,7 @@ function RegionList() {
   const navigate = useNavigate();
   const REGION_LIST = Object.keys(RECOMMENDED_REGION);
   const clickIcon = (region: Region) => {
-    navigate(`/result/${region}`);
+    navigate(`/region/${region}`);
   };
 
   return (
@@ -52,6 +52,8 @@ const StyledRegion = styled.div<{ imgUrl: string }>`
   background-size: cover;
 
   overflow: hidden;
+
+  cursor: pointer;
 `;
 
 const StyledMask = styled.div`

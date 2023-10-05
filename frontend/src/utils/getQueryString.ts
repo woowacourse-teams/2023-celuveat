@@ -11,9 +11,9 @@ interface ParamTypes extends CoordinateBoundary {
 export const getRestaurantQueryString = ({ boundary, celebId, category, page, sort }: RestaurantsQueryParams) => {
   let params: ParamTypes = { ...boundary, sort };
 
-  if (celebId !== -1) params = { ...params, celebId: String(celebId) };
-  if (category !== '전체') params = { ...params, category };
-  if (page !== 0) params = { ...params, page: String(page) };
+  if (celebId !== -1 && celebId) params = { ...params, celebId: String(celebId) };
+  if (category !== '전체' && category) params = { ...params, category };
+  if (page !== 0 && page) params = { ...params, page: String(page) };
 
   return getQuerySting(Object.assign(params));
 };

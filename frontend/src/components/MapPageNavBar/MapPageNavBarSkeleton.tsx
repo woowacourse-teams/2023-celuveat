@@ -1,11 +1,11 @@
 import { styled } from 'styled-components';
 import { NavItemSkeleton } from '../@common/NavItem';
 
-interface MainPageNavBarSkeletonProps {
+interface MapPageNavBarSkeletonProps {
   navItemLength: number;
 }
 
-function MainPageNavBarSkeleton({ navItemLength }: MainPageNavBarSkeletonProps) {
+function MapPageNavBarSkeleton({ navItemLength }: MapPageNavBarSkeletonProps) {
   return (
     <StyledNavBar>
       <NavItemSkeleton />
@@ -19,7 +19,7 @@ function MainPageNavBarSkeleton({ navItemLength }: MainPageNavBarSkeletonProps) 
   );
 }
 
-export default MainPageNavBarSkeleton;
+export default MapPageNavBarSkeleton;
 
 const StyledNavBar = styled.nav`
   display: flex;

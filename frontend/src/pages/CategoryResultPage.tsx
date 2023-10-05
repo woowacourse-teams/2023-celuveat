@@ -2,23 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantData, RestaurantListData } from '~/@types/api.types';
-import { CelebId } from '~/@types/celeb.types';
 import { getRestaurants } from '~/api/restaurant';
-import ProfileImage from '~/components/@common/ProfileImage';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import { WHOLE_BOUNDARY } from '~/constants/boundary';
-import { CELEB } from '~/constants/celeb';
 import { FONT_SIZE } from '~/styles/common';
 
-function CelebResultPage() {
-  const { celebId } = useParams();
+function CategoryResultPage() {
+  const { category } = useParams();
 
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
-    queryKey: ['restaurants', celebId],
+    queryKey: ['restaurants', category],
     queryFn: () =>
       getRestaurants({
         boundary: WHOLE_BOUNDARY,
-        celebId: Number(celebId),
+        category,
         sort: 'like',
       }),
   });
@@ -26,15 +23,8 @@ function CelebResultPage() {
   return (
     <StyledContainer>
       <StyledLink to="/">
-        <h5> ← {CELEB[Number(celebId) as CelebId].name} 추천 맛집</h5>
+        <h5> ← {category} </h5>
       </StyledLink>
-      <StyledBanner>
-        <ProfileImage
-          imageUrl={CELEB[Number(celebId) as CelebId].profileImageUrl}
-          name={CELEB[Number(celebId) as CelebId].name}
-          size="72px"
-        />
-      </StyledBanner>
       <StyledResultCount>{restaurantDataList && restaurantDataList.totalElementsCount}개의 매장</StyledResultCount>
       <StyledResultBox>
         {restaurantDataList &&
@@ -51,7 +41,7 @@ function CelebResultPage() {
   );
 }
 
-export default CelebResultPage;
+export default CategoryResultPage;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -77,12 +67,4 @@ const StyledResultBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
-`;
-
-const StyledBanner = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
 `;

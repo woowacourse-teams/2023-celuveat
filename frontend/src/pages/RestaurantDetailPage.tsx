@@ -28,7 +28,7 @@ import RestaurantReviewWrapper from '~/components/RestaurantReviewWrapper';
 import { getNearByRestaurant, getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
 import { getCelebVideo } from '~/api/celeb';
 
-function RestaurantDetail() {
+function RestaurantDetailPage() {
   const layoutRef = useRef();
   const { isMobile } = useMediaQuery();
   const { id: restaurantId } = useParams();
@@ -275,7 +275,7 @@ function RestaurantDetail() {
   );
 }
 
-export default RestaurantDetail;
+export default RestaurantDetailPage;
 
 const StyledMainRestaurantDetail = styled.main<{ isMobile: boolean }>`
   display: flex;

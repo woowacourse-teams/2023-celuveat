@@ -23,6 +23,12 @@ function MainPage() {
     navigate(`/celeb/${id}`);
   };
 
+  const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
+    const currentCategory = e.currentTarget.dataset.label;
+
+    navigate(`/category/${currentCategory}`);
+  };
+
   return (
     <StyledLayout>
       <StyledContainer>
@@ -51,17 +57,23 @@ function MainPage() {
             ))}
           </StyledPopularRestaurantBox>
         </div>
-        <div>
-          <h5>카테고리</h5>
-          <StyledCategoryBox>
-            <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={() => {}} />
-          </StyledCategoryBox>
-        </div>
+
         <div>
           <h5>어디로 가시나요?</h5>
           <StyledIconBox>
             <RegionList />
           </StyledIconBox>
+        </div>
+        <div>
+          <h5>카테고리</h5>
+          <StyledCategoryBox>
+            <CategoryNavbar
+              categories={RESTAURANT_CATEGORY}
+              externalOnClick={clickRestaurantCategory}
+              includeAll={false}
+              grid
+            />
+          </StyledCategoryBox>
         </div>
       </StyledContainer>
     </StyledLayout>
@@ -83,7 +95,7 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 1500px;
+  max-width: 1200px;
 
   padding: 1.6rem;
   overflow-x: hidden;
@@ -91,10 +103,13 @@ const StyledContainer = styled.div`
 
 const StyledBanner = styled.div`
   width: 100%;
+  max-height: 200px;
 
   border-radius: 20px;
   object-fit: cover;
   overflow: hidden;
+
+  background-color: var(--primary-6);
 `;
 
 const StyledIconBox = styled.div`
@@ -121,6 +136,8 @@ const StyledCeleb = styled.div`
   gap: 0.8rem;
 
   font-size: ${FONT_SIZE.sm};
+
+  cursor: pointer;
 `;
 
 const StyledPopularRestaurantBox = styled.div`

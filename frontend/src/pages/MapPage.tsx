@@ -3,7 +3,7 @@ import { styled, css } from 'styled-components';
 
 import Map from '~/components/@common/Map';
 import RestaurantCardList from '~/components/RestaurantCardList';
-import MainPageNavBar, { MainPageNavBarSkeleton } from '~/components/MainPageNavBar';
+import MapPageNavBar, { MapPageNavBarSkeleton } from '~/components/MapPageNavBar';
 import useBooleanState from '~/hooks/useBooleanState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import MobileMapPage from './MobileMapPage';
@@ -29,8 +29,8 @@ function MapPage() {
 
   return (
     <>
-      <Suspense fallback={<MainPageNavBarSkeleton navItemLength={RESTAURANT_CATEGORY.length} />}>
-        <MainPageNavBar />
+      <Suspense fallback={<MapPageNavBarSkeleton navItemLength={RESTAURANT_CATEGORY.length} />}>
+        <MapPageNavBar />
       </Suspense>
       <StyledLayout isMapExpanded={isMapExpanded}>
         <StyledLeftSide isMapExpanded={isMapExpanded}>
