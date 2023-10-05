@@ -106,4 +106,44 @@ class RestaurantReviewLikeServiceTest {
                 restaurantReviewLikeRepository.findByRestaurantReviewAndMember(음식점_리뷰, 로이스);
         assertThat(result).isEmpty();
     }
+
+    @Test
+    void 좋아요를_추가되면_리뷰의_좋아요_개수가_증가한다() {
+        // given
+        Restaurant 음식점 = 음식점("음식점");
+        OauthMember 말랑 = 멤버("말랑");
+        RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        OauthMember 로이스 = 멤버("로이스");
+        restaurantRepository.save(음식점);
+        oauthMemberRepository.save(말랑);
+        restaurantReviewRepository.save(음식점_리뷰);
+        oauthMemberRepository.save(로이스);
+
+        // when
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
+
+        // then
+        assertThat(음식점_리뷰.likeCount()).isEqualTo(1);
+    }
+
+    @Test
+    void 좋아요를_삭제되면_리뷰의_좋아요_개수가_증가한다() {
+        // given
+        Restaurant 음식점 = 음식점("음식점");
+        OauthMember 말랑 = 멤버("말랑");
+        RestaurantReview 음식점_리뷰 = 음식점_리뷰(말랑, 음식점);
+        OauthMember 로이스 = 멤버("로이스");
+        restaurantRepository.save(음식점);
+        oauthMemberRepository.save(말랑);
+        restaurantReviewRepository.save(음식점_리뷰);
+        oauthMemberRepository.save(로이스);
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
+        assertThat(음식점_리뷰.likeCount()).isEqualTo(1);
+
+        // when
+        restaurantReviewLikeService.like(음식점_리뷰.id(), 로이스.id());
+
+        // then
+        assertThat(음식점_리뷰.likeCount()).isEqualTo(0);
+    }
 }
