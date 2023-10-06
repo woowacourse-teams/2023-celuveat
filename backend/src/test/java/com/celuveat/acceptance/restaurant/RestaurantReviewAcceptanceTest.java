@@ -15,6 +15,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.응답을_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.이미지를_생성한다;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
@@ -133,13 +134,13 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 음식점_리뷰에_사진을_첨부한다_작성한다() throws IOException {
+    void 음식점_리뷰에_사진을_첨부하여_작성한다() throws IOException {
         // given
         var 음식점 = 음식점("오도음식점");
         음식점을_저장한다(음식점);
         var 오도 = 멤버("오도");
         var 세션_아이디 = 회원가입하고_로그인한다(오도);
-        List<MultipartFile> 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
+        var 리뷰_이미지 = List.of(이미지를_생성한다("images", "이미지1번.wepb"), 이미지를_생성한다("images", "이미지1번.wepb"));
         이미지_업로드를_설정한다(리뷰_이미지);
         var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, 리뷰_이미지);
 
@@ -148,5 +149,45 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
 
         // then
         응답_상태를_검증한다(응답, 생성됨);
+    }
+
+    @Test
+    void 사진이_포함된_리뷰를_조회한다() throws IOException {
+        // given
+        var 음식점 = 음식점("오도음식점");
+        음식점을_저장한다(음식점);
+        var 오도 = 멤버("오도");
+        var 세션_아이디 = 회원가입하고_로그인한다(오도);
+        List<MultipartFile> 리뷰_이미지 = List.of(이미지를_생성한다("images", "image1.wepb"), 이미지를_생성한다("images", "image2.wepb"));
+        이미지_업로드를_설정한다(리뷰_이미지);
+        var 요청 = 리뷰_요청("맛집이네요 또 올 것 같습니다", 음식점.id(), 5.0, 리뷰_이미지);
+        사진_2장이_포함된_리뷰_작성_요청을_보낸다(요청, 세션_아이디);
+
+        // when
+        var 응답 = 리뷰_조회_요청을_보낸다(음식점.id());
+
+        // then
+        응답_상태를_검증한다(응답, 정상_처리);
+    }
+
+    @Test
+    void 로그인후_리뷰를_조회시_좋아요_여부가_반영된다() {
+        // given
+        var 음식점 = 음식점("오도음식점");
+        음식점을_저장한다(음식점);
+        var 오도 = 멤버("오도");
+        회원가입하고_로그인한다(오도);
+        var 리뷰_아이디 = 음식점_리뷰를_저장한다(음식점_리뷰(오도, 음식점));
+        음식점_리뷰를_저장한다(음식점_리뷰(오도, 음식점));
+
+        var 로이스 = 멤버("로이스");
+        var 로이스_세션_아이디 = 회원가입하고_로그인한다(로이스);
+        좋아요_요청을_보낸다(리뷰_아이디, 로이스_세션_아이디);
+
+        // when
+        var 응답 = 리뷰_조회_요청을_보낸다(음식점.id(), 로이스_세션_아이디);
+
+        // then
+        응답_상태를_검증한다(응답, 정상_처리);
     }
 }

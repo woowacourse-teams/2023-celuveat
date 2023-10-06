@@ -31,16 +31,37 @@ public class RestaurantReview extends BaseEntity {
 
     private Double rating;
 
-    public void updateContent(String content, Long memberId, Double rating) {
-        checkOwner(memberId);
-        this.content = content;
-        this.rating = rating;
+    private int likeCount;
+
+    public RestaurantReview(String content, OauthMember member, Restaurant restaurant, Double rating) {
+        this(content, member, restaurant, rating, 0);
     }
 
-    public void checkOwner(Long memberId) {
+    public void update(String content, Long memberId, Double updateRating) {
+        checkOwner(memberId);
+        restaurant.deleteReviewRating(rating);
+        restaurant.addReviewRating(updateRating);
+        this.content = content;
+        this.rating = updateRating;
+    }
+
+    public void delete(Long memberId) {
+        checkOwner(memberId);
+        restaurant.deleteReviewRating(rating);
+    }
+
+    private void checkOwner(Long memberId) {
         if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
+    }
+
+    public void cancelLike() {
+        this.likeCount -= 1;
+    }
+
+    public void clickLike() {
+        this.likeCount += 1;
     }
 
     public String content() {
@@ -57,5 +78,9 @@ public class RestaurantReview extends BaseEntity {
 
     public Double rating() {
         return rating;
+    }
+
+    public int likeCount() {
+        return likeCount;
     }
 }

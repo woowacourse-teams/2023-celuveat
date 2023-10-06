@@ -11,6 +11,7 @@ import com.celuveat.restaurant.query.dto.RestaurantReviewSingleResponse;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import io.restassured.specification.MultiPartSpecification;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -33,10 +34,10 @@ public class RestaurantReviewAcceptanceSteps {
 
     public static RestaurantReviewQueryResponse 예상_응답(Long 말랑_아이디, Long 로이스_아이디, Long 도기_아이디) {
         return new RestaurantReviewQueryResponse(4, List.of(
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰4", null),
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰3", null),
-                new RestaurantReviewSingleResponse(null, 로이스_아이디, "로이스", "abc", "리뷰2", null),
-                new RestaurantReviewSingleResponse(null, 도기_아이디, "도기", "abc", "리뷰1", null)
+                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰4", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "abc", "리뷰3", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 로이스_아이디, "로이스", "abc", "리뷰2", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleResponse(null, 도기_아이디, "도기", "abc", "리뷰1", null, 0, false, 5.0, null)
         ));
     }
 
@@ -61,8 +62,8 @@ public class RestaurantReviewAcceptanceSteps {
         var restaurantId =
                 new MultiPartSpecBuilder(요청.restaurantId()).controlName("restaurantId").charset(UTF_8).build();
         var rating = new MultiPartSpecBuilder(요청.rating()).controlName("rating").charset(UTF_8).build();
-        var imagesA = new MultiPartSpecBuilder(요청.images().get(0).getBytes()).controlName("images").build();
-        var imagesB = new MultiPartSpecBuilder(요청.images().get(1).getBytes()).controlName("images").build();
+        var imagesA = 멀티파트_스팩을_추출한다(요청, 0);
+        var imagesB = 멀티파트_스팩을_추출한다(요청, 1);
         return given(세션_아이디)
                 .multiPart(content)
                 .multiPart(restaurantId)
@@ -75,8 +76,28 @@ public class RestaurantReviewAcceptanceSteps {
                 .extract();
     }
 
+    private static MultiPartSpecification 멀티파트_스팩을_추출한다(
+            SaveReviewRequest 요청,
+            int index
+    ) throws IOException {
+        var image = 요청.images().get(index);
+        return new MultiPartSpecBuilder(image.getBytes())
+                .controlName("images")
+                .fileName(image.getOriginalFilename())
+                .charset(UTF_8)
+                .build();
+    }
+
     public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디) {
         return given()
+                .queryParam("restaurantId", 음식점_아이디)
+                .when().get("/reviews")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디, String 세션_아이디) {
+        return given(세션_아이디)
                 .queryParam("restaurantId", 음식점_아이디)
                 .when().get("/reviews")
                 .then().log().all()
@@ -115,7 +136,7 @@ public class RestaurantReviewAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    public static MockMultipartFile 이미지를_생성한다(final String name, final String originalFilename) {
+    public static MultipartFile 이미지를_생성한다(final String name, final String originalFilename) {
         return new MockMultipartFile(
                 name, originalFilename, "multipart/form-data", originalFilename.getBytes()
         );

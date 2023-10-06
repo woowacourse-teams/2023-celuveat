@@ -13,7 +13,7 @@ public class RestaurantReviewQueryService {
 
     private final RestaurantReviewQueryResponseDao restaurantReviewQueryResponseDao;
 
-    public RestaurantReviewQueryResponse findAllByRestaurantId(Long restaurantId) {
-        return restaurantReviewQueryResponseDao.findAllByRestaurantId(restaurantId);
+    public RestaurantReviewQueryResponse findAllByRestaurantId(Long restaurantId, Long memberId) {
+        return restaurantReviewQueryResponseDao.findAllByRestaurantId(restaurantId, memberId);
     }
 }

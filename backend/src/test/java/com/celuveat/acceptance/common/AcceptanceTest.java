@@ -3,6 +3,8 @@ package com.celuveat.acceptance.common;
 import static com.celuveat.acceptance.common.AcceptanceSteps.로그인을_요청한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.auth.command.domain.OauthServerType.KAKAO;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 import com.celuveat.auth.command.application.OauthService;
 import com.celuveat.auth.command.domain.OauthMember;
@@ -24,8 +26,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -41,6 +41,7 @@ public abstract class AcceptanceTest {
 
     @MockBean
     protected OauthService oauthService;
+
     @MockBean
     protected ImageUploadClient imageUploadClient;
 
@@ -88,10 +89,10 @@ public abstract class AcceptanceTest {
     }
 
     private void OAuth_응답을_설정한다(OauthMember member) {
-        Mockito.when(oauthService.login(KAKAO, "abcd")).thenReturn(member.id());
+        given(oauthService.login(KAKAO, "abcd")).willReturn(member.id());
     }
 
     protected void 이미지_업로드를_설정한다(List<MultipartFile> images) {
-        BDDMockito.willDoNothing().given(imageUploadClient).upload(images);
+        willDoNothing().given(imageUploadClient).upload(images);
     }
 }

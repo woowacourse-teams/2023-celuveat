@@ -10,4 +10,13 @@ public record SaveReviewRequestCommand(
         Double rating,
         List<MultipartFile> images
 ) {
+
+    public SaveReviewRequestCommand(
+            String content,
+            Long memberId,
+            Long restaurantId,
+            Double rating
+    ) {
+        this(content, memberId, restaurantId, rating, List.of());
+    }
 }

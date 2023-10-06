@@ -9,7 +9,7 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.exception.RestaurantReviewException;
-import java.util.function.Consumer;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RestaurantReviewLikeService {
 
-    private final RestaurantReviewRepository restaurantReviewRepository;
     private final OauthMemberRepository oauthMemberRepository;
+    private final RestaurantReviewRepository restaurantReviewRepository;
     private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
 
     public void like(Long restaurantReviewId, Long memberId) {
@@ -29,15 +29,22 @@ public class RestaurantReviewLikeService {
         if (restaurantReview.member().equals(member)) {
             throw new RestaurantReviewException(CAN_NOT_LIKE_MY_REVIEW);
         }
-        restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member)
-                .ifPresentOrElse(cancelLike(), clickLike(restaurantReview, member));
+        Optional<RestaurantReviewLike> likeHistory =
+                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member);
+        if (likeHistory.isPresent()) {
+            cancelLike(restaurantReview, likeHistory.get());
+            return;
+        }
+        clickLike(restaurantReview, member);
     }
 
-    private Consumer<RestaurantReviewLike> cancelLike() {
-        return restaurantReviewLikeRepository::delete;
+    private void cancelLike(RestaurantReview restaurantReview, RestaurantReviewLike restaurantReviewLike) {
+        restaurantReview.cancelLike();
+        restaurantReviewLikeRepository.delete(restaurantReviewLike);
     }
 
-    private Runnable clickLike(RestaurantReview restaurantReview, OauthMember member) {
-        return () -> restaurantReviewLikeRepository.save(new RestaurantReviewLike(restaurantReview, member));
+    private void clickLike(RestaurantReview restaurantReview, OauthMember member) {
+        restaurantReview.clickLike();
+        restaurantReviewLikeRepository.save(new RestaurantReviewLike(restaurantReview, member));
     }
 }

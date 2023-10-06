@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class RestaurantReviewService {
 
-
     private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
@@ -37,12 +36,12 @@ public class RestaurantReviewService {
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
         RestaurantReview restaurantReview =
                 new RestaurantReview(command.content(), member, restaurant, command.rating());
-        saveReviewImagesIfExist(command.images(), restaurantReview);
+        saveReviewImages(command.images(), restaurantReview);
         restaurant.addReviewRating(restaurantReview.rating());
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
-    private void saveReviewImagesIfExist(List<MultipartFile> images, RestaurantReview review) {
+    private void saveReviewImages(List<MultipartFile> images, RestaurantReview review) {
         if (Objects.isNull(images)) {
             return;
         }
@@ -56,17 +55,12 @@ public class RestaurantReviewService {
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        Restaurant restaurant = review.restaurant();
-        restaurant.deleteReviewRating(review.rating());
-        review.updateContent(command.content(), command.memberId(), command.rating());
-        restaurant.addReviewRating(command.rating());
+        review.update(command.content(), command.memberId(), command.rating());
     }
 
     public void delete(DeleteReviewCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.checkOwner(command.memberId());
-        Restaurant restaurant = review.restaurant();
-        restaurant.deleteReviewRating(review.rating());
+        review.delete(command.memberId());
         restaurantReviewLikeRepository.deleteAllByRestaurantReview(review);
         restaurantReviewImageRepository.deleteAllByRestaurantReview(review);
         restaurantReviewRepository.delete(review);
