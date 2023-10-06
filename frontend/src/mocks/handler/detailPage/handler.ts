@@ -1,12 +1,16 @@
 import { rest } from 'msw';
 
-import { videos, originVideos } from '../../data/videos';
 import restaurants from '../../data/restaurants';
 import correction from '../../data/correction';
 import reviews from '../../data/reviews';
+import { profile } from './../../data/user';
+import { videos, originVideos } from '../../data/videos';
+
+import { makeImage } from '~/mocks/utils';
 
 import type { Celeb } from '~/@types/celeb.types';
-import type { RestaurantData, VideoList } from '~/@types/api.types';
+import type { HyphenatedDate } from '~/@types/date.types';
+import type { RestaurantData, RestaurantReview, VideoList } from '~/@types/api.types';
 
 export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantsId', (req, res, ctx) => {
@@ -66,7 +70,7 @@ export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantId/nearby', (req, res, ctx) => {
     const queryParams = req.url.searchParams;
     const { restaurantId } = req.params;
-    const page = Number(queryParams.get('page')) || 0;
+    const page: number = Number(queryParams.get('page')) || 0;
     const pageSize = 6;
 
     const restaurant = restaurants.find(({ id }) => id === Number(restaurantId));
@@ -95,14 +99,14 @@ export const DetailPageSuccessHandler = [
   }),
 
   rest.get('/reviews', (req, res, ctx) => {
-    const reviewsData = { reviews, totalElementCounts: reviews.length };
+    const reviewsData = { reviews, totalElementsCount: reviews.length };
 
     return res(ctx.delay(2000), ctx.json(reviewsData));
   }),
 
   rest.post('/reviews', async (req, res, ctx) => {
     const { JSESSION } = req.cookies;
-    const { content, restaurantId } = await req.json();
+    const formData = await req.body;
 
     const date = new Date();
     const year = date.getFullYear();
@@ -111,11 +115,15 @@ export const DetailPageSuccessHandler = [
 
     reviews.push({
       id: reviews.length + 1,
-      nickname: 'msw',
-      memberId: 100,
+      nickname: '푸만능',
+      memberId: 1,
       profileImageUrl: 'https://a0.muscache.com/im/pictures/user/93c7d7c8-86d9-4390-ba09-a8e6f4eb7f0f.jpg?im_w=240',
-      content,
-      createdDate: `${year}-${month}-${day}`,
+      content: 'MSW는 formdata지원을 안한다나 어쩐다나',
+      isLiked: false,
+      likeCount: 97,
+      rating: 4,
+      createdDate: `${year}-${month}-${day}` as HyphenatedDate,
+      reviewImageUrls: makeImage(3),
     });
 
     if (JSESSION === undefined) {
@@ -128,13 +136,17 @@ export const DetailPageSuccessHandler = [
   rest.patch('/reviews/:reviewId', async (req, res, ctx) => {
     const { reviewId } = req.params;
     const { JSESSION } = req.cookies;
-    const { content } = await req.json();
+    const { content, rating } = await req.json();
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
     }
 
-    reviews.find(({ id }) => Number(reviewId) === id)['content'] = content;
+    const review = reviews.find(({ id }) => Number(reviewId) === id);
+
+    review['content'] = content;
+    review['rating'] = rating;
+    review['reviewImageUrls'] = makeImage(2);
 
     return res(ctx.status(204));
   }),
@@ -155,6 +167,42 @@ export const DetailPageSuccessHandler = [
     }
 
     return res(ctx.status(204));
+  }),
+
+  rest.post('/reviews/:reviewId/like', async (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+    const { reviewId } = req.params;
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
+    const review = reviews.find(review => review.id === Number(reviewId));
+
+    if (review.memberId === profile.memberId) {
+      return res(ctx.status(404), ctx.json({ message: 'Bad Request' }));
+    }
+
+    if (review.isLiked) {
+      review['isLiked'] = false;
+      review['likeCount'] -= 1;
+    } else {
+      review['isLiked'] = true;
+      review['likeCount'] += 1;
+    }
+
+    return res(ctx.status(200));
+  }),
+
+  rest.post('/reviews/:reviewId/report', async (req, res, ctx) => {
+    const { JSESSION } = req.cookies;
+    const { content } = await req.json();
+
+    if (JSESSION === undefined) {
+      return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
+    }
+
+    return res(ctx.status(200));
   }),
 ];
 

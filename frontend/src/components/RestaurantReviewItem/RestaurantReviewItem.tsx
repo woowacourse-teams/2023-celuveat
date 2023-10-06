@@ -1,31 +1,41 @@
-import { forwardRef } from 'react';
-import { styled, css } from 'styled-components';
-import { useQueryClient } from '@tanstack/react-query';
+import { styled } from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+
+import GroupIcon from '~/assets/icons/etc/groups.svg';
+import ThumpUpIcon from '~/assets/icons/etc/thumb-up.svg';
+import SpeakerphoneIcon from '~/assets/icons/etc/speakerphone.svg';
+
 import ProfileImage from '~/components/@common/ProfileImage';
 
-import useIsTextOverflow from '~/hooks/useIsTextOverflow';
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
-import { FONT_SIZE, truncateText } from '~/styles/common';
+import { FONT_SIZE } from '~/styles/common';
+
+import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
+import { getProfile } from '~/api/user';
+import StarRating from '~/components/@common/StarRating';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
   isInModal: boolean;
 }
 
-const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProps>(({ review, isInModal }, ref) => {
-  const qc = useQueryClient();
-  const profileData: ProfileData = qc.getQueryData(['profile']);
-  const { ref: contentRef, isTextOverflow } = useIsTextOverflow();
+function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) {
+  const { data: profileData } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+  });
 
-  const { clickUpdateReview, clickDeleteReview, openShowAll, setReviewId } = useReviewModalContext();
+  const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
+
+  const { openReviewModal, setReviewId } = useReviewModalContext();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
   return (
-    <StyledRestaurantReviewItemWrapper ref={ref}>
+    <StyledRestaurantReviewItemWrapper>
       <StyledProfileAndButton>
         <StyledProfileWrapper>
           <ProfileImage name={review.nickname} size="40px" imageUrl={review.profileImageUrl} />
@@ -34,13 +44,14 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
             <StyledCreateDated>{review.createdDate}</StyledCreateDated>
           </StyledProfileInfoWrapper>
         </StyledProfileWrapper>
+
         {isUsersReview && (
           <StyledButtonContainer>
             <button
               type="button"
               onClick={() => {
                 setReviewId(review.id);
-                clickUpdateReview();
+                openReviewModal('update');
               }}
             >
               수정
@@ -50,7 +61,7 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
               type="button"
               onClick={() => {
                 setReviewId(review.id);
-                clickDeleteReview();
+                openReviewModal('delete');
               }}
             >
               삭제
@@ -58,19 +69,110 @@ const RestaurantReviewItem = forwardRef<HTMLDivElement, RestaurantReviewItemProp
           </StyledButtonContainer>
         )}
       </StyledProfileAndButton>
-      <StyledReviewContent ref={contentRef} isInModal={isInModal}>
-        {review.content}
-      </StyledReviewContent>
-      {isTextOverflow && (
-        <StyledSeeMore isInModal={isInModal} data-id={review.id} onClick={openShowAll}>
-          더 보기
-        </StyledSeeMore>
-      )}
+      <StyledStarRatingWrapper>
+        <StarRating rate={review.rating} size="12px" />
+        <StyledStarRatingText>{review.rating}</StyledStarRatingText>
+      </StyledStarRatingWrapper>
+      <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
+      <StyledReviewImgWrapper>
+        {review?.reviewImageUrls?.map((reviewImageUrl, idx) => (
+          <StyledReviewImg src={reviewImageUrl.imgUrl} alt={`${review.nickname}이 쓴 리뷰 사진${idx}`} />
+        ))}
+      </StyledReviewImgWrapper>
+      <StyledReviewLikeCountWrapper>
+        <div>
+          <GroupIcon />
+          <StyledReviewText>{review.likeCount}</StyledReviewText>
+          명이 추천했어요
+        </div>
+      </StyledReviewLikeCountWrapper>
+      <StyledReviewButtonsWrapper>
+        {!isUsersReview && (
+          <>
+            <StyledReviewButton
+              onClick={() => {
+                toggleRestaurantReviewLike(review.id);
+              }}
+            >
+              <ThumpUpIcon fill={getReviewIsLiked(review.id) ? '#ff7b54' : 'white'} />
+              <span>추천 {getReviewIsLiked(review.id) ? '취소' : '하기'}</span>
+            </StyledReviewButton>
+            <StyledReviewButton
+              onClick={() => {
+                setReviewId(review.id);
+                openReviewModal('report');
+              }}
+            >
+              <SpeakerphoneIcon />
+              <span>신고 하기</span>
+            </StyledReviewButton>
+          </>
+        )}
+      </StyledReviewButtonsWrapper>
     </StyledRestaurantReviewItemWrapper>
   );
-});
+}
 
 export default RestaurantReviewItem;
+
+const StyledStarRatingWrapper = styled.div`
+  margin-top: 1.2rem;
+
+  display: flex;
+`;
+
+const StyledStarRatingText = styled.span`
+  color: #ff7b54;
+  font-size: 26px;
+  font-weight: bold;
+`;
+
+const StyledReviewImg = styled.img`
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+`;
+
+const StyledReviewImgWrapper = styled.div`
+  margin: 1.2rem 0;
+`;
+
+const StyledReviewText = styled.span`
+  margin-left: 0.5rem;
+
+  font-size: ${FONT_SIZE.lg};
+  font-weight: 500;
+`;
+
+const StyledReviewButton = styled.button`
+  display: flex;
+  align-items: center;
+
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  background: none;
+
+  font-size: ${FONT_SIZE.md};
+  font-weight: 500;
+
+  & > span {
+    margin-left: 0.5rem;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      & > span {
+        color: #ff7b54;
+      }
+
+      & > svg {
+        fill: #ff7b54;
+      }
+    }
+  }
+`;
 
 const StyledProfileNickName = styled.span`
   color: #222;
@@ -102,11 +204,10 @@ const StyledProfileInfoWrapper = styled.div`
 `;
 
 const StyledReviewContent = styled.div<{ isInModal: boolean }>`
-  margin: 1.2rem 0;
+  margin-top: 1.2rem;
 
   color: #222;
   font-size: ${FONT_SIZE.md};
-  ${({ isInModal }) => !isInModal && truncateText(3)}
   line-height: 2.4rem;
 `;
 
@@ -141,35 +242,22 @@ const StyledRestaurantReviewItemWrapper = styled.div`
   box-shadow: var(--shadow);
 `;
 
-const StyledSeeMore = styled.span<{ isInModal: boolean }>`
-  position: relative;
+const StyledReviewLikeCountWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 
-  color: #222;
+  width: 100%;
+
+  margin: 1.2rem 0;
+
   font-size: ${FONT_SIZE.md};
-  text-decoration: underline;
+`;
 
-  cursor: pointer;
+const StyledReviewButtonsWrapper = styled.div`
+  display: flex;
+  gap: 2rem;
 
-  &::after {
-    display: inline-block;
+  width: 100%;
 
-    position: absolute;
-    top: 30%;
-
-    width: 6px;
-    height: 6px;
-
-    transform: rotate(45deg);
-
-    content: '';
-
-    border-top: 2.5px solid #222; /* 선 두께 */
-    border-right: 2.5px solid #222; /* 선 두께 */
-  }
-
-  ${({ isInModal }) =>
-    isInModal &&
-    css`
-      display: none;
-    `}
+  font-size: ${FONT_SIZE.md};
 `;

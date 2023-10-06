@@ -20,7 +20,11 @@ export const getRestaurantQueryString = ({ boundary, celebId, category, page, so
 
 const getQuerySting = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
   const searchParams = new URLSearchParams(target);
-  return searchParams.toString();
+  const result = searchParams.toString();
+
+  const hasQuery = result.length > 0;
+
+  return hasQuery ? `?${searchParams.toString()}` : '';
 };
 
 export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting(window.location.search)}`;
