@@ -233,6 +233,32 @@ public class RestaurantSearchResponseDao {
         return countQuery::fetchOne;
     }
 
+    public List<RestaurantSearchResponse> findLatest(
+            @Nullable Long memberId
+    ) {
+        List<RestaurantSearchResponse> latestRestaurants =
+                query.select(Projections.constructor(RestaurantSearchResponse.class,
+                                restaurant.id,
+                                restaurant.name,
+                                restaurant.category,
+                                restaurant.roadAddress,
+                                restaurant.latitude,
+                                restaurant.longitude,
+                                restaurant.phoneNumber,
+                                restaurant.naverMapUrl,
+                                restaurant.viewCount,
+                                Expressions.constant(0d),
+                                restaurant.likeCount,
+                                rating()
+                        ))
+                        .from(restaurant)
+                        .orderBy(restaurant.id.desc())
+                        .limit(10)
+                        .fetch();
+        settingCelebAndImageAndLiked(memberId, latestRestaurants);
+        return latestRestaurants;
+    }
+
     private void settingCelebAndImageAndLiked(
             @Nullable Long memberId, List<RestaurantSearchResponse> restaurants
     ) {

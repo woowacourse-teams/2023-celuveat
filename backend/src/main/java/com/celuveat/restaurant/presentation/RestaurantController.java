@@ -108,4 +108,12 @@ public class RestaurantController {
         restaurantCorrectionService.suggest(request.toCommand(restaurantId));
         return ResponseEntity.status(CREATED).build();
     }
+
+    @GetMapping("/latest")
+    ResponseEntity<List<RestaurantSearchResponse>> findLatest(
+            @LooseAuth Long memberId
+    ) {
+        List<RestaurantSearchResponse> result = restaurantQueryService.findLatest(memberId);
+        return ResponseEntity.ok(result);
+    }
 }
