@@ -1,4 +1,4 @@
-package com.celuveat.auth.query.dao;
+package com.celuveat.auth.query.dao.support;
 
 import static com.celuveat.auth.exception.AuthExceptionType.NOT_FOUND_MEMBER;
 
