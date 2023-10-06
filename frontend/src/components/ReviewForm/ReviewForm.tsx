@@ -87,7 +87,7 @@ function ReviewForm({ type }: ReviewFormProps) {
     const formData = new FormData();
 
     formData.append('content', text);
-    formData.append('rate', String(rating));
+    formData.append('rating', String(rating));
 
     return formData;
   };
