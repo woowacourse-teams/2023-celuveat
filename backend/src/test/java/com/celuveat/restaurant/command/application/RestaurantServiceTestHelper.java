@@ -21,6 +21,7 @@ public class RestaurantServiceTestHelper {
         return restaurantRepository.save(Restaurant.builder()
                 .name(이름)
                 .category(이름)
+                .superCategory(이름)
                 .roadAddress(이름)
                 .latitude(1.1)
                 .longitude(1.1)

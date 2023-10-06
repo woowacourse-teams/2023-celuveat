@@ -34,7 +34,8 @@ public class AdminAcceptanceSteps {
                 TAB + "12.3456" +
                 TAB + "12.3456" +
                 TAB + 음식점_이름 +
-                TAB + 인스타_아이디;
+                TAB + 인스타_아이디 +
+                TAB + "슈퍼 카테고리";
     }
 
     public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {

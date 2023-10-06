@@ -151,6 +151,7 @@ public class SeedData {
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
+                restaurant.superCategory(),
                 restaurant.roadAddress(),
                 restaurant.latitude(),
                 restaurant.longitude(),

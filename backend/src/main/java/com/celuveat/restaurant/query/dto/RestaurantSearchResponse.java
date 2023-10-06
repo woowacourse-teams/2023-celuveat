@@ -15,6 +15,7 @@ public class RestaurantSearchResponse {
     private Long id;
     private String name;
     private String category;
+    private String superCategory;
     private String roadAddress;
     @JsonProperty("lat")
     private Double latitude;
@@ -32,7 +33,8 @@ public class RestaurantSearchResponse {
 
     public RestaurantSearchResponse(
             Long id, String name,
-            String category, String roadAddress,
+            String category, String superCategory,
+            String roadAddress,
             Double latitude, Double longitude,
             String phoneNumber, String naverMapUrl,
             Integer viewCount, Double distance,
@@ -41,6 +43,7 @@ public class RestaurantSearchResponse {
         this.id = id;
         this.name = name;
         this.category = category;
+        this.superCategory = superCategory;
         this.roadAddress = roadAddress;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -66,5 +69,69 @@ public class RestaurantSearchResponse {
         if (images != null) {
             this.images = images;
         }
+    }
+
+    public Long id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String category() {
+        return category;
+    }
+
+    public String superCategory() {
+        return superCategory;
+    }
+
+    public String roadAddress() {
+        return roadAddress;
+    }
+
+    public Double latitude() {
+        return latitude;
+    }
+
+    public Double longitude() {
+        return longitude;
+    }
+
+    public String phoneNumber() {
+        return phoneNumber;
+    }
+
+    public String naverMapUrl() {
+        return naverMapUrl;
+    }
+
+    public Integer viewCount() {
+        return viewCount;
+    }
+
+    public Integer distance() {
+        return distance;
+    }
+
+    public int likeCount() {
+        return likeCount;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public Double rating() {
+        return rating;
+    }
+
+    public List<CelebQueryResponse> celebs() {
+        return celebs;
+    }
+
+    public List<RestaurantImageQueryResponse> images() {
+        return images;
     }
 }
