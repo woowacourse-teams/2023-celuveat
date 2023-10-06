@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet-async';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
@@ -31,12 +32,18 @@ function MainPage() {
 
   return (
     <StyledLayout>
+      <Helmet>
+        <meta property="og:title" content="Celuveat" />
+        <meta property="og:url" content="celuveat.com" />
+        <meta name="image" property="og:image" content="https://www.celuveat.com/og-image.jpeg" />
+        <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
+      </Helmet>
       <StyledContainer>
         <StyledBanner>
           <Banner />
         </StyledBanner>
         <div>
-          <h5>셀럽 BEST</h5>
+          <StyledTitle>셀럽 BEST</StyledTitle>
           <StyledIconBox>
             {celebOptions.map(celeb => {
               const { name, profileImageUrl, id } = celeb;
@@ -50,7 +57,7 @@ function MainPage() {
           </StyledIconBox>
         </div>
         <div>
-          <h5>셀럽잇 추천 맛집!</h5>
+          <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
           <StyledPopularRestaurantBox>
             {popularRestaurants.map(({ celebs, ...restaurant }) => (
               <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showWaterMark={false} />
@@ -59,13 +66,13 @@ function MainPage() {
         </div>
 
         <div>
-          <h5>어디로 가시나요?</h5>
+          <StyledTitle>어디로 가시나요?</StyledTitle>
           <StyledIconBox>
             <RegionList />
           </StyledIconBox>
         </div>
         <div>
-          <h5>카테고리</h5>
+          <StyledTitle>카테고리</StyledTitle>
           <StyledCategoryBox>
             <CategoryNavbar
               categories={RESTAURANT_CATEGORY}
@@ -82,11 +89,15 @@ function MainPage() {
 
 export default MainPage;
 
+const StyledTitle = styled.h5`
+  margin-left: 1.6rem;
+`;
+
 const StyledLayout = styled.div`
   display: flex;
   justify-content: center;
 
-  width: 100vw;
+  width: 100%;
 `;
 
 const StyledContainer = styled.div`
@@ -97,28 +108,25 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 1200px;
 
-  padding: 1.6rem;
   overflow-x: hidden;
+
+  box-sizing: content-box;
 `;
 
 const StyledBanner = styled.div`
   width: 100%;
   max-height: 200px;
 
-  border-radius: 20px;
   object-fit: cover;
-  overflow: hidden;
 
-  background-color: var(--primary-6);
+  overflow: hidden;
 `;
 
 const StyledIconBox = styled.div`
   display: flex;
   gap: 2rem;
 
-  width: 100%;
-
-  padding: 1.6rem 0.8rem;
+  padding: 1.6rem;
 
   justify-items: flex-start;
 
@@ -145,15 +153,15 @@ const StyledPopularRestaurantBox = styled.div`
   align-items: center;
   gap: 1.2rem;
 
+  padding: 1.6rem;
+
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
-
-  padding: 1.6rem 0.8rem;
 `;
 
 const StyledCategoryBox = styled.div`
-  padding: 1.6rem 0;
+  padding: 1.6rem 0.8rem;
 `;

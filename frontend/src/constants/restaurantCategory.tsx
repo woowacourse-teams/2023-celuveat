@@ -31,7 +31,7 @@ const RESTAURANT_CATEGORY: Category[] = [
   { label: '아시안', icon: <Asian /> },
   { label: '면류', icon: <Noodle /> },
   { label: '분식', icon: <Snackbar /> },
-  { label: '패스트푸드', icon: <Pizza /> },
+  { label: '치킨,피자,햄버거', icon: <Pizza /> },
   { label: '커피,디저트', icon: <Bakery /> },
   { label: '세계요리', icon: <World /> },
   { label: '주점', icon: <Wine /> },

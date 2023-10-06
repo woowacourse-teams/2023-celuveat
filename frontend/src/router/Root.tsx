@@ -2,6 +2,7 @@
 import { Suspense, lazy } from 'react';
 import { styled } from 'styled-components';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Footer from '~/components/@common/Footer';
 import { Header, MobileHeader } from '~/components/@common/Header';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
@@ -17,9 +18,10 @@ function Root() {
   const { value: isListShowed } = useBooleanState(false);
 
   const { isMobile } = useMediaQuery();
+  const helmetContext = {};
 
   return (
-    <>
+    <HelmetProvider context={helmetContext}>
       <Suspense
         fallback={
           <StyledProcessing>
@@ -38,7 +40,7 @@ function Root() {
       </Suspense>
       <ScrollRestoration />
       <Toast />
-    </>
+    </HelmetProvider>
   );
 }
 

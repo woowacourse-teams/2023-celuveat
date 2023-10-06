@@ -4,7 +4,7 @@ import useToastState from '~/hooks/store/useToastState';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import Portal from '../Portal';
-import getImgUrl from '~/utils/image';
+import { getImgUrl } from '~/utils/image';
 
 interface StyledToastProps {
   isSuccess?: boolean;

@@ -1,6 +1,6 @@
 import { styled, css } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
-import getImgUrl from '~/utils/image';
+import { getImgUrl } from '~/utils/image';
 
 interface WaterMarkImageProps {
   waterMark: string;

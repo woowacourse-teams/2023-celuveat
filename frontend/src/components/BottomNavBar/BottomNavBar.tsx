@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '~/assets/icons/home.svg';
@@ -10,26 +10,38 @@ interface BottomNavBarProps {
   isHide: boolean;
 }
 
+type BottomIcons = 'home' | 'map' | 'user';
+
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
+  const [clickedIcon, setClickedIcon] = useState<BottomIcons>('home');
 
-  const clickHome = () => navigator('/');
-  const clickMap = () => navigator('/map');
-  const clickLogin = () => navigator('/signup');
+  const clickHome = () => {
+    setClickedIcon('home');
+    navigator('/');
+  };
+  const clickMap = () => {
+    setClickedIcon('map');
+    navigator('/map');
+  };
+  const clickLogin = () => {
+    setClickedIcon('user');
+    navigator('/signup');
+  };
 
   useScrollBlock(ref);
 
   return (
     <StyledBottomNavBar isHide={isHide} ref={ref}>
       <StyledNavBarButton onClick={clickHome}>
-        <HomeIcon />
+        <HomeIcon fill={clickedIcon === 'home' ? '#000' : 'none'} />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickMap}>
-        <MapIcon />
+        <MapIcon strokeWidth={clickedIcon === 'map' ? 2 : 1.2} />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickLogin}>
-        <SignInIcon />
+        <SignInIcon fill={clickedIcon === 'user' ? '#000' : 'none'} />
       </StyledNavBarButton>
     </StyledBottomNavBar>
   );
@@ -42,7 +54,7 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
   justify-content: space-evenly;
   align-items: center;
 
-  position: sticky;
+  position: fixed;
   bottom: 0;
   z-index: 20;
 

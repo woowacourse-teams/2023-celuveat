@@ -18,10 +18,10 @@ function RegionList() {
         <StyledRegion
           onClick={() => clickIcon(region)}
           imgUrl={`${SERVER_IMG_URL}regions/${region}.jpeg`}
-          aria-label={RECOMMENDED_REGION[region]}
+          aria-label={RECOMMENDED_REGION[region].name.join('')}
         >
           <StyledRegionName>
-            {RECOMMENDED_REGION[region].split(',').map(item => (
+            {RECOMMENDED_REGION[region].name.map(item => (
               <>
                 {item}
                 <br />

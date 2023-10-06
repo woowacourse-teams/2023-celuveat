@@ -55,6 +55,13 @@ export interface VideoList {
   currentElementsCount: number;
 }
 
+export type StarRate = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+
+export type ReviewUploadImageType = {
+  imgUrl: string;
+  imgFile: Blob;
+};
+
 export interface RestaurantReview {
   id: number;
   nickname: string;
@@ -62,6 +69,10 @@ export interface RestaurantReview {
   profileImageUrl: string;
   content: string;
   createdDate: HyphenatedDate;
+  isLiked: boolean;
+  likeCount: number;
+  rating: StarRate;
+  reviewImageUrls: ReviewUploadImageType[];
 }
 
 export interface RestaurantReviewData {
@@ -71,6 +82,7 @@ export interface RestaurantReviewData {
 
 export interface RestaurantReviewPatchBody {
   content: string;
+  rating: number;
 }
 
 export interface RestaurantReviewPostBody {
