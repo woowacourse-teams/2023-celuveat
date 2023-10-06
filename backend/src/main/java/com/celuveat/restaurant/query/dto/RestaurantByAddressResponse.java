@@ -23,6 +23,7 @@ public class RestaurantByAddressResponse {
     private String naverMapUrl;
     private int viewCount;
     private int likeCount;
+    @JsonProperty("isLiked")
     private boolean isLiked;
     private List<CelebInfo> celebs = new ArrayList<>();
     private List<RestaurantImageInfo> images = new ArrayList<>();

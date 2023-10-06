@@ -26,6 +26,7 @@ public class RestaurantSearchResponse {
     private Integer viewCount;
     private Integer distance;
     private int likeCount;
+    @JsonProperty("isLiked")
     private boolean isLiked;
     private Double rating;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
