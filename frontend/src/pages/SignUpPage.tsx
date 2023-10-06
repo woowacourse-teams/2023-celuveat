@@ -34,9 +34,9 @@ const StyledContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4.8rem;
+  gap: 3.6rem;
 
-  height: 100%;
+  height: calc(100% - 48px);
 
   background-color: var(--primary-6);
 `;

@@ -70,7 +70,7 @@ const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
   position: relative;
 
   width: 100%;
-  height: 100%;
+  height: calc(100% - 48px);
 
   & > div:first-child {
     position: absolute;
