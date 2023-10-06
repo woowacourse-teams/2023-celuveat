@@ -212,6 +212,7 @@ public class RestaurantAcceptanceSteps {
                 restaurantWithCelebsAndImagesSimpleResponse.getDistance(),
                 restaurantWithCelebsAndImagesSimpleResponse.getLikeCount() + likeCountValue,
                 isLiked,
+                restaurantWithCelebsAndImagesSimpleResponse.getRating(),
                 restaurantWithCelebsAndImagesSimpleResponse.getCelebs(),
                 restaurantWithCelebsAndImagesSimpleResponse.getImages()
         );
@@ -262,7 +263,8 @@ public class RestaurantAcceptanceSteps {
         if (restaurantName == null) {
             return true;
         }
-        return restaurantWithCelebsAndImagesSimpleResponse.getName().contains(StringUtil.removeAllBlank(restaurantName));
+        return restaurantWithCelebsAndImagesSimpleResponse.getName()
+                .contains(StringUtil.removeAllBlank(restaurantName));
     }
 
     private static boolean 카테고리_조건(String category,
@@ -395,6 +397,7 @@ public class RestaurantAcceptanceSteps {
                 0, // likeCount
                 0, // viewCount
                 isLiked,
+                restaurantWithCelebsAndImagesSimpleResponse.getRating(),
                 celebs,
                 images
         );

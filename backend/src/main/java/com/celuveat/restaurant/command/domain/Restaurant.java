@@ -68,6 +68,13 @@ public class Restaurant extends BaseEntity {
         this.reviewCount -= 1;
     }
 
+    public Double averageRating() {
+        if (this.totalRating == 0) {
+            return 0.0;
+        }
+        return (double) Math.round((this.totalRating / this.reviewCount) * 10 / 10);
+    }
+
     public String name() {
         return name;
     }

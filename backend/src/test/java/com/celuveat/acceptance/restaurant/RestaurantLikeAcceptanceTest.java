@@ -149,6 +149,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantSearchResponse.getDistance(),
                 restaurantSearchResponse.getLikeCount(),
                 true,
+                restaurantSearchResponse.getRating(),
                 restaurantSearchResponse.getCelebs(),
                 restaurantSearchResponse.getImages()
         );
@@ -169,6 +170,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
                 restaurantSearchResponse.getDistance(),
                 restaurantSearchResponse.getLikeCount() + 1,
                 restaurantSearchResponse.isLiked(),
+                restaurantSearchResponse.getRating(),
                 restaurantSearchResponse.getCelebs(),
                 restaurantSearchResponse.getImages()
         );

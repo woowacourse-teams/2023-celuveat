@@ -26,6 +26,7 @@ import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -90,7 +91,8 @@ public class RestaurantSearchResponseDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(locationCond.middleLat(), locationCond.middleLng()).as(distanceColumn),
-                        restaurant.likeCount
+                        restaurant.likeCount,
+                        rating()
                 ))
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -104,6 +106,14 @@ public class RestaurantSearchResponseDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
+
+    private NumberExpression<Double> rating() {
+        return Expressions.asNumber(
+                new CaseBuilder()
+                        .when(restaurant.reviewCount.eq(0)).then(0.0)
+                        .otherwise(restaurant.totalRating.divide(restaurant.reviewCount))
+        ).as("rating");
     }
 
     private NumberExpression<Double> distance(double latitude, double longitude) {
@@ -192,7 +202,8 @@ public class RestaurantSearchResponseDao {
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
                         distance(standard.latitude(), standard.longitude()).as(distanceColumn),
-                        restaurant.likeCount
+                        restaurant.likeCount,
+                        rating()
                 ))
                 .from(restaurant)
                 .where(
