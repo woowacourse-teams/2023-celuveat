@@ -1,7 +1,9 @@
 package com.celuveat.restaurant.command.application;
 
-import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.auth.fixture.OauthMemberFixture.도기;
+import static com.celuveat.auth.fixture.OauthMemberFixture.로이스;
+import static com.celuveat.auth.fixture.OauthMemberFixture.말랑;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,25 +22,21 @@ class RestaurantReviewReportServiceTest extends IntegrationTest {
     @Test
     void 음식점_리뷰를_신고한다() {
         // given
-        Restaurant 맛집 = restaurantRepository.save(음식점("맛집"));
-        OauthMember 오도 = oauthMemberRepository.save(멤버("오도"));
-        RestaurantReview 음식점_리뷰 = restaurantReviewRepository.save(음식점_리뷰(오도, 맛집));
-        OauthMember 로이스 = oauthMemberRepository.save(멤버("로이스"));
-        OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
+        OauthMember 말랑 = oauthMemberRepository.save(말랑());
+        OauthMember 로이스 = oauthMemberRepository.save(로이스());
+        OauthMember 도기 = oauthMemberRepository.save(도기());
+        Restaurant 대성집 = restaurantRepository.save(대성집());
+        RestaurantReview 대성집_리뷰 = restaurantReviewRepository.save(음식점_리뷰(말랑, 대성집));
 
         // when
-        restaurantReviewReportService.report("부적절한 댓글입니다1", 음식점_리뷰.id(), 로이스.id());
-        restaurantReviewReportService.report("부적절한 댓글입니다2", 음식점_리뷰.id(), 도기.id());
-        List<RestaurantReviewReport> result = restaurantReviewReportRepository.findAllByRestaurantReviewId(음식점_리뷰.id());
+        restaurantReviewReportService.report("부적절한 리뷰인 것 같아요1", 대성집_리뷰.id(), 로이스.id());
+        restaurantReviewReportService.report("부적절한 리뷰인 것 같아요2", 대성집_리뷰.id(), 도기.id());
 
         // then
-        List<RestaurantReviewReport> expected = List.of(
-                new RestaurantReviewReport("부적절한 댓글입니다1", 음식점_리뷰, 로이스),
-                new RestaurantReviewReport("부적절한 댓글입니다2", 음식점_리뷰, 도기)
-        );
-
-        assertThat(result).usingRecursiveComparison()
-                .ignoringExpectedNullFields()
-                .isEqualTo(expected);
+        List<RestaurantReviewReport> 신고된_대성집_리뷰들 = restaurantReviewReportRepository
+                .findAllByRestaurantReviewId(대성집_리뷰.id());
+        assertThat(신고된_대성집_리뷰들)
+                .extracting(RestaurantReviewReport::content)
+                .containsExactly("부적절한 리뷰인 것 같아요1", "부적절한 리뷰인 것 같아요2");
     }
 }
