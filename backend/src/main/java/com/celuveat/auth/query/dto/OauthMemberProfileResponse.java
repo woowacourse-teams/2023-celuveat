@@ -1,6 +1,6 @@
 package com.celuveat.auth.query.dto;
 
-public record MemberProfileResponse(
+public record OauthMemberProfileResponse(
         Long memberId,
         String nickname,
         String profileImageUrl,

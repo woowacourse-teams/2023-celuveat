@@ -1,6 +1,6 @@
 package com.celuveat.video.query.dto;
 
-import com.celuveat.video.utils.VideoResponseUtils;
+import com.celuveat.video.utils.VideoResponseUtil;
 import java.time.LocalDate;
 
 public record VideoWithCelebQueryResponse(
@@ -15,6 +15,6 @@ public record VideoWithCelebQueryResponse(
 
     @Override
     public String youtubeVideoKey() {
-        return VideoResponseUtils.extractVideoKey(youtubeVideoKey);
+        return VideoResponseUtil.extractVideoKey(youtubeVideoKey);
     }
 }

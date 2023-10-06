@@ -2,10 +2,16 @@ package com.celuveat.video.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-class VideoResponseUtilsTest {
+
+@DisplayName("영상 관련 유틸리티(VideoResponseUtils) 은(는)")
+@DisplayNameGeneration(ReplaceUnderscores.class)
+class VideoResponseUtilTest {
 
     @ParameterizedTest
     @CsvSource(value = {
@@ -22,9 +28,11 @@ class VideoResponseUtilsTest {
             "https://www.youtube.com/shorts/GFDjAALa7BE?t=41 --> GFDjAALa7BE",
             "https://www.youtube.com/shorts/oFjx1P7ryeY --> oFjx1P7ryeY"
     }, delimiterString = " --> ")
-    void 영상_키_값을_추출_테스트(String videoUrl, String expectedVideoKey) {
-        String extracted = VideoResponseUtils.extractVideoKey(videoUrl);
+    void 영상_키_값을_추출_테스트(String videoUrl, String expected) {
+        // when
+        String result = VideoResponseUtil.extractVideoKey(videoUrl);
 
-        assertThat(extracted).isEqualTo(expectedVideoKey);
+        // then
+        assertThat(result).isEqualTo(expected);
     }
 }

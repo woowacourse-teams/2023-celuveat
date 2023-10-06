@@ -1,7 +1,7 @@
 package com.celuveat.auth.query.dao;
 
 import com.celuveat.auth.command.domain.OauthMember;
-import com.celuveat.auth.query.dto.MemberProfileResponse;
+import com.celuveat.auth.query.dto.OauthMemberProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberProfileResponseDao {
+public class OauthMemberProfileResponseDao {
 
     private final OauthMemberQueryDaoSupport oauthMemberQueryDaoSupport;
 
-    public MemberProfileResponse find(Long memberId) {
+    public OauthMemberProfileResponse find(Long memberId) {
         OauthMember member = oauthMemberQueryDaoSupport.getById(memberId);
-        return new MemberProfileResponse(
+        return new OauthMemberProfileResponse(
                 member.id(),
                 member.nickname(),
                 member.profileImageUrl(),

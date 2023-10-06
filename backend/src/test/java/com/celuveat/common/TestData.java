@@ -13,21 +13,12 @@ import lombok.Builder;
 import lombok.Builder.Default;
 
 /**
- * EX)
- * private TestData testData = new TestData();
+ * EX) private TestData testData = new TestData();
+ * <p>
+ * private final TestDataCreator testDataCreator = () -> { testData.addCelebs(셀럽들); testData.addRestaurants(음식점들);
+ * testData.addImages(음식점사진들); testData.addVideos(음식점영상들); return testData; };
  *
- * private final TestDataCreator testDataCreator = () -> {
- *     testData.addCelebs(셀럽들);
- *     testData.addRestaurants(음식점들);
- *     testData.addImages(음식점사진들);
- *     testData.addVideos(음식점영상들);
- *     return testData;
- * };
- *
- * @BeforeEach
- * void setUp() {
- *     testDataInserter.insertData(testDataCreator);
- * }
+ * @BeforeEach void setUp() { testDataInserter.insertData(testDataCreator); }
  */
 public class TestData {
 

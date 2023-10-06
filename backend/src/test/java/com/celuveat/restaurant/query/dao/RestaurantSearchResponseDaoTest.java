@@ -1,21 +1,19 @@
 package com.celuveat.restaurant.query.dao;
 
-import static com.celuveat.restaurant.fixture.LocationFixture.isRestaurantInArea;
+import static com.celuveat.common.SeedData.isCelebVisited;
+import static com.celuveat.common.SeedData.isRestaurantInArea;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.isCelebVisited;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
-import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
-import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,25 +23,14 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-@IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 조회용 Dao(RestaurantSearchResponseDao) 은(는)")
-class RestaurantSearchResponseDaoTest {
+class RestaurantSearchResponseDaoTest extends IntegrationTest {
 
     private final List<RestaurantSearchResponse> seed = new ArrayList<>();
-
-    @Autowired
-    private SeedData seedData;
-
-    @Autowired
-    private EntityManager em;
-
-    @Autowired
-    private RestaurantSearchResponseDao restaurantSearchResponseDao;
 
     @BeforeEach
     void setUp() {

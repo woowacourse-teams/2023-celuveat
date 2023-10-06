@@ -8,54 +8,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.willDoNothing;
 
 import com.celuveat.auth.command.domain.OauthMember;
-import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseException;
 import com.celuveat.common.exception.BaseExceptionType;
-import com.celuveat.common.infra.aws.AwsS3ImageUploadClient;
 import com.celuveat.restaurant.command.application.dto.DeleteReviewCommand;
 import com.celuveat.restaurant.command.application.dto.SaveReviewRequestCommand;
 import com.celuveat.restaurant.command.application.dto.UpdateReviewRequestCommand;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewImageRepository;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-@IntegrationTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("음식점 리뷰 서비스(RestaurantReviewService) 은(는)")
-class RestaurantReviewServiceTest {
-
-    @Autowired
-    private RestaurantReviewService restaurantReviewService;
-
-    @Autowired
-    private RestaurantReviewRepository restaurantReviewRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private OauthMemberRepository oauthMemberRepository;
-
-    @Autowired
-    private RestaurantReviewImageRepository restaurantReviewImageRepository;
-
-    @MockBean
-    private AwsS3ImageUploadClient imageUploadClient;
+class RestaurantReviewServiceTest extends IntegrationTest {
 
     private Restaurant restaurant;
     private Restaurant otherRestaurant;
