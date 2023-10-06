@@ -163,7 +163,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             for (var RestaurantSearchResponse : 전체_음식점) {
                 var 음식점 = restaurantRepository.getById(RestaurantSearchResponse.id());
-                restaurantLikeRepository.save(new RestaurantLike(음식점, 도기));
+                restaurantLikeRepository.save(RestaurantLike.create(음식점, 도기));
             }
             Restaurant restaurant = restaurantRepository.getById(1L);
 

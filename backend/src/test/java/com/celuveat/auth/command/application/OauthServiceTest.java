@@ -54,7 +54,7 @@ class OauthServiceTest extends IntegrationTest {
         // given
         Restaurant 대성집 = restaurantRepository.save(대성집());
         OauthMember 말랑 = oauthMemberRepository.save(말랑());
-        restaurantLikeRepository.save(new RestaurantLike(대성집, 말랑));
+        restaurantLikeRepository.save(RestaurantLike.create(대성집, 말랑));
 
         // when
         oauthService.withdraw(KAKAO, 말랑.id());

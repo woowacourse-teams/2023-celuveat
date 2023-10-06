@@ -70,7 +70,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             celebId = RestaurantSearchResponse.celebs().get(0).id();
             oauthMember = oauthMemberRepository.save(멤버("로이스"));
             restaurant = restaurantRepository.getById(RestaurantSearchResponse.id());
-            restaurantLikeRepository.save(new RestaurantLike(restaurant, oauthMember));
+            restaurantLikeRepository.save(RestaurantLike.create(restaurant, oauthMember));
         }
 
         @Test
@@ -466,10 +466,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Restaurant restaurant3 = restaurantRepository.getById(seed.get(4).id());
             Restaurant restaurant4 = restaurantRepository.getById(seed.get(9).id());
             restaurantLikeRepository.saveAll(List.of(
-                    new RestaurantLike(restaurant1, 오도),
-                    new RestaurantLike(restaurant2, 오도),
-                    new RestaurantLike(restaurant3, 오도),
-                    new RestaurantLike(restaurant4, 오도)
+                    RestaurantLike.create(restaurant1, 오도),
+                    RestaurantLike.create(restaurant2, 오도),
+                    RestaurantLike.create(restaurant3, 오도),
+                    RestaurantLike.create(restaurant4, 오도)
             ));
 
             // when
@@ -525,7 +525,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
             for (RestaurantSearchResponse RestaurantSearchResponse : seed) {
                 Restaurant restaurant = restaurantRepository.getById(RestaurantSearchResponse.id());
-                restaurantLikeRepository.save(new RestaurantLike(restaurant, 도기));
+                restaurantLikeRepository.save(RestaurantLike.create(restaurant, 도기));
             }
 
             // when
@@ -555,10 +555,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Restaurant restaurant3 = restaurantRepository.getById(seed.get(4).id());
             Restaurant restaurant4 = restaurantRepository.getById(seed.get(9).id());
             restaurantLikeRepository.saveAll(List.of(
-                    new RestaurantLike(restaurant1, 오도),
-                    new RestaurantLike(restaurant2, 오도),
-                    new RestaurantLike(restaurant3, 오도),
-                    new RestaurantLike(restaurant4, 오도)
+                    RestaurantLike.create(restaurant1, 오도),
+                    RestaurantLike.create(restaurant2, 오도),
+                    RestaurantLike.create(restaurant3, 오도),
+                    RestaurantLike.create(restaurant4, 오도)
             ));
 
             // when
