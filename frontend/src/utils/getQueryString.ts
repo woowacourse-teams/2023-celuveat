@@ -15,7 +15,9 @@ export const getRestaurantQueryString = ({ boundary, celebId, category, page, so
   if (category !== '전체' && category) params = { ...params, category };
   if (page !== 0 && page) params = { ...params, page: String(page) };
 
-  return getQuerySting(Object.assign(params));
+  const searchParams = new URLSearchParams(Object.assign(params));
+
+  return searchParams.toString();
 };
 
 const getQuerySting = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
