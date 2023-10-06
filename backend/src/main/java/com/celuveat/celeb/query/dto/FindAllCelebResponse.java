@@ -1,4 +1,4 @@
-package com.celuveat.celeb.presentation.response;
+package com.celuveat.celeb.query.dto;
 
 import com.celuveat.celeb.command.domain.Celeb;
 
