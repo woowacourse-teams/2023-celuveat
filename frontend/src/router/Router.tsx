@@ -4,7 +4,7 @@ import { lazy } from 'react';
 const Root = lazy(() => import('./Root'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
-const RestaurantDetailPage = lazy(() => import('~/pages/RestaurantDetailPage'));
+const RestaurantDetailPage = lazy(() => import('~/pages/RestaurantDetailPage/index'));
 const SignUpPage = lazy(() => import('~/pages/SignUpPage'));
 const WishListPage = lazy(() => import('~/pages/WishListPage'));
 const WithdrawalPage = lazy(() => import('~/pages/WithdrawalPage'));

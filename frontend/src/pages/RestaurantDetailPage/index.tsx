@@ -1,13 +1,3 @@
-import { Suspense } from 'react';
-import RestaurantDetail from './RestaurantDetail';
-import Skeleton from './Skeleton';
-
-function RestaurantDetailPage() {
-  return (
-    <Suspense fallback={<Skeleton />}>
-      <RestaurantDetail />
-    </Suspense>
-  );
-}
+import RestaurantDetailPage from './RestaurantDetailPage';
 
 export default RestaurantDetailPage;
