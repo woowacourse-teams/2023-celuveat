@@ -126,7 +126,7 @@ public class Restaurant extends BaseEntity {
         return reviewCount;
     }
 
-    public Double totalRating() {
+    public double totalRating() {
         return totalRating;
     }
 }

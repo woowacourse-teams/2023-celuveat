@@ -35,9 +35,8 @@ public class RestaurantReviewService {
         OauthMember member = oauthMemberRepository.getById(command.memberId());
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
         RestaurantReview restaurantReview =
-                new RestaurantReview(command.content(), member, restaurant, command.rating());
+                RestaurantReview.create(command.content(), member, restaurant, command.rating());
         saveReviewImages(command.images(), restaurantReview);
-        restaurant.addReviewRating(restaurantReview.rating());
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
