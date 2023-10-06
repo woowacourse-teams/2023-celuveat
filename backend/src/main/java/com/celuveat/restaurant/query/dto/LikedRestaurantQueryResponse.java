@@ -1,45 +1,37 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public record LikedRestaurantQueryResponse(
-        Long id,
-        String name,
-        String category,
-        String roadAddress,
-        @JsonProperty("lat") Double latitude,
-        @JsonProperty("lng") Double longitude,
-        String phoneNumber,
-        String naverMapUrl,
-        List<CelebQueryResponse> celebs,
-        List<RestaurantImageQueryResponse> images
-) {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class LikedRestaurantQueryResponse {
 
-    public static LikedRestaurantQueryResponse of(
+    private Long id;
+    private String name;
+    private String category;
+    private String roadAddress;
+    @JsonProperty("lat")
+    private Double latitude;
+    @JsonProperty("lng")
+    private Double longitude;
+    private String phoneNumber;
+    private String naverMapUrl;
+    private List<CelebQueryResponse> celebs = new ArrayList<>();
+    private List<RestaurantImageQueryResponse> images = new ArrayList<>();
+
+    public static LikedRestaurantQueryResponse from(
             Restaurant restaurant,
-            Map<Restaurant, List<Celeb>> celebsMap,
-            Map<Restaurant, List<RestaurantImage>> restaurantMap
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> images
     ) {
-        return LikedRestaurantQueryResponse.builder()
-                .restaurant(restaurant)
-                .celebs(celebsMap.get(restaurant))
-                .restaurantImages(restaurantMap.get(restaurant))
-                .build();
-    }
-
-    @Builder
-    public LikedRestaurantQueryResponse(
-            Restaurant restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages
-    ) {
-        this(
+        return new LikedRestaurantQueryResponse(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -48,8 +40,8 @@ public record LikedRestaurantQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+                celebs,
+                images
         );
     }
 }

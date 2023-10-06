@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -65,19 +67,19 @@ public class RestaurantLikeAcceptanceSteps {
     }
 
     public static LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
-            RestaurantSimpleResponse restaurantSimpleResponse
+            RestaurantSearchResponse restaurantSearchResponse
     ) {
         return new LikedRestaurantQueryResponse(
-                restaurantSimpleResponse.id(),
-                restaurantSimpleResponse.name(),
-                restaurantSimpleResponse.category(),
-                restaurantSimpleResponse.roadAddress(),
-                restaurantSimpleResponse.latitude(),
-                restaurantSimpleResponse.longitude(),
-                restaurantSimpleResponse.phoneNumber(),
-                restaurantSimpleResponse.naverMapUrl(),
-                restaurantSimpleResponse.celebs(),
-                restaurantSimpleResponse.images()
+                restaurantSearchResponse.getId(),
+                restaurantSearchResponse.getName(),
+                restaurantSearchResponse.getCategory(),
+                restaurantSearchResponse.getRoadAddress(),
+                restaurantSearchResponse.getLatitude(),
+                restaurantSearchResponse.getLongitude(),
+                restaurantSearchResponse.getPhoneNumber(),
+                restaurantSearchResponse.getNaverMapUrl(),
+                restaurantSearchResponse.getCelebs(),
+                restaurantSearchResponse.getImages()
         );
     }
 

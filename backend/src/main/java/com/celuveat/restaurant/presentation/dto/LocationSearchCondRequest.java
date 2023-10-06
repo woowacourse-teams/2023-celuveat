@@ -2,7 +2,7 @@ package com.celuveat.restaurant.presentation.dto;
 
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest.LatLngAllOrNoting;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest.LatLngAllOrNoting.LatLngAllOrNotingValidator;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
 import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

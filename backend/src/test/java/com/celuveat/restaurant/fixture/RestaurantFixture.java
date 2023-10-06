@@ -1,14 +1,9 @@
 package com.celuveat.restaurant.fixture;
 
-import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
-import com.celuveat.video.command.domain.Video;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import java.util.List;
-import java.util.Map;
 
 public class RestaurantFixture {
 
@@ -133,44 +128,12 @@ public class RestaurantFixture {
     }
 
     public static boolean isCelebVisited(
-            Long celebId, RestaurantSimpleResponse restaurantSimpleResponse
+            Long celebId, RestaurantSearchResponse restaurantSearchResponse
     ) {
-        List<Long> celebIds = restaurantSimpleResponse.celebs().stream().map(CelebQueryResponse::id)
+        List<Long> celebIds = restaurantSearchResponse.getCelebs()
+                .stream()
+                .map(CelebQueryResponse::id)
                 .toList();
         return celebIds.contains(celebId);
-    }
-
-    public static List<RestaurantSimpleResponse> toSimpleResponse(
-            List<Restaurant> restaurants,
-            Map<Restaurant, List<Video>> videos,
-            Map<Restaurant, List<RestaurantImage>> images
-    ) {
-        return restaurants.stream()
-                .map(restaurant -> new RestaurantSimpleResponse(
-                        restaurant.id(),
-                        restaurant.name(),
-                        restaurant.category(),
-                        restaurant.roadAddress(),
-                        restaurant.latitude(),
-                        restaurant.longitude(),
-                        restaurant.phoneNumber(),
-                        restaurant.naverMapUrl(),
-                        restaurant.viewCount(),
-                        0,
-                        false,
-                        restaurant.likeCount(),
-                        videos.get(restaurant).stream().map(Video::celeb).map(celeb -> new CelebQueryResponse(
-                                celeb.id(),
-                                celeb.name(),
-                                celeb.youtubeChannelName(),
-                                celeb.profileImageUrl()
-                        )).toList(),
-                        images.get(restaurant).stream().map(image -> new RestaurantImageQueryResponse(
-                                image.id(),
-                                Base64Util.encode(image.name()),
-                                image.author(),
-                                image.socialMedia().name()
-                        )).toList()
-                )).toList();
     }
 }

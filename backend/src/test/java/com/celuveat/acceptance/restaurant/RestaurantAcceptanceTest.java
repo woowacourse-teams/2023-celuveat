@@ -45,7 +45,7 @@ import com.celuveat.common.SeedData;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
-import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -88,9 +88,9 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 로이스 = 멤버("로이스");
             var 오도_세션_아이디 = 회원가입하고_로그인한다(오도);
             var 로이스_세션_아이디 = 회원가입하고_로그인한다(로이스);
-            좋아요_요청을_보낸다(조회_음식점.id(), 오도_세션_아이디);
-            좋아요_요청을_보낸다(조회_음식점.id(), 로이스_세션_아이디);
-            좋아요_요청을_보낸다(조회_음식점2.id(), 로이스_세션_아이디);
+            좋아요_요청을_보낸다(조회_음식점.getId(), 오도_세션_아이디);
+            좋아요_요청을_보낸다(조회_음식점.getId(), 로이스_세션_아이디);
+            좋아요_요청을_보낸다(조회_음식점2.getId(), 로이스_세션_아이디);
 
             // when
             var 응답 = 음식점_좋아요_정렬_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청));
@@ -156,7 +156,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             // given
             var 전체_음식점 = seedData.insertSeedData();
             var 음식점 = 전체_음식점.get(0);
-            Long 음식점_ID = 음식점.id();
+            Long 음식점_ID = 음식점.getId();
             int 요청_거리 = 2000;
 
             // when
@@ -173,7 +173,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 세션_아이디 = 회원가입하고_로그인한다(도기);
             var 전체_음식점 = seedData.insertSeedData();
             for (var restaurantSimpleResponse : 전체_음식점) {
-                var 음식점 = restaurantRepository.getById(restaurantSimpleResponse.id());
+                var 음식점 = restaurantRepository.getById(restaurantSimpleResponse.getId());
                 restaurantLikeRepository.save(음식점_좋아요(음식점, 도기));
             }
             Restaurant restaurant = restaurantRepository.getById(1L);
@@ -192,7 +192,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         @Test
         void 정보_수정_제안_요청을_보낸다() {
             // given
-            var 음식점_ID = seedData.insertSeedData().get(0).id();
+            var 음식점_ID = seedData.insertSeedData().get(0).getId();
 
             // when
             var 응답 = 정보_수정_제안_요청(음식점_ID, "음식점 정보가 이상해요", "일 똑바로 하세요 셀럽잇");
@@ -253,9 +253,9 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             return new TestData(전체_음식점, 오도_세션_아이디, 셀럽_오도.id());
         }
 
-        private void 음식점_상세페이지를_여러번_방문한다(RestaurantSimpleResponse 음식점, int 횟수) {
+        private void 음식점_상세페이지를_여러번_방문한다(RestaurantSearchResponse 음식점, int 횟수) {
             for (int i = 0; i < 횟수; i++) {
-                restaurantService.increaseViewCount(음식점.id());
+                restaurantService.increaseViewCount(음식점.getId());
             }
         }
 
@@ -286,7 +286,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         }
 
         private record TestData(
-                List<RestaurantSimpleResponse> 전체_음식점,
+                List<RestaurantSearchResponse> 전체_음식점,
                 String 세션_아이디,
                 Long 셀럽_아이디
         ) {
@@ -303,10 +303,10 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 조회_음식점 = 특정_이름의_음식점을_찾는다(전체_음식점, "로이스2호점");
             var 셀럽들 = 셀럽들만_추출_한다(셀럽_전체_조회_요청());
             var 로이스 = 특정_이름의_셀럽을_찾는다(셀럽들, "로이스");
-            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.id(), 로이스.id(), false);
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.getId(), 로이스.id(), false);
 
             // when
-            var 응답 = 음식점_상세_조회_요청(조회_음식점.id(), 로이스.id());
+            var 응답 = 음식점_상세_조회_요청(조회_음식점.getId(), 로이스.id());
 
             // then
             상세_조회_결과를_검증한다(예상_응답, 응답);
@@ -321,11 +321,11 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 로이스 = 특정_이름의_셀럽을_찾는다(셀럽들, "로이스");
             var 오도 = 멤버("오도");
             var 세션_아이디 = 회원가입하고_로그인한다(오도);
-            좋아요_요청을_보낸다(조회_음식점.id(), 세션_아이디);
-            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.id(), 로이스.id(), true);
+            좋아요_요청을_보낸다(조회_음식점.getId(), 세션_아이디);
+            var 예상_응답 = 상세_조회_예상_응답(전체_음식점, 조회_음식점.getId(), 로이스.id(), true);
 
             // when
-            var 응답 = 음식점_회원_상세_조회_요청(조회_음식점.id(), 로이스.id(), 세션_아이디);
+            var 응답 = 음식점_회원_상세_조회_요청(조회_음식점.getId(), 로이스.id(), 세션_아이디);
 
             // then
             상세_조회_결과를_검증한다(예상_응답, 응답);

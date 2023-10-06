@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * TODO: 임시방편임, 제거되어야 함
- */
 @RestController
 @RequiredArgsConstructor
 public class MainPageController {

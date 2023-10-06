@@ -1,13 +1,12 @@
 package com.celuveat.restaurant.query.dao;
 
-import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
+import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.video.command.domain.Video;
+import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
 import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import jakarta.annotation.Nullable;
 import java.util.List;
@@ -34,8 +33,12 @@ public class RestaurantDetailResponseDao {
             Restaurant restaurant,
             @Nullable Long memberId
     ) {
-        List<Celeb> celebs = getCelebsByRestaurant(restaurant);
-        List<RestaurantImage> restaurantImages = restaurantImageQueryDaoSupport.findAllByRestaurant(restaurant);
+        List<CelebQueryResponse> celebs = getCelebsByRestaurant(restaurant);
+        List<RestaurantImageQueryResponse> restaurantImages = restaurantImageQueryDaoSupport
+                .findAllByRestaurant(restaurant)
+                .stream()
+                .map(RestaurantImageQueryResponse::of)
+                .toList();
         int likeCount = restaurantLikeQueryDaoSupport.countByRestaurant(restaurant);
         return RestaurantDetailResponse.builder()
                 .restaurant(restaurant)
@@ -46,9 +49,9 @@ public class RestaurantDetailResponseDao {
                 .build();
     }
 
-    private List<Celeb> getCelebsByRestaurant(Restaurant restaurant) {
+    private List<CelebQueryResponse> getCelebsByRestaurant(Restaurant restaurant) {
         return videoQueryDaoSupport.findAllByRestaurant(restaurant).stream()
-                .map(Video::celeb)
+                .map(it -> CelebQueryResponse.from(restaurant.id(), it.celeb()))
                 .toList();
     }
 

@@ -1,8 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Builder;
@@ -26,8 +24,8 @@ public record RestaurantDetailResponse(
     @Builder
     public RestaurantDetailResponse(
             Restaurant restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages,
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> restaurantImages,
             int likeCount,
             boolean isLiked
     ) {
@@ -42,8 +40,8 @@ public record RestaurantDetailResponse(
                 likeCount,
                 restaurant.viewCount(),
                 isLiked,
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList());
+                celebs,
+                restaurantImages);
     }
 
     public static RestaurantDetailResponse of(
