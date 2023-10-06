@@ -43,7 +43,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/restaurants")
-                .then()
+                .then().log().all()
                 .extract();
     }
 
@@ -63,7 +63,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/restaurants")
-                .then()
+                .then().log().all()
                 .extract();
     }
 
@@ -320,7 +320,7 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/restaurants/{restaurantId}", restaurantId)
-                .then()
+                .then().log().all()
                 .extract();
     }
 
@@ -334,7 +334,7 @@ public class RestaurantAcceptanceSteps {
         return given(sessionId)
                 .queryParams(param)
                 .when().get("/restaurants/{restaurantId}", restaurantId)
-                .then()
+                .then().log().all()
                 .extract();
     }
 
