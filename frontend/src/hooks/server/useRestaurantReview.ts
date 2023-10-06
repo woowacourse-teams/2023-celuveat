@@ -101,7 +101,7 @@ const useRestaurantReview = () => {
       queryClient.setQueryData(['restaurantReview', restaurantId], (oldReviewsQueryData: RestaurantReviewData) => {
         const newReviewListData = oldReviewsQueryData?.reviews.map(reviewItem => {
           if (reviewItem.id === reviewId) {
-            const newLikeCount = reviewItem.isLiked ? reviewItem.likeCount + 1 : reviewItem.likeCount - 1;
+            const newLikeCount = reviewItem.isLiked ? reviewItem.likeCount - 1 : reviewItem.likeCount + 1;
             isLikedFlag = !reviewItem.isLiked;
 
             return {
