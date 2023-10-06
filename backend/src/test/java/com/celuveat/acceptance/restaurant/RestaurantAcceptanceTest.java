@@ -337,4 +337,6 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             잘못된_요청_예외를_검증한다(응답);
         }
     }
+
+    //TODO: 최근 등록된 음식점 조회 테스트
 }

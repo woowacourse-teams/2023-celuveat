@@ -78,4 +78,8 @@ public class RestaurantQueryService {
     public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         return restaurantLikeQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
     }
+
+    public List<RestaurantSearchResponse> findLatest(@Nullable Long memberId) {
+        return restaurantSearchResponseDao.findLatest(memberId);
+    }
 }
