@@ -14,13 +14,13 @@ function RegionResultPage() {
 
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
     queryKey: ['restaurantsFilteredByRegion', region],
-    queryFn: () => getRestaurantsByAddress(region),
+    queryFn: () => getRestaurantsByAddress(RECOMMENDED_REGION[region].code),
   });
 
   return (
     <StyledContainer>
       <StyledLink to="/">
-        <h5> ← {RECOMMENDED_REGION[region]}</h5>
+        <h5> ← {RECOMMENDED_REGION[region].name}</h5>
       </StyledLink>
       <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
       <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
