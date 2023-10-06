@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.util.StringUtil;
+import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
@@ -383,5 +384,24 @@ class RestaurantSearchResponseDaoTest {
         assertThat(result.getContent())
                 .extracting(RestaurantSearchResponse::getDistance)
                 .allMatch(distance -> distance <= specificDistance);
+    }
+
+    @Test
+    void 최근_등록된_음식점_조회_테스트() {
+        // given TODO: expected 방식 수정 필요
+        List<String> expectedRestaurantsName = em.createQuery("SELECT r FROM Restaurant r", Restaurant.class)
+                .getResultList().stream()
+                .sorted(comparing(Restaurant::createdDate).reversed()).limit(10)
+                .map(Restaurant::name)
+                .toList();
+
+        // when
+        List<RestaurantSearchResponse> latestRestaurants = RestaurantSearchResponseDao.findLatest(null);
+
+        // then
+        assertThat(latestRestaurants).hasSize(10);
+        assertThat(latestRestaurants)
+                .extracting(RestaurantSearchResponse::getName)
+                .containsExactlyElementsOf(expectedRestaurantsName);
     }
 }
