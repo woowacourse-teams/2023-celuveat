@@ -2,6 +2,8 @@ package com.celuveat.restaurant.command.domain.review;
 
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.BAD_REVIEW_VALUE;
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PERMISSION_DENIED;
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -12,7 +14,10 @@ import com.celuveat.restaurant.exception.RestaurantReviewException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -33,14 +38,22 @@ public class RestaurantReview extends BaseEntity {
 
     private int likeCount;
 
-    @Builder
-    public RestaurantReview(String content, OauthMember member, Restaurant restaurant, double rating, int likeCount) {
+    @OneToMany(orphanRemoval = true, cascade = {PERSIST, REMOVE})
+    @JoinColumn(name = "restaurant_review_id", updatable = false, nullable = false)
+    private List<RestaurantReviewImage> images = new ArrayList<>();
+
+    private RestaurantReview(
+            String content, OauthMember member,
+            Restaurant restaurant, double rating,
+            int likeCount, List<RestaurantReviewImage> images
+    ) {
         validateRating(rating);
         this.content = content;
         this.member = member;
         this.restaurant = restaurant;
         this.rating = rating;
         this.likeCount = likeCount;
+        this.images = images;
     }
 
     private void validateRating(double rating) {
@@ -49,8 +62,22 @@ public class RestaurantReview extends BaseEntity {
         }
     }
 
-    public static RestaurantReview create(String content, OauthMember member, Restaurant restaurant, double rating) {
-        RestaurantReview review = new RestaurantReview(content, member, restaurant, rating, 0);
+    public static RestaurantReview create(
+            String content, OauthMember member,
+            Restaurant restaurant, double rating
+    ) {
+        return create(content, member, restaurant, rating, Collections.emptyList());
+    }
+
+    public static RestaurantReview create(
+            String content, OauthMember member,
+            Restaurant restaurant, double rating,
+            List<String> imageNames
+    ) {
+        List<RestaurantReviewImage> images = imageNames.stream()
+                .map(RestaurantReviewImage::new)
+                .toList();
+        RestaurantReview review = new RestaurantReview(content, member, restaurant, rating, 0, images);
         restaurant.addReviewRating(rating);
         return review;
     }
@@ -64,15 +91,15 @@ public class RestaurantReview extends BaseEntity {
         this.rating = updateRating;
     }
 
-    public void delete(Long memberId) {
-        checkOwner(memberId);
-        restaurant.deleteReviewRating(rating);
-    }
-
     private void checkOwner(Long memberId) {
         if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
+    }
+
+    public void delete(Long memberId) {
+        checkOwner(memberId);
+        restaurant.deleteReviewRating(rating);
     }
 
     public void cancelLike() {
@@ -101,5 +128,9 @@ public class RestaurantReview extends BaseEntity {
 
     public int likeCount() {
         return likeCount;
+    }
+
+    public List<RestaurantReviewImage> images() {
+        return images;
     }
 }

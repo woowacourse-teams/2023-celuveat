@@ -7,7 +7,6 @@ import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PE
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.willDoNothing;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.IntegrationTest;
@@ -27,8 +26,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("음식점 리뷰 서비스(RestaurantReviewService) 은(는)")
 class RestaurantReviewServiceTest extends IntegrationTest {
@@ -64,23 +61,19 @@ class RestaurantReviewServiceTest extends IntegrationTest {
             assertThat(대성집.totalRating()).isEqualTo(5.0);
         }
 
-        // TODO: 개선
         @Test
         void 리뷰를_사진과_함께_작성한다() {
             // given
-            MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
-            MultipartFile imageB = getMockImageFile("imageB", "imageB.webp");
-            List<MultipartFile> images = List.of(imageA, imageB);
-            willDoNothing().given(imageUploadClient).upload(images);
+            List<String> imageNames = List.of("imageA", "imageB");
 
             // when
             Long reviewId = restaurantReviewService.create(
-                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0, images)
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0, imageNames)
             );
 
             // then
             RestaurantReview review = restaurantReviewRepository.getById(reviewId);
-            List<RestaurantReviewImage> reviewImages = restaurantReviewImageRepository.findByRestaurantReview(review);
+            List<RestaurantReviewImage> reviewImages = review.images();
             assertThat(review.content()).isEqualTo("정말 맛있어요");
             assertThat(review.member()).isEqualTo(말랑);
             assertThat(review.restaurant()).isEqualTo(대성집);
@@ -89,12 +82,6 @@ class RestaurantReviewServiceTest extends IntegrationTest {
             assertThat(reviewImages)
                     .extracting(RestaurantReviewImage::name)
                     .containsExactlyInAnyOrder("imageA", "imageB");
-        }
-
-        public MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
-            return new MockMultipartFile(
-                    name, originalFilename, "multipart/form-data", originalFilename.getBytes()
-            );
         }
 
         @ParameterizedTest

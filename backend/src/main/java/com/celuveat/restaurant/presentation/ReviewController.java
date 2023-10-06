@@ -51,7 +51,7 @@ public class ReviewController {
             @Auth Long memberId,
             @ModelAttribute SaveReviewRequest request
     ) {
-        imageUploadClient.upload(request.images()); //TODO: 이미지 업로드 로직 수정
+        imageUploadClient.upload(request.images());
         restaurantReviewService.create(request.toCommand(memberId));
         return ResponseEntity.status(CREATED).build();
     }
