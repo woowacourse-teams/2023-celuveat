@@ -45,9 +45,9 @@ public class RestaurantController {
 
     @GetMapping("/{restaurantId}")
     ResponseEntity<RestaurantDetailResponse> getRestaurantDetail(
+            @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
-            @RequestParam Long celebId,
-            @LooseAuth Long memberId
+            @RequestParam Long celebId
     ) {
         RestaurantDetailResponse result = restaurantQueryService.findRestaurantDetailById(
                 restaurantId, celebId, memberId

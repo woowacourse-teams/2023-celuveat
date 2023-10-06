@@ -22,9 +22,9 @@ public class MainPageController {
 
     @GetMapping("/address")
     ResponseEntity<PageResponse<RestaurantByAddressResponse>> findByAddress(
+            @LooseAuth Long memberId,
             @ModelAttribute DistrictCodeCondRequest districtCodeCondRequest,
-            @PageableDefault(size = 18) Pageable pageable,
-            @LooseAuth Long memberId
+            @PageableDefault(size = 18) Pageable pageable
     ) {
         Page<RestaurantByAddressResponse> result = restaurantQueryService.findAllByAddress(
                 districtCodeCondRequest.toCondition(), pageable, memberId

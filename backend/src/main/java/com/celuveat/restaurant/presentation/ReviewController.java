@@ -40,16 +40,16 @@ public class ReviewController {
 
     @GetMapping
     ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
-            @RequestParam Long restaurantId,
-            @LooseAuth Long memberId
+            @LooseAuth Long memberId,
+            @RequestParam Long restaurantId
     ) {
         return ResponseEntity.ok(restaurantReviewQueryService.findAllByRestaurantId(restaurantId, memberId));
     }
 
     @PostMapping
     ResponseEntity<Void> writeReview(
-            @ModelAttribute SaveReviewRequest request,
-            @Auth Long memberId
+            @Auth Long memberId,
+            @ModelAttribute SaveReviewRequest request
     ) {
         imageUploadClient.upload(request.images()); //TODO: 이미지 업로드 로직 수정
         restaurantReviewService.create(request.toCommand(memberId));
@@ -58,9 +58,9 @@ public class ReviewController {
 
     @PatchMapping("/{reviewId}")
     ResponseEntity<Void> updateReview(
+            @Auth Long memberId,
             @RequestBody UpdateReviewRequest request,
-            @PathVariable Long reviewId,
-            @Auth Long memberId
+            @PathVariable Long reviewId
     ) {
         restaurantReviewService.update(request.toCommand(reviewId, memberId));
         return ResponseEntity.noContent().build();
@@ -68,24 +68,27 @@ public class ReviewController {
 
     @DeleteMapping("/{reviewId}")
     ResponseEntity<Void> deleteReview(
-            @PathVariable Long reviewId,
-            @Auth Long memberId
+            @Auth Long memberId,
+            @PathVariable Long reviewId
     ) {
         restaurantReviewService.delete(new DeleteReviewCommand(reviewId, memberId));
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{reviewId}/like")
-    ResponseEntity<Void> like(@PathVariable Long reviewId, @Auth Long memberId) {
+    ResponseEntity<Void> like(
+            @Auth Long memberId,
+            @PathVariable Long reviewId
+    ) {
         restaurantReviewLikeService.like(reviewId, memberId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{reviewId}/report")
     ResponseEntity<Void> report(
+            @Auth Long memberId,
             @RequestBody ReportReviewRequest request,
-            @PathVariable Long reviewId,
-            @Auth Long memberId
+            @PathVariable Long reviewId
     ) {
         restaurantReviewReportService.report(request.content(), reviewId, memberId);
         return ResponseEntity.ok().build();

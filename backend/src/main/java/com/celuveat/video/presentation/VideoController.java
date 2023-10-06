@@ -25,8 +25,8 @@ public class VideoController {
 
     @GetMapping
     ResponseEntity<PageResponse<VideoWithCelebQueryResponse>> getVideosByRestaurantId(
-            @PageableDefault(size = VIDEO_WITH_CELEB_SIZE) Pageable pageable,
-            @ModelAttribute VideoSearchCondRequest searchCondRequest
+            @ModelAttribute VideoSearchCondRequest searchCondRequest,
+            @PageableDefault(size = VIDEO_WITH_CELEB_SIZE) Pageable pageable
     ) {
         Page<VideoWithCelebQueryResponse> result =
                 videoQueryService.findAllVideoWithCeleb(searchCondRequest.toCondition(), pageable);
