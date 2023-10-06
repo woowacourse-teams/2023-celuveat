@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet-async';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
@@ -31,6 +32,12 @@ function MainPage() {
 
   return (
     <StyledLayout>
+      <Helmet>
+        <meta property="og:title" content="Celuveat" />
+        <meta property="og:url" content="celuveat.com" />
+        <meta name="image" property="og:image" content="https://www.celuveat.com/og-image.jpeg" />
+        <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
+      </Helmet>
       <StyledContainer>
         <StyledBanner>
           <Banner />

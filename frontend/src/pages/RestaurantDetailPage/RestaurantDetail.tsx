@@ -3,6 +3,7 @@ import { styled, css } from 'styled-components';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import { Helmet } from 'react-helmet-async';
 import Header from './Header';
 import DetailInformation from './DetailInformation';
 import NearByRestaurantCardList from './NearByRestaurantCardList';
@@ -45,6 +46,16 @@ function RestaurantDetail() {
 
   return (
     <>
+      <Helmet>
+        <meta property="og:title" content={`${restaurant.name}`} />
+        <meta property="og:url" content="celuveat.com" />
+        <meta
+          name="image"
+          property="og:image"
+          content={`https://www.celuveat.com/images-data/${restaurant.images[0].name}.jpeg`}
+        />
+        <meta name="description" property="og:description" content={`${celebs[0].name}이 추천한 맛집`} />
+      </Helmet>
       <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
         <Header name={restaurant.name} viewCount={restaurant.viewCount} likeCount={restaurant.likeCount} />
 
