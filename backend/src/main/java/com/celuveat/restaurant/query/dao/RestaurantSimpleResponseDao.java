@@ -9,7 +9,6 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.AddressSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
@@ -30,8 +29,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RestaurantSimpleResponseDao {
 
     private final RestaurantWithDistanceDao restaurantWithDistanceDao;
@@ -61,16 +60,6 @@ public class RestaurantSimpleResponseDao {
         return toSimpleResponse(memberId, restaurants);
     }
 
-    public Page<RestaurantSimpleResponse> findAllByAddress(
-            AddressSearchCond addressSearchCond,
-            Pageable pageable,
-            @Nullable Long memberId
-    ) {
-        Page<RestaurantWithDistance> restaurants =
-                restaurantWithDistanceDao.searchByAddress(addressSearchCond, pageable);
-        return toSimpleResponse(memberId, restaurants);
-    }
-
     private Page<RestaurantSimpleResponse> toSimpleResponse(
             @Nullable Long memberId, Page<RestaurantWithDistance> restaurants
     ) {
@@ -85,11 +74,11 @@ public class RestaurantSimpleResponseDao {
 
     private Map<Long, Boolean> getIsLikedGroupByRestaurantsId(@Nullable Long memberId, List<Long> restaurantIds) {
         Set<Long> likedRestaurantIds = restaurantLikeQueryDaoSupport
-                    .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
-                    .stream()
-                    .map(RestaurantLike::restaurant)
-                    .map(BaseEntity::id)
-                    .collect(toSet());
+                .findAllByMemberIdAndRestaurantIdIn(memberId, restaurantIds)
+                .stream()
+                .map(RestaurantLike::restaurant)
+                .map(BaseEntity::id)
+                .collect(toSet());
         return restaurantIds.stream()
                 .collect(toMap(identity(), likedRestaurantIds::contains));
     }

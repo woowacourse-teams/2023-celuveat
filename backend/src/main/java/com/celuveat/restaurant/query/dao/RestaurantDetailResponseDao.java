@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RestaurantDetailResponseDao {
 
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;

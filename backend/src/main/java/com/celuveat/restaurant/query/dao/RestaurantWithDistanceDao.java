@@ -139,47 +139,6 @@ public class RestaurantWithDistanceDao {
         return distanceColumn.asc();
     }
 
-    public Page<RestaurantWithDistance> searchByAddress(
-            AddressSearchCond addressSearchCond,
-            Pageable pageable
-    ) {
-        List<RestaurantWithDistance> resultList = query.selectDistinct(Projections.constructor(
-                        RestaurantWithDistance.class,
-                        restaurant.id,
-                        restaurant.name,
-                        restaurant.category,
-                        restaurant.roadAddress,
-                        restaurant.latitude,
-                        restaurant.longitude,
-                        restaurant.phoneNumber,
-                        restaurant.naverMapUrl,
-                        restaurant.viewCount,
-                        numberTemplate(Double.class, "0"),
-                        restaurant.likeCount
-                ))
-                .from(restaurant)
-                .where(
-                        restaurantAddressIn(addressSearchCond.addresses)
-                ).orderBy(restaurant.likeCount.desc(), restaurant.id.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
-                .from(restaurant)
-                .where(
-                        restaurantAddressIn(addressSearchCond.addresses)
-                );
-        return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
-    }
-
-    private BooleanExpression restaurantAddressIn(List<String> addresses) {
-        return addresses.stream()
-                .map(restaurant.roadAddress::startsWith)
-                .reduce(BooleanExpression::or)
-                .orElse(null);
-    }
-
     public Page<RestaurantWithDistance> searchNearBy(
             Long restaurantId,
             int distance,
@@ -253,11 +212,6 @@ public class RestaurantWithDistanceDao {
             Double highLatitude,
             Double lowLongitude,
             Double highLongitude
-    ) {
-    }
-
-    public record AddressSearchCond(
-            List<String> addresses
     ) {
     }
 }

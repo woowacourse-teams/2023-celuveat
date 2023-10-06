@@ -8,7 +8,6 @@ import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.restaurant.command.application.RestaurantCorrectionService;
 import com.celuveat.restaurant.command.application.RestaurantLikeService;
 import com.celuveat.restaurant.command.application.RestaurantService;
-import com.celuveat.restaurant.presentation.dto.AddressSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
