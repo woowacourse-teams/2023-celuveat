@@ -120,6 +120,7 @@ public class RestaurantSearchResponse {
         return likeCount;
     }
 
+    @JsonProperty("isLiked")
     public boolean isLiked() {
         return isLiked;
     }
