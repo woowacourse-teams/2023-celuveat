@@ -36,7 +36,7 @@ const StyledContainer = styled.div`
   align-items: center;
   gap: 4.8rem;
 
-  height: calc(100vh - 44px);
+  height: 100%;
 
   background-color: var(--primary-6);
 `;
