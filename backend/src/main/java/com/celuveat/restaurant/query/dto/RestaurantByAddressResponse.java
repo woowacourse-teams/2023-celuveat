@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
+import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.command.domain.SocialMedia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
@@ -83,6 +84,11 @@ public class RestaurantByAddressResponse {
                 SocialMedia socialMedia
         ) {
             this(restaurantId, id, name, author, socialMedia.name());
+        }
+
+        @Override
+        public String name() {
+            return Base64Util.encode(name);
         }
     }
 }
