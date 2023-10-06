@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.command.application;
 
-import com.celuveat.restaurant.command.application.dto.SuggestCorrectionRequestCommand;
+import com.celuveat.restaurant.command.application.dto.SuggestCorrectionCommand;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.correction.RestaurantCorrection;
@@ -18,7 +18,7 @@ public class RestaurantCorrectionService {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantCorrectionRepository restaurantCorrectionRepository;
 
-    public void suggest(SuggestCorrectionRequestCommand command) {
+    public void suggest(SuggestCorrectionCommand command) {
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
         List<RestaurantCorrection> corrections = command.toDomains(restaurant);
         restaurantCorrectionRepository.saveAll(corrections);
