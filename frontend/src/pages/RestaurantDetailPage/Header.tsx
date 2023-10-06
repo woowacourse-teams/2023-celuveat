@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 import styled from 'styled-components';
 import View from '~/assets/icons/view.svg';
 import Love from '~/assets/icons/black-love.svg';
