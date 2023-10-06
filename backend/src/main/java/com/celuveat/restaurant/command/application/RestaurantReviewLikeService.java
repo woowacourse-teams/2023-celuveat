@@ -6,7 +6,6 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,22 +22,16 @@ public class RestaurantReviewLikeService {
     public void like(Long restaurantReviewId, Long memberId) {
         RestaurantReview restaurantReview = restaurantReviewRepository.getById(restaurantReviewId);
         OauthMember member = oauthMemberRepository.getById(memberId);
-        Optional<RestaurantReviewLike> likeHistory =
-                restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member);
-        if (likeHistory.isPresent()) {
-            cancelLike(restaurantReview, likeHistory.get());
-            return;
-        }
-        clickLike(restaurantReview, member);
+        restaurantReviewLikeRepository.findByRestaurantReviewAndMember(restaurantReview, member)
+                .ifPresentOrElse(this::cancelLike, clickLike(restaurantReview, member));
     }
 
-    private void cancelLike(RestaurantReview restaurantReview, RestaurantReviewLike restaurantReviewLike) {
-        restaurantReview.cancelLike();
+    private void cancelLike(RestaurantReviewLike restaurantReviewLike) {
+        restaurantReviewLike.cancel();
         restaurantReviewLikeRepository.delete(restaurantReviewLike);
     }
 
-    private void clickLike(RestaurantReview restaurantReview, OauthMember member) {
-        restaurantReview.clickLike();
-        restaurantReviewLikeRepository.save(RestaurantReviewLike.create(restaurantReview, member));
+    private Runnable clickLike(RestaurantReview restaurantReview, OauthMember member) {
+        return () -> restaurantReviewLikeRepository.save(RestaurantReviewLike.create(restaurantReview, member));
     }
 }
