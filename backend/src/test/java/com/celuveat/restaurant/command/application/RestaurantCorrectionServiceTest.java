@@ -24,9 +24,9 @@ class RestaurantCorrectionServiceTest extends IntegrationTest {
 
         // when
         restaurantCorrectionService.suggest(command);
-        List<RestaurantCorrection> result = restaurantCorrectionRepository.findAll();
 
         // then
+        List<RestaurantCorrection> result = restaurantCorrectionRepository.findAll();
         assertThat(result)
                 .extracting(RestaurantCorrection::content)
                 .containsExactly("음식점 이름이 틀렸어요.", "지도도 틀렸어요. 일좀 똑바로하세요.");
