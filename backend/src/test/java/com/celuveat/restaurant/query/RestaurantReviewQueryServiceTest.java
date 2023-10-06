@@ -76,7 +76,7 @@ class RestaurantReviewQueryServiceTest extends IntegrationTest {
                 review1.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review1)),
                 review2.id(), restaurantReviewImageRepository.saveAll(리뷰의_사진들(review2))
         );
-        restaurantReviewLikeRepository.save(new RestaurantReviewLike(review1, member1));
+        restaurantReviewLikeRepository.save(RestaurantReviewLike.create(review1, member1));
         Map<Long, Boolean> 리뷰_좋아요_여부 = Map.of(
                 review1.id(), true,
                 review2.id(), false
