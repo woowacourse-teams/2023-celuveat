@@ -3,8 +3,8 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
+import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
+import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import io.restassured.common.mapper.TypeRef;
@@ -24,6 +24,7 @@ public class RestaurantLikeAcceptanceSteps {
         return given()
                 .when().get("/oauth/login/kakao?code=abcd")
                 .then()
+                .log().all()
                 .extract();
     }
 
@@ -31,6 +32,7 @@ public class RestaurantLikeAcceptanceSteps {
         return given(세션_아이디)
                 .when().post("/restaurants/" + 맛집_아이디 + "/like")
                 .then()
+                .log().all()
                 .extract();
     }
 
@@ -38,12 +40,13 @@ public class RestaurantLikeAcceptanceSteps {
         return given(세션_아이디)
                 .when().get("/restaurants/like")
                 .then()
+                .log().all()
                 .extract();
     }
 
     public static ExtractableResponse<Response> 회원으로_음식점_검색_요청(
-            RestaurantSearchCond 음식점_검색_조건,
-            LocationSearchCond 위치_검색_조건,
+            RestaurantSearchCondRequest 음식점_검색_조건,
+            LocationSearchCondRequest 위치_검색_조건,
             String 세션_아이디
     ) {
         Map<String, Object> param = new HashMap<>();

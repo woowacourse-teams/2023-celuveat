@@ -4,8 +4,8 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.값이_존재한다
 import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.toRestaurantLikeQueryResponse;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.음식점들에_좋아요를_누른다;
@@ -14,7 +14,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요한_음식점_조회_요청_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
-import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
@@ -87,7 +87,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         var 예상_응답 = 좋아요_포함된_예상_응답(전체_음식점);
 
         // when
-        var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함), 세션_아이디);
+        var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청), 세션_아이디);
 
         // then
         응답_상태를_검증한다(응답, 정상_처리);

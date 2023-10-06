@@ -8,6 +8,7 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청_예외를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.검색_영역_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.근처_음식점_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.모든_음식점에_좋아요가_눌렸는지_확인한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.비회원_음식점_좋아요_조회수_예상_응답;
@@ -16,7 +17,7 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.셀럽필터_적용시_예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.예상_응답;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_요청;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_아이디를_가져온다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
@@ -32,14 +33,18 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요_요청을_보낸다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.restaurant.fixture.LocationFixture.대한민국_검색_조건;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
+import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.query.dto.RestaurantSimpleResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -66,7 +71,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 예상_응답(전체_음식점, 없음, 없음, 없음, 검색_영역(박스_1_2번_지점포함));
 
             // when
-            var 응답 = 음식점_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함));
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
@@ -88,7 +93,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             좋아요_요청을_보낸다(조회_음식점2.id(), 로이스_세션_아이디);
 
             // when
-            var 응답 = 음식점_좋아요_정렬_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함));
+            var 응답 = 음식점_좋아요_정렬_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청));
 
             // then
             조회_결과_좋아요순_정렬_기준을_검증한다(응답);
@@ -103,7 +108,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 예상_응답(전체_음식점, 말랑.id(), 없음, "말 랑 ", 검색_영역(박스_1번_지점포함));
 
             // when
-            var 응답 = 음식점_검색_요청(음식점_검색_조건(말랑.id(), 없음, "말 랑 "), 검색_영역(박스_1번_지점포함));
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(말랑.id(), 없음, "말 랑 "), 검색_영역_요청(박스_1번_지점포함_요청));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
@@ -118,16 +123,29 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 예상_응답(전체_음식점, 말랑.id(), 없음, "말 랑 ", 검색_영역(박스_1번_지점포함));
 
             // when
-            var 응답 = 음식점_검색_요청(음식점_검색_조건(말랑.id(), 없음, "말 랑 "), 검색_영역(박스_1번_지점포함));
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(말랑.id(), 없음, "말 랑 "), 검색_영역_요청(박스_1번_지점포함_요청));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
         }
 
         @Test
-        void 검색영역이_누락되면_예외가_발생한다() {
+        void 위경도_검색조건이_모두_Null_이면_전국지도로_검색한다() {
+            // given
+            var 전체_음식점 = seedData.insertSeedData();
+            var 예상_응답 = 예상_응답(전체_음식점, 없음, 없음, 없음, 검색_영역(대한민국_검색_조건));
+
             // when
-            var 응답 = 음식점_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(없음));
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(없음));
+
+            // then
+            조회_결과를_검증한다(예상_응답, 응답);
+        }
+
+        @Test
+        void 위경도_검색조건이_몇개만_null_이면_오류이다() {
+            // when
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), new LocationSearchCondRequest(null, 10.0, null, 100.0));
 
             // then
             잘못된_요청_예외를_검증한다(응답);
@@ -190,7 +208,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 비회원_음식점_좋아요_조회수_예상_응답(데이터.전체_음식점);
 
             // when
-            var 응답 = 음식점_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함));
+            var 응답 = 음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청));
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
@@ -248,7 +266,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 음식점_좋아요_조회수_예상_응답(데이터.전체_음식점);
 
             // when
-            var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건(없음, 없음, 없음), 검색_영역(박스_1_2번_지점포함), 데이터.세션_아이디);
+            var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청), 데이터.세션_아이디);
 
             // then
             조회_결과를_검증한다(예상_응답, 응답);
@@ -261,7 +279,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 예상_응답 = 셀럽필터_적용시_예상_응답(데이터.전체_음식점);
 
             // when
-            var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건(데이터.셀럽_아이디, 없음, 없음), 검색_영역(박스_1_2번_지점포함), 데이터.세션_아이디);
+            var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건_요청(데이터.셀럽_아이디, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청), 데이터.세션_아이디);
 
             // then
             조회_결과를_순서를_포함해서_검증한다(예상_응답, 응답);

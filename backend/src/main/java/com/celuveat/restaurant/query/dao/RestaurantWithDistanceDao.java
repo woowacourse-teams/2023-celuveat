@@ -208,10 +208,10 @@ public class RestaurantWithDistanceDao {
     }
 
     public record LocationSearchCond(
-            Double lowLatitude,
-            Double highLatitude,
-            Double lowLongitude,
-            Double highLongitude
+            double lowLatitude,
+            double highLatitude,
+            double lowLongitude,
+            double highLongitude
     ) {
     }
 }

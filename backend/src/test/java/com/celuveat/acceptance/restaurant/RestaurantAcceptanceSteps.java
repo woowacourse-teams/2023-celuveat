@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.util.StringUtil;
+import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
+import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantWithDistanceDao.RestaurantSearchCond;
@@ -27,8 +29,8 @@ import java.util.NoSuchElementException;
 public class RestaurantAcceptanceSteps {
 
     public static ExtractableResponse<Response> 음식점_검색_요청(
-            RestaurantSearchCond 음식점_검색_조건,
-            LocationSearchCond 위치_검색_조건
+            RestaurantSearchCondRequest 음식점_검색_조건,
+            LocationSearchCondRequest 위치_검색_조건
     ) {
         Map<String, Object> param = new HashMap<>();
         param.put("celebId", 음식점_검색_조건.celebId());
@@ -42,13 +44,14 @@ public class RestaurantAcceptanceSteps {
                 .queryParams(param)
                 .when().get("/restaurants")
                 .then()
+                .log().all()
                 .extract();
     }
 
     //FIXME
     public static ExtractableResponse<Response> 음식점_좋아요_정렬_검색_요청(
-            RestaurantSearchCond 음식점_검색_조건,
-            LocationSearchCond 위치_검색_조건
+            RestaurantSearchCondRequest 음식점_검색_조건,
+            LocationSearchCondRequest 위치_검색_조건
     ) {
         Map<String, Object> param = new HashMap<>();
         param.put("celebId", 음식점_검색_조건.celebId());
@@ -62,16 +65,16 @@ public class RestaurantAcceptanceSteps {
         return given()
                 .queryParams(param)
                 .when().get("/restaurants")
-                .then()
+                .then().log().all()
                 .extract();
     }
 
-    public static RestaurantSearchCond 음식점_검색_조건(
+    public static RestaurantSearchCondRequest 음식점_검색_조건_요청(
             Object 셀럽_ID,
             Object 카테고리,
             Object 음식점_이름
     ) {
-        return new RestaurantSearchCond(
+        return new RestaurantSearchCondRequest(
                 (Long) 셀럽_ID,
                 (String) 카테고리,
                 (String) 음식점_이름
@@ -79,11 +82,21 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static LocationSearchCond 검색_영역(Object 포함_영역) {
-        if (포함_영역 == null) {
-            return new LocationSearchCond(null, null, null, null);
-        }
         LocationSearchCond 검색_영역 = (LocationSearchCond) 포함_영역;
         return new LocationSearchCond(
+                검색_영역.lowLatitude(),
+                검색_영역.highLatitude(),
+                검색_영역.lowLongitude(),
+                검색_영역.highLongitude()
+        );
+    }
+
+    public static LocationSearchCondRequest 검색_영역_요청(Object 포함_영역) {
+        if (포함_영역 == null) {
+            return new LocationSearchCondRequest(null, null, null, null);
+        }
+        LocationSearchCondRequest 검색_영역 = (LocationSearchCondRequest) 포함_영역;
+        return new LocationSearchCondRequest(
                 검색_영역.lowLatitude(),
                 검색_영역.highLatitude(),
                 검색_영역.lowLongitude(),
