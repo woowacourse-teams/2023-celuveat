@@ -56,8 +56,6 @@ const StyledCategoryNavbarWrapper = styled.ul<{ grid: boolean }>`
 
   background: transparent;
 
-  overflow-x: scroll;
-
   ${({ grid }) =>
     grid
       ? css`

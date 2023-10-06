@@ -163,5 +163,5 @@ const StyledPopularRestaurantBox = styled.div`
 `;
 
 const StyledCategoryBox = styled.div`
-  padding: 1.6rem 0;
+  padding: 1.6rem 0.8rem;
 `;
