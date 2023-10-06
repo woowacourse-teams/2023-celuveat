@@ -1,8 +1,10 @@
 package com.celuveat.restaurant.command.application;
 
-import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.auth.fixture.OauthMemberFixture.도기;
+import static com.celuveat.auth.fixture.OauthMemberFixture.말랑;
+import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.BAD_REVIEW_VALUE;
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PERMISSION_DENIED;
-import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -21,206 +23,255 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("음식점 리뷰 서비스(RestaurantReviewService) 은(는)")
 class RestaurantReviewServiceTest extends IntegrationTest {
 
-    private Restaurant restaurant;
-    private Restaurant otherRestaurant;
-    private OauthMember member;
-    private OauthMember otherMember;
+    private Restaurant 대성집;
+    private OauthMember 말랑;
+    private OauthMember 도기;
 
     @BeforeEach
     void setUp() {
-        restaurant = 음식점("로이스음식점");
-        restaurantRepository.save(restaurant);
-        otherRestaurant = 음식점("오도음식점");
-        restaurantRepository.save(otherRestaurant);
-        member = 멤버("도기");
-        oauthMemberRepository.save(member);
-        otherMember = 멤버("말랑");
-        oauthMemberRepository.save(otherMember);
+        대성집 = restaurantRepository.save(대성집());
+        말랑 = oauthMemberRepository.save(말랑());
+        도기 = oauthMemberRepository.save(도기());
     }
 
-    @Test
-    void 리뷰를_저장한다() {
-        // given
-        SaveReviewRequestCommand command =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0, 0);
+    @Nested
+    class 리뷰_작성_시 {
 
-        // when
-        Long reviewId = restaurantReviewService.create(command);
+        @Test
+        void 리뷰를_작성하면_음식점의_리뷰_수와_전체_평점이_증가한다() {
+            // when
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
 
-        // then
-        RestaurantReview result = restaurantReviewRepository.getById(reviewId);
-        assertThat(result).usingRecursiveComparison()
-                .ignoringFields("id", "createdDate")
-                .isEqualTo(expected);
+            // then
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            assertThat(review.content()).isEqualTo("정말 맛있어요");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(5.0);
+            assertThat(대성집.reviewCount()).isEqualTo(1);
+            assertThat(대성집.totalRating()).isEqualTo(5.0);
+        }
+
+        // TODO: 개선
+        @Test
+        void 리뷰를_사진과_함께_작성한다() {
+            // given
+            MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
+            MultipartFile imageB = getMockImageFile("imageB", "imageB.webp");
+            List<MultipartFile> images = List.of(imageA, imageB);
+            willDoNothing().given(imageUploadClient).upload(images);
+
+            // when
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0, images)
+            );
+
+            // then
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            List<RestaurantReviewImage> reviewImages = restaurantReviewImageRepository.findByRestaurantReview(review);
+            assertThat(review.content()).isEqualTo("정말 맛있어요");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(5.0);
+            assertThat(reviewImages).hasSize(2);
+            assertThat(reviewImages)
+                    .extracting(RestaurantReviewImage::name)
+                    .containsExactlyInAnyOrder("imageA", "imageB");
+        }
+
+        public MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
+            return new MockMultipartFile(
+                    name, originalFilename, "multipart/form-data", originalFilename.getBytes()
+            );
+        }
+
+        @ParameterizedTest
+        @ValueSource(doubles = {-1.0, 0.0, 5.1})
+        void 별점은_0점_이하거나_5점을_초과할_수_없다(double invalidRating) {
+            // when
+            BaseExceptionType result = assertThrows(BaseException.class, () ->
+                    restaurantReviewService.create(
+                            new SaveReviewRequestCommand("잘못된 리뷰", 말랑.id(), 대성집.id(), invalidRating)
+                    )
+            ).exceptionType();
+
+            // then
+            assertThat(result).isEqualTo(BAD_REVIEW_VALUE);
+            assertThat(대성집.reviewCount()).isEqualTo(0);
+            assertThat(대성집.totalRating()).isEqualTo(0.0);
+        }
     }
 
-    @Test
-    void 리뷰를_저장하면_음식점에_전체_평점과_리뷰수를_증가시킨다() {
-        // given
-        SaveReviewRequestCommand commandA =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        SaveReviewRequestCommand commandB =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 3.0);
+    @Nested
+    class 리뷰_수정_시 {
 
-        // when
-        restaurantReviewService.create(commandA);
-        restaurantReviewService.create(commandB);
+        @Test
+        void 자신의_리뷰는_수정할_수_있다() {
+            // given
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
 
-        // then
-        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
-        assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
-        assertThat(savedRestaurant.totalRating()).isEqualTo(8.0);
+            // when
+            restaurantReviewService.update(
+                    new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, 말랑.id(), 1.0)
+            );
+
+            // then
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            assertThat(review.content()).isEqualTo("사장님이 초심을 잃었어요!");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(1.0);
+        }
+
+        @Test
+        void 리뷰를_수정하면_음식점의_리뷰_수는_동일하고_전체_평점이_변경된다() {
+            // given
+            restaurantReviewService.create(
+                    new SaveReviewRequestCommand("쏘쏘", 말랑.id(), 대성집.id(), 3.0)
+            );
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
+
+            // when
+            restaurantReviewService.update(
+                    new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, 말랑.id(), 1.0)
+            );
+
+            // then
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            assertThat(review.content()).isEqualTo("사장님이 초심을 잃었어요!");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(1.0);
+            assertThat(대성집.reviewCount()).isEqualTo(2);
+            assertThat(대성집.totalRating()).isEqualTo(4.0);
+        }
+
+        @Test
+        void 자신의_리뷰가_아니면_수정할_수_없다() {
+            // given
+            Long 말랑의_대성집_리뷰_ID = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("맛있어요", 말랑.id(), 대성집.id(), 4.0)
+            );
+
+            // when
+            BaseExceptionType result = assertThrows(BaseException.class, () ->
+                    restaurantReviewService.update(
+                            new UpdateReviewRequestCommand("더 맛있어졌어요", 말랑의_대성집_리뷰_ID, 도기.id(), 5.0)
+                    )
+            ).exceptionType();
+
+            // then
+            assertThat(result).isEqualTo(PERMISSION_DENIED);
+            RestaurantReview review = restaurantReviewRepository.getById(말랑의_대성집_리뷰_ID);
+            assertThat(review.content()).isEqualTo("맛있어요");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(4.0);
+            assertThat(대성집.reviewCount()).isEqualTo(1);
+            assertThat(대성집.totalRating()).isEqualTo(4.0);
+        }
+
+        @ParameterizedTest
+        @ValueSource(doubles = {-1.0, 0.0, 5.1})
+        void 별점은_0점_이하거나_5점을_초과할_수_수_없다(double invalidRating) {
+            // given
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("맛있어요", 말랑.id(), 대성집.id(), 4.0)
+            );
+
+            // when
+            BaseExceptionType result = assertThrows(BaseException.class, () ->
+                    restaurantReviewService.update(
+                            new UpdateReviewRequestCommand("잘못된 리뷰", reviewId, 말랑.id(), invalidRating)
+                    )
+            ).exceptionType();
+
+            // then
+            assertThat(result).isEqualTo(BAD_REVIEW_VALUE);
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            assertThat(review.content()).isEqualTo("맛있어요");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(4.0);
+            assertThat(대성집.reviewCount()).isEqualTo(1);
+            assertThat(대성집.totalRating()).isEqualTo(4.0);
+        }
     }
 
-    @Test
-    void 다른_사람의_리뷰를_수정하려하면_예외가_발생한다() {
-        // given
-        SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("더 맛있어졌어요", reviewId, otherMember.id(), 5.0);
+    @Nested
+    class 리뷰_삭제_시 {
 
-        // when
-        BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.update(updateCommand)
-        ).exceptionType();
+        @Test
+        void 내_리뷰는_제거할_수_있다() {
+            // given
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
 
-        // then
-        assertThat(result).isEqualTo(PERMISSION_DENIED);
-    }
+            // when
+            restaurantReviewService.delete(
+                    new DeleteReviewCommand(reviewId, 말랑.id())
+            );
 
-    @Test
-    void 리뷰를_수정한다() {
-        // given
-        SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 0.0);
-        RestaurantReview expected = new RestaurantReview("사장님이 초심을 잃었어요!", member, restaurant, 0.0);
+            // then
+            Optional<RestaurantReview> result = restaurantReviewRepository.findById(reviewId);
+            assertThat(result).isEmpty();
+        }
 
-        // when
-        restaurantReviewService.update(updateCommand);
+        @Test
+        void 리뷰를_제거하면_음식점의_리뷰_수와_전체_평점이_감소된다() {
+            // given
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
 
-        // then
-        RestaurantReview result = restaurantReviewRepository.getById(reviewId);
-        assertThat(result).usingRecursiveComparison()
-                .ignoringFields("id", "createdDate")
-                .isEqualTo(expected);
-    }
+            // when
+            restaurantReviewService.delete(new DeleteReviewCommand(reviewId, 말랑.id()));
 
+            // then
+            assertThat(대성집.reviewCount()).isEqualTo(0);
+            assertThat(대성집.totalRating()).isEqualTo(0.0);
+        }
 
-    @Test
-    void 리뷰를_수정하면_음식점의_전체_평점이_변경된다() {
-        // given
-        SaveReviewRequestCommand saveCommandA =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        restaurantReviewService.create(saveCommandA);
-        SaveReviewRequestCommand saveCommandB =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommandB);
-        UpdateReviewRequestCommand updateCommand =
-                new UpdateReviewRequestCommand("사장님이 초심을 잃었어요!", reviewId, member.id(), 1.0);
+        @Test
+        void 다른_사람의_리뷰는_제거할_수_없다() {
+            // given
+            Long reviewId = restaurantReviewService.create(
+                    new SaveReviewRequestCommand("정말 맛있어요", 말랑.id(), 대성집.id(), 5.0)
+            );
 
-        // when
-        restaurantReviewService.update(updateCommand);
+            // when
+            BaseExceptionType result = assertThrows(BaseException.class, () ->
+                    restaurantReviewService.delete(
+                            new DeleteReviewCommand(reviewId, 도기.id())
+                    )
+            ).exceptionType();
 
-        // then
-        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
-        assertThat(savedRestaurant.reviewCount()).isEqualTo(2);
-        assertThat(savedRestaurant.totalRating()).isNotEqualTo(10.0);
-        assertThat(savedRestaurant.totalRating()).isEqualTo(6.0);
-    }
-
-    @Test
-    void 다른_사람의_리뷰를_삭제하려하면_예외가_발생한다() {
-        // given
-        SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, otherMember.id());
-
-        // when
-        BaseExceptionType result = assertThrows(BaseException.class, () ->
-                restaurantReviewService.delete(deleteCommand)
-        ).exceptionType();
-
-        // then
-        assertThat(result).isEqualTo(PERMISSION_DENIED);
-    }
-
-    @Test
-    void 리뷰를_삭제한다() {
-        // given
-        SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
-
-        // when
-        restaurantReviewService.delete(deleteCommand);
-        Optional<RestaurantReview> result = restaurantReviewRepository.findById(reviewId);
-
-        // then
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void 리뷰를_삭제하면_음식점의_전체_평점과_리뷰수가_감소한다() {
-        // given
-        SaveReviewRequestCommand saveCommand =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0);
-        Long reviewId = restaurantReviewService.create(saveCommand);
-        DeleteReviewCommand deleteCommand = new DeleteReviewCommand(reviewId, member.id());
-
-        // when
-        restaurantReviewService.delete(deleteCommand);
-
-        // then
-        Restaurant savedRestaurant = restaurantRepository.getById(restaurant.id());
-        assertThat(savedRestaurant.reviewCount()).isEqualTo(0);
-        assertThat(savedRestaurant.totalRating()).isEqualTo(0.0);
-    }
-
-    @Test
-    void 리뷰를_사진과_함께_저장한다() {
-        // given
-        MultipartFile imageA = getMockImageFile("imageA", "imageA.webp");
-        MultipartFile imageB = getMockImageFile("imageB", "imageB.webp");
-        List<MultipartFile> images = List.of(imageA, imageB);
-        SaveReviewRequestCommand command =
-                new SaveReviewRequestCommand("정말 맛있어요", member.id(), restaurant.id(), 5.0, images);
-        willDoNothing().given(imageUploadClient).upload(images);
-        RestaurantReview expected = new RestaurantReview("정말 맛있어요", member, restaurant, 5.0);
-
-        // when
-        Long reviewId = restaurantReviewService.create(command);
-
-        // then
-        RestaurantReview savedReview = restaurantReviewRepository.getById(reviewId);
-        List<RestaurantReviewImage> reviewImages
-                = restaurantReviewImageRepository.findByRestaurantReview(savedReview);
-
-        assertThat(savedReview).usingRecursiveComparison()
-                .ignoringFields("id", "createdDate")
-                .isEqualTo(expected);
-        assertThat(reviewImages).hasSize(2);
-        assertThat(reviewImages).extracting("name")
-                .containsExactlyInAnyOrder("imageA", "imageB");
-    }
-
-    public MockMultipartFile getMockImageFile(final String name, final String originalFilename) {
-        return new MockMultipartFile(
-                name, originalFilename, "multipart/form-data", originalFilename.getBytes()
-        );
+            // then
+            assertThat(result).isEqualTo(PERMISSION_DENIED);
+            RestaurantReview review = restaurantReviewRepository.getById(reviewId);
+            assertThat(review.content()).isEqualTo("정말 맛있어요");
+            assertThat(review.member()).isEqualTo(말랑);
+            assertThat(review.restaurant()).isEqualTo(대성집);
+            assertThat(review.rating()).isEqualTo(5.0);
+            assertThat(대성집.reviewCount()).isEqualTo(1);
+            assertThat(대성집.totalRating()).isEqualTo(5.0);
+        }
     }
 }

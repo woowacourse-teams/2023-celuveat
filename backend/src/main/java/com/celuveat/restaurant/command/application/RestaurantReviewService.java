@@ -40,6 +40,7 @@ public class RestaurantReviewService {
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
+    // TODO: 개선
     private void saveReviewImages(List<MultipartFile> images, RestaurantReview review) {
         if (Objects.isNull(images)) {
             return;
