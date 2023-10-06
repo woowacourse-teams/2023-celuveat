@@ -36,10 +36,10 @@ import static com.celuveat.restaurant.fixture.LocationFixture.검색_영역_요�
 import static com.celuveat.restaurant.fixture.LocationFixture.대한민국_검색_조건;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함_요청;
-import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
+import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import java.util.List;
@@ -163,7 +163,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
             for (var RestaurantSearchResponse : 전체_음식점) {
                 var 음식점 = restaurantRepository.getById(RestaurantSearchResponse.id());
-                restaurantLikeRepository.save(음식점_좋아요(음식점, 도기));
+                restaurantLikeRepository.save(new RestaurantLike(음식점, 도기));
             }
             Restaurant restaurant = restaurantRepository.getById(1L);
 

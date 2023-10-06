@@ -11,7 +11,6 @@ import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지�
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1번_지점포함;
 import static com.celuveat.restaurant.fixture.LocationFixture.전체영역_검색_범위;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
-import static com.celuveat.restaurant.fixture.RestaurantLikeFixture.음식점_좋아요;
 import static com.celuveat.video.fixture.VideoFixture.영상;
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -467,10 +466,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Restaurant restaurant3 = restaurantRepository.getById(seed.get(4).id());
             Restaurant restaurant4 = restaurantRepository.getById(seed.get(9).id());
             restaurantLikeRepository.saveAll(List.of(
-                    음식점_좋아요(restaurant1, 오도),
-                    음식점_좋아요(restaurant2, 오도),
-                    음식점_좋아요(restaurant3, 오도),
-                    음식점_좋아요(restaurant4, 오도)
+                    new RestaurantLike(restaurant1, 오도),
+                    new RestaurantLike(restaurant2, 오도),
+                    new RestaurantLike(restaurant3, 오도),
+                    new RestaurantLike(restaurant4, 오도)
             ));
 
             // when
@@ -526,7 +525,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
             for (RestaurantSearchResponse RestaurantSearchResponse : seed) {
                 Restaurant restaurant = restaurantRepository.getById(RestaurantSearchResponse.id());
-                restaurantLikeRepository.save(음식점_좋아요(restaurant, 도기));
+                restaurantLikeRepository.save(new RestaurantLike(restaurant, 도기));
             }
 
             // when
@@ -556,10 +555,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Restaurant restaurant3 = restaurantRepository.getById(seed.get(4).id());
             Restaurant restaurant4 = restaurantRepository.getById(seed.get(9).id());
             restaurantLikeRepository.saveAll(List.of(
-                    음식점_좋아요(restaurant1, 오도),
-                    음식점_좋아요(restaurant2, 오도),
-                    음식점_좋아요(restaurant3, 오도),
-                    음식점_좋아요(restaurant4, 오도)
+                    new RestaurantLike(restaurant1, 오도),
+                    new RestaurantLike(restaurant2, 오도),
+                    new RestaurantLike(restaurant3, 오도),
+                    new RestaurantLike(restaurant4, 오도)
             ));
 
             // when

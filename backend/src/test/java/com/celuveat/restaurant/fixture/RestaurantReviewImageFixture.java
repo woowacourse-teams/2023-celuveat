@@ -12,8 +12,12 @@ public class RestaurantReviewImageFixture {
     }
 
     public static List<RestaurantReviewImage> 리뷰의_사진들(RestaurantReview 리뷰) {
+        return 리뷰의_사진들(리뷰, 3);
+    }
+
+    public static List<RestaurantReviewImage> 리뷰의_사진들(RestaurantReview 리뷰, int 사진_개수) {
         List<RestaurantReviewImage> restaurantReviewImages = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 1; i <= 사진_개수; i++) {
             restaurantReviewImages.add(리뷰_사진(리뷰.content() + "_" + i, 리뷰));
         }
         return restaurantReviewImages;

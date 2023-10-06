@@ -1,8 +1,9 @@
 package com.celuveat.auth.query;
 
-import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
+import static com.celuveat.auth.command.domain.OauthServerType.KAKAO;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.celuveat.auth.command.domain.OauthId;
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.query.dto.OauthMemberProfileResponse;
 import com.celuveat.common.IntegrationTest;
@@ -15,11 +16,18 @@ class OauthMemberQueryServiceTest extends IntegrationTest {
     @Test
     void 회원정보를_조회한다() {
         // given
-        OauthMember 오도 = oauthMemberRepository.save(멤버("오도"));
-        OauthMemberProfileResponse expected = new OauthMemberProfileResponse(오도.id(), "오도", "abc", "KAKAO");
+        OauthMember odo = OauthMember.builder()
+                .oauthId(new OauthId("odo", KAKAO))
+                .nickname("오도")
+                .profileImageUrl("https://odo.jpg")
+                .build();
+        oauthMemberRepository.save(odo);
+        OauthMemberProfileResponse expected = new OauthMemberProfileResponse(
+                odo.id(), "오도", "https://odo.jpg", "KAKAO"
+        );
 
         // when
-        OauthMemberProfileResponse result = oauthMemberQueryService.getProfile(오도.id());
+        OauthMemberProfileResponse result = oauthMemberQueryService.getProfile(odo.id());
 
         // then
         assertThat(result).isEqualTo(expected);
