@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeIcon from '~/assets/icons/home.svg';
 import SignInIcon from '~/assets/icons/sign-in.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
@@ -15,6 +15,7 @@ type BottomIcons = 'home' | 'map' | 'user';
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
+  const { pathname } = useLocation();
   const [clickedIcon, setClickedIcon] = useState<BottomIcons>('home');
 
   const clickHome = () => {
@@ -27,7 +28,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   };
   const clickLogin = () => {
     setClickedIcon('user');
-    navigator('/signup');
+    navigator('/signUp', { state: { from: pathname } });
   };
 
   useScrollBlock(ref);
