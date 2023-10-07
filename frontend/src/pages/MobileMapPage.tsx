@@ -142,8 +142,9 @@ const StyledModal = styled.div`
   align-items: center;
   gap: 0.8rem;
 
-  position: absolute;
-  bottom: 12px;
+  position: fixed;
+  bottom: 56px;
+  z-index: 1;
 
   width: 100%;
 `;
