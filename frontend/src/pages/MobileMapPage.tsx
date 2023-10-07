@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useRef } from 'react';
-import { styled, css } from 'styled-components';
+import { styled } from 'styled-components';
 import useBooleanState from '~/hooks/useBooleanState';
-import useScrollDirection from '~/hooks/useScrollDirection';
-import useScrollBlock from '~/hooks/useScrollBlock';
-import useScrollEnd from '~/hooks/useScrollEnd';
 import MapIcon from '~/assets/icons/map.svg';
 import ListIcon from '~/assets/icons/list.svg';
 import Down from '~/assets/icons/down.svg';
@@ -16,13 +12,8 @@ import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import useMapState from '~/hooks/store/useMapState';
 
 function MobileMapPage() {
-  const ref = useRef();
-  const scrollDirection = useScrollDirection();
-  const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
   const [preview, setPreview] = useMapState(state => [state.preview, state.setPreview]);
-
-  useScrollBlock(ref);
 
   const getPreview = () => {
     const { celebs, ...restaurant } = preview;
@@ -43,21 +34,17 @@ function MobileMapPage() {
         <RestaurantCardList />
         <Footer />
       </div>
-      <Map />
+      <StyledMapContainer isListShowed={isListShowed}>
+        <Map />
+      </StyledMapContainer>
       <StyledModal>
         {isListShowed ? (
-          <StyledToggleButton
-            type="button"
-            onClick={toggleShowedList}
-            isHide={isEnd}
-            isNavBarHide={isListShowed && scrollDirection.y === 'down'}
-            ref={ref}
-          >
+          <StyledToggleButton type="button" onClick={toggleShowedList}>
             <span>지도</span>
             <MapIcon width={24} />
           </StyledToggleButton>
         ) : (
-          <StyledToggleButton type="button" onClick={toggleShowedList} isHide={false} isNavBarHide={false} ref={ref}>
+          <StyledToggleButton type="button" onClick={toggleShowedList}>
             <span>리스트</span>
             <ListIcon width={20} stroke="#fff" />
           </StyledToggleButton>
@@ -94,7 +81,14 @@ const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
   }
 `;
 
-const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolean }>`
+const StyledMapContainer = styled.div<{ isListShowed: boolean }>`
+  display: ${({ isListShowed }) => (isListShowed ? 'none' : 'block')};
+
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledToggleButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -119,21 +113,6 @@ const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolea
     scale: 1.04;
     box-shadow: var(--map-shadow);
   }
-
-  ${({ isNavBarHide }) =>
-    isNavBarHide &&
-    css`
-      transition: 0.4s ease-in-out;
-      transform: translateY(64px);
-    `}
-
-  ${({ isHide }) =>
-    isHide &&
-    css`
-      opacity: 0;
-      transition: 0.4s ease-in-out;
-      transform: translateY(64px);
-    `}
 `;
 
 const StyledModal = styled.div`
