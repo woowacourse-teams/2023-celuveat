@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class RestaurantByAddressResponse {
+public class RestaurantByRegionCodeResponse {
 
     private Long id;
     private String name;
@@ -28,7 +28,7 @@ public class RestaurantByAddressResponse {
     private List<CelebInfo> celebs = new ArrayList<>();
     private List<RestaurantImageInfo> images = new ArrayList<>();
 
-    public RestaurantByAddressResponse(
+    public RestaurantByRegionCodeResponse(
             Long id, String name,
             String category, String superCategory,
             String roadAddress,

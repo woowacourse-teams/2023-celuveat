@@ -10,8 +10,8 @@ import com.celuveat.administrativedistrict.domain.AdministrativeDistrict;
 import com.celuveat.common.DaoTest;
 import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao.DistrictCodeCond;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao.RegionCodeCond;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse;
 import java.util.List;
 import org.geolatte.geom.G2D;
 import org.geolatte.geom.Polygon;
@@ -23,11 +23,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 
 @Sql("/h2-spatial.sql")
-@DisplayName("지역으로 음식점 조회 DAO(RestaurantByAddressResponseDao) 은(는)")
-class RestaurantByAddressResponseDaoTest extends DaoTest {
+@DisplayName("법정동코드로 음식점 조회 DAO(RestaurantByRegionCodeResponseDao) 은(는)")
+class RestaurantByRegionCodeResponseDaoTest extends DaoTest {
 
     @Autowired
-    private RestaurantByAddressResponseDao restaurantByAddressResponseDao;
+    private RestaurantByRegionCodeResponseDao restaurantByRegionCodeResponseDao;
 
     private AdministrativeDistrict 말랑1동;
     private AdministrativeDistrict 말랑2동;
@@ -138,46 +138,46 @@ class RestaurantByAddressResponseDaoTest extends DaoTest {
     @Test
     void 법정동코드로_해당_지역에_속한_음식점을_조회한다() {
         // when
-        Page<RestaurantByAddressResponse> 말랑1동에_속한_음식점들 = restaurantByAddressResponseDao.find(
-                new DistrictCodeCond(List.of(말랑1동.code())),
+        Page<RestaurantByRegionCodeResponse> 말랑1동에_속한_음식점들 = restaurantByRegionCodeResponseDao.find(
+                new RegionCodeCond(List.of(말랑1동.code())),
                 PageRequest.of(0, 10),
                 null
         );
 
-        Page<RestaurantByAddressResponse> 말랑1동과_말랑2동에_속한_음식점들 = restaurantByAddressResponseDao.find(
-                new DistrictCodeCond(List.of(말랑1동.code(), 말랑2동.code())),
+        Page<RestaurantByRegionCodeResponse> 말랑1동과_말랑2동에_속한_음식점들 = restaurantByRegionCodeResponseDao.find(
+                new RegionCodeCond(List.of(말랑1동.code(), 말랑2동.code())),
                 PageRequest.of(0, 10),
                 null
         );
 
-        Page<RestaurantByAddressResponse> 말랑특별시에_속한_음식점들 = restaurantByAddressResponseDao.find(
-                new DistrictCodeCond(List.of(말랑특별시.code()))
+        Page<RestaurantByRegionCodeResponse> 말랑특별시에_속한_음식점들 = restaurantByRegionCodeResponseDao.find(
+                new RegionCodeCond(List.of(말랑특별시.code()))
                 , PageRequest.of(0, 10),
                 null
         );
 
         // 말랑특별시 안에 말랑1동이 존재함. 이때 포함관계의 두 지역을 주었을 때, 음식점을 중복으로 가져오지 않는것 검증을 위한 테스트
-        Page<RestaurantByAddressResponse> 말랑특별시와_말랑1동에_속한_음식점들 = restaurantByAddressResponseDao.find(
-                new DistrictCodeCond(List.of(말랑특별시.code(), 말랑1동.code()))
+        Page<RestaurantByRegionCodeResponse> 말랑특별시와_말랑1동에_속한_음식점들 = restaurantByRegionCodeResponseDao.find(
+                new RegionCodeCond(List.of(말랑특별시.code(), 말랑1동.code()))
                 , PageRequest.of(0, 10),
                 null
         );
 
         // then
         assertThat(말랑1동에_속한_음식점들)
-                .extracting(RestaurantByAddressResponse::getName)
+                .extracting(RestaurantByRegionCodeResponse::getName)
                 .containsExactly("말랑1동 대표 한식집", "말랑1동 대표 일식집");
         assertThat(말랑1동과_말랑2동에_속한_음식점들)
-                .extracting(RestaurantByAddressResponse::getName)
+                .extracting(RestaurantByRegionCodeResponse::getName)
                 .containsExactly("말랑1동 대표 한식집", "말랑1동 대표 일식집",
                         "말랑2동 대표 한식집", "말랑2동 대표 일식집");
         assertThat(말랑특별시에_속한_음식점들)
-                .extracting(RestaurantByAddressResponse::getName)
+                .extracting(RestaurantByRegionCodeResponse::getName)
                 .containsExactly("말랑1동 대표 한식집", "말랑1동 대표 일식집",
                         "말랑2동 대표 한식집", "말랑2동 대표 일식집",
                         "말랑특별시 대표 한식집", "말랑특별시 대표 일식집");
         assertThat(말랑특별시와_말랑1동에_속한_음식점들)
-                .extracting(RestaurantByAddressResponse::getName)
+                .extracting(RestaurantByRegionCodeResponse::getName)
                 .containsExactly("말랑1동 대표 한식집", "말랑1동 대표 일식집",
                         "말랑2동 대표 한식집", "말랑2동 대표 일식집",
                         "말랑특별시 대표 한식집", "말랑특별시 대표 일식집");

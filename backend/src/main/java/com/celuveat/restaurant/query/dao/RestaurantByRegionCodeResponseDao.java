@@ -12,9 +12,9 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.common.dao.Dao;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse.CelebInfo;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse.RestaurantImageInfo;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse.CelebInfo;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse.RestaurantImageInfo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantByAddressResponseDao {
+public class RestaurantByRegionCodeResponseDao {
 
     private final JPAQueryFactory query;
 
@@ -43,17 +43,17 @@ public class RestaurantByAddressResponseDao {
             restaurant.point
     );
 
-    public Page<RestaurantByAddressResponse> find(
-            DistrictCodeCond cond,
+    public Page<RestaurantByRegionCodeResponse> find(
+            RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        List<RestaurantByAddressResponse> resultList = findRestaurants(cond, pageable);
+        List<RestaurantByRegionCodeResponse> resultList = findRestaurants(cond, pageable);
         List<Long> ids = extractIds(resultList);
         Map<Long, List<CelebInfo>> celebs = findCelebs(ids);
         Map<Long, List<RestaurantImageInfo>> images = findImages(ids);
         Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
-        for (RestaurantByAddressResponse restaurant : resultList) {
+        for (RestaurantByRegionCodeResponse restaurant : resultList) {
             restaurant.setCelebs(celebs.get(restaurant.getId()));
             restaurant.setImages(images.get(restaurant.getId()));
             restaurant.setLiked(memberIsLikedRestaurants.get(restaurant.getId()));
@@ -61,9 +61,9 @@ public class RestaurantByAddressResponseDao {
         return PageableExecutionUtils.getPage(resultList, pageable, totalCountSupplier(cond));
     }
 
-    private List<RestaurantByAddressResponse> findRestaurants(DistrictCodeCond cond, Pageable pageable) {
+    private List<RestaurantByRegionCodeResponse> findRestaurants(RegionCodeCond cond, Pageable pageable) {
         return query.selectDistinct(Projections.constructor(
-                        RestaurantByAddressResponse.class,
+                        RestaurantByRegionCodeResponse.class,
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
@@ -86,9 +86,9 @@ public class RestaurantByAddressResponseDao {
                 .fetch();
     }
 
-    private List<Long> extractIds(List<RestaurantByAddressResponse> resultList) {
+    private List<Long> extractIds(List<RestaurantByRegionCodeResponse> resultList) {
         return resultList.stream()
-                .map(RestaurantByAddressResponse::getId)
+                .map(RestaurantByRegionCodeResponse::getId)
                 .toList();
     }
 
@@ -139,7 +139,7 @@ public class RestaurantByAddressResponseDao {
                 .collect(toMap(identity(), memberLikedRestaurantIds::contains));
     }
 
-    private LongSupplier totalCountSupplier(DistrictCodeCond cond) {
+    private LongSupplier totalCountSupplier(RegionCodeCond cond) {
         JPAQuery<Long> countQuery = query.select(restaurant.countDistinct())
                 .from(restaurant)
                 .join(administrativeDistrict).on(administrativeDistrict.code.in(cond.codes))
@@ -147,7 +147,7 @@ public class RestaurantByAddressResponseDao {
         return countQuery::fetchOne;
     }
 
-    public record DistrictCodeCond(
+    public record RegionCodeCond(
             List<String> codes
     ) {
     }

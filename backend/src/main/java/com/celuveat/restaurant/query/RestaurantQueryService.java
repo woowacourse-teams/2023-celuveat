@@ -3,15 +3,15 @@ package com.celuveat.restaurant.query;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstByCelebId;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId;
 
-import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantByAddressResponseDao.DistrictCodeCond;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao.RegionCodeCond;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
 import jakarta.annotation.Nullable;
@@ -30,7 +30,7 @@ public class RestaurantQueryService {
     private final RestaurantDetailResponseDao restaurantDetailResponseDao;
     private final RestaurantSearchResponseDao restaurantSearchResponseDao;
     private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
-    private final RestaurantByAddressResponseDao restaurantByAddressResponseDao;
+    private final RestaurantByRegionCodeResponseDao restaurantByRegionCodeResponseDao;
 
     public RestaurantDetailResponse findRestaurantDetailById(
             Long restaurantId,
@@ -58,12 +58,12 @@ public class RestaurantQueryService {
         return relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 
-    public Page<RestaurantByAddressResponse> findAllByAddress(
-            DistrictCodeCond cond,
+    public Page<RestaurantByRegionCodeResponse> findAllByRegionCode(
+            RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantByAddressResponseDao.find(cond, pageable, memberId);
+        return restaurantByRegionCodeResponseDao.find(cond, pageable, memberId);
     }
 
     public Page<RestaurantSearchResponse> findAllNearByDistanceWithoutSpecificRestaurant(
