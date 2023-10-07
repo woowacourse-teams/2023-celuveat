@@ -1,9 +1,9 @@
 package com.celuveat.restaurant.query.mapper;
 
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +12,14 @@ import org.springframework.data.domain.Page;
 
 public class RestaurantRelocator {
 
-    public static RestaurantDetailResponse relocateCelebDataFirstByCelebId(
-            Long celebId, RestaurantDetailResponse response
+    public static RestaurantDetailQueryResponse relocateCelebDataFirstByCelebId(
+            Long celebId, RestaurantDetailQueryResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.celebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.celebs());
         List<RestaurantImageQueryResponse> relocatedImages =
                 relocateImageToFirstByCeleb(targetCeleb, response.images());
-        return RestaurantDetailResponse.of(response, relocatedCelebs, relocatedImages);
+        return RestaurantDetailQueryResponse.of(response, relocatedCelebs, relocatedImages);
     }
 
     private static CelebQueryResponse findCelebById(Long celebId, List<CelebQueryResponse> celebQueryResponses) {
@@ -56,14 +56,14 @@ public class RestaurantRelocator {
                 .findAny();
     }
 
-    public static Page<RestaurantSearchResponse> relocateCelebDataFirstInResponsesByCelebId(
-            Long celebId, Page<RestaurantSearchResponse> result
+    public static Page<RestaurantSearchQueryResponse> relocateCelebDataFirstInResponsesByCelebId(
+            Long celebId, Page<RestaurantSearchQueryResponse> result
     ) {
         return result.map(it -> relocatedCelebDataFirstResponseByCelebId(celebId, it));
     }
 
-    private static RestaurantSearchResponse relocatedCelebDataFirstResponseByCelebId(
-            Long celebId, RestaurantSearchResponse response
+    private static RestaurantSearchQueryResponse relocatedCelebDataFirstResponseByCelebId(
+            Long celebId, RestaurantSearchQueryResponse response
     ) {
         CelebQueryResponse targetCeleb = findCelebById(celebId, response.getCelebs());
         List<CelebQueryResponse> relocatedCelebs = relocateTargetToFirst(targetCeleb, response.getCelebs());

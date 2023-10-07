@@ -6,9 +6,9 @@ import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.video.query.dao.VideoQueryDaoSupport;
+import com.celuveat.video.query.dao.support.VideoQueryDaoSupport;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantDetailResponseDao {
+public class RestaurantDetailQueryResponseDao {
 
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
     private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public RestaurantDetailResponse find(Long restaurantId, @Nullable Long memberId) {
+    public RestaurantDetailQueryResponse find(Long restaurantId, @Nullable Long memberId) {
         Restaurant restaurant = restaurantQueryDaoSupport.getById(restaurantId);
         return toResponseWithCelebAndImagesAndLiked(restaurant, memberId);
     }
 
-    private RestaurantDetailResponse toResponseWithCelebAndImagesAndLiked(
+    private RestaurantDetailQueryResponse toResponseWithCelebAndImagesAndLiked(
             Restaurant restaurant,
             @Nullable Long memberId
     ) {
@@ -40,7 +40,7 @@ public class RestaurantDetailResponseDao {
                 .map(RestaurantImageQueryResponse::of)
                 .toList();
         int likeCount = restaurantLikeQueryDaoSupport.countByRestaurant(restaurant);
-        return RestaurantDetailResponse.builder()
+        return RestaurantDetailQueryResponse.builder()
                 .restaurant(restaurant)
                 .celebs(celebs)
                 .restaurantImages(restaurantImages)

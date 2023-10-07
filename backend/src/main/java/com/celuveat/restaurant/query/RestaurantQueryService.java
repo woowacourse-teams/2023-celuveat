@@ -3,17 +3,17 @@ package com.celuveat.restaurant.query;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstByCelebId;
 import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateCelebDataFirstInResponsesByCelebId;
 
-import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao.RegionCodeCond;
-import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeQueryResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeQueryResponseDao.RegionCodeCond;
+import com.celuveat.restaurant.query.dao.RestaurantDetailQueryResponseDao;
 import com.celuveat.restaurant.query.dao.LikedRestaurantQueryResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,28 +27,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RestaurantQueryService {
 
-    private final RestaurantDetailResponseDao restaurantDetailResponseDao;
-    private final RestaurantSearchResponseDao restaurantSearchResponseDao;
+    private final RestaurantDetailQueryResponseDao restaurantDetailQueryResponseDao;
+    private final RestaurantSearchQueryResponseDao restaurantSearchQueryResponseDao;
     private final LikedRestaurantQueryResponseDao likedRestaurantQueryResponseDao;
-    private final RestaurantByRegionCodeResponseDao restaurantByRegionCodeResponseDao;
+    private final RestaurantByRegionCodeQueryResponseDao restaurantByRegionCodeQueryResponseDao;
 
-    public RestaurantDetailResponse findRestaurantDetailById(
+    public RestaurantDetailQueryResponse findRestaurantDetailById(
             Long restaurantId,
             Long celebId,
             @Nullable Long memberId
     ) {
-        RestaurantDetailResponse response =
-                restaurantDetailResponseDao.find(restaurantId, memberId);
+        RestaurantDetailQueryResponse response =
+                restaurantDetailQueryResponseDao.find(restaurantId, memberId);
         return relocateCelebDataFirstByCelebId(celebId, response);
     }
 
-    public Page<RestaurantSearchResponse> findAllWithMemberLiked(
+    public Page<RestaurantSearchQueryResponse> findAllWithMemberLiked(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        Page<RestaurantSearchResponse> response = restaurantSearchResponseDao.findAll(
+        Page<RestaurantSearchQueryResponse> response = restaurantSearchQueryResponseDao.findAll(
                 restaurantCond, locationCond, pageable, memberId
         );
         Long celebId = restaurantCond.celebId();
@@ -58,28 +58,28 @@ public class RestaurantQueryService {
         return relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 
-    public Page<RestaurantByRegionCodeResponse> findAllByRegionCode(
+    public Page<RestaurantByRegionCodeQueryResponse> findAllByRegionCode(
             RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantByRegionCodeResponseDao.find(cond, pageable, memberId);
+        return restaurantByRegionCodeQueryResponseDao.find(cond, pageable, memberId);
     }
 
-    public Page<RestaurantSearchResponse> findAllNearByDistanceWithoutSpecificRestaurant(
+    public Page<RestaurantSearchQueryResponse> findAllNearByDistanceWithoutSpecificRestaurant(
             long restaurantId,
             int distance,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        return restaurantSearchResponseDao.findNearBy(restaurantId, distance, pageable, memberId);
+        return restaurantSearchQueryResponseDao.findNearBy(restaurantId, distance, pageable, memberId);
     }
 
     public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         return likedRestaurantQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
     }
 
-    public List<RestaurantSearchResponse> findLatest(@Nullable Long memberId) {
-        return restaurantSearchResponseDao.findLatest(memberId);
+    public List<RestaurantSearchQueryResponse> findLatest(@Nullable Long memberId) {
+        return restaurantSearchQueryResponseDao.findLatest(memberId);
     }
 }

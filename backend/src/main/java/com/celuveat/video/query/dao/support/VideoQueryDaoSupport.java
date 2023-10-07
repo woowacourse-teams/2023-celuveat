@@ -1,4 +1,4 @@
-package com.celuveat.video.query.dao;
+package com.celuveat.video.query.dao.support;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.video.command.domain.Video;

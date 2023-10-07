@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
-import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao.RegionCodeCond;
+import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeQueryResponseDao.RegionCodeCond;
 import java.util.List;
 
 public record RegionCodeCondRequest(

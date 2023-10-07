@@ -5,7 +5,7 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
 import java.util.List;
 
-public record RestaurantReviewSingleResponse(
+public record RestaurantReviewSingleQueryResponse(
         Long id,
         Long memberId,
         String nickname,
@@ -18,13 +18,13 @@ public record RestaurantReviewSingleResponse(
         List<String> images
 ) {
 
-    public static RestaurantReviewSingleResponse of(
+    public static RestaurantReviewSingleQueryResponse of(
             RestaurantReview restaurantReview,
             List<RestaurantReviewImage> images,
             boolean isLiked
     ) {
         OauthMember oauthMember = restaurantReview.member();
-        return new RestaurantReviewSingleResponse(
+        return new RestaurantReviewSingleQueryResponse(
                 restaurantReview.id(),
                 oauthMember.id(),
                 oauthMember.nickname(),

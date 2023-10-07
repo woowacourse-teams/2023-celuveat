@@ -8,16 +8,16 @@ import com.celuveat.common.DaoTest;
 import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DisplayName("음식점 상세조회 DAO(RestaurantDetailResponseDao) 은(는)")
-class RestaurantDetailResponseDaoTest extends DaoTest {
+@DisplayName("음식점 상세조회 DAO(RestaurantDetailQueryResponseDao) 은(는)")
+class RestaurantDetailQueryResponseDaoTest extends DaoTest {
 
     @Autowired
-    private RestaurantDetailResponseDao restaurantDetailResponseDao;
+    private RestaurantDetailQueryResponseDao restaurantDetailQueryResponseDao;
 
     private final OauthMember 말랑 = 말랑();
     private final Restaurant 대성집 = Restaurant.builder()
@@ -53,7 +53,7 @@ class RestaurantDetailResponseDaoTest extends DaoTest {
     @Test
     void 음식점을_상세조회한다() {
         // when
-        RestaurantDetailResponse result = restaurantDetailResponseDao.find(대성집.id(), null);
+        RestaurantDetailQueryResponse result = restaurantDetailQueryResponseDao.find(대성집.id(), null);
 
         // then
         assertThat(result.name()).isEqualTo("대성집");
@@ -71,7 +71,7 @@ class RestaurantDetailResponseDaoTest extends DaoTest {
     @Test
     void 좋아요_누른_음식점을_조회한다() {
         // when
-        RestaurantDetailResponse result = restaurantDetailResponseDao.find(
+        RestaurantDetailQueryResponse result = restaurantDetailQueryResponseDao.find(
                 좋아요_눌린_음식점.id(), 말랑.id()
         );
 

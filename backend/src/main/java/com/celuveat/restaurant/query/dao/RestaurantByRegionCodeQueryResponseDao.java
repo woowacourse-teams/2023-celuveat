@@ -12,9 +12,9 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.common.dao.Dao;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse.CelebInfo;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeResponse.RestaurantImageInfo;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse.CelebInfo;
+import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse.RestaurantImageInfo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantByRegionCodeResponseDao {
+public class RestaurantByRegionCodeQueryResponseDao {
 
     private final JPAQueryFactory query;
 
@@ -43,17 +43,17 @@ public class RestaurantByRegionCodeResponseDao {
             restaurant.point
     );
 
-    public Page<RestaurantByRegionCodeResponse> find(
+    public Page<RestaurantByRegionCodeQueryResponse> find(
             RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        List<RestaurantByRegionCodeResponse> resultList = findRestaurants(cond, pageable);
+        List<RestaurantByRegionCodeQueryResponse> resultList = findRestaurants(cond, pageable);
         List<Long> ids = extractIds(resultList);
         Map<Long, List<CelebInfo>> celebs = findCelebs(ids);
         Map<Long, List<RestaurantImageInfo>> images = findImages(ids);
         Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
-        for (RestaurantByRegionCodeResponse restaurant : resultList) {
+        for (RestaurantByRegionCodeQueryResponse restaurant : resultList) {
             restaurant.setCelebs(celebs.get(restaurant.getId()));
             restaurant.setImages(images.get(restaurant.getId()));
             restaurant.setLiked(memberIsLikedRestaurants.get(restaurant.getId()));
@@ -61,9 +61,9 @@ public class RestaurantByRegionCodeResponseDao {
         return PageableExecutionUtils.getPage(resultList, pageable, totalCountSupplier(cond));
     }
 
-    private List<RestaurantByRegionCodeResponse> findRestaurants(RegionCodeCond cond, Pageable pageable) {
+    private List<RestaurantByRegionCodeQueryResponse> findRestaurants(RegionCodeCond cond, Pageable pageable) {
         return query.selectDistinct(Projections.constructor(
-                        RestaurantByRegionCodeResponse.class,
+                        RestaurantByRegionCodeQueryResponse.class,
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
@@ -86,9 +86,9 @@ public class RestaurantByRegionCodeResponseDao {
                 .fetch();
     }
 
-    private List<Long> extractIds(List<RestaurantByRegionCodeResponse> resultList) {
+    private List<Long> extractIds(List<RestaurantByRegionCodeQueryResponse> resultList) {
         return resultList.stream()
-                .map(RestaurantByRegionCodeResponse::getId)
+                .map(RestaurantByRegionCodeQueryResponse::getId)
                 .toList();
     }
 

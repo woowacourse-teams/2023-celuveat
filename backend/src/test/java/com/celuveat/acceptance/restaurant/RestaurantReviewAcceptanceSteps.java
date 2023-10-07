@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantReviewSingleResponse;
+import com.celuveat.restaurant.query.dto.RestaurantReviewSingleQueryResponse;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -35,10 +35,10 @@ public class RestaurantReviewAcceptanceSteps {
     // TODO : 이건 무슨...
     public static RestaurantReviewQueryResponse 예상_응답(Long 말랑_아이디, Long 로이스_아이디, Long 도기_아이디) {
         return new RestaurantReviewQueryResponse(4, List.of(
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "https://말랑.jpg", "리뷰4", null, 0, false, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 말랑_아이디, "말랑", "https://말랑.jpg", "리뷰3", null, 0, false, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 로이스_아이디, "로이스", "https://로이스.jpg", "리뷰2", null, 0, false, 5.0, null),
-                new RestaurantReviewSingleResponse(null, 도기_아이디, "도기", "https://도기.jpg", "리뷰1", null, 0, false, 5.0, null)
+                new RestaurantReviewSingleQueryResponse(null, 말랑_아이디, "말랑", "https://말랑.jpg", "리뷰4", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleQueryResponse(null, 말랑_아이디, "말랑", "https://말랑.jpg", "리뷰3", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleQueryResponse(null, 로이스_아이디, "로이스", "https://로이스.jpg", "리뷰2", null, 0, false, 5.0, null),
+                new RestaurantReviewSingleQueryResponse(null, 도기_아이디, "도기", "https://도기.jpg", "리뷰1", null, 0, false, 5.0, null)
         ));
     }
 

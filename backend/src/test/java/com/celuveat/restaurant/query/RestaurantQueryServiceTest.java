@@ -23,13 +23,13 @@ import com.celuveat.common.IntegrationTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +46,7 @@ import org.springframework.data.domain.PageRequest;
 @DisplayName("음식점 조회용 서비스(RestaurantQueryService) 은(는)")
 class RestaurantQueryServiceTest extends IntegrationTest {
 
-    private List<RestaurantSearchResponse> seed;
+    private List<RestaurantSearchQueryResponse> seed;
 
     @BeforeEach
     void setUp() {
@@ -59,27 +59,27 @@ class RestaurantQueryServiceTest extends IntegrationTest {
     @Nested
     class 음식점_상세_조회 {
 
-        private RestaurantSearchResponse RestaurantSearchResponse;
+        private RestaurantSearchQueryResponse RestaurantSearchQueryResponse;
         private Long celebId;
         private OauthMember oauthMember;
         private Restaurant restaurant;
 
         @BeforeEach
         void setUp() {
-            RestaurantSearchResponse = seed.get(0);
-            celebId = RestaurantSearchResponse.celebs().get(0).id();
+            RestaurantSearchQueryResponse = seed.get(0);
+            celebId = RestaurantSearchQueryResponse.celebs().get(0).id();
             oauthMember = oauthMemberRepository.save(멤버("로이스"));
-            restaurant = restaurantRepository.getById(RestaurantSearchResponse.id());
+            restaurant = restaurantRepository.getById(RestaurantSearchQueryResponse.id());
             restaurantLikeRepository.save(RestaurantLike.create(restaurant, oauthMember));
         }
 
         @Test
         void 회원_아이디_없이_음식점_상세_조회() {
             // given
-            RestaurantDetailResponse expected = toRestaurantDetailResponse(RestaurantSearchResponse, false);
+            RestaurantDetailQueryResponse expected = toRestaurantDetailResponse(RestaurantSearchQueryResponse, false);
 
             // when
-            RestaurantDetailResponse result =
+            RestaurantDetailQueryResponse result =
                     restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, null);
 
             // then
@@ -96,10 +96,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         @Test
         void 회원_아이디를_포함해서_음식점_상세_조회시_좋아요_여부를_포함한다() {
             // given
-            RestaurantDetailResponse expected = toRestaurantDetailResponse(RestaurantSearchResponse, true);
+            RestaurantDetailQueryResponse expected = toRestaurantDetailResponse(RestaurantSearchQueryResponse, true);
 
             // when
-            RestaurantDetailResponse result =
+            RestaurantDetailQueryResponse result =
                     restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, oauthMember.id());
 
             // then
@@ -113,38 +113,38 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             );
         }
 
-        private RestaurantDetailResponse toRestaurantDetailResponse(
-                RestaurantSearchResponse restaurantSearchResponse,
+        private RestaurantDetailQueryResponse toRestaurantDetailResponse(
+                RestaurantSearchQueryResponse restaurantSearchQueryResponse,
                 boolean isLiked
         ) {
-            return new RestaurantDetailResponse(
-                    restaurantSearchResponse.id(),
-                    restaurantSearchResponse.name(),
-                    restaurantSearchResponse.category(),
-                    restaurantSearchResponse.superCategory(),
-                    restaurantSearchResponse.roadAddress(),
-                    restaurantSearchResponse.latitude(),
-                    restaurantSearchResponse.longitude(),
-                    restaurantSearchResponse.phoneNumber(),
-                    restaurantSearchResponse.naverMapUrl(),
+            return new RestaurantDetailQueryResponse(
+                    restaurantSearchQueryResponse.id(),
+                    restaurantSearchQueryResponse.name(),
+                    restaurantSearchQueryResponse.category(),
+                    restaurantSearchQueryResponse.superCategory(),
+                    restaurantSearchQueryResponse.roadAddress(),
+                    restaurantSearchQueryResponse.latitude(),
+                    restaurantSearchQueryResponse.longitude(),
+                    restaurantSearchQueryResponse.phoneNumber(),
+                    restaurantSearchQueryResponse.naverMapUrl(),
                     0, // likeCount
                     0, // viewCount
                     isLiked,
-                    restaurantSearchResponse.rating(),
-                    restaurantSearchResponse.celebs(),
-                    restaurantSearchResponse.images()
+                    restaurantSearchQueryResponse.rating(),
+                    restaurantSearchQueryResponse.celebs(),
+                    restaurantSearchQueryResponse.images()
             );
         }
 
         @Test
         void 셀럽ID가_포함되면_정렬한다() {
             // given
-            Long celebId = RestaurantSearchResponse.celebs().get(RestaurantSearchResponse.celebs().size() - 1).id();
+            Long celebId = RestaurantSearchQueryResponse.celebs().get(RestaurantSearchQueryResponse.celebs().size() - 1).id();
             Celeb targetCeleb = celebRepository.findById(celebId)
                     .orElseThrow(() -> new CelebException(NOT_FOUND_CELEB));
 
             // when
-            RestaurantDetailResponse result =
+            RestaurantDetailQueryResponse result =
                     restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, null);
 
             // then
@@ -164,7 +164,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         @Test
         void 전체_음식점_조회() {
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -175,7 +175,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -187,12 +187,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         void 셀럽으로_조회() {
             // given
             Long celebId = 1L;
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -203,7 +203,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -215,12 +215,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         void 카테고리로_조회() {
             // given
             String category = "superCategory:오도1호점";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> it.superCategory().equals(category))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, category, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -231,7 +231,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -243,12 +243,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         void 음식점_이름으로_조회() {
             // given
             String restaurantName = " 말 랑  \n";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isContainsRestaurantName(restaurantName, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -259,7 +259,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -272,12 +272,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             // given
             Long celebId = 1L;
             String category = "superCategory:오도1호점";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it) && it.superCategory().equals(category))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, category, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -288,7 +288,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -301,12 +301,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             // given
             Long celebId = 2L;
             String restaurantName = "\n      말 \n랑  \n";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it) && isContainsRestaurantName(restaurantName, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, null, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -317,7 +317,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -330,12 +330,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             // given
             String category = "superCategory:말랑2호점";
             String restaurantName = "\n      말 \n랑  \n";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isSameCategory(category, it) && isContainsRestaurantName(restaurantName, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, category, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -346,7 +346,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -360,14 +360,14 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Long celebId = 2L;
             String category = "superCategory:로이스1호점";
             String restaurantName = "로 이스";
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it)
                             && isSameCategory(category, it)
                             && isContainsRestaurantName(restaurantName, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, category, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -378,7 +378,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -391,12 +391,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             // given
             Long celebId = 1L;
             LocationSearchCond locationSearchCond = 박스_1번_지점포함;
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it) && isRestaurantInArea(locationSearchCond, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, null, null),
                     new LocationSearchCond(
                             locationSearchCond.lowLatitude(),
@@ -412,7 +412,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -426,14 +426,14 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             Long celebId = 1L;
             String restaurantName = "로이스";
             LocationSearchCond locationSearchCond = 박스_1_2번_지점포함;
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> isCelebVisited(celebId, it)
                             && isContainsRestaurantName(restaurantName, it)
                             && isRestaurantInArea(locationSearchCond, it))
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(celebId, null, restaurantName),
                     new LocationSearchCond(
                             locationSearchCond.lowLatitude(),
@@ -449,7 +449,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -473,14 +473,14 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             ));
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
                     오도.id());
 
             // then
-            for (RestaurantSearchResponse response : result.getContent()) {
+            for (RestaurantSearchQueryResponse response : result.getContent()) {
                 Restaurant restaurant = restaurantRepository.getById(response.id());
                 Optional<RestaurantLike> foundRestaurantLike
                         = restaurantLikeRepository.findByRestaurantAndMember(restaurant, 오도);
@@ -499,12 +499,12 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         @ValueSource(ints = {10, 50, 100, 500, 1000, 2000, 3000, 5000, 30000})
         void 특정_음식점을_기준으로_일정_거리_내에_있는_모든_음식점_조회_테스트(int specificDistance) {
             // given
-            List<RestaurantSearchResponse> expected = seed.stream()
+            List<RestaurantSearchQueryResponse> expected = seed.stream()
                     .filter(it -> it.distance() <= specificDistance)
                     .toList();
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                     1L,
                     specificDistance,
                     PageRequest.of(0, 4),
@@ -523,13 +523,13 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         void 좋아요_여부가_포함된다() {
             // given
             OauthMember 도기 = oauthMemberRepository.save(멤버("도기"));
-            for (RestaurantSearchResponse RestaurantSearchResponse : seed) {
-                Restaurant restaurant = restaurantRepository.getById(RestaurantSearchResponse.id());
+            for (RestaurantSearchQueryResponse RestaurantSearchQueryResponse : seed) {
+                Restaurant restaurant = restaurantRepository.getById(RestaurantSearchQueryResponse.id());
                 restaurantLikeRepository.save(RestaurantLike.create(restaurant, 도기));
             }
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                     seed.get(0).id(),
                     50000,
                     PageRequest.of(0, 4),
@@ -538,7 +538,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
 
             // then
             assertThat(result.getContent())
-                    .extracting(RestaurantSearchResponse::isLiked)
+                    .extracting(RestaurantSearchQueryResponse::isLiked)
                     .allMatch(isLiked -> isLiked);
         }
     }
@@ -579,18 +579,18 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         }
 
         private LikedRestaurantQueryResponse toRestaurantLikeQueryResponse(
-                RestaurantSearchResponse RestaurantSearchResponse) {
+                RestaurantSearchQueryResponse RestaurantSearchQueryResponse) {
             return new LikedRestaurantQueryResponse(
-                    RestaurantSearchResponse.id(),
-                    RestaurantSearchResponse.name(),
-                    RestaurantSearchResponse.category(),
-                    RestaurantSearchResponse.roadAddress(),
-                    RestaurantSearchResponse.latitude(),
-                    RestaurantSearchResponse.longitude(),
-                    RestaurantSearchResponse.phoneNumber(),
-                    RestaurantSearchResponse.naverMapUrl(),
-                    RestaurantSearchResponse.celebs(),
-                    RestaurantSearchResponse.images()
+                    RestaurantSearchQueryResponse.id(),
+                    RestaurantSearchQueryResponse.name(),
+                    RestaurantSearchQueryResponse.category(),
+                    RestaurantSearchQueryResponse.roadAddress(),
+                    RestaurantSearchQueryResponse.latitude(),
+                    RestaurantSearchQueryResponse.longitude(),
+                    RestaurantSearchQueryResponse.phoneNumber(),
+                    RestaurantSearchQueryResponse.naverMapUrl(),
+                    RestaurantSearchQueryResponse.celebs(),
+                    RestaurantSearchQueryResponse.images()
             );
         }
     }
@@ -634,7 +634,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             likeService.like(로이스가_좋아요한_음식점.id(), 로이스.id());
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -642,7 +642,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             );
 
             // then
-            List<RestaurantSearchResponse> 예상 = List.of(
+            List<RestaurantSearchQueryResponse> 예상 = List.of(
                     toRestaurantSearchResponse(말랑이_좋아요한_음식점, true, 1, List.of(셀럽), Collections.emptyList()),
                     toRestaurantSearchResponse(말랑과_로이스가_좋아요한_음식점, true, 2, List.of(셀럽), Collections.emptyList()),
                     toRestaurantSearchResponse(로이스가_좋아요한_음식점, false, 1, List.of(셀럽), Collections.emptyList()),
@@ -653,14 +653,14 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .isEqualTo(예상);
         }
 
-        private static RestaurantSearchResponse toRestaurantSearchResponse(
+        private static RestaurantSearchQueryResponse toRestaurantSearchResponse(
                 Restaurant restaurant,
                 boolean isLiked,
                 int likeCount,
                 List<Celeb> celebs,
                 List<RestaurantImage> images
         ) {
-            return new RestaurantSearchResponse(
+            return new RestaurantSearchQueryResponse(
                     restaurant.id(),
                     restaurant.name(),
                     restaurant.category(),
@@ -696,30 +696,30 @@ class RestaurantQueryServiceTest extends IntegrationTest {
     @Nested
     class 조회수_테스트 {
 
-        private RestaurantSearchResponse RestaurantSearchResponse1;
-        private RestaurantSearchResponse RestaurantSearchResponse2;
-        private RestaurantSearchResponse RestaurantSearchResponse3;
-        private RestaurantSearchResponse RestaurantSearchResponse4;
+        private RestaurantSearchQueryResponse restaurantSearchQueryResponse1;
+        private RestaurantSearchQueryResponse restaurantSearchQueryResponse2;
+        private RestaurantSearchQueryResponse restaurantSearchQueryResponse3;
+        private RestaurantSearchQueryResponse restaurantSearchQueryResponse4;
 
         @BeforeEach
         void setUp() {
-            RestaurantSearchResponse1 = seed.get(0);
-            RestaurantSearchResponse2 = seed.get(2);
-            RestaurantSearchResponse3 = seed.get(4);
-            RestaurantSearchResponse4 = seed.get(9);
+            restaurantSearchQueryResponse1 = seed.get(0);
+            restaurantSearchQueryResponse2 = seed.get(2);
+            restaurantSearchQueryResponse3 = seed.get(4);
+            restaurantSearchQueryResponse4 = seed.get(9);
         }
 
         @Test
         void 음식점을_조회하면_조회수를_함께_반환한다() {
             // given
             음식점들의_조회수를_높인다();
-            seed.set(0, increaseViewCount(RestaurantSearchResponse1, 4));
-            seed.set(2, increaseViewCount(RestaurantSearchResponse2, 2));
-            seed.set(4, increaseViewCount(RestaurantSearchResponse3, 1));
-            seed.set(9, increaseViewCount(RestaurantSearchResponse4, 5));
+            seed.set(0, increaseViewCount(restaurantSearchQueryResponse1, 4));
+            seed.set(2, increaseViewCount(restaurantSearchQueryResponse2, 2));
+            seed.set(4, increaseViewCount(restaurantSearchQueryResponse3, 1));
+            seed.set(9, increaseViewCount(restaurantSearchQueryResponse4, 5));
 
             // when
-            Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -730,7 +730,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             assertAll(
                     () -> assertThat(result).isNotEmpty(),
                     () -> assertThat(result.getContent())
-                            .isSortedAccordingTo(comparing(RestaurantSearchResponse::distance))
+                            .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
                             .usingRecursiveComparison()
                             .ignoringFields("distance")
                             .ignoringCollectionOrder()
@@ -739,26 +739,26 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         }
 
         private void 음식점들의_조회수를_높인다() {
-            restaurantService.increaseViewCount(RestaurantSearchResponse1.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse1.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse1.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse1.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse1.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse1.id());
 
-            restaurantService.increaseViewCount(RestaurantSearchResponse2.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse2.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse2.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse2.id());
 
-            restaurantService.increaseViewCount(RestaurantSearchResponse3.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse3.id());
 
-            restaurantService.increaseViewCount(RestaurantSearchResponse4.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse4.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse4.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse4.id());
-            restaurantService.increaseViewCount(RestaurantSearchResponse4.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse4.id());
+            restaurantService.increaseViewCount(restaurantSearchQueryResponse4.id());
         }
 
-        private RestaurantSearchResponse increaseViewCount(
-                RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse, int value) {
-            return new RestaurantSearchResponse(
+        private RestaurantSearchQueryResponse increaseViewCount(
+                RestaurantSearchQueryResponse restaurantWithCelebsAndImagesSimpleResponse, int value) {
+            return new RestaurantSearchQueryResponse(
                     restaurantWithCelebsAndImagesSimpleResponse.id(),
                     restaurantWithCelebsAndImagesSimpleResponse.name(),
                     restaurantWithCelebsAndImagesSimpleResponse.category(),

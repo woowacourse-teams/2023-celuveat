@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestaurantSearchResponse {
+public class RestaurantSearchQueryResponse {
 
     private Long id;
     private String name;
@@ -32,7 +32,7 @@ public class RestaurantSearchResponse {
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
-    public RestaurantSearchResponse(
+    public RestaurantSearchQueryResponse(
             Long id, String name,
             String category, String superCategory,
             String roadAddress,

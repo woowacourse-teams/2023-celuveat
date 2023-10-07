@@ -12,11 +12,11 @@ import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.RestaurantSearchCond;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantDetailResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -44,12 +44,12 @@ public class RestaurantController {
     private final RestaurantCorrectionService restaurantCorrectionService;
 
     @GetMapping("/{restaurantId}")
-    ResponseEntity<RestaurantDetailResponse> getRestaurantDetail(
+    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
             @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam Long celebId
     ) {
-        RestaurantDetailResponse result = restaurantQueryService.findRestaurantDetailById(
+        RestaurantDetailQueryResponse result = restaurantQueryService.findRestaurantDetailById(
                 restaurantId, celebId, memberId
         );
         restaurantService.increaseViewCount(restaurantId);
@@ -57,7 +57,7 @@ public class RestaurantController {
     }
 
     @GetMapping
-    ResponseEntity<PageResponse<RestaurantSearchResponse>> findAll(
+    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findAll(
             @LooseAuth Long memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
@@ -65,7 +65,7 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantSearchResponse> result = restaurantQueryService.findAllWithMemberLiked(
+        Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
                 restaurantSearchCond, locationSearchCond, pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
@@ -84,13 +84,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}/nearby")
-    ResponseEntity<PageResponse<RestaurantSearchResponse>> findAllNearbyDistance(
+    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findAllNearbyDistance(
             @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
             @PageableDefault(size = 4) Pageable pageable
     ) {
-        Page<RestaurantSearchResponse> result =
+        Page<RestaurantSearchQueryResponse> result =
                 restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
                         restaurantId,
                         distance,
@@ -110,10 +110,10 @@ public class RestaurantController {
     }
 
     @GetMapping("/latest")
-    ResponseEntity<List<RestaurantSearchResponse>> findLatest(
+    ResponseEntity<List<RestaurantSearchQueryResponse>> findLatest(
             @LooseAuth Long memberId
     ) {
-        List<RestaurantSearchResponse> result = restaurantQueryService.findLatest(memberId);
+        List<RestaurantSearchQueryResponse> result = restaurantQueryService.findLatest(memberId);
         return ResponseEntity.ok(result);
     }
 }

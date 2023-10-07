@@ -10,7 +10,7 @@ import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.video.query.dao.VideoQueryDaoSupport;
+import com.celuveat.video.query.dao.support.VideoQueryDaoSupport;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

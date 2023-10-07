@@ -14,10 +14,10 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.command.domain.VideoRepository;
 import java.util.List;
@@ -35,7 +35,7 @@ public class SeedData {
     private final RestaurantImageRepository restaurantImageRepository;
     private final VideoRepository videoRepository;
 
-    public List<RestaurantSearchResponse> insertSeedData() {
+    public List<RestaurantSearchQueryResponse> insertSeedData() {
         var 말랑 = celebRepository.save(셀럽("말랑"));
         var 도기 = celebRepository.save(셀럽("도기"));
         var 오도 = celebRepository.save(셀럽("오도"));
@@ -111,13 +111,13 @@ public class SeedData {
         );
     }
 
-    private RestaurantSearchResponse toRestaurantSearchResponse(
+    private RestaurantSearchQueryResponse toRestaurantSearchResponse(
             Restaurant restaurant,
             Double distance,
             List<Celeb> celebs,
             List<RestaurantImage> restaurantImages
     ) {
-        RestaurantSearchResponse response = new RestaurantSearchResponse(
+        RestaurantSearchQueryResponse response = new RestaurantSearchQueryResponse(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -161,28 +161,28 @@ public class SeedData {
         );
     }
 
-    public static boolean isCelebVisited(Long celebId, RestaurantSearchResponse RestaurantSearchResponse) {
-        List<Long> celebIds = RestaurantSearchResponse.celebs()
+    public static boolean isCelebVisited(Long celebId, RestaurantSearchQueryResponse RestaurantSearchQueryResponse) {
+        List<Long> celebIds = RestaurantSearchQueryResponse.celebs()
                 .stream()
                 .map(CelebQueryResponse::id)
                 .toList();
         return celebIds.contains(celebId);
     }
 
-    public static boolean isSameCategory(String category, RestaurantSearchResponse RestaurantSearchResponse) {
-        return RestaurantSearchResponse.superCategory().equals(category);
+    public static boolean isSameCategory(String category, RestaurantSearchQueryResponse RestaurantSearchQueryResponse) {
+        return RestaurantSearchQueryResponse.superCategory().equals(category);
     }
 
     public static boolean isContainsRestaurantName(
             String restaurantName,
-            RestaurantSearchResponse RestaurantSearchResponse
+            RestaurantSearchQueryResponse RestaurantSearchQueryResponse
     ) {
-        return RestaurantSearchResponse.name().contains(removeAllBlank(restaurantName));
+        return RestaurantSearchQueryResponse.name().contains(removeAllBlank(restaurantName));
     }
 
     public static boolean isRestaurantInArea(
             LocationSearchCond locationSearchCond,
-            RestaurantSearchResponse restaurantWithCelebsAndImagesSimpleResponse
+            RestaurantSearchQueryResponse restaurantWithCelebsAndImagesSimpleResponse
     ) {
         return locationSearchCond.lowLatitude() <= restaurantWithCelebsAndImagesSimpleResponse.latitude()
                 && restaurantWithCelebsAndImagesSimpleResponse.latitude() <= locationSearchCond.highLatitude()
@@ -190,9 +190,9 @@ public class SeedData {
                 && restaurantWithCelebsAndImagesSimpleResponse.longitude() <= locationSearchCond.highLongitude();
     }
 
-    public static List<String> 이름_추출(List<RestaurantSearchResponse> responses) {
+    public static List<String> 이름_추출(List<RestaurantSearchQueryResponse> responses) {
         return responses.stream()
-                .map(RestaurantSearchResponse::name)
+                .map(RestaurantSearchQueryResponse::name)
                 .toList();
     }
 }

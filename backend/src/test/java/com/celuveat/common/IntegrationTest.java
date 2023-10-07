@@ -21,7 +21,7 @@ import com.celuveat.restaurant.command.domain.review.RestaurantReviewReportRepos
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.RestaurantReviewQueryService;
-import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao;
+import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.video.command.domain.VideoRepository;
 import com.celuveat.video.query.VideoQueryService;
@@ -94,7 +94,7 @@ public abstract class IntegrationTest {
     @Autowired
     protected VideoWithCelebQueryResponseDao videoWithCelebQueryResponseDao;
     @Autowired
-    protected RestaurantSearchResponseDao restaurantSearchResponseDao;
+    protected RestaurantSearchQueryResponseDao restaurantSearchQueryResponseDao;
     @Autowired
     protected SeedData seedData;
     @Autowired

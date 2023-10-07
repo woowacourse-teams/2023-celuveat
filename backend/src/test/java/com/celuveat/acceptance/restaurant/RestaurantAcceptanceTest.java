@@ -41,7 +41,7 @@ import com.celuveat.acceptance.common.AcceptanceTest;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
-import com.celuveat.restaurant.query.dto.RestaurantSearchResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -242,7 +242,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             return new TestData(전체_음식점, 오도_세션_아이디, 셀럽_오도.id());
         }
 
-        private void 음식점_상세페이지를_여러번_방문한다(RestaurantSearchResponse 음식점, int 횟수) {
+        private void 음식점_상세페이지를_여러번_방문한다(RestaurantSearchQueryResponse 음식점, int 횟수) {
             for (int i = 0; i < 횟수; i++) {
                 restaurantService.increaseViewCount(음식점.id());
             }
@@ -275,7 +275,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
         }
 
         private record TestData(
-                List<RestaurantSearchResponse> 전체_음식점,
+                List<RestaurantSearchQueryResponse> 전체_음식점,
                 String 세션_아이디,
                 Long 셀럽_아이디
         ) {

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public record RestaurantReviewQueryResponse(
         Integer totalElementsCount,
-        List<RestaurantReviewSingleResponse> reviews
+        List<RestaurantReviewSingleQueryResponse> reviews
 ) {
 
     public static RestaurantReviewQueryResponse from(
@@ -15,8 +15,8 @@ public record RestaurantReviewQueryResponse(
             Map<Long, List<RestaurantReviewImage>> restaurantReviewImages,
             Map<Long, Boolean> isLikedByReviewId
     ) {
-        List<RestaurantReviewSingleResponse> reviews = restaurantReviews.stream()
-                .map(review -> RestaurantReviewSingleResponse.of(
+        List<RestaurantReviewSingleQueryResponse> reviews = restaurantReviews.stream()
+                .map(review -> RestaurantReviewSingleQueryResponse.of(
                         review,
                         restaurantReviewImages.getOrDefault(review.id(), List.of()),
                         isLikedByReviewId.getOrDefault(review.id(), false)
