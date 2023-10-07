@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import { RestaurantListData } from '~/@types/api.types';
 import { Region } from '~/@types/region.types';
 import { getRestaurantsByAddress } from '~/api/restaurant';
-import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import SearchResultBox from '~/components/SearchResultBox';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
 import { SERVER_IMG_URL } from '~/constants/url';
 import { FONT_SIZE } from '~/styles/common';
@@ -24,17 +24,7 @@ function RegionResultPage() {
       </StyledLink>
       <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
       <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
-      <StyledResultBox>
-        {restaurantDataList &&
-          restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
-            <MiniRestaurantCard
-              key={`${restaurant.id}${celebs[0].id}`}
-              restaurant={restaurant}
-              celebs={celebs}
-              showWaterMark={false}
-            />
-          ))}
-      </StyledResultBox>
+      <SearchResultBox restaurantDataList={restaurantDataList?.content} />
     </StyledContainer>
   );
 }
@@ -58,12 +48,6 @@ const StyledLink = styled(Link)`
 
 const StyledResultCount = styled.span`
   font-size: ${FONT_SIZE.md};
-`;
-
-const StyledResultBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
 `;
 
 const StyledBanner = styled.img`
