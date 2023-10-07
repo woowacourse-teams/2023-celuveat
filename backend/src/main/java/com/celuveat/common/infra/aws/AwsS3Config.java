@@ -13,7 +13,7 @@ public class AwsS3Config {
     public S3Client amazonS3Client() {
         return S3Client.builder()
                 .credentialsProvider(InstanceProfileCredentialsProvider.create())
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.AP_NORTHEAST_2)
                 .build();
     }
 }
