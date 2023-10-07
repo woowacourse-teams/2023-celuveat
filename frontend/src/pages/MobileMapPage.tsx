@@ -1,19 +1,31 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { styled } from 'styled-components';
+import { shallow } from 'zustand/shallow';
+import { useQuery } from '@tanstack/react-query';
 import useBooleanState from '~/hooks/useBooleanState';
 import MapIcon from '~/assets/icons/map.svg';
 import ListIcon from '~/assets/icons/list.svg';
 import Down from '~/assets/icons/down.svg';
 
-import RestaurantCardList from '~/components/RestaurantCardList';
-import Footer from '~/components/@common/Footer';
 import Map from '~/components/@common/Map';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import useMapState from '~/hooks/store/useMapState';
+import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
+import { RestaurantListData } from '~/@types/api.types';
+import { getRestaurants } from '~/api/restaurant';
 
 function MobileMapPage() {
   const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
   const [preview, setPreview] = useMapState(state => [state.preview, state.setPreview]);
+  const [boundary, celebId, currentPage, restaurantCategory, sort] = useRestaurantsQueryStringState(
+    state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.sort],
+    shallow,
+  );
+  const { data: restaurantDataList } = useQuery<RestaurantListData>({
+    queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
+    queryFn: () => getRestaurants({ boundary, celebId, sort, category: restaurantCategory, page: currentPage }),
+    keepPreviousData: true,
+  });
 
   const getPreview = () => {
     const { celebs, ...restaurant } = preview;
@@ -29,11 +41,12 @@ function MobileMapPage() {
   };
 
   return (
-    <StyledMobileLayout isListShowed={isListShowed}>
-      <div>
-        <RestaurantCardList />
-        <Footer />
-      </div>
+    <StyledMobileLayout>
+      <StyledRestaurantCardContainer isListShowed={isListShowed}>
+        {restaurantDataList?.content.map(({ celebs, ...restaurant }) => (
+          <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showWaterMark={false} />
+        ))}
+      </StyledRestaurantCardContainer>
       <StyledMapContainer isListShowed={isListShowed}>
         <Map />
       </StyledMapContainer>
@@ -57,32 +70,32 @@ function MobileMapPage() {
 
 export default MobileMapPage;
 
-const StyledMobileLayout = styled.main<{ isListShowed: boolean }>`
+const StyledMobileLayout = styled.main`
   position: relative;
 
   width: 100%;
   height: calc(100% - 48px);
+`;
 
-  & > div:first-child {
-    position: absolute;
-    top: 0;
-    z-index: 1;
+const StyledRestaurantCardContainer = styled.div<{ isListShowed: boolean }>`
+  display: ${({ isListShowed }) => (isListShowed ? 'flex' : 'none')};
+  flex-direction: column;
+  gap: 1.6rem;
 
-    width: 100%;
-    height: 100vh;
+  position: absolute;
+  top: 0;
+  z-index: 1;
 
-    background-color: var(--white);
+  width: 100%;
+  height: 100vh;
 
-    ${({ isListShowed }) => !isListShowed && 'display: none;'}
+  padding: 1.2rem 0.8rem;
 
-    & > *:first-child {
-      min-height: calc(100vh - 88px);
-    }
-  }
+  background-color: var(--white);
 `;
 
 const StyledMapContainer = styled.div<{ isListShowed: boolean }>`
-  display: ${({ isListShowed }) => (isListShowed ? 'none' : 'block')};
+  display: ${({ isListShowed }) => isListShowed && 'none'};
 
   width: 100%;
   height: 100%;
