@@ -6,5 +6,6 @@ export default defineConfig({
     viewportHeight: 1080,
     baseUrl: 'http://localhost:3000',
     defaultCommandTimeout: 10000,
+    video: false,
   },
 });
