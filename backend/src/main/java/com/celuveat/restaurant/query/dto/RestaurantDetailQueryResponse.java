@@ -15,10 +15,10 @@ public record RestaurantDetailQueryResponse(
         @JsonProperty("lng") Double longitude,
         String phoneNumber,
         String naverMapUrl,
-        Integer likeCount,
-        Integer viewCount,
-        Boolean isLiked,
-        Double rating,
+        int likeCount,
+        int viewCount,
+        boolean isLiked,
+        double rating,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {

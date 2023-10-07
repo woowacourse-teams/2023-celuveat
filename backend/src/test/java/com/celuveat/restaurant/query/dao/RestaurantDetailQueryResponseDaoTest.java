@@ -1,6 +1,7 @@
 package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.auth.fixture.OauthMemberFixture.말랑;
+import static com.celuveat.auth.fixture.OauthMemberFixture.오도;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
@@ -8,6 +9,7 @@ import com.celuveat.common.DaoTest;
 import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
     private RestaurantDetailQueryResponseDao restaurantDetailQueryResponseDao;
 
     private final OauthMember 말랑 = 말랑();
+    private final OauthMember 오도 = 오도();
     private final Restaurant 대성집 = Restaurant.builder()
             .name("대성집")
             .category("곰탕,설렁탕")
@@ -42,11 +45,15 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
             .naverMapUrl("https://map.naver.com/v5/entry/place/mallang")
             .build();
 
+    private final RestaurantReview 대성집_리뷰_1 = RestaurantReview.create(대성집, 말랑, "음...", 4.0);
+    private final RestaurantReview 대성집_리뷰_2 = RestaurantReview.create(대성집, 오도, "흠...", 2.0);
+
     @Override
     protected TestData prepareTestData() {
-        testData.addMembers(말랑);
+        testData.addMembers(말랑, 오도);
         testData.addRestaurants(대성집, 좋아요_눌린_음식점);
         testData.addRestaurantLikes(RestaurantLike.create(좋아요_눌린_음식점, 말랑));
+        testData.addRestaurantReviews(대성집_리뷰_1, 대성집_리뷰_2);
         return testData;
     }
 
@@ -66,6 +73,16 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
         assertThat(result.naverMapUrl()).isEqualTo("https://map.naver.com/v5/entry/place/13517178?c=15,0,0,0,dh");
         assertThat(result.likeCount()).isEqualTo(0);
         assertThat(result.isLiked()).isFalse();
+    }
+
+    @Test
+    void 리뷰를_통해_산풀된_평점도_보여준다() {
+        // when
+        RestaurantDetailQueryResponse result = restaurantDetailQueryResponseDao.find(대성집.id(), null);
+
+        // then
+        assertThat(result.name()).isEqualTo("대성집");
+        assertThat(result.rating()).isEqualTo(3.0);
     }
 
     @Test
