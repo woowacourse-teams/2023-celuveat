@@ -13,7 +13,7 @@ import com.celuveat.restaurant.presentation.dto.ReportReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.query.RestaurantReviewQueryService;
-import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantReviewsQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +39,7 @@ public class ReviewController {
     private final RestaurantReviewReportService restaurantReviewReportService;
 
     @GetMapping
-    ResponseEntity<RestaurantReviewQueryResponse> findAllReviewsByRestaurantId(
+    ResponseEntity<RestaurantReviewsQueryResponse> findAllReviewsByRestaurantId(
             @LooseAuth Long memberId,
             @RequestParam Long restaurantId
     ) {

@@ -1,20 +1,10 @@
 package com.celuveat.restaurant.query;
 
-import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
-import static com.celuveat.restaurant.fixture.RestaurantReviewFixture.음식점_리뷰;
 import static com.celuveat.restaurant.fixture.RestaurantReviewImageFixture.리뷰의_사진들;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.IntegrationTest;
-import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.review.RestaurantReview;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
-import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
-import com.celuveat.restaurant.query.dto.RestaurantReviewQueryResponse;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -50,12 +40,12 @@ class RestaurantReviewQueryServiceTest extends IntegrationTest {
 //                review3.id(), 리뷰의_사진들(review3),
 //                review4.id(), 리뷰의_사진들(review4)
 //        );
-//        RestaurantReviewQueryResponse expected = RestaurantReviewQueryResponse.from(List.of(
+//        RestaurantReviewsQueryResponse expected = RestaurantReviewsQueryResponse.from(List.of(
 //                review4, review3, review2, review1
 //        ), 리뷰_사진들, Map.of());
 //
 //        // when
-//        RestaurantReviewQueryResponse result =
+//        RestaurantReviewsQueryResponse result =
 //                restaurantReviewQueryService.findAllByRestaurantId(restaurant.id(), null);
 //
 //        // then
@@ -87,12 +77,12 @@ class RestaurantReviewQueryServiceTest extends IntegrationTest {
 //                review1.id(), true,
 //                review2.id(), false
 //        );
-//        RestaurantReviewQueryResponse expected = RestaurantReviewQueryResponse.from(List.of(
+//        RestaurantReviewsQueryResponse expected = RestaurantReviewsQueryResponse.from(List.of(
 //                review2, review1
 //        ), 리뷰_사진들, 리뷰_좋아요_여부);
 //
 //        // when
-//        RestaurantReviewQueryResponse result =
+//        RestaurantReviewsQueryResponse result =
 //                restaurantReviewQueryService.findAllByRestaurantId(restaurant.id(), member1.id());
 //
 //        // then
