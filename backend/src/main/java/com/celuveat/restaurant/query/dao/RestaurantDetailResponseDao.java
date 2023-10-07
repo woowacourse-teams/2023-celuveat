@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
+import com.celuveat.common.dao.Dao;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
@@ -11,10 +12,9 @@ import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RestaurantDetailResponseDao {
@@ -24,12 +24,12 @@ public class RestaurantDetailResponseDao {
     private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public RestaurantDetailResponse findRestaurantDetailById(Long restaurantId, @Nullable Long memberId) {
+    public RestaurantDetailResponse find(Long restaurantId, @Nullable Long memberId) {
         Restaurant restaurant = restaurantQueryDaoSupport.getById(restaurantId);
-        return mapToRestaurantWithCelebAndImagesDetailResponse(restaurant, memberId);
+        return toResponseWithCelebAndImagesAndLiked(restaurant, memberId);
     }
 
-    private RestaurantDetailResponse mapToRestaurantWithCelebAndImagesDetailResponse(
+    private RestaurantDetailResponse toResponseWithCelebAndImagesAndLiked(
             Restaurant restaurant,
             @Nullable Long memberId
     ) {

@@ -38,7 +38,7 @@ public class RestaurantQueryService {
             @Nullable Long memberId
     ) {
         RestaurantDetailResponse response =
-                restaurantDetailResponseDao.findRestaurantDetailById(restaurantId, memberId);
+                restaurantDetailResponseDao.find(restaurantId, memberId);
         return relocateCelebDataFirstByCelebId(celebId, response);
     }
 
