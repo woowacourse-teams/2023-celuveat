@@ -14,7 +14,6 @@ public class RestaurantFixture {
                 .longitude(126.9466788)
                 .phoneNumber("0507-1366-4573")
                 .naverMapUrl("https://map.naver.com/v5/entry/place/1960457705?entry=plt&c=15,0,0,0,dh")
-                .viewCount(0)
                 .build();
     }
 
@@ -28,7 +27,6 @@ public class RestaurantFixture {
                 .longitude(126.978929)
                 .phoneNumber("02-2251-8501")
                 .naverMapUrl("https://map.naver.com/v5/entry/place/1838141891?entry=plt&c=15,0,0,0,dh")
-                .viewCount(0)
                 .build();
     }
 
@@ -42,7 +40,6 @@ public class RestaurantFixture {
                 .longitude(126.9609577)
                 .phoneNumber("02-735-4259")
                 .naverMapUrl("https://map.naver.com/v5/entry/place/13517178?c=15,0,0,0,dh")
-                .viewCount(0)
                 .build();
     }
 
@@ -56,7 +53,6 @@ public class RestaurantFixture {
                 .superCategory("superCategory:" + name)
                 .latitude(37.5206993d)
                 .longitude(127.019975d)
-                .viewCount(0)
                 .build();
     }
 
@@ -70,7 +66,6 @@ public class RestaurantFixture {
                 .superCategory("superCategory:" + name)
                 .latitude(latitude)
                 .longitude(longitude)
-                .viewCount(0)
                 .build();
     }
 }

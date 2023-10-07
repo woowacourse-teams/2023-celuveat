@@ -67,7 +67,6 @@ public record SaveDataRequest(
                 .longitude(Double.parseDouble(longitude))
                 .phoneNumber(phoneNumber)
                 .naverMapUrl(naverMapUrl)
-                .viewCount(0)
                 .build();
     }
 

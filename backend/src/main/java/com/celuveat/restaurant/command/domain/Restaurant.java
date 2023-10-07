@@ -58,11 +58,7 @@ public class Restaurant extends BaseEntity {
             Double latitude,
             Double longitude,
             String phoneNumber,
-            String naverMapUrl,
-            int viewCount,
-            int likeCount,
-            int reviewCount,
-            double totalRating
+            String naverMapUrl
     ) {
         this.name = name;
         this.category = category;
@@ -73,10 +69,6 @@ public class Restaurant extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.naverMapUrl = naverMapUrl;
         this.point = DSL.point(WGS84, g(longitude, latitude));
-        this.viewCount = viewCount;
-        this.likeCount = likeCount;
-        this.reviewCount = reviewCount;
-        this.totalRating = totalRating;
     }
 
     public void clickLike() {
