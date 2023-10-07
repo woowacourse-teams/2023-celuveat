@@ -78,6 +78,7 @@ function Map({ toggleMapExpand }: MapProps) {
     setBoundary(coordinateBoundary);
     setCurrentPage(0);
     window.scrollTo(0, 0);
+    setCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
   };
 
   const clickMyLocationButton = () => {
@@ -122,7 +123,7 @@ function Map({ toggleMapExpand }: MapProps) {
         <StyledMyPositionButtonUI onClick={clickMyLocationButton} type="button">
           <MyLocation />
         </StyledMyPositionButtonUI>
-        <StyledZoomUI>
+        {/* <StyledZoomUI>
           <button type="button" onClick={clickZoom(1)}>
             <Plus />
           </button>
@@ -130,7 +131,7 @@ function Map({ toggleMapExpand }: MapProps) {
           <button type="button" onClick={clickZoom(-1)}>
             <Minus />
           </button>
-        </StyledZoomUI>
+        </StyledZoomUI> */}
         {!isMobile && (
           <StyledMapExpandButton onClick={clickMapExpand}>
             {isMapExpanded ? <RightBracket /> : <LeftBracket />}
@@ -169,7 +170,7 @@ const StyledLoadingUI = styled.div`
 const StyledMyPositionButtonUI = styled.button`
   ${mapUIBase}
   position: absolute;
-  top: 129px;
+  top: 24px;
   right: 24px;
 
   width: 40px;
