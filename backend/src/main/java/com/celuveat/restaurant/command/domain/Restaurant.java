@@ -1,16 +1,14 @@
 package com.celuveat.restaurant.command.domain;
 
 import static lombok.AccessLevel.PROTECTED;
-import static org.geolatte.geom.builder.DSL.g;
-import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 import com.celuveat.common.domain.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.geolatte.geom.Point;
-import org.geolatte.geom.builder.DSL;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
@@ -28,18 +26,13 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String roadAddress;
 
-    @Column(nullable = false)
-    private Double latitude;
-
-    @Column(nullable = false)
-    private Double longitude;
-
     private String phoneNumber;
 
     @Column(nullable = false)
     private String naverMapUrl;
 
-    private Point<?> point;
+    @Embedded
+    private RestaurantPoint restaurantPoint;
 
     private int viewCount;
 
@@ -55,20 +48,18 @@ public class Restaurant extends BaseEntity {
             String category,
             String superCategory,
             String roadAddress,
-            Double latitude,
-            Double longitude,
             String phoneNumber,
-            String naverMapUrl
+            String naverMapUrl,
+            double latitude,
+            double longitude
     ) {
         this.name = name;
         this.category = category;
         this.superCategory = superCategory;
         this.roadAddress = roadAddress;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.phoneNumber = phoneNumber;
         this.naverMapUrl = naverMapUrl;
-        this.point = DSL.point(WGS84, g(longitude, latitude));
+        this.restaurantPoint = new RestaurantPoint(latitude, longitude);
     }
 
     public void clickLike() {
@@ -109,14 +100,6 @@ public class Restaurant extends BaseEntity {
         return roadAddress;
     }
 
-    public Double latitude() {
-        return latitude;
-    }
-
-    public Double longitude() {
-        return longitude;
-    }
-
     public String phoneNumber() {
         return phoneNumber;
     }
@@ -125,16 +108,28 @@ public class Restaurant extends BaseEntity {
         return naverMapUrl;
     }
 
+    public RestaurantPoint restaurantPoint() {
+        return restaurantPoint;
+    }
+
+    public double latitude() {
+        return restaurantPoint.latitude();
+    }
+
+    public double longitude() {
+        return restaurantPoint.longitude();
+    }
+
+    public Point<?> point() {
+        return restaurantPoint.point();
+    }
+
     public Integer viewCount() {
         return viewCount;
     }
 
     public int likeCount() {
         return likeCount;
-    }
-
-    public Point<?> point() {
-        return point;
     }
 
     public int reviewCount() {

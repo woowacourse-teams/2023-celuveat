@@ -19,9 +19,9 @@ public class RestaurantSearchQueryResponse {
     private String superCategory;
     private String roadAddress;
     @JsonProperty("lat")
-    private Double latitude;
+    private double latitude;
     @JsonProperty("lng")
-    private Double longitude;
+    private double longitude;
     private String phoneNumber;
     private String naverMapUrl;
     private int viewCount;
@@ -37,7 +37,7 @@ public class RestaurantSearchQueryResponse {
             Long id, String name,
             String category, String superCategory,
             String roadAddress,
-            Double latitude, Double longitude,
+            double latitude, double longitude,
             String phoneNumber, String naverMapUrl,
             int viewCount, double distance, int likeCount,
             int reviewCount, double totalRating
@@ -93,11 +93,11 @@ public class RestaurantSearchQueryResponse {
         return roadAddress;
     }
 
-    public Double latitude() {
+    public double latitude() {
         return latitude;
     }
 
-    public Double longitude() {
+    public double longitude() {
         return longitude;
     }
 

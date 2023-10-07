@@ -85,8 +85,8 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.category,
                         restaurant.superCategory,
                         restaurant.roadAddress,
-                        restaurant.latitude,
-                        restaurant.longitude,
+                        restaurant.restaurantPoint.latitude,
+                        restaurant.restaurantPoint.longitude,
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
@@ -116,7 +116,7 @@ public class RestaurantSearchQueryResponseDao {
                         * cos(radians({0}.longitude) - radians({2}))
                         + sin(radians({1})) * sin(radians({0}.latitude))) * 1000
                         """,
-                restaurant, latitude, longitude);
+                restaurant.restaurantPoint, latitude, longitude);
     }
 
     private BooleanExpression celebIdEqual(Long celebId) {
@@ -132,8 +132,12 @@ public class RestaurantSearchQueryResponseDao {
     }
 
     private BooleanExpression restaurantInArea(LocationSearchCond locationSearchCond) {
-        return restaurant.latitude.between(locationSearchCond.lowLatitude, locationSearchCond.highLatitude)
-                .and(restaurant.longitude.between(locationSearchCond.lowLongitude, locationSearchCond.highLongitude));
+        return restaurant.restaurantPoint.latitude.between(
+                locationSearchCond.lowLatitude, locationSearchCond.highLatitude
+        ).and(
+                restaurant.restaurantPoint.longitude.between(
+                        locationSearchCond.lowLongitude, locationSearchCond.highLongitude
+                ));
     }
 
     private OrderSpecifier<?> applyOrderBy(Pageable pageable) {
@@ -190,8 +194,8 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.category,
                         restaurant.superCategory,
                         restaurant.roadAddress,
-                        restaurant.latitude,
-                        restaurant.longitude,
+                        restaurant.restaurantPoint.latitude,
+                        restaurant.restaurantPoint.longitude,
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
@@ -238,8 +242,8 @@ public class RestaurantSearchQueryResponseDao {
                                 restaurant.category,
                                 restaurant.superCategory,
                                 restaurant.roadAddress,
-                                restaurant.latitude,
-                                restaurant.longitude,
+                                restaurant.restaurantPoint.latitude,
+                                restaurant.restaurantPoint.longitude,
                                 restaurant.phoneNumber,
                                 restaurant.naverMapUrl,
                                 restaurant.viewCount,
@@ -328,10 +332,10 @@ public class RestaurantSearchQueryResponseDao {
     }
 
     public record LocationSearchCond(
-            Double lowLatitude,
-            Double highLatitude,
-            Double lowLongitude,
-            Double highLongitude
+            double lowLatitude,
+            double highLatitude,
+            double lowLongitude,
+            double highLongitude
     ) {
 
         public double middleLat() {

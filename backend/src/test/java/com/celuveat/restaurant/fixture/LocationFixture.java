@@ -35,7 +35,8 @@ public class LocationFixture {
 
     public static LocationSearchCond 검색_영역(Object 포함_영역) {
         if (포함_영역 == null) {
-            return new LocationSearchCond(null, null, null, null);
+            return new LocationSearchCondRequest(null, null, null, null)
+                    .toCondition();
         }
         LocationSearchCond 검색_영역 = (LocationSearchCond) 포함_영역;
         return new LocationSearchCond(

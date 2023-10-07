@@ -40,7 +40,7 @@ public class RestaurantByRegionCodeQueryResponseDao {
     private final BooleanExpression stContainsCondition = Expressions.booleanTemplate(
             "ST_CONTAINS({0}, {1})",
             administrativeDistrict.polygon,
-            restaurant.point
+            restaurant.restaurantPoint.point
     );
 
     public Page<RestaurantByRegionCodeQueryResponse> find(
@@ -69,8 +69,8 @@ public class RestaurantByRegionCodeQueryResponseDao {
                         restaurant.category,
                         restaurant.superCategory,
                         restaurant.roadAddress,
-                        restaurant.latitude,
-                        restaurant.longitude,
+                        restaurant.restaurantPoint.latitude,
+                        restaurant.restaurantPoint.longitude,
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
