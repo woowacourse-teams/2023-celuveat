@@ -7,6 +7,7 @@ import useScrollBlock from '~/hooks/useScrollBlock';
 import useScrollEnd from '~/hooks/useScrollEnd';
 import MapIcon from '~/assets/icons/map.svg';
 import ListIcon from '~/assets/icons/list.svg';
+import Down from '~/assets/icons/down.svg';
 
 import RestaurantCardList from '~/components/RestaurantCardList';
 import Footer from '~/components/@common/Footer';
@@ -15,13 +16,13 @@ import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import useMapState from '~/hooks/store/useMapState';
 
 function MobileMapPage() {
-  // const ref = useRef();
-  // const scrollDirection = useScrollDirection();
-  // const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
-  const { value: isListShowed } = useBooleanState(false);
-  const [preview] = useMapState(state => [state.preview]);
+  const ref = useRef();
+  const scrollDirection = useScrollDirection();
+  const { isEnd } = useScrollEnd({ direction: 'Y', threshold: 200 });
+  const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
+  const [preview, setPreview] = useMapState(state => [state.preview, state.setPreview]);
 
-  // useScrollBlock(ref);
+  useScrollBlock(ref);
 
   const getPreview = () => {
     const { celebs, ...restaurant } = preview;
@@ -29,6 +30,9 @@ function MobileMapPage() {
     return (
       <StyledPreview>
         <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showWaterMark={false} />
+        <StyledShutDownButton type="button" onClick={() => setPreview(null)}>
+          <Down />
+        </StyledShutDownButton>
       </StyledPreview>
     );
   };
@@ -40,26 +44,26 @@ function MobileMapPage() {
         <Footer />
       </div>
       <Map />
-      <StyledPreviewContainer>
-        {/* {isListShowed ? (
-            <StyledToggleButton
-              type="button"
-              onClick={toggleShowedList}
-              isHide={isEnd}
-              isNavBarHide={isListShowed && scrollDirection.y === 'down'}
-              ref={ref}
-            >
-              <span>지도</span>
-              <MapIcon width={24} />
-            </StyledToggleButton>
-          ) : (
-            <StyledToggleButton type="button" onClick={toggleShowedList} isHide={false} isNavBarHide={false} ref={ref}>
-              <span>리스트</span>
-              <ListIcon width={20} stroke="#fff" />
-            </StyledToggleButton>
-          )} */}
-        {preview && getPreview()}
-      </StyledPreviewContainer>
+      <StyledModal>
+        {isListShowed ? (
+          <StyledToggleButton
+            type="button"
+            onClick={toggleShowedList}
+            isHide={isEnd}
+            isNavBarHide={isListShowed && scrollDirection.y === 'down'}
+            ref={ref}
+          >
+            <span>지도</span>
+            <MapIcon width={24} />
+          </StyledToggleButton>
+        ) : (
+          <StyledToggleButton type="button" onClick={toggleShowedList} isHide={false} isNavBarHide={false} ref={ref}>
+            <span>리스트</span>
+            <ListIcon width={20} stroke="#fff" />
+          </StyledToggleButton>
+        )}
+        {preview && !isListShowed && getPreview()}
+      </StyledModal>
     </StyledMobileLayout>
   );
 }
@@ -96,9 +100,6 @@ const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolea
   align-items: center;
   gap: 0.8rem;
 
-  position: fixed;
-  bottom: 88px;
-  left: calc(50% - 50px);
   z-index: 20;
 
   width: 100px;
@@ -135,9 +136,11 @@ const StyledToggleButton = styled.button<{ isHide: boolean; isNavBarHide: boolea
     `}
 `;
 
-const StyledPreviewContainer = styled.div`
+const StyledModal = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
 
   position: absolute;
   bottom: 12px;
@@ -146,10 +149,29 @@ const StyledPreviewContainer = styled.div`
 `;
 
 const StyledPreview = styled.div`
+  position: relative;
+
   width: 90%;
 
   padding: 1.2rem 0.8rem;
 
   border-radius: 12px;
   background-color: white;
+`;
+
+const StyledShutDownButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 50%;
+  background-color: var(--gray-1);
 `;
