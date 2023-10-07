@@ -19,11 +19,12 @@ function MobileHeader() {
         <h5>celuveat</h5>
         <div />
       </header>
-      {isHome && (
+
+      <StyledSearchBarBox isHome={isHome}>
         <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
           <SearchBar />
         </Wrapper>
-      )}
+      </StyledSearchBarBox>
     </StyledTopNavBar>
   );
 }
@@ -58,4 +59,10 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
       font-size: ${FONT_SIZE.lg};
     }
   }
+`;
+
+const StyledSearchBarBox = styled.div<{ isHome: boolean }>`
+  display: ${({ isHome }) => (isHome ? 'block' : 'none')};
+
+  width: 100%;
 `;
