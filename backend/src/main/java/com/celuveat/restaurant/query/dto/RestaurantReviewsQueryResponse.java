@@ -32,7 +32,7 @@ public record RestaurantReviewsQueryResponse(
             String profileImageUrl,
             String content,
             String createdDate,
-            Integer likeCount,
+            int likeCount,
             boolean isLiked,
             double rating,
             List<String> images
