@@ -2,6 +2,7 @@ package com.celuveat.restaurant.query.dao;
 
 import static com.celuveat.common.util.StreamUtil.groupBySameOrder;
 
+import com.celuveat.common.dao.Dao;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.query.dao.support.RestaurantImageQueryDaoSupport;
@@ -13,13 +14,12 @@ import com.celuveat.video.query.dao.VideoQueryDaoSupport;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantLikeQueryResponseDao {
+public class LikedRestaurantQueryResponseDao {
 
     private final VideoQueryDaoSupport videoQueryDaoSupport;
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
@@ -27,11 +27,11 @@ public class RestaurantLikeQueryResponseDao {
 
     public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
         List<Restaurant> restaurants = getLikedRestaurants(memberId);
-        Map<Long, List<CelebQueryResponse>> celebsMap = celebsGroupByRestaurant(restaurants);
-        Map<Long, List<RestaurantImageQueryResponse>> restaurantMap = imagesGroupByRestaurants(restaurants);
+        Map<Long, List<CelebQueryResponse>> celebs = celebsGroupByRestaurant(restaurants);
+        Map<Long, List<RestaurantImageQueryResponse>> images = imagesGroupByRestaurants(restaurants);
         return restaurants.stream()
                 .map(it ->
-                        LikedRestaurantQueryResponse.from(it, celebsMap.get(it.id()), restaurantMap.get(it.id()))
+                        LikedRestaurantQueryResponse.from(it, celebs.get(it.id()), images.get(it.id()))
                 ).toList();
     }
 

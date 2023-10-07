@@ -6,7 +6,7 @@ import static com.celuveat.restaurant.query.mapper.RestaurantRelocator.relocateC
 import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantByRegionCodeResponseDao.RegionCodeCond;
 import com.celuveat.restaurant.query.dao.RestaurantDetailResponseDao;
-import com.celuveat.restaurant.query.dao.RestaurantLikeQueryResponseDao;
+import com.celuveat.restaurant.query.dao.LikedRestaurantQueryResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantSearchResponseDao.RestaurantSearchCond;
@@ -29,7 +29,7 @@ public class RestaurantQueryService {
 
     private final RestaurantDetailResponseDao restaurantDetailResponseDao;
     private final RestaurantSearchResponseDao restaurantSearchResponseDao;
-    private final RestaurantLikeQueryResponseDao restaurantLikeQueryResponseDao;
+    private final LikedRestaurantQueryResponseDao likedRestaurantQueryResponseDao;
     private final RestaurantByRegionCodeResponseDao restaurantByRegionCodeResponseDao;
 
     public RestaurantDetailResponse findRestaurantDetailById(
@@ -76,7 +76,7 @@ public class RestaurantQueryService {
     }
 
     public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
-        return restaurantLikeQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
+        return likedRestaurantQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
     }
 
     public List<RestaurantSearchResponse> findLatest(@Nullable Long memberId) {
