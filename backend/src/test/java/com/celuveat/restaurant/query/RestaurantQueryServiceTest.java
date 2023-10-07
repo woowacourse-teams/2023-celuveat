@@ -20,6 +20,7 @@ import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.exception.CelebException;
 import com.celuveat.common.IntegrationTest;
+import com.celuveat.common.util.RatingUtils;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
@@ -139,7 +140,8 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         @Test
         void 셀럽ID가_포함되면_정렬한다() {
             // given
-            Long celebId = RestaurantSearchQueryResponse.celebs().get(RestaurantSearchQueryResponse.celebs().size() - 1).id();
+            Long celebId = RestaurantSearchQueryResponse.celebs().get(RestaurantSearchQueryResponse.celebs().size() - 1)
+                    .id();
             Celeb targetCeleb = celebRepository.findById(celebId)
                     .orElseThrow(() -> new CelebException(NOT_FOUND_CELEB));
 
@@ -650,6 +652,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             );
             assertThat(result.getContent()).usingRecursiveComparison()
                     .ignoringExpectedNullFields()
+                    .ignoringFields("distance")
                     .isEqualTo(예상);
         }
 
@@ -671,10 +674,10 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     restaurant.phoneNumber(),
                     restaurant.naverMapUrl(),
                     restaurant.viewCount(),
-                    null,
+                    0,
                     likeCount,
                     isLiked,
-                    restaurant.totalRating(),
+                    RatingUtils.averageRating(restaurant.totalRating(), restaurant.reviewCount()),
                     celebs.stream().map(it -> new CelebQueryResponse(
                             restaurant.id(),
                             it.id(),

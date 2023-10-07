@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
+import com.celuveat.common.util.RatingUtils;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -43,7 +44,7 @@ public record RestaurantDetailQueryResponse(
                 likeCount,
                 restaurant.viewCount(),
                 isLiked,
-                restaurant.averageRating(),
+                RatingUtils.averageRating(restaurant.totalRating(), restaurant.reviewCount()),
                 celebs,
                 restaurantImages);
     }

@@ -11,6 +11,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
+import com.celuveat.common.dao.Dao;
 import com.celuveat.common.domain.BaseEntity;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
@@ -26,7 +27,6 @@ import com.celuveat.video.query.dao.support.VideoQueryDaoSupport;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -44,15 +44,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RestaurantSearchQueryResponseDao {
 
-    private static final NumberPath<Double> distanceColumn = Expressions.numberPath(Double.class, "distance");
+    private final NumberPath<Double> distanceColumn = Expressions.numberPath(Double.class, "distance");
 
     private final JPAQueryFactory query;
     private final VideoQueryDaoSupport videoQueryDaoSupport;
@@ -93,7 +92,8 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.viewCount,
                         distance(locationCond.middleLat(), locationCond.middleLng()).as(distanceColumn),
                         restaurant.likeCount,
-                        rating()
+                        restaurant.reviewCount,
+                        restaurant.totalRating
                 ))
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -107,14 +107,6 @@ public class RestaurantSearchQueryResponseDao {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-    }
-
-    private NumberExpression<Double> rating() {
-        return Expressions.asNumber(
-                new CaseBuilder()
-                        .when(restaurant.reviewCount.eq(0)).then(0.0)
-                        .otherwise(restaurant.totalRating.divide(restaurant.reviewCount))
-        ).as("rating");
     }
 
     private NumberExpression<Double> distance(double latitude, double longitude) {
@@ -205,7 +197,8 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.viewCount,
                         distance(standard.latitude(), standard.longitude()).as(distanceColumn),
                         restaurant.likeCount,
-                        rating()
+                        restaurant.reviewCount,
+                        restaurant.totalRating
                 ))
                 .from(restaurant)
                 .where(
@@ -252,7 +245,8 @@ public class RestaurantSearchQueryResponseDao {
                                 restaurant.viewCount,
                                 Expressions.constant(0d),
                                 restaurant.likeCount,
-                                rating()
+                                restaurant.reviewCount,
+                                restaurant.totalRating
                         ))
                         .from(restaurant)
                         .orderBy(restaurant.id.desc())

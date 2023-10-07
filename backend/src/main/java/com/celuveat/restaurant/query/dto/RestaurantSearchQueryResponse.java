@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
+import com.celuveat.common.util.RatingUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,12 @@ public class RestaurantSearchQueryResponse {
     private Double longitude;
     private String phoneNumber;
     private String naverMapUrl;
-    private Integer viewCount;
-    private Integer distance;
+    private int viewCount;
+    private int distance;
     private int likeCount;
     @JsonProperty("isLiked")
     private boolean isLiked;
-    private Double rating;
+    private double rating;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
@@ -38,8 +39,8 @@ public class RestaurantSearchQueryResponse {
             String roadAddress,
             Double latitude, Double longitude,
             String phoneNumber, String naverMapUrl,
-            Integer viewCount, Double distance,
-            int likeCount, Double rating
+            int viewCount, double distance, int likeCount,
+            int reviewCount, double totalRating
     ) {
         this.id = id;
         this.name = name;
@@ -51,9 +52,9 @@ public class RestaurantSearchQueryResponse {
         this.phoneNumber = phoneNumber;
         this.naverMapUrl = naverMapUrl;
         this.viewCount = viewCount;
-        this.distance = distance.intValue();
+        this.distance = (int) distance;
         this.likeCount = likeCount;
-        this.rating = rating;
+        this.rating = RatingUtils.averageRating(totalRating, reviewCount);
     }
 
     public void setLiked(boolean liked) {
@@ -108,11 +109,11 @@ public class RestaurantSearchQueryResponse {
         return naverMapUrl;
     }
 
-    public Integer viewCount() {
+    public int viewCount() {
         return viewCount;
     }
 
-    public Integer distance() {
+    public int distance() {
         return distance;
     }
 
@@ -125,7 +126,7 @@ public class RestaurantSearchQueryResponse {
         return isLiked;
     }
 
-    public Double rating() {
+    public double rating() {
         return rating;
     }
 

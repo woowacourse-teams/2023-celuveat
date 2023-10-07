@@ -130,7 +130,8 @@ public class SeedData {
                 restaurant.viewCount(),
                 distance,
                 restaurant.likeCount(),
-                restaurant.averageRating()
+                restaurant.reviewCount(),
+                restaurant.totalRating()
         );
         List<CelebQueryResponse> celebResponses = celebs.stream()
                 .map(it -> CelebQueryResponse.from(restaurant.id(), it))
