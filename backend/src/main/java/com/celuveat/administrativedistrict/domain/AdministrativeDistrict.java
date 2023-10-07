@@ -30,4 +30,24 @@ public class AdministrativeDistrict {
 
     @Column(nullable = false)
     private String koreanName;
+
+    public Long id() {
+        return id;
+    }
+
+    public Geometry<?> polygon() {
+        return polygon;
+    }
+
+    public String code() {
+        return code;
+    }
+
+    public String englishName() {
+        return englishName;
+    }
+
+    public String koreanName() {
+        return koreanName;
+    }
 }

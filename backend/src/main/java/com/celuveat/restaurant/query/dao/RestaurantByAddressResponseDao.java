@@ -11,6 +11,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
+import com.celuveat.common.dao.Dao;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse.CelebInfo;
 import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse.RestaurantImageInfo;
@@ -27,10 +28,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RestaurantByAddressResponseDao {

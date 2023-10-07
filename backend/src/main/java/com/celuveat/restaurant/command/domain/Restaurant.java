@@ -1,18 +1,18 @@
 package com.celuveat.restaurant.command.domain;
 
 import static lombok.AccessLevel.PROTECTED;
+import static org.geolatte.geom.builder.DSL.g;
+import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 import com.celuveat.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.geolatte.geom.Point;
+import org.geolatte.geom.builder.DSL;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class Restaurant extends BaseEntity {
 
@@ -48,6 +48,36 @@ public class Restaurant extends BaseEntity {
     private int reviewCount;
 
     private double totalRating;
+
+    @Builder
+    public Restaurant(
+            String name,
+            String category,
+            String superCategory,
+            String roadAddress,
+            Double latitude,
+            Double longitude,
+            String phoneNumber,
+            String naverMapUrl,
+            int viewCount,
+            int likeCount,
+            int reviewCount,
+            double totalRating
+    ) {
+        this.name = name;
+        this.category = category;
+        this.superCategory = superCategory;
+        this.roadAddress = roadAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.phoneNumber = phoneNumber;
+        this.naverMapUrl = naverMapUrl;
+        this.point = DSL.point(WGS84, g(longitude, latitude));
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
+        this.reviewCount = reviewCount;
+        this.totalRating = totalRating;
+    }
 
     public void clickLike() {
         this.likeCount += 1;
