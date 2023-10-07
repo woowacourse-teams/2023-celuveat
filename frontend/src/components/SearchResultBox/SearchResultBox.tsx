@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import MiniRestaurantCard from '../MiniRestaurantCard';
-import { RestaurantData } from '~/@types/api.types';
+import { RestaurantData, RestaurantListData } from '~/@types/api.types';
 
 interface SearchResultBoxProps {
-  restaurantDataList: RestaurantData[];
+  restaurantDataList: RestaurantListData;
 }
 
 function SearchResultBox({ restaurantDataList }: SearchResultBoxProps) {
   return (
     <StyledResultBox>
       {restaurantDataList &&
-        restaurantDataList?.map(({ celebs, ...restaurant }: RestaurantData) => (
+        restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
           <MiniRestaurantCard
             key={`${restaurant.id}${celebs[0].id}`}
             restaurant={restaurant}

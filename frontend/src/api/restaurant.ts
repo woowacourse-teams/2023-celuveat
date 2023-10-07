@@ -28,8 +28,8 @@ export const getRestaurantVideo = async (restaurantId: string) => {
   return response.data;
 };
 
-export const getRestaurantsByAddress = async (codes: number[]) => {
-  const response = await apiClient.get(`/address?codes=${codes.join(',')}`);
+export const getRestaurantsByAddress = async ({ codes, page }: { codes: number[]; page: number }) => {
+  const response = await apiClient.get(`/address?codes=${codes.join(',')}&page=${page}`);
   return response.data;
 };
 

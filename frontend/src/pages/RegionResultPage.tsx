@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantListData } from '~/@types/api.types';
@@ -7,15 +7,27 @@ import { getRestaurantsByAddress } from '~/api/restaurant';
 import SearchResultBox from '~/components/SearchResultBox';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
 import { SERVER_IMG_URL } from '~/constants/url';
+import useInfiniteScroll from '~/hooks/useInfiniteScroll';
 import { FONT_SIZE } from '~/styles/common';
 
 function RegionResultPage() {
   const { region } = useParams<{ region: Region }>();
 
-  const { data: restaurantDataList } = useQuery<RestaurantListData>({
+  const {
+    data: restaurantDataPages,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<RestaurantListData>({
     queryKey: ['restaurantsFilteredByRegion', region],
-    queryFn: () => getRestaurantsByAddress(RECOMMENDED_REGION[region].code),
+    queryFn: ({ pageParam = 0 }) =>
+      getRestaurantsByAddress({ codes: RECOMMENDED_REGION[region].code, page: pageParam }),
+    getNextPageParam: lastPage => {
+      if (lastPage.totalPage > lastPage.currentPage) return lastPage.currentPage + 1;
+      return undefined;
+    },
   });
+
+  useInfiniteScroll({ isFetchingNextPage, fetchNextPage, restaurantDataPages });
 
   return (
     <StyledContainer>
@@ -23,8 +35,12 @@ function RegionResultPage() {
         <h5> ← {RECOMMENDED_REGION[region].name}</h5>
       </StyledLink>
       <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
-      <StyledResultCount>{restaurantDataList && restaurantDataList.content?.length}개의 매장</StyledResultCount>
-      <SearchResultBox restaurantDataList={restaurantDataList?.content} />
+      <StyledResultCount>
+        {restaurantDataPages && restaurantDataPages.pages[0].totalElementsCount}개의 매장
+      </StyledResultCount>
+      {restaurantDataPages?.pages.map(restaurantDataList => (
+        <SearchResultBox restaurantDataList={restaurantDataList} />
+      ))}{' '}
     </StyledContainer>
   );
 }
