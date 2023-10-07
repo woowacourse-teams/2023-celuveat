@@ -27,14 +27,16 @@ public class RestaurantReviewService {
     public Long create(SaveReviewRequestCommand command) {
         OauthMember member = oauthMemberRepository.getById(command.memberId());
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
-        RestaurantReview restaurantReview =
-                RestaurantReview.create(command.content(), member, restaurant, command.rating(), command.images());
+        RestaurantReview restaurantReview = RestaurantReview.create(
+                restaurant, member,
+                command.content(), command.rating(), command.images()
+        );
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.update(command.content(), command.memberId(), command.rating());
+        review.update(command.memberId(), command.content(), command.rating());
     }
 
     public void delete(DeleteReviewCommand command) {

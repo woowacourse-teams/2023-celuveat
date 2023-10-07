@@ -43,16 +43,15 @@ public class RestaurantReview extends BaseEntity {
     private List<RestaurantReviewImage> images = new ArrayList<>();
 
     private RestaurantReview(
-            String content, OauthMember member,
-            Restaurant restaurant, double rating,
-            int likeCount, List<RestaurantReviewImage> images
+            Restaurant restaurant, OauthMember member,
+            String content, double rating,
+            List<RestaurantReviewImage> images
     ) {
         validateRating(rating);
-        this.content = content;
-        this.member = member;
         this.restaurant = restaurant;
+        this.member = member;
+        this.content = content;
         this.rating = rating;
-        this.likeCount = likeCount;
         this.images = images;
     }
 
@@ -63,26 +62,26 @@ public class RestaurantReview extends BaseEntity {
     }
 
     public static RestaurantReview create(
-            String content, OauthMember member,
-            Restaurant restaurant, double rating
+            Restaurant restaurant, OauthMember member,
+            String content, double rating
     ) {
-        return create(content, member, restaurant, rating, Collections.emptyList());
+        return create(restaurant, member, content, rating, Collections.emptyList());
     }
 
     public static RestaurantReview create(
-            String content, OauthMember member,
-            Restaurant restaurant, double rating,
+            Restaurant restaurant, OauthMember member,
+            String content, double rating,
             List<String> imageNames
     ) {
         List<RestaurantReviewImage> images = imageNames.stream()
                 .map(RestaurantReviewImage::new)
                 .toList();
-        RestaurantReview review = new RestaurantReview(content, member, restaurant, rating, 0, images);
+        RestaurantReview review = new RestaurantReview(restaurant, member, content, rating, images);
         restaurant.addReviewRating(rating);
         return review;
     }
 
-    public void update(String content, Long memberId, double updateRating) {
+    public void update(Long memberId, String content, double updateRating) {
         checkOwner(memberId);
         validateRating(updateRating);
         restaurant.deleteReviewRating(rating);

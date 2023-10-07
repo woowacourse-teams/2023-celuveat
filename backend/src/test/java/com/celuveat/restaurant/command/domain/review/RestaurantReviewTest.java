@@ -44,8 +44,8 @@ class RestaurantReviewTest {
         @Test
         void 리뷰를_작성하면_음식점의_리뷰_수와_전체_평점이_증가한다() {
             // when
-            RestaurantReview.create("리뷰1", 말랑, 대성집, 3.0);
-            RestaurantReview.create("리뷰2", 말랑, 대성집, 2.5);
+            RestaurantReview.create(대성집, 말랑, "리뷰1", 3.0);
+            RestaurantReview.create(대성집, 말랑, "리뷰2", 2.5);
 
             // then
             assertThat(대성집.reviewCount()).isEqualTo(2);
@@ -57,7 +57,7 @@ class RestaurantReviewTest {
         void 별점은_0점_이하거나_5점을_초과할_수_없다(double invalidRating) {
             // when
             BaseExceptionType ex = assertThrows(RestaurantReviewException.class, () ->
-                    RestaurantReview.create("잘못된 리뷰", 말랑, 대성집, invalidRating)
+                    RestaurantReview.create(대성집, 말랑, "잘못된 리뷰", invalidRating)
             ).exceptionType();
 
             // then
@@ -71,10 +71,10 @@ class RestaurantReviewTest {
         @Test
         void 자신의_리뷰는_수정할_수_있다() {
             // given
-            RestaurantReview review = RestaurantReview.create("쏘쏘", 말랑, 대성집, 3.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "쏘쏘", 3.0);
 
             // when
-            review.update("수정", 말랑.id(), 2.9);
+            review.update(말랑.id(), "수정", 2.9);
 
             // then
             assertThat(review.content()).isEqualTo("수정");
@@ -84,10 +84,10 @@ class RestaurantReviewTest {
         @Test
         void 리뷰를_수정하면_음식점의_리뷰_수는_동일하고_전체_평점이_변경된다() {
             // given
-            RestaurantReview review = RestaurantReview.create("리뷰1", 말랑, 대성집, 3.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "리뷰2", 2.5);
 
             // when
-            review.update("수정", 말랑.id(), 2.9);
+            review.update(말랑.id(), "수정", 2.9);
 
             // then
             assertThat(대성집.reviewCount()).isEqualTo(1);
@@ -97,11 +97,11 @@ class RestaurantReviewTest {
         @Test
         void 자신의_리뷰가_아니면_수정할_수_없다() {
             // given
-            RestaurantReview review = RestaurantReview.create("굳", 말랑, 대성집, 5.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "굳", 5.0);
 
             // when
             BaseExceptionType ex = assertThrows(RestaurantReviewException.class, () ->
-                    review.update("수정", 오도.id(), 3.2)
+                    review.update(오도.id(), "수정", 3.2)
             ).exceptionType();
 
             // then
@@ -114,11 +114,11 @@ class RestaurantReviewTest {
         @ValueSource(doubles = {-1.0, 0.0, 5.1})
         void 수정_시_별점은_0점_이하거나_5점을_초과할_수_없다(double invalidRating) {
             // given
-            RestaurantReview review = RestaurantReview.create("굳", 말랑, 대성집, 5.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "굳", 5.0);
 
             // when
             BaseExceptionType ex = assertThrows(RestaurantReviewException.class, () ->
-                    review.update("잘못된 리뷰", 말랑.id(), invalidRating)
+                    review.update(말랑.id(), "잘못된 리뷰", invalidRating)
             ).exceptionType();
 
             // then
@@ -134,7 +134,7 @@ class RestaurantReviewTest {
         @Test
         void 내_리뷰는_제거할_수_있다() {
             // given
-            RestaurantReview review = RestaurantReview.create("굳", 말랑, 대성집, 5.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "굳", 5.0);
 
             // when & then
             assertDoesNotThrow(() -> {
@@ -145,8 +145,8 @@ class RestaurantReviewTest {
         @Test
         void 리뷰를_제거하면_음식점의_리뷰_수와_전체_평점이_감소된다() {
             // given
-            RestaurantReview review1 = RestaurantReview.create("굳", 말랑, 대성집, 5.0);
-            RestaurantReview review2 = RestaurantReview.create("쏘쏘", 말랑, 대성집, 3.0);
+            RestaurantReview review1 = RestaurantReview.create(대성집, 말랑, "굳", 5.0);
+            RestaurantReview review2 = RestaurantReview.create(대성집, 말랑, "쏘쏘", 3.0);
 
             // when
             review1.delete(말랑.id());
@@ -159,7 +159,7 @@ class RestaurantReviewTest {
         @Test
         void 다른_사람의_리뷰는_제거할_수_없다() {
             // given
-            RestaurantReview review = RestaurantReview.create("굳", 말랑, 대성집, 5.0);
+            RestaurantReview review = RestaurantReview.create(대성집, 말랑, "굳", 5.0);
 
             // when
             BaseExceptionType ex = assertThrows(RestaurantReviewException.class, () ->

@@ -27,7 +27,7 @@ class RestaurantReviewLikeTest {
     @Test
     void 다른_회원의_리뷰에_좋아요를_누를_수_있다() {
         // given
-        RestaurantReview review = RestaurantReview.create("좋아요", 말랑, 대성집, 5.0);
+        RestaurantReview review = RestaurantReview.create(대성집, 말랑, "좋아요", 5.0);
         assertThat(review.likeCount()).isEqualTo(0);
 
         // when
@@ -39,7 +39,7 @@ class RestaurantReviewLikeTest {
 
     @Test
     void 좋아요를_취소할_수_있다() {
-        RestaurantReview review = RestaurantReview.create("좋아요", 말랑, 대성집, 5.0);
+        RestaurantReview review = RestaurantReview.create(대성집, 말랑, "좋아요", 5.0);
         assertThat(review.likeCount()).isEqualTo(0);
         RestaurantReviewLike restaurantReviewLike = RestaurantReviewLike.create(review, 로이스);
 
@@ -53,7 +53,7 @@ class RestaurantReviewLikeTest {
     @Test
     void 내_리뷰에는_좋아요를_누를_수_없다() {
         // given
-        RestaurantReview review = RestaurantReview.create("좋아요", 말랑, 대성집, 5.0);
+        RestaurantReview review = RestaurantReview.create(대성집, 말랑, "좋아요", 5.0);
         assertThat(review.likeCount()).isEqualTo(0);
 
         // when
