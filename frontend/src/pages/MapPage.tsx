@@ -86,6 +86,8 @@ const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
 `;
 
 const StyledRightSide = styled.section`
+  position: relative;
+
   width: 100%;
   height: 100%;
 `;
