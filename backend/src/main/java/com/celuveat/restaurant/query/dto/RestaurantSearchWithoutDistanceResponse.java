@@ -4,9 +4,13 @@ import com.celuveat.common.util.RatingUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RestaurantSearchWithoutDistanceResponse {
 
     private Long id;
@@ -22,7 +26,6 @@ public class RestaurantSearchWithoutDistanceResponse {
     private String naverMapUrl;
     private int viewCount;
     private int likeCount;
-    @JsonProperty("isLiked")
     private boolean isLiked;
     private double rating;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
@@ -61,5 +64,9 @@ public class RestaurantSearchWithoutDistanceResponse {
 
     public void setImages(List<RestaurantImageQueryResponse> images) {
         this.images = images;
+    }
+    @JsonProperty("isLiked")
+    public boolean isLiked() {
+        return isLiked;
     }
 }
