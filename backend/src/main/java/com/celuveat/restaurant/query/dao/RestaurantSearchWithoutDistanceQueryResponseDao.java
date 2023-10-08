@@ -69,7 +69,9 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
-                        restaurant.likeCount
+                        restaurant.likeCount,
+                        restaurant.reviewCount,
+                        restaurant.totalRating
                 ))
                 .from(restaurant)
                 .join(administrativeDistrict).on(administrativeDistrict.code.in(cond.codes))

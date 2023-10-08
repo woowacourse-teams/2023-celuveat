@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
+import com.celuveat.common.util.RatingUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class RestaurantSearchWithoutDistanceResponse {
     private int likeCount;
     @JsonProperty("isLiked")
     private boolean isLiked;
+    private double rating;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
@@ -32,7 +34,8 @@ public class RestaurantSearchWithoutDistanceResponse {
             String roadAddress,
             double latitude, double longitude,
             String phoneNumber, String naverMapUrl,
-            int viewCount, int likeCount
+            int viewCount, int likeCount,
+            int reviewCount, double totalRating
     ) {
         this.id = id;
         this.name = name;
@@ -45,6 +48,7 @@ public class RestaurantSearchWithoutDistanceResponse {
         this.naverMapUrl = naverMapUrl;
         this.viewCount = viewCount;
         this.likeCount = likeCount;
+        this.rating = RatingUtils.averageRating(totalRating, reviewCount);
     }
 
     public void setLiked(boolean liked) {
