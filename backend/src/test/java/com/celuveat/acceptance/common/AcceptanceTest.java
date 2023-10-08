@@ -12,7 +12,6 @@ import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.command.domain.CelebRepository;
-import com.celuveat.celeb.fixture.CelebFixture;
 import com.celuveat.common.SeedData;
 import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantService;
@@ -97,14 +96,6 @@ public abstract class AcceptanceTest {
 
     protected void 셀럽들을_저장한다(Celeb... 셀럽들) {
         List<Celeb> list = Arrays.stream(셀럽들)
-                .toList();
-        celebRepository.saveAll(list);
-    }
-
-    // TODO: Removed
-    protected void 셀럽들을_저장한다(String... 셀럽들_이름) {
-        List<Celeb> list = Arrays.stream(셀럽들_이름)
-                .map(CelebFixture::셀럽)
                 .toList();
         celebRepository.saveAll(list);
     }

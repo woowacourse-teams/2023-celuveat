@@ -3,7 +3,7 @@ package com.celuveat.acceptance.celeb;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.celuveat.celeb.fixture.CelebFixture;
+import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.query.dto.CelebQueryResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
@@ -14,9 +14,8 @@ import java.util.NoSuchElementException;
 
 public class CelebAcceptanceSteps {
 
-    public static List<CelebQueryResponse> 예상_셀럽조회_결과(String... 셀럽들_이름) {
-        return Arrays.stream(셀럽들_이름)
-                .map(CelebFixture::셀럽)
+    public static List<CelebQueryResponse> 예상_셀럽조회_결과(Celeb... 셀럽들) {
+        return Arrays.stream(셀럽들)
                 .map(CelebQueryResponse::from)
                 .toList();
     }
@@ -26,6 +25,7 @@ public class CelebAcceptanceSteps {
                 .when()
                 .get("/celebs")
                 .then()
+                .log().all()
                 .extract();
     }
 
