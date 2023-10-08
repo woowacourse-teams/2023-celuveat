@@ -10,6 +10,8 @@ public class MemberAcceptanceSteps {
     public static ExtractableResponse<Response> 회원정보_조회를_요청한다(String 세션_아이디) {
         return given(세션_아이디)
                 .when().get("/members/my")
-                .then().extract();
+                .then()
+                .log().all()
+                .extract();
     }
 }

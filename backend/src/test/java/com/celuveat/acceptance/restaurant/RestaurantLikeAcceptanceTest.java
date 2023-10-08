@@ -36,7 +36,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         var 맛집 = 음식점("맛집");
         음식점을_저장한다(맛집);
         var 오도 = 멤버("오도");
-        var 세션_아이디 = 회원가입하고_로그인하고_세션아이디를_가져온다(오도);
+        var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(오도);
 
         // when
         var 좋아요_응답 = 좋아요_요청을_보낸다(맛집.id(), 세션_아이디);
@@ -52,7 +52,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         // given
         var 전체_음식점 = seedData.insertSeedData();
         var 멤버 = 멤버("오도");
-        var 세션_아이디 = 회원가입하고_로그인하고_세션아이디를_가져온다(멤버);
+        var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(멤버);
 
         var 좋아요_누를_음식점_아이디 = 좋아요_누를_음식점_아이디를_뽑는다(전체_음식점);
         음식점들에_좋아요를_누른다(좋아요_누를_음식점_아이디, 세션_아이디);
@@ -71,7 +71,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         // given
         var 전체_음식점 = seedData.insertSeedData();
         var 멤버 = 멤버("오도");
-        var 세션_아이디 = 회원가입하고_로그인하고_세션아이디를_가져온다(멤버);
+        var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(멤버);
 
         var 좋아요_누를_음식점_아이디 = 좋아요_누를_음식점_아이디를_뽑는다(전체_음식점);
         음식점들에_좋아요를_누른다(좋아요_누를_음식점_아이디, 세션_아이디);

@@ -14,6 +14,7 @@ public class OauthAcceptanceSteps {
         return given()
                 .when().get("/oauth/{oauthServerType}", oauthServerType)
                 .then()
+                .log().all()
                 .extract();
     }
 
@@ -21,6 +22,7 @@ public class OauthAcceptanceSteps {
         return given()
                 .when().get("/oauth/login/kakao?code={authCode}", authCode)
                 .then()
+                .log().all()
                 .extract();
     }
 
@@ -41,13 +43,17 @@ public class OauthAcceptanceSteps {
     public static ExtractableResponse<Response> 로그아웃_요청을_보낸다(String 세션_아이디, String oauthServerType) {
         return given(세션_아이디)
                 .when().get("/oauth/logout/{oauthServerType}", oauthServerType)
-                .then().extract();
+                .then()
+                .log().all()
+                .extract();
     }
 
     public static ExtractableResponse<Response> 회원_탈퇴를_한다(String 세션_아이디, String oauthServerType) {
         return given(세션_아이디)
                 .when().delete("/oauth/withdraw/{oauthServerType}", oauthServerType)
-                .then().extract();
+                .then()
+                .log().all()
+                .extract();
     }
 
     public static void 응답에_JSESSIONID_헤더가_존재한다(ExtractableResponse<Response> 응답) {
