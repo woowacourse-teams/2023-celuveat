@@ -17,6 +17,7 @@ interface MiniRestaurantCardProps {
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
   flexColumn?: boolean;
   showWaterMark?: boolean;
+  carousel?: boolean;
 }
 
 function MiniRestaurantCard({
@@ -25,6 +26,7 @@ function MiniRestaurantCard({
   flexColumn = false,
   showWaterMark = true,
   setHoveredId = () => {},
+  carousel = true,
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
@@ -55,7 +57,7 @@ function MiniRestaurantCard({
         flexColumn={flexColumn}
       >
         <StyledImageSection>
-          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} />
+          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} disabled={!carousel} />
           <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </StyledLikeButton>
