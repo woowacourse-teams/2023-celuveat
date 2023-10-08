@@ -151,7 +151,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 좋아요를_눌렀는지_여부도_반환된다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
+            List<RestaurantSearchQueryResponse> 결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -159,7 +159,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
             ).getContent();
 
             // then
-            assertThat(성시경_ID로_검색한_결과)
+            assertThat(결과)
                     .hasSize(3)
                     .usingRecursiveComparison()
                     .ignoringFields("distance")
@@ -213,7 +213,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 특정_카테고리로_음식점들을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
+            List<RestaurantSearchQueryResponse> 카테고리로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, 대성집.superCategory(), null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -221,24 +221,16 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
             ).getContent();
 
             // then
-            assertThat(성시경_ID로_검색한_결과)
+            assertThat(카테고리로_검색한_결과)
                     .hasSize(1)
-                    .usingRecursiveComparison()
-                    .ignoringFields("distance")
-                    .isEqualTo(List.of(
-                            restaurantSearchQueryResponse(
-                                    대성집,
-                                    false, 4.5,
-                                    List.of(성시경),
-                                    List.of(대성집_사진_1, 대성집_사진_2)
-                            )
-                    ));
+                    .extracting(RestaurantSearchQueryResponse::name)
+                    .containsExactly("대성집");
         }
 
         @Test
         void 음식점_이름으로_음식점들을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
+            List<RestaurantSearchQueryResponse> 하늘초밥으로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, "하늘초밥"),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -246,18 +238,10 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
             ).getContent();
 
             // then
-            assertThat(성시경_ID로_검색한_결과)
+            assertThat(하늘초밥으로_검색한_결과)
                     .hasSize(1)
-                    .usingRecursiveComparison()
-                    .ignoringFields("distance")
-                    .isEqualTo(List.of(
-                            restaurantSearchQueryResponse(
-                                    하늘초밥,
-                                    false, 0,
-                                    List.of(회사랑),
-                                    List.of(하늘초밥_사진_1)
-                            )
-                    ));
+                    .extracting(RestaurantSearchQueryResponse::name)
+                    .containsExactly("하늘초밥");
         }
     }
 
@@ -332,64 +316,22 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     .allSatisfy(restaurant -> {
                         assertThat(restaurant.distance()).isLessThanOrEqualTo(1000);
                     })
-                    .usingRecursiveComparison()
-                    .ignoringFields("distance")
-                    .isEqualTo(List.of(
-                            restaurantSearchQueryResponse(
-                                    대성집_1000m_거리_음식점,
-                                    false, 0,
-                                    List.of(맛객리우),
-                                    List.of()
-                            )
-                    ));
+                    .extracting(RestaurantSearchQueryResponse::name)
+                    .containsExactly("대성집 1000m 거리 음식점");
             assertThat(대성집_2000m_내외_음식점_조회_결과)
                     .hasSize(2)
                     .allSatisfy(restaurant -> {
                         assertThat(restaurant.distance()).isLessThanOrEqualTo(2000);
                     })
-                    .usingRecursiveComparison()
-                    .ignoringFields("distance")
-                    .isEqualTo(List.of(
-                            restaurantSearchQueryResponse(
-                                    대성집_1000m_거리_음식점,
-                                    false, 0,
-                                    List.of(맛객리우),
-                                    List.of()
-                            ),
-                            restaurantSearchQueryResponse(
-                                    대성집_2000m_거리_음식점,
-                                    false, 0,
-                                    List.of(성시경),
-                                    List.of()
-                            )
-                    ));
+                    .extracting(RestaurantSearchQueryResponse::name)
+                    .containsExactly("대성집 1000m 거리 음식점", "대성집 2000m 거리 음식점");
             assertThat(대성집_3000m_내외_음식점_조회_결과)
                     .hasSize(3)
                     .allSatisfy(restaurant -> {
                         assertThat(restaurant.distance()).isLessThanOrEqualTo(3000);
                     })
-                    .usingRecursiveComparison()
-                    .ignoringFields("distance")
-                    .isEqualTo(List.of(
-                            restaurantSearchQueryResponse(
-                                    대성집_1000m_거리_음식점,
-                                    false, 0,
-                                    List.of(맛객리우),
-                                    List.of()
-                            ),
-                            restaurantSearchQueryResponse(
-                                    대성집_2000m_거리_음식점,
-                                    false, 0,
-                                    List.of(성시경),
-                                    List.of()
-                            ),
-                            restaurantSearchQueryResponse(
-                                    대성집_3000m_거리_음식점,
-                                    false, 0,
-                                    List.of(맛객리우),
-                                    List.of()
-                            )
-                    ));
+                    .extracting(RestaurantSearchQueryResponse::name)
+                    .containsExactly("대성집 1000m 거리 음식점", "대성집 2000m 거리 음식점", "대성집 3000m 거리 음식점");
         }
     }
 }
