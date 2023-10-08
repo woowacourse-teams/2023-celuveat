@@ -4,6 +4,7 @@ import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.video.command.domain.QVideo.video;
 
+import com.celuveat.common.dao.Dao;
 import com.celuveat.video.query.dto.VideoQueryResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -14,10 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class VideoQueryResponseDao {
