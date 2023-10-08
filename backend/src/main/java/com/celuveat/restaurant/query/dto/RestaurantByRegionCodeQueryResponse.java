@@ -61,6 +61,7 @@ public class RestaurantByRegionCodeQueryResponse {
         this.images = images;
     }
 
+    // TODO 기존 클래스 사용
     public record CelebInfo(
             Long restaurantId,
             Long id,
@@ -70,6 +71,7 @@ public class RestaurantByRegionCodeQueryResponse {
     ) {
     }
 
+    // TODO 기존 클래스 사용
     public record RestaurantImageInfo(
             Long restaurantId,
             Long id,

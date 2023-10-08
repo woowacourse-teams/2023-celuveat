@@ -174,7 +174,9 @@ public class RestaurantSearchQueryResponseDao {
             @Nullable Long memberId
     ) {
         Restaurant standard = restaurantQueryDaoSupport.getById(restaurantId);
-        List<RestaurantSearchQueryResponse> restaurants = findRestaurants(restaurantId, distance, pageable, standard);
+        List<RestaurantSearchQueryResponse> restaurants = findNearByRestaurants(
+                restaurantId, distance, pageable, standard
+        );
         settingCelebAndImageAndLiked(memberId, restaurants);
         LongSupplier totalCountSupplier = totalCountSupplier(restaurantId, distance, standard);
         return PageableExecutionUtils.getPage(
@@ -182,7 +184,7 @@ public class RestaurantSearchQueryResponseDao {
         );
     }
 
-    private List<RestaurantSearchQueryResponse> findRestaurants(
+    private List<RestaurantSearchQueryResponse> findNearByRestaurants(
             long restaurantId,
             int distance,
             Pageable pageable,
@@ -232,6 +234,7 @@ public class RestaurantSearchQueryResponseDao {
         return countQuery::fetchOne;
     }
 
+    // TODO 다른 DAO로 옮기기 & 테스트코드 작성
     public List<RestaurantSearchQueryResponse> findLatest(
             @Nullable Long memberId
     ) {
