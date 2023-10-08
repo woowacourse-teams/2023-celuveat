@@ -25,7 +25,7 @@ public class LikedRestaurantQueryResponseDao {
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
+    public List<LikedRestaurantQueryResponse> findLikedByMemberId(Long memberId) {
         List<Restaurant> restaurants = getLikedRestaurants(memberId);
         Map<Long, List<CelebQueryResponse>> celebs = celebsGroupByRestaurant(restaurants);
         Map<Long, List<RestaurantImageQueryResponse>> images = imagesGroupByRestaurants(restaurants);

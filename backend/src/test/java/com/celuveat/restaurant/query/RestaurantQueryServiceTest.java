@@ -81,7 +81,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
 
             // when
             RestaurantDetailQueryResponse result =
-                    restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, null);
+                    restaurantQueryService.findById(restaurant.id(), celebId, null);
 
             // then
             assertAll(
@@ -101,7 +101,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
 
             // when
             RestaurantDetailQueryResponse result =
-                    restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, oauthMember.id());
+                    restaurantQueryService.findById(restaurant.id(), celebId, oauthMember.id());
 
             // then
             assertAll(
@@ -147,7 +147,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
 
             // when
             RestaurantDetailQueryResponse result =
-                    restaurantQueryService.findRestaurantDetailById(restaurant.id(), celebId, null);
+                    restaurantQueryService.findById(restaurant.id(), celebId, null);
 
             // then
             assertAll(
@@ -166,7 +166,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
         @Test
         void 전체_음식점_조회() {
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -194,7 +194,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -222,7 +222,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, category, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -250,7 +250,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, null, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -279,7 +279,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, category, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -308,7 +308,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, null, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -337,7 +337,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, category, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -369,7 +369,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, category, restaurantName),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -398,7 +398,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, null, null),
                     new LocationSearchCond(
                             locationSearchCond.lowLatitude(),
@@ -435,7 +435,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(celebId, null, restaurantName),
                     new LocationSearchCond(
                             locationSearchCond.lowLatitude(),
@@ -475,7 +475,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             ));
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -506,7 +506,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
                     .toList();
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findNearBy(
                     1L,
                     specificDistance,
                     PageRequest.of(0, 4),
@@ -531,7 +531,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             }
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findNearBy(
                     seed.get(0).id(),
                     50000,
                     PageRequest.of(0, 4),
@@ -565,7 +565,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
 
             // when
             List<LikedRestaurantQueryResponse> result =
-                    restaurantQueryService.findAllLikedRestaurantByMemberId(오도.id());
+                    restaurantQueryService.findLikedByMemberId(오도.id());
 
             // then
             List<LikedRestaurantQueryResponse> expected = new ArrayList<>(List.of(
@@ -636,7 +636,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             likeService.like(로이스가_좋아요한_음식점.id(), 로이스.id());
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),
@@ -722,7 +722,7 @@ class RestaurantQueryServiceTest extends IntegrationTest {
             seed.set(9, increaseViewCount(restaurantSearchQueryResponse4, 5));
 
             // when
-            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+            Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                     new RestaurantSearchCond(null, null, null),
                     전체영역_검색_범위,
                     PageRequest.of(0, 100),

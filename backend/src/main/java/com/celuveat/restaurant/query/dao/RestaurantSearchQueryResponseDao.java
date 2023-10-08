@@ -59,7 +59,7 @@ public class RestaurantSearchQueryResponseDao {
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
 
-    public Page<RestaurantSearchQueryResponse> findAll(
+    public Page<RestaurantSearchQueryResponse> find(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,

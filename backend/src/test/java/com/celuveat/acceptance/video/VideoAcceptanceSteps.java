@@ -12,7 +12,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.exception.RestaurantException;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dto.VideoQueryResponse;
 import com.celuveat.video.utils.VideoResponseUtil;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
@@ -34,15 +34,15 @@ public class VideoAcceptanceSteps {
                 .extract();
     }
 
-    public static List<VideoWithCelebQueryResponse> 영상_조회_예상_응답(List<Video> 영상들) {
+    public static List<VideoQueryResponse> 영상_조회_예상_응답(List<Video> 영상들) {
         return 영상들.stream()
                 .map(VideoAcceptanceSteps::toVideoWithCelebQueryResponse)
                 .toList();
     }
 
-    public static VideoWithCelebQueryResponse toVideoWithCelebQueryResponse(Video video) {
+    public static VideoQueryResponse toVideoWithCelebQueryResponse(Video video) {
         Celeb celeb = video.celeb();
-        return new VideoWithCelebQueryResponse(
+        return new VideoQueryResponse(
                 video.id(),
                 VideoResponseUtil.extractVideoKey(video.youtubeUrl()),
                 video.uploadDate(),
@@ -81,8 +81,8 @@ public class VideoAcceptanceSteps {
                 .toList();
     }
 
-    public static void 영상_응답_결과를_검증한다(List<VideoWithCelebQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
-        PageResponse<VideoWithCelebQueryResponse> response = 응답.as(new TypeRef<>() {
+    public static void 영상_응답_결과를_검증한다(List<VideoQueryResponse> 예상_응답, ExtractableResponse<Response> 응답) {
+        PageResponse<VideoQueryResponse> response = 응답.as(new TypeRef<>() {
         });
         assertThat(response.content())
                 .usingRecursiveComparison()

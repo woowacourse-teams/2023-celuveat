@@ -1,7 +1,7 @@
 package com.celuveat.celeb.query;
 
-import com.celuveat.celeb.query.dao.FindAllCelebResponseDao;
-import com.celuveat.celeb.query.dto.FindAllCelebResponse;
+import com.celuveat.celeb.query.dao.CelebQueryResponseDao;
+import com.celuveat.celeb.query.dto.CelebQueryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CelebQueryService {
 
-    private final FindAllCelebResponseDao findAllCelebResponseDao;
+    private final CelebQueryResponseDao celebQueryResponseDao;
 
-    public List<FindAllCelebResponse> findAll() {
-        return findAllCelebResponseDao.findAll();
+    public List<CelebQueryResponse> find() {
+        return celebQueryResponseDao.find();
     }
 }

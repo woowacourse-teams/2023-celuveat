@@ -27,7 +27,7 @@ public class MainPageController {
             @ModelAttribute RegionCodeCondRequest regionCodeCondRequest,
             @PageableDefault(size = 18) Pageable pageable
     ) {
-        Page<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findAllByRegionCode(
+        Page<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findByRegionCode(
                 regionCodeCondRequest.toCondition(), pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));

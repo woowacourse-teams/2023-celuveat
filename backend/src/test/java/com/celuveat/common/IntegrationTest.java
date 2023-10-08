@@ -25,7 +25,7 @@ import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao;
 import com.celuveat.restaurant.query.dao.support.RestaurantLikeQueryDaoSupport;
 import com.celuveat.video.command.domain.VideoRepository;
 import com.celuveat.video.query.VideoQueryService;
-import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
+import com.celuveat.video.query.dao.VideoQueryResponseDao;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -92,7 +92,7 @@ public abstract class IntegrationTest {
     @Autowired
     protected RestaurantReviewService restaurantReviewService;
     @Autowired
-    protected VideoWithCelebQueryResponseDao videoWithCelebQueryResponseDao;
+    protected VideoQueryResponseDao videoQueryResponseDao;
     @Autowired
     protected RestaurantSearchQueryResponseDao restaurantSearchQueryResponseDao;
     @Autowired

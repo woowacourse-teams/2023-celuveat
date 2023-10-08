@@ -39,11 +39,11 @@ public class ReviewController {
     private final RestaurantReviewReportService restaurantReviewReportService;
 
     @GetMapping
-    ResponseEntity<RestaurantReviewsQueryResponse> findAllReviewsByRestaurantId(
+    ResponseEntity<RestaurantReviewsQueryResponse> findByRestaurantId(
             @LooseAuth Long memberId,
             @RequestParam Long restaurantId
     ) {
-        return ResponseEntity.ok(restaurantReviewQueryService.findAllByRestaurantId(restaurantId, memberId));
+        return ResponseEntity.ok(restaurantReviewQueryService.findByRestaurantId(restaurantId, memberId));
     }
 
     @PostMapping

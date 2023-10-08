@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.video.command.domain.Video;
-import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dao.VideoQueryResponseDao;
+import com.celuveat.video.query.dto.VideoQueryResponse;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,13 +31,13 @@ class VideoQueryServiceTest extends IntegrationTest {
         @Test
         void 영상_전체_검색() {
             // given
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
+            List<VideoQueryResponse> expected = videos.stream()
                     .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, null),
+            Page<VideoQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
+                    new VideoQueryResponseDao.VideoSearchCond(null, null),
                     PageRequest.of(0, expected.size())
             );
 
@@ -51,14 +51,14 @@ class VideoQueryServiceTest extends IntegrationTest {
         void 음식점ID로_영상_검색() {
             // given
             Long expectedRestaurantId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
+            List<VideoQueryResponse> expected = videos.stream()
                     .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
                     .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, expectedRestaurantId),
+            Page<VideoQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
+                    new VideoQueryResponseDao.VideoSearchCond(null, expectedRestaurantId),
                     PageRequest.of(0, expected.size())
             );
 
@@ -72,14 +72,14 @@ class VideoQueryServiceTest extends IntegrationTest {
         void 셀럽ID로_영상_검색() {
             // given
             Long expectedCelebId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
+            List<VideoQueryResponse> expected = videos.stream()
                     .filter(video -> video.celeb().id().equals(expectedCelebId))
                     .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, null),
+            Page<VideoQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
+                    new VideoQueryResponseDao.VideoSearchCond(expectedCelebId, null),
                     PageRequest.of(0, expected.size())
             );
 
@@ -94,15 +94,15 @@ class VideoQueryServiceTest extends IntegrationTest {
             // given
             Long expectedRestaurantId = 1L;
             Long expectedCelebId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
+            List<VideoQueryResponse> expected = videos.stream()
                     .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
                     .filter(video -> video.celeb().id().equals(expectedCelebId))
                     .map(this::toVideoWithCelebQueryResponse)
                     .toList();
 
             // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, expectedRestaurantId),
+            Page<VideoQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
+                    new VideoQueryResponseDao.VideoSearchCond(expectedCelebId, expectedRestaurantId),
                     PageRequest.of(0, 1)
             );
 
@@ -112,9 +112,9 @@ class VideoQueryServiceTest extends IntegrationTest {
                     .isEqualTo(expected);
         }
 
-        private VideoWithCelebQueryResponse toVideoWithCelebQueryResponse(Video video) {
+        private VideoQueryResponse toVideoWithCelebQueryResponse(Video video) {
             Celeb celeb = video.celeb();
-            return new VideoWithCelebQueryResponse(
+            return new VideoQueryResponse(
                     video.id(),
                     video.youtubeUrl(),
                     video.uploadDate(),

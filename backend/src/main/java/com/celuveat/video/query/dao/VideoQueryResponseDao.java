@@ -4,9 +4,9 @@ import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.video.command.domain.QVideo.video;
 
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
-import com.querydsl.core.types.Predicate;
+import com.celuveat.video.query.dto.VideoQueryResponse;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -20,16 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class VideoWithCelebQueryResponseDao {
+public class VideoQueryResponseDao {
 
     private final JPAQueryFactory query;
 
-    public Page<VideoWithCelebQueryResponse> find(
+    public Page<VideoQueryResponse> find(
             VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {
-        List<VideoWithCelebQueryResponse> resultList = query.selectDistinct(
-                        Projections.constructor(VideoWithCelebQueryResponse.class,
+        List<VideoQueryResponse> resultList = query.selectDistinct(
+                        Projections.constructor(VideoQueryResponse.class,
                                 video.id,
                                 video.youtubeUrl,
                                 video.uploadDate,
@@ -59,14 +59,14 @@ public class VideoWithCelebQueryResponseDao {
         return PageableExecutionUtils.getPage(resultList, pageable, countQuery::fetchOne);
     }
 
-    private Predicate celebIdEqual(Long celebId) {
+    private BooleanExpression celebIdEqual(Long celebId) {
         if (celebId == null) {
             return null;
         }
         return celeb.id.eq(celebId);
     }
 
-    private Predicate restaurantIdEqual(Long restaurantId) {
+    private BooleanExpression restaurantIdEqual(Long restaurantId) {
         if (restaurantId == null) {
             return null;
         }

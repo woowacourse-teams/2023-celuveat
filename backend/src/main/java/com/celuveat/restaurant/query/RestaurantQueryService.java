@@ -32,7 +32,7 @@ public class RestaurantQueryService {
     private final LikedRestaurantQueryResponseDao likedRestaurantQueryResponseDao;
     private final RestaurantSearchWithoutDistanceQueryResponseDao restaurantSearchWithoutDistanceQueryResponseDao;
 
-    public RestaurantDetailQueryResponse findRestaurantDetailById(
+    public RestaurantDetailQueryResponse findById(
             Long restaurantId,
             Long celebId,
             @Nullable Long memberId
@@ -42,13 +42,13 @@ public class RestaurantQueryService {
         return relocateCelebDataFirstByCelebId(celebId, response);
     }
 
-    public Page<RestaurantSearchQueryResponse> findAllWithMemberLiked(
+    public Page<RestaurantSearchQueryResponse> find(
             RestaurantSearchCond restaurantCond,
             LocationSearchCond locationCond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        Page<RestaurantSearchQueryResponse> response = restaurantSearchQueryResponseDao.findAll(
+        Page<RestaurantSearchQueryResponse> response = restaurantSearchQueryResponseDao.find(
                 restaurantCond, locationCond, pageable, memberId
         );
         Long celebId = restaurantCond.celebId();
@@ -58,7 +58,7 @@ public class RestaurantQueryService {
         return relocateCelebDataFirstInResponsesByCelebId(celebId, response);
     }
 
-    public Page<RestaurantSearchQueryResponse> findAllNearByDistanceWithoutSpecificRestaurant(
+    public Page<RestaurantSearchQueryResponse> findNearBy(
             long restaurantId,
             int distance,
             Pageable pageable,
@@ -67,7 +67,7 @@ public class RestaurantQueryService {
         return restaurantSearchQueryResponseDao.findNearBy(restaurantId, distance, pageable, memberId);
     }
 
-    public Page<RestaurantSearchWithoutDistanceResponse> findAllByRegionCode(
+    public Page<RestaurantSearchWithoutDistanceResponse> findByRegionCode(
             RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
@@ -79,7 +79,7 @@ public class RestaurantQueryService {
         return restaurantSearchWithoutDistanceQueryResponseDao.findLatest(memberId);
     }
 
-    public List<LikedRestaurantQueryResponse> findAllLikedRestaurantByMemberId(Long memberId) {
-        return likedRestaurantQueryResponseDao.findAllLikedRestaurantByMemberId(memberId);
+    public List<LikedRestaurantQueryResponse> findLikedByMemberId(Long memberId) {
+        return likedRestaurantQueryResponseDao.findLikedByMemberId(memberId);
     }
 }

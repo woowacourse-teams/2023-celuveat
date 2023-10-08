@@ -3,7 +3,7 @@ package com.celuveat.video.query.dto;
 import com.celuveat.video.utils.VideoResponseUtil;
 import java.time.LocalDate;
 
-public record VideoWithCelebQueryResponse(
+public record VideoQueryResponse(
         Long videoId,
         String youtubeVideoKey,
         LocalDate uploadDate,

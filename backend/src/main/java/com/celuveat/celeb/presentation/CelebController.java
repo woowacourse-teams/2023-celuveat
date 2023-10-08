@@ -1,7 +1,7 @@
 package com.celuveat.celeb.presentation;
 
 import com.celuveat.celeb.query.CelebQueryService;
-import com.celuveat.celeb.query.dto.FindAllCelebResponse;
+import com.celuveat.celeb.query.dto.CelebQueryResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class CelebController {
     private final CelebQueryService celebQueryService;
 
     @GetMapping
-    ResponseEntity<List<FindAllCelebResponse>> findAll() {
-        List<FindAllCelebResponse> result = celebQueryService.findAll();
+    ResponseEntity<List<CelebQueryResponse>> find() {
+        List<CelebQueryResponse> result = celebQueryService.find();
         return ResponseEntity.ok(result);
     }
 }

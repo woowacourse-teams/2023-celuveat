@@ -3,7 +3,7 @@ package com.celuveat.video.presentation;
 import com.celuveat.common.PageResponse;
 import com.celuveat.video.presentation.dto.VideoSearchCondRequest;
 import com.celuveat.video.query.VideoQueryService;
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dto.VideoQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,11 +24,11 @@ public class VideoController {
     private final VideoQueryService videoQueryService;
 
     @GetMapping
-    ResponseEntity<PageResponse<VideoWithCelebQueryResponse>> getVideosByRestaurantId(
+    ResponseEntity<PageResponse<VideoQueryResponse>> getVideosByRestaurantId(
             @ModelAttribute VideoSearchCondRequest searchCondRequest,
             @PageableDefault(size = VIDEO_WITH_CELEB_SIZE) Pageable pageable
     ) {
-        Page<VideoWithCelebQueryResponse> result =
+        Page<VideoQueryResponse> result =
                 videoQueryService.findAllVideoWithCeleb(searchCondRequest.toCondition(), pageable);
         return ResponseEntity.ok(PageResponse.from(result));
     }

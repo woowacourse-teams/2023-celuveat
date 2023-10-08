@@ -97,13 +97,13 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 위경도에_포함된_음식점을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 대성집만_포함한_검색_영역으로_조회한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 대성집만_포함한_검색_영역으로_조회한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, null),
                     대성집만_포함한_검색_영역(),
                     PageRequest.of(0, 18),
                     null
             ).getContent();
-            List<RestaurantSearchQueryResponse> 대한민국_전체_영역으로_조회한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 대한민국_전체_영역으로_조회한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -154,7 +154,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 좋아요를_눌렀는지_여부도_반환된다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -191,7 +191,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 특정_셀럽의_ID로_음식점들을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(성시경.id(), null, null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -216,7 +216,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 특정_카테고리로_음식점들을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, 대성집.superCategory(), null),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),
@@ -241,7 +241,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         @Test
         void 음식점_이름으로_음식점들을_조회한다() {
             // when
-            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.findAll(
+            List<RestaurantSearchQueryResponse> 성시경_ID로_검색한_결과 = restaurantSearchQueryResponseDao.find(
                     new RestaurantSearchCond(null, null, "하늘초밥"),
                     대한민국_전체를_포함한_검색_영역(),
                     PageRequest.of(0, 18),

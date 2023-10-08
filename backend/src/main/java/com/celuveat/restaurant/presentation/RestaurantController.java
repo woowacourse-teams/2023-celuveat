@@ -45,12 +45,12 @@ public class RestaurantController {
     private final RestaurantCorrectionService restaurantCorrectionService;
 
     @GetMapping("/{restaurantId}")
-    ResponseEntity<RestaurantDetailQueryResponse> getRestaurantDetail(
+    ResponseEntity<RestaurantDetailQueryResponse> findById(
             @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam Long celebId
     ) {
-        RestaurantDetailQueryResponse result = restaurantQueryService.findRestaurantDetailById(
+        RestaurantDetailQueryResponse result = restaurantQueryService.findById(
                 restaurantId, celebId, memberId
         );
         restaurantService.increaseViewCount(restaurantId);
@@ -58,7 +58,7 @@ public class RestaurantController {
     }
 
     @GetMapping
-    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findAll(
+    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> find(
             @LooseAuth Long memberId,
             @ModelAttribute RestaurantSearchCondRequest searchCondRequest,
             @Valid @ModelAttribute LocationSearchCondRequest locationSearchCondRequest,
@@ -66,21 +66,21 @@ public class RestaurantController {
     ) {
         RestaurantSearchCond restaurantSearchCond = searchCondRequest.toCondition();
         LocationSearchCond locationSearchCond = locationSearchCondRequest.toCondition();
-        Page<RestaurantSearchQueryResponse> result = restaurantQueryService.findAllWithMemberLiked(
+        Page<RestaurantSearchQueryResponse> result = restaurantQueryService.find(
                 restaurantSearchCond, locationSearchCond, pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
     }
 
     @GetMapping("/{restaurantId}/nearby")
-    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findAllNearbyDistance(
+    ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findNearBy(
             @LooseAuth Long memberId,
             @PathVariable Long restaurantId,
             @RequestParam(required = false, defaultValue = "3000") Integer distance,
             @PageableDefault(size = 4) Pageable pageable
     ) {
         Page<RestaurantSearchQueryResponse> result =
-                restaurantQueryService.findAllNearByDistanceWithoutSpecificRestaurant(
+                restaurantQueryService.findNearBy(
                         restaurantId,
                         distance,
                         pageable,
@@ -98,8 +98,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/like")
-    ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(memberId);
+    ResponseEntity<List<LikedRestaurantQueryResponse>> findLikedByMember(@Auth Long memberId) {
+        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findLikedByMemberId(memberId);
         return ResponseEntity.ok(result);
     }
 
