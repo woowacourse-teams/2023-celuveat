@@ -11,9 +11,10 @@ interface ImageCarouselProps {
   images: RestaurantImage[];
   type: 'list' | 'map';
   showWaterMark?: boolean;
+  disabled?: boolean;
 }
 
-function ImageCarousel({ images, type, showWaterMark = true }: ImageCarouselProps) {
+function ImageCarousel({ images, type, showWaterMark = true, disabled = false }: ImageCarouselProps) {
   const ref = useRef<HTMLDivElement>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const { isMobile } = useMediaQuery();
@@ -48,28 +49,39 @@ function ImageCarousel({ images, type, showWaterMark = true }: ImageCarouselProp
   return (
     <StyledCarouselContainer type={type}>
       <StyledCarouselSlide ref={ref} isMobile={isMobile}>
-        {images.map(({ id, name, author, sns }) => (
+        {disabled ? (
           <WaterMarkImage
-            key={id}
-            imageUrl={name}
-            waterMark={author}
+            key={images[0].id}
+            imageUrl={images[0].name}
+            waterMark={images[0].author}
             type={type}
-            sns={sns}
+            sns={images[0].sns}
             showWaterMark={showWaterMark}
           />
-        ))}
+        ) : (
+          images.map(({ id, name, author, sns }) => (
+            <WaterMarkImage
+              key={id}
+              imageUrl={name}
+              waterMark={author}
+              type={type}
+              sns={sns}
+              showWaterMark={showWaterMark}
+            />
+          ))
+        )}
       </StyledCarouselSlide>
-      {currentIndex !== 0 && !isMobile && (
+      {!disabled && currentIndex !== 0 && !isMobile && (
         <StyledLeftButton type="button" onClick={goToPrevious}>
           <LeftBracket width={10} height={10} />
         </StyledLeftButton>
       )}
-      {currentIndex !== images.length - 1 && !isMobile && (
+      {!disabled && currentIndex !== images.length - 1 && !isMobile && (
         <StyledRightButton type="button" onClick={goToNext}>
           <RightBracket width={10} height={10} />
         </StyledRightButton>
       )}
-      {images.length > 1 && (
+      {!disabled && images.length > 1 && (
         <StyledDots>
           {images.map((_, index) => (
             <StyledDot isActive={index === currentIndex} />
