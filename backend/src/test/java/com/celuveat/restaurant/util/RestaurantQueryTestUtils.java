@@ -8,6 +8,7 @@ import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
 import java.util.List;
 import org.springframework.data.util.Pair;
 
@@ -42,6 +43,14 @@ public class RestaurantQueryTestUtils {
             boolean 좋아요_눌렀는지_여부, double 평점,
             List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
     ) {
+        return restaurantSearchQueryResponse(음식점, 좋아요_눌렀는지_여부, 평점, 0, 셀럽들, 음식점_사진들);
+    }
+
+    public static RestaurantSearchQueryResponse restaurantSearchQueryResponse(
+            Restaurant 음식점,
+            boolean 좋아요_눌렀는지_여부, double 평점, int 거리,
+            List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
+    ) {
         return new RestaurantSearchQueryResponse(
                 음식점.id(),
                 음식점.name(),
@@ -56,7 +65,31 @@ public class RestaurantQueryTestUtils {
                 음식점.likeCount(),
                 좋아요_눌렀는지_여부,
                 평점,
-                0,  // 거리
+                거리,
+                celebQueryResponses(음식점, 셀럽들),
+                restaurantImageQueryResponses(음식점, 음식점_사진들)
+        );
+    }
+
+    public static RestaurantSearchWithoutDistanceResponse restaurantSearchWithoutDistanceResponse(
+            Restaurant 음식점,
+            boolean 좋아요_눌렀는지_여부, double 평점,
+            List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
+    ) {
+        return new RestaurantSearchWithoutDistanceResponse(
+                음식점.id(),
+                음식점.name(),
+                음식점.category(),
+                음식점.superCategory(),
+                음식점.roadAddress(),
+                음식점.latitude(),
+                음식점.longitude(),
+                음식점.phoneNumber(),
+                음식점.naverMapUrl(),
+                음식점.viewCount(),
+                음식점.likeCount(),
+                좋아요_눌렀는지_여부,
+                평점,
                 celebQueryResponses(음식점, 셀럽들),
                 restaurantImageQueryResponses(음식점, 음식점_사진들)
         );
