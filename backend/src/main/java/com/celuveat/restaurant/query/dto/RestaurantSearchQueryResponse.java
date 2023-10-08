@@ -25,11 +25,11 @@ public class RestaurantSearchQueryResponse {
     private String phoneNumber;
     private String naverMapUrl;
     private int viewCount;
-    private int distance;
     private int likeCount;
     @JsonProperty("isLiked")
     private boolean isLiked;
     private double rating;
+    private int distance;
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
@@ -39,8 +39,9 @@ public class RestaurantSearchQueryResponse {
             String roadAddress,
             double latitude, double longitude,
             String phoneNumber, String naverMapUrl,
-            int viewCount, double distance, int likeCount,
-            int reviewCount, double totalRating
+            int viewCount, int likeCount,
+            int reviewCount, double totalRating,
+            double distance
     ) {
         this.id = id;
         this.name = name;
@@ -52,9 +53,9 @@ public class RestaurantSearchQueryResponse {
         this.phoneNumber = phoneNumber;
         this.naverMapUrl = naverMapUrl;
         this.viewCount = viewCount;
-        this.distance = (int) distance;
         this.likeCount = likeCount;
         this.rating = RatingUtils.averageRating(totalRating, reviewCount);
+        this.distance = (int) distance;
     }
 
     public void setLiked(boolean liked) {
@@ -113,10 +114,6 @@ public class RestaurantSearchQueryResponse {
         return viewCount;
     }
 
-    public int distance() {
-        return distance;
-    }
-
     public int likeCount() {
         return likeCount;
     }
@@ -128,6 +125,10 @@ public class RestaurantSearchQueryResponse {
 
     public double rating() {
         return rating;
+    }
+
+    public int distance() {
+        return distance;
     }
 
     public List<CelebQueryResponse> celebs() {

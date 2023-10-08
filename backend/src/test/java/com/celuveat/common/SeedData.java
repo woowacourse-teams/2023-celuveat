@@ -128,10 +128,10 @@ public class SeedData {
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
                 restaurant.viewCount(),
-                distance,
                 restaurant.likeCount(),
                 restaurant.reviewCount(),
-                restaurant.totalRating()
+                restaurant.totalRating(),
+                distance
         );
         List<CelebQueryResponse> celebResponses = celebs.stream()
                 .map(it -> CelebQueryResponse.from(restaurant.id(), it))

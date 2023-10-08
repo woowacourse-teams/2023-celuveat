@@ -90,10 +90,10 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
-                        distance(locationCond.middleLat(), locationCond.middleLng()).as(distanceColumn),
                         restaurant.likeCount,
                         restaurant.reviewCount,
-                        restaurant.totalRating
+                        restaurant.totalRating,
+                        distance(locationCond.middleLat(), locationCond.middleLng()).as(distanceColumn)
                 ))
                 .from(restaurant)
                 .join(video).on(video.restaurant.eq(restaurant))
@@ -201,10 +201,10 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.phoneNumber,
                         restaurant.naverMapUrl,
                         restaurant.viewCount,
-                        distance(standard.latitude(), standard.longitude()).as(distanceColumn),
                         restaurant.likeCount,
                         restaurant.reviewCount,
-                        restaurant.totalRating
+                        restaurant.totalRating,
+                        distance(standard.latitude(), standard.longitude()).as(distanceColumn)
                 ))
                 .from(restaurant)
                 .where(

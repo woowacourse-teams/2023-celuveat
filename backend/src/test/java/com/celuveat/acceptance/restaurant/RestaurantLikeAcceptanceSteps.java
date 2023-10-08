@@ -129,10 +129,10 @@ public class RestaurantLikeAcceptanceSteps {
                 restaurantSearchQueryResponse.phoneNumber(),
                 restaurantSearchQueryResponse.naverMapUrl(),
                 restaurantSearchQueryResponse.viewCount(),
-                restaurantSearchQueryResponse.distance(),
                 restaurantSearchQueryResponse.likeCount(),
                 true,
                 restaurantSearchQueryResponse.rating(),
+                restaurantSearchQueryResponse.distance(),
                 restaurantSearchQueryResponse.celebs(),
                 restaurantSearchQueryResponse.images()
         );
@@ -151,10 +151,10 @@ public class RestaurantLikeAcceptanceSteps {
                 restaurantSearchQueryResponse.phoneNumber(),
                 restaurantSearchQueryResponse.naverMapUrl(),
                 restaurantSearchQueryResponse.viewCount(),
-                restaurantSearchQueryResponse.distance(),
                 restaurantSearchQueryResponse.likeCount() + 1,
                 restaurantSearchQueryResponse.isLiked(),
                 restaurantSearchQueryResponse.rating(),
+                restaurantSearchQueryResponse.distance(),
                 restaurantSearchQueryResponse.celebs(),
                 restaurantSearchQueryResponse.images()
         );
