@@ -84,6 +84,7 @@ const StyledDropDownWrapper = styled.ul<{ isMobile: boolean }>`
 
   position: absolute;
   top: calc(100% + 16px);
+  z-index: 1;
 
   ${({ isMobile }) =>
     isMobile
