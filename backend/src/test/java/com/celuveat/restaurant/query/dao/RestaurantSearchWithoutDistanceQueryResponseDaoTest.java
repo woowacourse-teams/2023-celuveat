@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dao;
 
+import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.builder.DSL.polygon;
@@ -189,6 +190,52 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                     .containsExactly("말랑1동 대표 한식집", "말랑1동 대표 일식집",
                             "말랑2동 대표 한식집", "말랑2동 대표 일식집",
                             "말랑특별시 대표 한식집", "말랑특별시 대표 일식집");
+        }
+    }
+
+    @Nested
+    class 최근_추가된_음식점_조회_시 extends DaoTest {
+
+        @Override
+        protected TestData prepareTestData() {
+            testData.addRestaurants(
+                    음식점("음식점1", "한식", 37.123, 126.123),
+                    음식점("음식점2", "한식", 37.1234, 126.123),
+                    음식점("음식점3", "한식", 37.1235, 126.123),
+                    음식점("음식점4", "한식", 37.1236, 126.123),
+                    음식점("음식점5", "한식", 37.1237, 126.123),
+                    음식점("음식점6", "한식", 37.1238, 126.123),
+                    음식점("음식점7", "한식", 37.1239, 126.123),
+                    음식점("음식점8", "한식", 37.124, 126.123),
+                    음식점("음식점9", "한식", 37.1241, 126.123),
+                    음식점("음식점10", "한식", 37.1242, 126.123),
+                    음식점("음식점11", "한식", 37.1243, 126.123),
+                    음식점("음식점12", "한식", 37.1244, 126.123)
+            );
+            return testData;
+        }
+
+        @Test
+        void 최근_추가된_음식점을_가장_최근에_추가된_순서로_10개만_보여준다() {
+            // when
+            List<RestaurantSearchWithoutDistanceResponse> latest = restaurantSearchWithoutDistanceQueryResponseDao
+                    .findLatest(/* 회원 ID */null);
+
+            // then
+            assertThat(latest)
+                    .extracting(RestaurantSearchWithoutDistanceResponse::getName)
+                    .containsExactly(
+                            "음식점12",
+                            "음식점11",
+                            "음식점10",
+                            "음식점9",
+                            "음식점8",
+                            "음식점7",
+                            "음식점6",
+                            "음식점5",
+                            "음식점4",
+                            "음식점3"
+                    );
         }
     }
 }
