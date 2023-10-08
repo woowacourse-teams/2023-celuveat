@@ -17,6 +17,7 @@ import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.Restau
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -71,18 +72,6 @@ public class RestaurantController {
         return ResponseEntity.ok(PageResponse.from(result));
     }
 
-    @GetMapping("/like")
-    ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
-        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(memberId);
-        return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/{restaurantId}/like")
-    ResponseEntity<Void> like(@PathVariable Long restaurantId, @Auth Long memberId) {
-        restaurantLikeService.like(restaurantId, memberId);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/{restaurantId}/nearby")
     ResponseEntity<PageResponse<RestaurantSearchQueryResponse>> findAllNearbyDistance(
             @LooseAuth Long memberId,
@@ -100,6 +89,20 @@ public class RestaurantController {
         return ResponseEntity.ok(PageResponse.from(result));
     }
 
+    @GetMapping("/latest")
+    ResponseEntity<List<RestaurantSearchWithoutDistanceResponse>> findLatest(
+            @LooseAuth Long memberId
+    ) {
+        List<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findLatest(memberId);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/like")
+    ResponseEntity<List<LikedRestaurantQueryResponse>> getLikedRestaurants(@Auth Long memberId) {
+        List<LikedRestaurantQueryResponse> result = restaurantQueryService.findAllLikedRestaurantByMemberId(memberId);
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/{restaurantId}/correction")
     ResponseEntity<Void> suggestCorrection(
             @PathVariable Long restaurantId,
@@ -109,11 +112,9 @@ public class RestaurantController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    @GetMapping("/latest")
-    ResponseEntity<List<RestaurantSearchQueryResponse>> findLatest(
-            @LooseAuth Long memberId
-    ) {
-        List<RestaurantSearchQueryResponse> result = restaurantQueryService.findLatest(memberId);
-        return ResponseEntity.ok(result);
+    @PostMapping("/{restaurantId}/like")
+    ResponseEntity<Void> like(@PathVariable Long restaurantId, @Auth Long memberId) {
+        restaurantLikeService.like(restaurantId, memberId);
+        return ResponseEntity.ok().build();
     }
 }

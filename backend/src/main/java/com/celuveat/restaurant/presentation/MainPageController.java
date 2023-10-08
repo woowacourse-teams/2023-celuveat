@@ -20,6 +20,7 @@ public class MainPageController {
 
     private final RestaurantQueryService restaurantQueryService;
 
+    // TODO : API 변경될 수 있는지 확인 후, 가능하다면 옮기기
     @GetMapping("/address")
     ResponseEntity<PageResponse<RestaurantSearchWithoutDistanceResponse>> findAllByRegionCode(
             @LooseAuth Long memberId,

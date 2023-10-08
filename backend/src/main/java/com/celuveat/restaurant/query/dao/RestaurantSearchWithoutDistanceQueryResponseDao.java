@@ -81,6 +81,33 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
                 .fetch();
     }
 
+    public List<RestaurantSearchWithoutDistanceResponse> findLatest(
+            @Nullable Long memberId
+    ) {
+        List<RestaurantSearchWithoutDistanceResponse> latestRestaurants =
+                query.select(Projections.constructor(RestaurantSearchWithoutDistanceResponse.class,
+                                restaurant.id,
+                                restaurant.name,
+                                restaurant.category,
+                                restaurant.superCategory,
+                                restaurant.roadAddress,
+                                restaurant.restaurantPoint.latitude,
+                                restaurant.restaurantPoint.longitude,
+                                restaurant.phoneNumber,
+                                restaurant.naverMapUrl,
+                                restaurant.viewCount,
+                                restaurant.likeCount,
+                                restaurant.reviewCount,
+                                restaurant.totalRating
+                        ))
+                        .from(restaurant)
+                        .orderBy(restaurant.id.desc())
+                        .limit(10)
+                        .fetch();
+        settingCelebAndImageAndLiked(memberId, latestRestaurants);
+        return latestRestaurants;
+    }
+
     private void settingCelebAndImageAndLiked(Long memberId, List<RestaurantSearchWithoutDistanceResponse> restaurants) {
         List<Long> ids = extractIds(restaurants);
         Map<Long, List<CelebQueryResponse>> celebs = findCelebs(ids);

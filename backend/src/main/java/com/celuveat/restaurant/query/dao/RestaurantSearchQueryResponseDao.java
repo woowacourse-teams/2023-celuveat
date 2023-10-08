@@ -234,35 +234,6 @@ public class RestaurantSearchQueryResponseDao {
         return countQuery::fetchOne;
     }
 
-    // TODO 다른 DAO로 옮기기 & 테스트코드 작성
-    public List<RestaurantSearchQueryResponse> findLatest(
-            @Nullable Long memberId
-    ) {
-        List<RestaurantSearchQueryResponse> latestRestaurants =
-                query.select(Projections.constructor(RestaurantSearchQueryResponse.class,
-                                restaurant.id,
-                                restaurant.name,
-                                restaurant.category,
-                                restaurant.superCategory,
-                                restaurant.roadAddress,
-                                restaurant.restaurantPoint.latitude,
-                                restaurant.restaurantPoint.longitude,
-                                restaurant.phoneNumber,
-                                restaurant.naverMapUrl,
-                                restaurant.viewCount,
-                                Expressions.constant(0d),
-                                restaurant.likeCount,
-                                restaurant.reviewCount,
-                                restaurant.totalRating
-                        ))
-                        .from(restaurant)
-                        .orderBy(restaurant.id.desc())
-                        .limit(10)
-                        .fetch();
-        settingCelebAndImageAndLiked(memberId, latestRestaurants);
-        return latestRestaurants;
-    }
-
     private void settingCelebAndImageAndLiked(
             @Nullable Long memberId, List<RestaurantSearchQueryResponse> restaurants
     ) {
