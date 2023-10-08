@@ -13,8 +13,8 @@ import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.common.dao.Dao;
 import com.celuveat.restaurant.query.dto.CelebQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RestaurantByRegionCodeQueryResponseDao {
+public class RestaurantSearchWithoutDistanceQueryResponseDao {
 
     private final JPAQueryFactory query;
 
@@ -43,27 +43,22 @@ public class RestaurantByRegionCodeQueryResponseDao {
             restaurant.restaurantPoint.point
     );
 
-    public Page<RestaurantByRegionCodeQueryResponse> find(
+    public Page<RestaurantSearchWithoutDistanceResponse> findByRegionCode(
             RegionCodeCond cond,
             Pageable pageable,
             @Nullable Long memberId
     ) {
-        List<RestaurantByRegionCodeQueryResponse> resultList = findRestaurants(cond, pageable);
-        List<Long> ids = extractIds(resultList);
-        Map<Long, List<CelebQueryResponse>> celebs = findCelebs(ids);
-        Map<Long, List<RestaurantImageQueryResponse>> images = findImages(ids);
-        Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
-        for (RestaurantByRegionCodeQueryResponse restaurant : resultList) {
-            restaurant.setCelebs(celebs.get(restaurant.getId()));
-            restaurant.setImages(images.get(restaurant.getId()));
-            restaurant.setLiked(memberIsLikedRestaurants.get(restaurant.getId()));
-        }
-        return PageableExecutionUtils.getPage(resultList, pageable, totalCountSupplier(cond));
+        List<RestaurantSearchWithoutDistanceResponse> restaurants = findRestaurantsByRegionCode(cond, pageable);
+        settingCelebAndImageAndLiked(memberId, restaurants);
+        return PageableExecutionUtils.getPage(restaurants, pageable, totalCountSupplier(cond));
     }
 
-    private List<RestaurantByRegionCodeQueryResponse> findRestaurants(RegionCodeCond cond, Pageable pageable) {
+    private List<RestaurantSearchWithoutDistanceResponse> findRestaurantsByRegionCode(
+            RegionCodeCond cond,
+            Pageable pageable
+    ) {
         return query.selectDistinct(Projections.constructor(
-                        RestaurantByRegionCodeQueryResponse.class,
+                        RestaurantSearchWithoutDistanceResponse.class,
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
@@ -86,9 +81,21 @@ public class RestaurantByRegionCodeQueryResponseDao {
                 .fetch();
     }
 
-    private List<Long> extractIds(List<RestaurantByRegionCodeQueryResponse> resultList) {
+    private void settingCelebAndImageAndLiked(Long memberId, List<RestaurantSearchWithoutDistanceResponse> restaurants) {
+        List<Long> ids = extractIds(restaurants);
+        Map<Long, List<CelebQueryResponse>> celebs = findCelebs(ids);
+        Map<Long, List<RestaurantImageQueryResponse>> images = findImages(ids);
+        Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
+        for (RestaurantSearchWithoutDistanceResponse restaurant : restaurants) {
+            restaurant.setCelebs(celebs.get(restaurant.getId()));
+            restaurant.setImages(images.get(restaurant.getId()));
+            restaurant.setLiked(memberIsLikedRestaurants.get(restaurant.getId()));
+        }
+    }
+
+    private List<Long> extractIds(List<RestaurantSearchWithoutDistanceResponse> resultList) {
         return resultList.stream()
-                .map(RestaurantByRegionCodeQueryResponse::getId)
+                .map(RestaurantSearchWithoutDistanceResponse::getId)
                 .toList();
     }
 

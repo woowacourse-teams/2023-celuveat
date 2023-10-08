@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class RestaurantByRegionCodeQueryResponse {
+public class RestaurantSearchWithoutDistanceResponse {
 
     private Long id;
     private String name;
@@ -14,9 +14,9 @@ public class RestaurantByRegionCodeQueryResponse {
     private String superCategory;
     private String roadAddress;
     @JsonProperty("lat")
-    private Double latitude;
+    private double latitude;
     @JsonProperty("lng")
-    private Double longitude;
+    private double longitude;
     private String phoneNumber;
     private String naverMapUrl;
     private int viewCount;
@@ -26,11 +26,11 @@ public class RestaurantByRegionCodeQueryResponse {
     private List<CelebQueryResponse> celebs = new ArrayList<>();
     private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
-    public RestaurantByRegionCodeQueryResponse(
+    public RestaurantSearchWithoutDistanceResponse(
             Long id, String name,
             String category, String superCategory,
             String roadAddress,
-            Double latitude, Double longitude,
+            double latitude, double longitude,
             String phoneNumber, String naverMapUrl,
             int viewCount, int likeCount
     ) {
