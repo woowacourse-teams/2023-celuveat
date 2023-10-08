@@ -27,10 +27,9 @@ public record RestaurantDetailQueryResponse(
     @Builder
     public RestaurantDetailQueryResponse(
             Restaurant restaurant,
+            boolean isLiked,
             List<CelebQueryResponse> celebs,
-            List<RestaurantImageQueryResponse> restaurantImages,
-            int likeCount,
-            boolean isLiked
+            List<RestaurantImageQueryResponse> restaurantImages
     ) {
         this(restaurant.id(),
                 restaurant.name(),
@@ -41,7 +40,7 @@ public record RestaurantDetailQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
-                likeCount,
+                restaurant.likeCount(),
                 restaurant.viewCount(),
                 isLiked,
                 RatingUtils.averageRating(restaurant.totalRating(), restaurant.reviewCount()),

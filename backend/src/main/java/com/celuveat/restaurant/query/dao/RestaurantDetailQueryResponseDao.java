@@ -39,12 +39,10 @@ public class RestaurantDetailQueryResponseDao {
                 .stream()
                 .map(RestaurantImageQueryResponse::of)
                 .toList();
-        int likeCount = restaurantLikeQueryDaoSupport.countByRestaurant(restaurant);
         return RestaurantDetailQueryResponse.builder()
                 .restaurant(restaurant)
                 .celebs(celebs)
                 .restaurantImages(restaurantImages)
-                .likeCount(likeCount)
                 .isLiked(applyLikedRestaurant(restaurant, memberId))
                 .build();
     }
