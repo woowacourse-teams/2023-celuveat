@@ -12,9 +12,9 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
 import com.celuveat.common.dao.Dao;
+import com.celuveat.restaurant.query.dto.CelebQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse.CelebInfo;
-import com.celuveat.restaurant.query.dto.RestaurantByRegionCodeQueryResponse.RestaurantImageInfo;
+import com.celuveat.restaurant.query.dto.RestaurantImageQueryResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -50,8 +50,8 @@ public class RestaurantByRegionCodeQueryResponseDao {
     ) {
         List<RestaurantByRegionCodeQueryResponse> resultList = findRestaurants(cond, pageable);
         List<Long> ids = extractIds(resultList);
-        Map<Long, List<CelebInfo>> celebs = findCelebs(ids);
-        Map<Long, List<RestaurantImageInfo>> images = findImages(ids);
+        Map<Long, List<CelebQueryResponse>> celebs = findCelebs(ids);
+        Map<Long, List<RestaurantImageQueryResponse>> images = findImages(ids);
         Map<Long, Boolean> memberIsLikedRestaurants = findMemberIsLikedRestaurants(ids, memberId);
         for (RestaurantByRegionCodeQueryResponse restaurant : resultList) {
             restaurant.setCelebs(celebs.get(restaurant.getId()));
@@ -92,9 +92,9 @@ public class RestaurantByRegionCodeQueryResponseDao {
                 .toList();
     }
 
-    private Map<Long, List<CelebInfo>> findCelebs(List<Long> restaurantIds) {
+    private Map<Long, List<CelebQueryResponse>> findCelebs(List<Long> restaurantIds) {
         return query.select(Projections.constructor(
-                        CelebInfo.class,
+                        CelebQueryResponse.class,
                         video.restaurant.id,
                         celeb.id,
                         celeb.name,
@@ -106,12 +106,12 @@ public class RestaurantByRegionCodeQueryResponseDao {
                 .where(video.restaurant.id.in(restaurantIds))
                 .fetch()
                 .stream()
-                .collect(groupingBy(CelebInfo::restaurantId));
+                .collect(groupingBy(CelebQueryResponse::restaurantId));
     }
 
-    private Map<Long, List<RestaurantImageInfo>> findImages(List<Long> restaurantIds) {
+    private Map<Long, List<RestaurantImageQueryResponse>> findImages(List<Long> restaurantIds) {
         return query.select(Projections.constructor(
-                        RestaurantImageInfo.class,
+                        RestaurantImageQueryResponse.class,
                         restaurantImage.restaurant.id,
                         restaurantImage.id,
                         restaurantImage.name,
@@ -122,7 +122,7 @@ public class RestaurantByRegionCodeQueryResponseDao {
                 .where(restaurantImage.restaurant.id.in(restaurantIds))
                 .fetch()
                 .stream()
-                .collect(groupingBy(RestaurantImageInfo::restaurantId));
+                .collect(groupingBy(RestaurantImageQueryResponse::restaurantId));
     }
 
     private Map<Long, Boolean> findMemberIsLikedRestaurants(List<Long> ids, @Nullable Long memberId) {

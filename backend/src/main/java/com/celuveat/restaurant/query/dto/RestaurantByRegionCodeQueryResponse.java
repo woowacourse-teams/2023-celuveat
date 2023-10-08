@@ -1,7 +1,5 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.common.util.Base64Util;
-import com.celuveat.restaurant.command.domain.SocialMedia;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +23,8 @@ public class RestaurantByRegionCodeQueryResponse {
     private int likeCount;
     @JsonProperty("isLiked")
     private boolean isLiked;
-    private List<CelebInfo> celebs = new ArrayList<>();
-    private List<RestaurantImageInfo> images = new ArrayList<>();
+    private List<CelebQueryResponse> celebs = new ArrayList<>();
+    private List<RestaurantImageQueryResponse> images = new ArrayList<>();
 
     public RestaurantByRegionCodeQueryResponse(
             Long id, String name,
@@ -53,45 +51,11 @@ public class RestaurantByRegionCodeQueryResponse {
         this.isLiked = liked;
     }
 
-    public void setCelebs(List<CelebInfo> celebs) {
+    public void setCelebs(List<CelebQueryResponse> celebs) {
         this.celebs = celebs;
     }
 
-    public void setImages(List<RestaurantImageInfo> images) {
+    public void setImages(List<RestaurantImageQueryResponse> images) {
         this.images = images;
-    }
-
-    // TODO 기존 클래스 사용
-    public record CelebInfo(
-            Long restaurantId,
-            Long id,
-            String name,
-            String youtubeChannelName,
-            String profileImageUrl
-    ) {
-    }
-
-    // TODO 기존 클래스 사용
-    public record RestaurantImageInfo(
-            Long restaurantId,
-            Long id,
-            String name,
-            String author,
-            String sns
-    ) {
-        public RestaurantImageInfo(
-                Long restaurantId,
-                Long id,
-                String name,
-                String author,
-                SocialMedia socialMedia
-        ) {
-            this(restaurantId, id, name, author, socialMedia.name());
-        }
-
-        @Override
-        public String name() {
-            return Base64Util.encode(name);
-        }
     }
 }
