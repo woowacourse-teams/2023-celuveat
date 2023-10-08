@@ -4,7 +4,7 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.fixture.CelebFixture;
-import com.celuveat.celeb.presentation.response.FindAllCelebResponse;
+import com.celuveat.celeb.query.dto.FindAllCelebResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

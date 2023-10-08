@@ -8,12 +8,9 @@ import com.celuveat.common.DaoTest;
 import com.celuveat.common.TestData;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("셀럽 전체조회 DAO(FindAllCelebResponseDao) 은(는)")
 class FindAllCelebResponseDaoTest extends DaoTest {
 
