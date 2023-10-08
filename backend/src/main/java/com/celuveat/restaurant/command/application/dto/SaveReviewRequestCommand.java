@@ -7,7 +7,7 @@ public record SaveReviewRequestCommand(
         String content,
         Long memberId,
         Long restaurantId,
-        Double rating,
+        double rating,
         List<String> images
 ) {
 
@@ -15,7 +15,7 @@ public record SaveReviewRequestCommand(
             String content,
             Long memberId,
             Long restaurantId,
-            Double rating
+            double rating
     ) {
         this(content, memberId, restaurantId, rating, Collections.emptyList());
     }
