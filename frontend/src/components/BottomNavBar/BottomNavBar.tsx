@@ -1,33 +1,36 @@
 import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 import HomeIcon from '~/assets/icons/home.svg';
 import SignInIcon from '~/assets/icons/sign-in.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 interface BottomNavBarProps {
   isHide: boolean;
 }
 
-type BottomIcons = 'home' | 'map' | 'user';
-
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
   const { pathname } = useLocation();
-  const [clickedIcon, setClickedIcon] = useState<BottomIcons>('home');
+  const [selected, setHomeSelected, setMapSelected, setUserSelected] = useBottomNavBarState(
+    state => [state.selected, state.setHomeSelected, state.setMapSelected, state.setUserSelected],
+    shallow,
+  );
 
   const clickHome = () => {
-    setClickedIcon('home');
+    setHomeSelected();
     navigator('/');
   };
   const clickMap = () => {
-    setClickedIcon('map');
+    setMapSelected();
     navigator('/map');
   };
   const clickLogin = () => {
-    setClickedIcon('user');
+    setUserSelected();
     navigator('/signUp', { state: { from: pathname } });
   };
 
@@ -36,13 +39,13 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   return (
     <StyledBottomNavBar isHide={isHide} ref={ref}>
       <StyledNavBarButton onClick={clickHome}>
-        <HomeIcon fill={clickedIcon === 'home' ? '#000' : 'none'} />
+        <HomeIcon fill={selected === 'home' ? '#000' : 'none'} />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickMap}>
-        <MapIcon strokeWidth={clickedIcon === 'map' ? 2 : 1.2} />
+        <MapIcon strokeWidth={selected === 'map' ? 2 : 1.2} />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickLogin}>
-        <SignInIcon fill={clickedIcon === 'user' ? '#000' : 'none'} />
+        <SignInIcon fill={selected === 'user' ? '#000' : 'none'} />
       </StyledNavBarButton>
     </StyledBottomNavBar>
   );
