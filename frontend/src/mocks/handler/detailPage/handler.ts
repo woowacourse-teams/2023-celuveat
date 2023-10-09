@@ -38,7 +38,7 @@ export const DetailPageSuccessHandler = [
 
     const sortedCelebs = moveCelebToFrontById(celebs, celebId);
 
-    return res(ctx.delay(2000), ctx.json({ celebs: sortedCelebs, ...etc }));
+    return res(ctx.delay(500), ctx.json({ celebs: sortedCelebs, ...etc }));
   }),
 
   rest.get('/videos', (req, res, ctx) => {
@@ -64,7 +64,7 @@ export const DetailPageSuccessHandler = [
       currentElementsCount: content.length,
     };
 
-    return res(ctx.delay(2000), ctx.json(restaurantVideoList));
+    return res(ctx.delay(500), ctx.json(restaurantVideoList));
   }),
 
   rest.get('/restaurants/:restaurantId/nearby', (req, res, ctx) => {
@@ -86,7 +86,7 @@ export const DetailPageSuccessHandler = [
       currentElementsCount: content.length,
     };
 
-    return res(ctx.delay(2000), ctx.json(nearbyRestaurantList));
+    return res(ctx.delay(500), ctx.json(nearbyRestaurantList));
   }),
 
   rest.post('/restaurants/:restaurantId/correction', async (req, res, ctx) => {
@@ -95,13 +95,13 @@ export const DetailPageSuccessHandler = [
 
     correction.push({ restaurantId: Number(restaurantId), contents });
 
-    ctx.delay(2000);
+    ctx.delay(500);
   }),
 
   rest.get('/reviews', (req, res, ctx) => {
     const reviewsData = { reviews, totalElementsCount: reviews.length };
 
-    return res(ctx.delay(2000), ctx.json(reviewsData));
+    return res(ctx.delay(500), ctx.json(reviewsData));
   }),
 
   rest.post('/reviews', async (req, res, ctx) => {
