@@ -1,9 +1,9 @@
 package com.celuveat.acceptance.auth;
 
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그아웃_요청을_보낸다;
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.리다이렉트_URL을_요청한다;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그아웃_요청;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.리다이렉트_URL_요청;
 import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.응답에_JSESSIONID_헤더가_존재한다;
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.회원_탈퇴를_한다;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.회원_탈퇴_요청;
 import static com.celuveat.acceptance.common.AcceptanceSteps.내용_없음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.리디렉션;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
@@ -24,7 +24,7 @@ public class OauthAcceptanceTest extends AcceptanceTest {
         var oauthServerType = "kakao";
 
         // when
-        var 응답 = 리다이렉트_URL을_요청한다(oauthServerType);
+        var 응답 = 리다이렉트_URL_요청(oauthServerType);
 
         // then
         응답_상태를_검증한다(응답, 리디렉션);
@@ -49,7 +49,7 @@ public class OauthAcceptanceTest extends AcceptanceTest {
         var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(오도);
 
         // when
-        var 응답 = 로그아웃_요청을_보낸다(세션_아이디, "kakao");
+        var 응답 = 로그아웃_요청(세션_아이디, "kakao");
 
         // then
         응답_상태를_검증한다(응답, 내용_없음);
@@ -61,7 +61,7 @@ public class OauthAcceptanceTest extends AcceptanceTest {
         var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(도기());
 
         // when
-        var 회원탈퇴_응답 = 회원_탈퇴를_한다(세션_아이디, "kakao");
+        var 회원탈퇴_응답 = 회원_탈퇴_요청(세션_아이디, "kakao");
 
         // then
         응답_상태를_검증한다(회원탈퇴_응답, 내용_없음);

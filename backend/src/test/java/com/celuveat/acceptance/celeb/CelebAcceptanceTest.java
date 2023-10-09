@@ -2,7 +2,7 @@ package com.celuveat.acceptance.celeb;
 
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_조회_결과를_검증한다;
 import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽_전체_조회_요청;
-import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.예상_셀럽조회_결과;
+import static com.celuveat.acceptance.celeb.CelebAcceptanceSteps.셀럽조회_결과;
 import static com.celuveat.celeb.fixture.CelebFixture.맛객리우;
 import static com.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celeb.fixture.CelebFixture.쯔양;
@@ -24,7 +24,7 @@ public class CelebAcceptanceTest extends AcceptanceTest {
         var 응답 = 셀럽_전체_조회_요청();
 
         // then
-        var 예상 = 예상_셀럽조회_결과(성시경(), 쯔양(), 맛객리우(), 회사랑());
+        var 예상 = 셀럽조회_결과(성시경(), 쯔양(), 맛객리우(), 회사랑());
         셀럽_전체_조회_결과를_검증한다(예상, 응답);
     }
 }

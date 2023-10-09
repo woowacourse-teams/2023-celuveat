@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CelebAcceptanceSteps {
 
-    public static List<CelebQueryResponse> 예상_셀럽조회_결과(Celeb... 셀럽들) {
+    public static List<CelebQueryResponse> 셀럽조회_결과(Celeb... 셀럽들) {
         return Arrays.stream(셀럽들)
                 .map(CelebQueryResponse::from)
                 .toList();

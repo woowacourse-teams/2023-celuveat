@@ -8,15 +8,15 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.근처_음식점_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.상세_조회_응답;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.위치_검색_영역_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.위치_검색_영역_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_결과;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_요청;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요_요청을_보낸다;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_검색_결과;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_조회_요청;
@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 public class RestaurantAcceptanceTest extends AcceptanceTest {
 
     @Nested
-    class 음식점_조회_기능_중 {
+    class 음식점_조회_API {
 
         @Nested
         class 음식점_검색_시 {
@@ -107,7 +107,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             void 검색영역_조건으로_음식점을_조회한다() {
                 // when
                 var 응답 = 음식점_검색_요청(
-                        음식점_검색_조건_요청(없음, 없음, 없음),
+                        음식점_검색_조건_요청_데이터(없음, 없음, 없음),
                         대한민국_전체를_포함한_검색_영역_요청()
                 );
 
@@ -139,7 +139,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             void 음식점_좋아요_기준_정렬() {
                 // when
                 var 응답 = 음식점_좋아요_정렬_검색_요청(
-                        음식점_검색_조건_요청(없음, 없음, 없음),
+                        음식점_검색_조건_요청_데이터(없음, 없음, 없음),
                         대한민국_전체를_포함한_검색_영역_요청()
                 );
 
@@ -175,7 +175,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 // when
                 var 응답 = 음식점_검색_요청(
                         말랑_세션_ID,
-                        음식점_검색_조건_요청(null, null, "대성집"),
+                        음식점_검색_조건_요청_데이터(null, null, "대성집"),
                         대한민국_전체를_포함한_검색_영역_요청()
                 );
 
@@ -195,7 +195,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             void 음식점_전체_조회시_셀럽_필터를_사용하면_해당_셀럽과_셀럽의_이미지가_첫번째로_설정된다() {
                 // when
                 var 응답 = 음식점_검색_요청(
-                        음식점_검색_조건_요청(성시경.id(), null, "대성집"),
+                        음식점_검색_조건_요청_데이터(성시경.id(), null, "대성집"),
                         대한민국_전체를_포함한_검색_영역_요청()
                 );
 
@@ -215,8 +215,8 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             void 위경도_검색조건이_모두_Null_이면_전국지도로_검색한다() {
                 // when
                 var 응답 = 음식점_좋아요_정렬_검색_요청(
-                        음식점_검색_조건_요청(없음, 없음, 없음),
-                        위치_검색_영역_요청(없음, 없음, 없음, 없음)
+                        음식점_검색_조건_요청_데이터(없음, 없음, 없음),
+                        위치_검색_영역_요청_데이터(없음, 없음, 없음, 없음)
                 );
 
                 // then
@@ -247,8 +247,8 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             void 위경도_검색조건이_몇개만_null_이면_오류이다() {
                 // when
                 var 응답 = 음식점_검색_요청(
-                        음식점_검색_조건_요청(없음, 없음, 없음),
-                        위치_검색_영역_요청(없음, 없음, 10.1, 없음)
+                        음식점_검색_조건_요청_데이터(없음, 없음, 없음),
+                        위치_검색_영역_요청_데이터(없음, 없음, 10.1, 없음)
                 );
 
                 // then
@@ -429,7 +429,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
-    class 정보_수정_제안_기능_중 {
+    class 정보_수정_제안_API {
 
         private final Restaurant 대성집 = 대성집();
 
@@ -450,7 +450,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
-    class 음식점_좋아요_관련_기능_중 {
+    class 음식점_좋아요_API {
 
         private final OauthMember 말랑 = 말랑();
         private final Restaurant 대성집 = 대성집();
@@ -484,7 +484,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 말랑_세션_ID = 로그인후_세션아이디를_가져온다(말랑);
 
             // when
-            var 좋아요_응답 = 좋아요_요청을_보낸다(말랑_세션_ID, 대성집.id());
+            var 좋아요_응답 = 음식점_좋아요_요청(말랑_세션_ID, 대성집.id());
 
             // then
             응답_상태를_검증한다(좋아요_응답, 정상_처리);
@@ -506,8 +506,8 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
 
             // when
-            좋아요_요청을_보낸다(말랑_세션_아이디, 대성집.id());
-            좋아요_요청을_보낸다(말랑_세션_아이디, 하늘초밥.id());
+            음식점_좋아요_요청(말랑_세션_아이디, 대성집.id());
+            음식점_좋아요_요청(말랑_세션_아이디, 하늘초밥.id());
 
             // when
             var 응답 = 좋아요한_음식점_조회_요청(말랑_세션_아이디);

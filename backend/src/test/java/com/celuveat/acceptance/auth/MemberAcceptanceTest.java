@@ -1,8 +1,8 @@
 package com.celuveat.acceptance.auth;
 
-import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.회원정보_조회를_요청한다;
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그아웃_요청을_보낸다;
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.예상_응답;
+import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.회원정보_조회_요청;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그아웃_요청;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.회원정보_조회_응답;
 import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.응답을_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.인증되지_않음;
@@ -23,10 +23,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(오도);
 
         // when
-        var 응답 = 회원정보_조회를_요청한다(세션_아이디);
+        var 응답 = 회원정보_조회_요청(세션_아이디);
 
         // then
-        응답을_검증한다(응답, 예상_응답(오도));
+        응답을_검증한다(응답, 회원정보_조회_응답(오도));
         응답_상태를_검증한다(응답, 정상_처리);
     }
 
@@ -35,10 +35,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // given
         var 오도 = 오도();
         var 세션_아이디 = 회원가입과_로그인후_세션아이디를_가져온다(오도);
-        로그아웃_요청을_보낸다(세션_아이디, 오도.oauthId().oauthServer().name());
+        로그아웃_요청(세션_아이디, 오도.oauthId().oauthServer().name());
 
         // when
-        var 응답 = 회원정보_조회를_요청한다(세션_아이디);
+        var 응답 = 회원정보_조회_요청(세션_아이디);
 
         // then
         응답_상태를_검증한다(응답, 인증되지_않음);

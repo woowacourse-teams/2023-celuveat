@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class RestaurantAcceptanceSteps {
 
-    public static LocationSearchCondRequest 위치_검색_영역_요청(
+    public static LocationSearchCondRequest 위치_검색_영역_요청_데이터(
             Object 최소_위도,
             Object 최대_위도,
             Object 최소_경도,
@@ -41,7 +41,7 @@ public class RestaurantAcceptanceSteps {
         );
     }
 
-    public static RestaurantSearchCondRequest 음식점_검색_조건_요청(
+    public static RestaurantSearchCondRequest 음식점_검색_조건_요청_데이터(
             Object 셀럽_ID,
             Object 카테고리,
             Object 음식점_이름
@@ -213,7 +213,7 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(String 세션_아이디, Long 맛집_아이디) {
+    public static ExtractableResponse<Response> 음식점_좋아요_요청(String 세션_아이디, Long 맛집_아이디) {
         return given(세션_아이디)
                 .when().post("/restaurants/" + 맛집_아이디 + "/like")
                 .then()

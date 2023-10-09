@@ -24,24 +24,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class RestaurantReviewAcceptanceSteps {
 
-    public static SaveReviewRequest 리뷰_요청(String 내용, Long 음식점_아이디, Double 평점, List<String> images) {
+    public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점, List<String> images) {
         List<MultipartFile> list = images.stream()
                 .map(RestaurantReviewAcceptanceSteps::multipartFile)
                 .toList();
         return new SaveReviewRequest(내용, 음식점_아이디, 평점, list);
     }
 
-    public static SaveReviewRequest 리뷰_요청(String 내용, Long 음식점_아이디, Double 평점) {
-        return 리뷰_요청(내용, 음식점_아이디, 평점, Collections.emptyList());
+    public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점) {
+        return 리뷰_요청_데이터(내용, 음식점_아이디, 평점, Collections.emptyList());
     }
 
-    public static MultipartFile multipartFile(String name) {
+    private static MultipartFile multipartFile(String name) {
         return new MockMultipartFile(
                 name, name, "multipart/form-data", name.getBytes()
         );
     }
 
-    public static ExtractableResponse<Response> 리뷰_작성_요청을_보낸다(String 세션_아이디, SaveReviewRequest 요청) {
+    public static ExtractableResponse<Response> 리뷰_작성_요청(String 세션_아이디, SaveReviewRequest 요청) {
         var content = new MultiPartSpecBuilder(요청.content())
                 .controlName("content")
                 .charset(UTF_8)
@@ -81,7 +81,7 @@ public class RestaurantReviewAcceptanceSteps {
         }
     }
 
-    public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(String 세션_아이디, Long 음식점_아이디) {
+    public static ExtractableResponse<Response> 리뷰_조회_요청(String 세션_아이디, Long 음식점_아이디) {
         return given(세션_아이디)
                 .queryParam("restaurantId", 음식점_아이디)
                 .when().get("/reviews")
@@ -89,8 +89,8 @@ public class RestaurantReviewAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 리뷰_조회_요청을_보낸다(Long 음식점_아이디) {
-        return 리뷰_조회_요청을_보낸다(null, 음식점_아이디);
+    public static ExtractableResponse<Response> 리뷰_조회_요청(Long 음식점_아이디) {
+        return 리뷰_조회_요청(null, 음식점_아이디);
     }
 
     public static RestaurantReviewsQueryResponse 리뷰_조회_결과(
@@ -138,11 +138,11 @@ public class RestaurantReviewAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    public static UpdateReviewRequest 리뷰_수정_요청(String 내용, double 평점) {
+    public static UpdateReviewRequest 리뷰_수정_요청_데이터(String 내용, double 평점) {
         return new UpdateReviewRequest(내용, 평점);
     }
 
-    public static ExtractableResponse<Response> 리뷰_수정_요청을_보낸다(
+    public static ExtractableResponse<Response> 리뷰_수정_요청(
             String 세션_아이디,
             Long 리뷰_아이디,
             UpdateReviewRequest 요청
@@ -154,7 +154,7 @@ public class RestaurantReviewAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 리뷰_삭제_요청을_보낸다(
+    public static ExtractableResponse<Response> 리뷰_삭제_요청(
             String 세션_아이디,
             Long 리뷰_아이디
     ) {
@@ -164,14 +164,14 @@ public class RestaurantReviewAcceptanceSteps {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(String 세션_아이디, Long 리뷰_아이디) {
+    public static ExtractableResponse<Response> 좋아요_요청(String 세션_아이디, Long 리뷰_아이디) {
         return given(세션_아이디)
                 .when().post("/reviews/{reviewID}/like", 리뷰_아이디)
                 .then().log().all()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 신고_요청을_보낸다(
+    public static ExtractableResponse<Response> 리뷰_신고_요청(
             String 세션_아이디,
             Long 리뷰_아이디,
             String 신고내용

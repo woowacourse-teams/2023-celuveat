@@ -1,6 +1,6 @@
 package com.celuveat.acceptance.common;
 
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그인을_요청한다;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그인_요청;
 import static com.celuveat.acceptance.common.AcceptanceSteps.세션_아이디를_가져온다;
 import static com.celuveat.auth.command.domain.OauthServerType.KAKAO;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,13 +109,13 @@ public abstract class AcceptanceTest {
         회원를_저장한다(멤버);
         String authCode = "authCode";
         when(oauthService.login(KAKAO, authCode)).thenReturn(멤버.id());
-        return 로그인을_요청한다(authCode);
+        return 로그인_요청(authCode);
     }
 
     protected String 로그인후_세션아이디를_가져온다(OauthMember 멤버) {
         String authCode = "authCode";
         when(oauthService.login(KAKAO, authCode)).thenReturn(멤버.id());
-        return 세션_아이디를_가져온다(로그인을_요청한다(authCode));
+        return 세션_아이디를_가져온다(로그인_요청(authCode));
     }
 
     protected void 셀럽을_저장한다(Celeb 셀럽) {
