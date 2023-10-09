@@ -248,8 +248,9 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
     @Nested
     class 근처_음식점_조회_시 extends DaoTest {
 
+        private final Celeb 성시경 = 성시경();
+        private final Celeb 맛객리우 = 맛객리우();
         private final Restaurant 대성집 = 대성집();
-
         private final Restaurant 대성집_1000m_거리_음식점 = 음식점(
                 "대성집 1000m 거리 음식점",
                 "한식",
@@ -268,17 +269,11 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                 일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 3000).getFirst(),
                 일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 3000).getSecond()
         );
-        private final Celeb 성시경 = 성시경();
-        private final Celeb 맛객리우 = 맛객리우();
-        private final RestaurantImage 대성집_사진_1 = 대성집_사진(대성집, 1);
 
         @Override
         protected TestData prepareTestData() {
             testData.addCelebs(성시경, 맛객리우);
             testData.addRestaurants(대성집, 대성집_1000m_거리_음식점, 대성집_2000m_거리_음식점, 대성집_3000m_거리_음식점);
-            testData.addRestaurantImages(
-                    대성집_사진_1
-            );
             testData.addVideos(
                     성시경의_대성집_영상(성시경, 대성집),
                     영상(대성집_1000m_거리_음식점, 맛객리우),
