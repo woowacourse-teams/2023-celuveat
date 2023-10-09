@@ -12,7 +12,6 @@ import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.command.domain.CelebRepository;
-import com.celuveat.common.SeedData;
 import com.celuveat.common.TestData;
 import com.celuveat.common.TestDataInserter;
 import com.celuveat.common.client.ImageUploadClient;
@@ -79,9 +78,6 @@ public abstract class AcceptanceTest {
 
     @Autowired
     protected Environment environment;
-
-    @Autowired
-    protected SeedData seedData;
 
     @Autowired
     protected TestDataInserter testDataInserter;

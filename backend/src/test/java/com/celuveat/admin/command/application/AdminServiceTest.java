@@ -10,7 +10,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.EXIST_NULL;
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
 import static com.celuveat.admin.exception.AdminExceptionType.INVALID_URL_PATTERN;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
-import static com.celuveat.admin.exception.AdminExceptionType.NOT_EXISTS_CELEB;
+import static com.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.command.domain.SocialMedia.INSTAGRAM;
 import static com.celuveat.restaurant.command.domain.SocialMedia.YOUTUBE;
@@ -24,6 +24,7 @@ import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
 import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.celeb.exception.CelebException;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseExceptionType;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
@@ -160,9 +161,9 @@ class AdminServiceTest extends IntegrationTest {
             List<SaveDataRequest> 요청 = 데이터저장_요청_객체_생성(rawData);
 
             // then
-            BaseExceptionType exceptionType = assertThrows(AdminException.class,
+            BaseExceptionType exceptionType = assertThrows(CelebException.class,
                     () -> adminService.saveData(요청)).exceptionType();
-            assertThat(exceptionType).isEqualTo(NOT_EXISTS_CELEB);
+            assertThat(exceptionType).isEqualTo(NOT_FOUND_CELEB);
         }
 
         @Test

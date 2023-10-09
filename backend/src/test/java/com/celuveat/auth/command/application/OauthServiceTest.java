@@ -60,8 +60,9 @@ class OauthServiceTest extends IntegrationTest {
         oauthService.withdraw(KAKAO, 말랑.id());
 
         // then
-        int 대성집_좋아요_개수 = restaurantLikeQueryDaoSupport.countByRestaurant(대성집);
-        assertThat(대성집_좋아요_개수).isEqualTo(0);
+        Optional<RestaurantLike> byRestaurantAndMember = restaurantLikeRepository.
+                findByRestaurantAndMember(대성집, 말랑);
+        assertThat(byRestaurantAndMember).isEmpty();
         Optional<OauthMember> 말랑_조회_결과 = oauthMemberRepository.findById(말랑.id());
         assertThat(말랑_조회_결과).isEmpty();
     }

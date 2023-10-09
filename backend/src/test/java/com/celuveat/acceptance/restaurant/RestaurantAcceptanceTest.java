@@ -13,10 +13,10 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.조회_결과를_검증한다;
-import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_검색_결과;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_조회_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.좋아요한_음식점_조회_요청;

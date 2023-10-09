@@ -9,13 +9,13 @@ import static com.celuveat.acceptance.common.AcceptanceSteps.잘못된_요청;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.단일_리뷰_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_삭제_요청;
-import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_수정_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_수정_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_수정_요청_데이터;
+import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_신고_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_작성_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_조회_결과;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_조회_요청;
-import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.리뷰_신고_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.음식점_리뷰_조회_응답을_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantReviewAcceptanceSteps.좋아요_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.도기;
@@ -81,10 +81,12 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
             var 오도_세션_아이디 = 로그인후_세션아이디를_가져온다(오도);
             var 로이스_세션_아이디 = 로그인후_세션아이디를_가져온다(로이스);
 
-            var 말랑_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1", "mallang review image 2"));
+            var 말랑_리뷰 = 리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9,
+                    List.of("mallang review image 1", "mallang review image 2"));
             var 도기_리뷰 = 리뷰_요청_데이터("도기 리뷰", 대성집.id(), 4.2);
             var 오도_리뷰 = 리뷰_요청_데이터("오도 리뷰", 대성집.id(), 3.3);
-            var 로이스_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("로이스 리뷰", 대성집.id(), 2.4, List.of("ro2s review image 1"));
+            var 로이스_리뷰 = 리뷰_요청_데이터("로이스 리뷰", 대성집.id(), 2.4,
+                    List.of("ro2s review image 1"));
             리뷰_작성_요청(말랑_세션_아이디, 말랑_리뷰);
             리뷰_작성_요청(도기_세션_아이디, 도기_리뷰);
             리뷰_작성_요청(오도_세션_아이디, 오도_리뷰);
@@ -108,7 +110,8 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         void 음식점_리뷰를_수정한다() {
             // given
             var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
-            var 말랑_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
+            var 말랑_리뷰 = 리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9,
+                    List.of("mallang review image 1"));
             var 리뷰_ID = ID를_추출한다(리뷰_작성_요청(말랑_세션_아이디, 말랑_리뷰));
             var 리뷰_수정_요청 = 리뷰_수정_요청_데이터("리뷰 수정", 5.0);
 
@@ -129,7 +132,8 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
             // given
             var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
             var 도기_세션_아이디 = 로그인후_세션아이디를_가져온다(도기);
-            var 말랑_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
+            var 말랑_리뷰 = 리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9,
+                    List.of("mallang review image 1"));
             var 리뷰_ID = ID를_추출한다(리뷰_작성_요청(말랑_세션_아이디, 말랑_리뷰));
             var 리뷰_수정_요청 = 리뷰_수정_요청_데이터("리뷰 수정", 5.0);
 
@@ -149,7 +153,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
         void 음식점_리뷰를_삭제한다() {
             // given
             var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
-            var 말랑_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
+            var 말랑_리뷰 = 리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
             var 리뷰_ID = ID를_추출한다(리뷰_작성_요청(말랑_세션_아이디, 말랑_리뷰));
 
             // when
@@ -167,7 +171,7 @@ public class RestaurantReviewAcceptanceTest extends AcceptanceTest {
             // given
             var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
             var 도기_세션_아이디 = 로그인후_세션아이디를_가져온다(도기);
-            var 말랑_리뷰 = RestaurantReviewAcceptanceSteps.리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
+            var 말랑_리뷰 = 리뷰_요청_데이터("말랑 리뷰", 대성집.id(), 4.9, List.of("mallang review image 1"));
             var 리뷰_ID = ID를_추출한다(리뷰_작성_요청(말랑_세션_아이디, 말랑_리뷰));
 
             // when

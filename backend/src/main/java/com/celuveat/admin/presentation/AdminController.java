@@ -42,7 +42,7 @@ public class AdminController {
         String[] rows = rawData.split(System.lineSeparator());
         return Arrays.stream(rows)
                 .map(row -> row.split(TAB, -1))
-                .map(function::apply)
+                .map(function)
                 .toList();
     }
 }

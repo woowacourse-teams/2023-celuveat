@@ -2,8 +2,8 @@ package com.celuveat.acceptance.auth;
 
 import static com.celuveat.acceptance.auth.MemberAcceptanceSteps.회원정보_조회_요청;
 import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.로그아웃_요청;
-import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.회원정보_조회_응답;
 import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.응답을_검증한다;
+import static com.celuveat.acceptance.auth.OauthAcceptanceSteps.회원정보_조회_응답;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.acceptance.common.AcceptanceSteps.인증되지_않음;
 import static com.celuveat.acceptance.common.AcceptanceSteps.정상_처리;

@@ -110,7 +110,10 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
         return latestRestaurants;
     }
 
-    private void settingCelebAndImageAndLiked(Long memberId, List<RestaurantSearchWithoutDistanceResponse> restaurants) {
+    private void settingCelebAndImageAndLiked(
+            Long memberId,
+            List<RestaurantSearchWithoutDistanceResponse> restaurants
+    ) {
         List<Long> ids = extractIds(restaurants);
         Map<Long, List<CelebQueryResponse>> celebs = findCelebs(ids);
         Map<Long, List<RestaurantImageQueryResponse>> images = findImages(ids);

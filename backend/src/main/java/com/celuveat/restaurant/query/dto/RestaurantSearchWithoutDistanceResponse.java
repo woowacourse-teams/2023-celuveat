@@ -65,6 +65,7 @@ public class RestaurantSearchWithoutDistanceResponse {
     public void setImages(List<RestaurantImageQueryResponse> images) {
         this.images = images;
     }
+
     @JsonProperty("isLiked")
     public boolean isLiked() {
         return isLiked;
