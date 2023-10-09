@@ -50,7 +50,7 @@ function RestaurantReviewWrapper() {
 export default RestaurantReviewWrapper;
 
 const StyledRestaurantReviewWrapper = styled.article`
-  margin-bottom: 4rem;
+  margin: 4rem 0;
 `;
 
 const StyledReviewCountText = styled.h5`
