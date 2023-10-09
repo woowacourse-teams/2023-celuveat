@@ -7,10 +7,10 @@ import io.restassured.response.Response;
 
 public class RestaurantReviewLikeAcceptanceSteps {
 
-    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(Long 리뷰_아이디, String 세션_아이디) {
+    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(String 세션_아이디, Long 리뷰_아이디) {
         return given(세션_아이디)
-                .when().post("/reviews/" + 리뷰_아이디 + "/like")
-                .then()
+                .when().post("/reviews/{reviewID}/like", 리뷰_아이디)
+                .then().log().all()
                 .extract();
     }
 }

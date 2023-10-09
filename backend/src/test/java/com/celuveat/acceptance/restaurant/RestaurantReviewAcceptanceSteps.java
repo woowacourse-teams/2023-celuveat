@@ -103,16 +103,28 @@ public class RestaurantReviewAcceptanceSteps {
             OauthMember 회원,
             String 리뷰_내용,
             double 리뷰_평점,
+            int 좋아요_수,
+            boolean 좋아요_여부,
             String... 이미지_이름들
     ) {
         return new RestaurantReviewSingleQueryResponse(null,
                 회원.id(), 회원.nickname(), 회원.profileImageUrl(),
                 리뷰_내용,
                 null,
-                0, false,
+                좋아요_수,
+                좋아요_여부,
                 리뷰_평점,
                 Arrays.asList(이미지_이름들)
         );
+    }
+
+    public static RestaurantReviewSingleQueryResponse 단일_리뷰_데이터(
+            OauthMember 회원,
+            String 리뷰_내용,
+            double 리뷰_평점,
+            String... 이미지_이름들
+    ) {
+        return 단일_리뷰_데이터(회원, 리뷰_내용, 리뷰_평점, 0, false, 이미지_이름들);
     }
 
     public static void 음식점_리뷰_조회_응답을_검증한다(
