@@ -16,7 +16,9 @@ public class RestaurantQueryTestUtils {
 
     public static RestaurantDetailQueryResponse restaurantDetailQueryResponse(
             Restaurant 음식점,
-            boolean 좋아요_눌렀는지_여부, double 평점,
+            boolean 좋아요_눌렀는지_여부,
+            int 좋아요_수,
+            double 평점,
             List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
     ) {
         return new RestaurantDetailQueryResponse(
@@ -29,12 +31,24 @@ public class RestaurantQueryTestUtils {
                 음식점.longitude(),
                 음식점.phoneNumber(),
                 음식점.naverMapUrl(),
-                음식점.likeCount(),
+                좋아요_수,
                 음식점.viewCount(),
                 좋아요_눌렀는지_여부,
                 평점,
                 celebQueryResponses(음식점, 셀럽들),
                 restaurantImageQueryResponses(음식점, 음식점_사진들)
+        );
+    }
+
+    public static RestaurantDetailQueryResponse restaurantDetailQueryResponse(
+            Restaurant 음식점,
+            boolean 좋아요_눌렀는지_여부, double 평점,
+            List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
+    ) {
+        return restaurantDetailQueryResponse(
+                음식점, 좋아요_눌렀는지_여부,
+                음식점.likeCount(), 평점,
+                셀럽들, 음식점_사진들
         );
     }
 
@@ -73,7 +87,7 @@ public class RestaurantQueryTestUtils {
 
     public static RestaurantSearchWithoutDistanceResponse restaurantSearchWithoutDistanceResponse(
             Restaurant 음식점,
-            boolean 좋아요_눌렀는지_여부, double 평점,
+            boolean 좋아요_눌렀는지_여부, int 좋아요_수, double 평점,
             List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
     ) {
         return new RestaurantSearchWithoutDistanceResponse(
@@ -87,11 +101,26 @@ public class RestaurantQueryTestUtils {
                 음식점.phoneNumber(),
                 음식점.naverMapUrl(),
                 음식점.viewCount(),
-                음식점.likeCount(),
+                좋아요_수,
                 좋아요_눌렀는지_여부,
                 평점,
                 celebQueryResponses(음식점, 셀럽들),
                 restaurantImageQueryResponses(음식점, 음식점_사진들)
+        );
+    }
+
+    public static RestaurantSearchWithoutDistanceResponse restaurantSearchWithoutDistanceResponse(
+            Restaurant 음식점,
+            boolean 좋아요_눌렀는지_여부, double 평점,
+            List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
+    ) {
+        return restaurantSearchWithoutDistanceResponse(
+                음식점,
+                좋아요_눌렀는지_여부,
+                음식점.likeCount(),
+                평점,
+                셀럽들,
+                음식점_사진들
         );
     }
 

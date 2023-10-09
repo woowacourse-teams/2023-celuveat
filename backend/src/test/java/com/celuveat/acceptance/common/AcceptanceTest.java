@@ -92,7 +92,7 @@ public abstract class AcceptanceTest {
     protected int port;
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
         RestAssured.port = port;
     }
 

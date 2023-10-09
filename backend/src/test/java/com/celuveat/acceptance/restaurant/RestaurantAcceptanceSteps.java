@@ -3,7 +3,6 @@ package com.celuveat.acceptance.restaurant;
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
 import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.restaurantDetailQueryResponse;
 import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.restaurantSearchQueryResponse;
-import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.command.domain.Celeb;
@@ -121,21 +120,6 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
-    // TODO: REmovec
-    public static void 조회_결과를_순서_상관없이_검증한다(
-            List<RestaurantSearchQueryResponse> 예상_응답,
-            ExtractableResponse<Response> 응답
-    ) {
-        PageResponse<RestaurantSearchQueryResponse> 응답_결과 = 응답.as(new TypeRef<>() {
-        });
-        assertThat(응답_결과.content())
-                .isSortedAccordingTo(comparing(RestaurantSearchQueryResponse::distance))
-                .usingRecursiveComparison()
-                .ignoringFields("distance")
-                .ignoringCollectionOrder()
-                .isEqualTo(예상_응답);
-    }
-
     public static ExtractableResponse<Response> 음식점_상세_조회_요청(
             String 세션_ID,
             Long 음식점_ID,
@@ -167,12 +151,21 @@ public class RestaurantAcceptanceSteps {
         return restaurantDetailQueryResponse(음식점, 좋아요_여부, 평점, 셀럽들, 음식점_사진들);
     }
 
+    public static RestaurantDetailQueryResponse 상세_조회_응답(
+            Restaurant 음식점,
+            boolean 좋아요_여부,
+            int 좋아요_수,
+            double 평점,
+            List<Celeb> 셀럽들, List<RestaurantImage> 음식점_사진들
+    ) {
+        return restaurantDetailQueryResponse(음식점, 좋아요_여부, 좋아요_수, 평점, 셀럽들, 음식점_사진들);
+    }
+
     public static void 상세_조회_결과를_검증한다(
             RestaurantDetailQueryResponse 예상_응답,
             ExtractableResponse<Response> 응답
     ) {
-        RestaurantDetailQueryResponse response = 응답.as(new TypeRef<>() {
-        });
+        RestaurantDetailQueryResponse response = 응답.as(RestaurantDetailQueryResponse.class);
         assertThat(response)
                 .usingRecursiveComparison()
                 .isEqualTo(예상_응답);
