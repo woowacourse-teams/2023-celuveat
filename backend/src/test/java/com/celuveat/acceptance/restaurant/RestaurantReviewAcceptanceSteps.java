@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.restaurant.presentation.dto.ReportReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.query.dto.RestaurantReviewsQueryResponse;
@@ -160,6 +161,26 @@ public class RestaurantReviewAcceptanceSteps {
         return given(세션_아이디)
                 .when().delete("/reviews/" + 리뷰_아이디)
                 .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 좋아요_요청을_보낸다(String 세션_아이디, Long 리뷰_아이디) {
+        return given(세션_아이디)
+                .when().post("/reviews/{reviewID}/like", 리뷰_아이디)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 신고_요청을_보낸다(
+            String 세션_아이디,
+            Long 리뷰_아이디,
+            String 신고내용
+    ) {
+        ReportReviewRequest reportReviewRequest = new ReportReviewRequest(신고내용);
+        return given(세션_아이디)
+                .when().body(reportReviewRequest)
+                .post("/reviews/{reviewId}/report", 리뷰_아이디)
+                .then()
                 .extract();
     }
 }
