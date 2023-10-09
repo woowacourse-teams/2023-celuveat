@@ -1,29 +1,26 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useLayoutEffect } from 'react';
 import LoginButton from '~/components/@common/LoginButton';
 import CeluveatIcon from '~/assets/icons/celuveat-login-icon.svg';
 import { FONT_SIZE } from '~/styles/common';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
-import { getProfile } from '~/api/user';
-import UserPage from './UserPage';
-import type { ProfileData } from '~/@types/api.types';
 
 function SignUpPage() {
   const navigate = useNavigate();
-  const setHomeSelected = useBottomNavBarState(state => state.setHomeSelected);
-
-  const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
-    queryKey: ['profile'],
-    queryFn: () => getProfile(),
-  });
+  const [setHomeSelected, setUserSelected] = useBottomNavBarState(state => [
+    state.setHomeSelected,
+    state.setUserSelected,
+  ]);
 
   const clickHomeButton = () => {
     setHomeSelected();
     navigate('/');
   };
 
-  if (isLogin) return <UserPage profile={profile} />;
+  useLayoutEffect(() => {
+    setUserSelected();
+  }, []);
 
   return (
     <StyledContainer>

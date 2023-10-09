@@ -1,57 +1,64 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 import type { ProfileData } from '~/@types/api.types';
 import Footer from '~/components/@common/Footer';
 import ProfileImage from '~/components/@common/ProfileImage';
 import useAuth from '~/hooks/server/useAuth';
-import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
+import { getProfile } from '~/api/user';
+import SignUpPage from './SignUpPage';
 
-interface UserPageProps {
-  profile: ProfileData;
-}
-
-function UserPage({ profile }: UserPageProps) {
+function UserPage() {
   const navigator = useNavigate();
   const { doLogoutMutation } = useAuth();
-  const setHomeSelected = useBottomNavBarState(state => state.setHomeSelected);
 
-  const navigateWishList = () => navigator('/restaurants/like');
+  const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
+
+  const clickWishListService = () => {
+    navigator('/restaurants/like');
+  };
 
   const logOut = () => {
     doLogoutMutation(profile.oauthServer);
-    setHomeSelected();
+    navigator('/');
   };
 
-  return (
-    <StyledUserAndFooterDivider>
-      <StyledUserContainer>
-        <h2>프로필</h2>
-        <StyledProfileSection>
-          <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="120px" />
-          <h3>{profile.nickname}</h3>
-          <div>{profile.oauthServer} 계정입니다.</div>
-        </StyledProfileSection>
-        <StyledLine />
-        <StyledServiceSection>
-          <h3>서비스</h3>
-          <button type="button" onClick={navigateWishList}>
-            위시리스트
-          </button>
-        </StyledServiceSection>
-        <StyledLine />
-        <StyledSignSection>
-          <StyledLogoutButton type="button" onClick={logOut}>
-            로그아웃
-          </StyledLogoutButton>
-          <Link to="/withdrawal">
-            <StyledWithDrawal>회원탈퇴</StyledWithDrawal>
-          </Link>
-        </StyledSignSection>
-      </StyledUserContainer>
-      <Footer />
-    </StyledUserAndFooterDivider>
-  );
+  if (isLogin)
+    return (
+      <StyledUserAndFooterDivider>
+        <StyledUserContainer>
+          <h2>프로필</h2>
+          <StyledProfileSection>
+            <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="120px" />
+            <h3>{profile.nickname}</h3>
+            <div>{profile.oauthServer} 계정입니다.</div>
+          </StyledProfileSection>
+          <StyledLine />
+          <StyledServiceSection>
+            <h3>서비스</h3>
+            <button type="button" onClick={clickWishListService}>
+              위시리스트
+            </button>
+          </StyledServiceSection>
+          <StyledLine />
+          <StyledSignSection>
+            <StyledLogoutButton type="button" onClick={logOut}>
+              로그아웃
+            </StyledLogoutButton>
+            <Link to="/withdrawal">
+              <StyledWithDrawal>회원탈퇴</StyledWithDrawal>
+            </Link>
+          </StyledSignSection>
+        </StyledUserContainer>
+        <Footer />
+      </StyledUserAndFooterDivider>
+    );
+
+  return <SignUpPage />;
 }
 
 export default UserPage;

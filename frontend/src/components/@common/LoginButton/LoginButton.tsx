@@ -43,8 +43,8 @@ function LoginButton({ type }: LoginButtonProps) {
       : getUrlStringWithQuery(location.pathname);
 
   const onClick = () => {
-    setPath(loginBeforeUrl);
     doLogin(type);
+    setPath(loginBeforeUrl);
   };
 
   return (
