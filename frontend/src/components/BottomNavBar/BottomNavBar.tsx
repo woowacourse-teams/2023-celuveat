@@ -1,12 +1,16 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
+import { useQuery } from '@tanstack/react-query';
 import HomeIcon from '~/assets/icons/home.svg';
-import SignInIcon from '~/assets/icons/sign-in.svg';
+import UserIcon from '~/assets/icons/user.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
+import HeartIcon from '~/assets/icons/navbar-heart.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
+import { ProfileData } from '~/@types/api.types';
+import { getProfile } from '~/api/user';
 
 interface BottomNavBarProps {
   isHide: boolean;
@@ -16,10 +20,21 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
   const { pathname } = useLocation();
-  const [selected, setHomeSelected, setMapSelected, setUserSelected] = useBottomNavBarState(
-    state => [state.selected, state.setHomeSelected, state.setMapSelected, state.setUserSelected],
+  const [selected, setHomeSelected, setMapSelected, setUserSelected, setWishListSelected] = useBottomNavBarState(
+    state => [
+      state.selected,
+      state.setHomeSelected,
+      state.setMapSelected,
+      state.setUserSelected,
+      state.setWishListSelected,
+    ],
     shallow,
   );
+
+  const { isSuccess: isLogin } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
 
   const clickHome = () => {
     setHomeSelected();
@@ -29,9 +44,15 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
     setMapSelected();
     navigator('/map');
   };
-  const clickLogin = () => {
+  const clickWishList = () => {
+    setWishListSelected();
+    navigator('/restaurants/like');
+  };
+  const clickUser = () => {
     setUserSelected();
-    navigator('/signUp', { state: { from: pathname } });
+
+    if (isLogin) navigator('/user');
+    else navigator('/signUp', { state: { from: pathname } });
   };
 
   useScrollBlock(ref);
@@ -44,8 +65,11 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
       <StyledNavBarButton onClick={clickMap}>
         <MapIcon strokeWidth={selected === 'map' ? 2 : 1.2} />
       </StyledNavBarButton>
-      <StyledNavBarButton onClick={clickLogin}>
-        <SignInIcon fill={selected === 'user' ? '#000' : 'none'} />
+      <StyledNavBarButton onClick={clickWishList}>
+        <HeartIcon fill={selected === 'wishList' ? '#000' : 'none'} />
+      </StyledNavBarButton>
+      <StyledNavBarButton onClick={clickUser}>
+        <UserIcon fill={selected === 'user' ? '#000' : 'none'} />
       </StyledNavBarButton>
     </StyledBottomNavBar>
   );
