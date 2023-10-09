@@ -276,9 +276,9 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
             testData.addRestaurants(대성집, 대성집_1000m_거리_음식점, 대성집_2000m_거리_음식점, 대성집_3000m_거리_음식점);
             testData.addVideos(
                     성시경의_대성집_영상(성시경, 대성집),
-                    영상(대성집_1000m_거리_음식점, 맛객리우),
-                    영상(대성집_2000m_거리_음식점, 성시경),
-                    영상(대성집_3000m_거리_음식점, 맛객리우)
+                    영상(맛객리우, 대성집_1000m_거리_음식점),
+                    영상(성시경, 대성집_2000m_거리_음식점),
+                    영상(맛객리우, 대성집_3000m_거리_음식점)
             );
             return testData;
         }

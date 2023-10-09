@@ -34,8 +34,7 @@ public class VideoFixture {
                 .build();
     }
 
-    // TODO 순서 변경
-    public static Video 영상(String 영상_URL, Restaurant 음식점, Celeb 셀럽) {
+    public static Video 영상(String 영상_URL, Celeb 셀럽, Restaurant 음식점) {
         return Video.builder()
                 .celeb(셀럽)
                 .restaurant(음식점)
@@ -44,13 +43,7 @@ public class VideoFixture {
                 .build();
     }
 
-    // TODO 순서 변경
-    public static Video 영상(Restaurant 음식점, Celeb 셀럽) {
-        return Video.builder()
-                .celeb(셀럽)
-                .restaurant(음식점)
-                .uploadDate(LocalDate.now())
-                .youtubeUrl("https://" + 음식점.name())
-                .build();
+    public static Video 영상(Celeb 셀럽, Restaurant 음식점) {
+        return 영상("https://" + 음식점.name(), 셀럽, 음식점);
     }
 }

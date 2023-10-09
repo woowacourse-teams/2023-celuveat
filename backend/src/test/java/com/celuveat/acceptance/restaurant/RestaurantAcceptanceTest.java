@@ -83,7 +83,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                         모던샤브하우스_사진_1
                 );
                 testData.addVideos(
-                        영상(대성집, 회사랑),
+                        영상(회사랑, 대성집),
                         성시경의_대성집_영상(성시경, 대성집),
                         회사랑의_하늘초밥_영상(회사랑, 하늘초밥),
                         맛객리우의_모던샤브하우스_영상(맛객리우, 모던샤브하우스)
@@ -292,9 +292,9 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 );
                 testData.addVideos(
                         성시경의_대성집_영상(성시경, 대성집),
-                        영상(대성집_1000m_거리_음식점, 맛객리우),
-                        영상(대성집_2000m_거리_음식점, 성시경),
-                        영상(대성집_3000m_거리_음식점, 맛객리우)
+                        영상(맛객리우, 대성집_1000m_거리_음식점),
+                        영상(성시경, 대성집_2000m_거리_음식점),
+                        영상(맛객리우, 대성집_3000m_거리_음식점)
                 );
                 testData.addRestaurantLikes(RestaurantLike.create(대성집_1000m_거리_음식점, 말랑));
                 초기_데이터_저장();
