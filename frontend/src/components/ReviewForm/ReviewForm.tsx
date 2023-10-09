@@ -123,7 +123,10 @@ function ReviewForm({ type }: ReviewFormProps) {
       <StyledTextArea placeholder="음식점을 다녀간 후기를 들려주세요" value={text} onChange={onChange} />
       {type !== 'update' && (
         <>
-          <StyledReviewFormItemText>사진 등록하기</StyledReviewFormItemText>
+          <StyledReviewFormItemText>
+            사진 등록하기
+            <StyledImageDescription>(최대 3장)</StyledImageDescription>
+          </StyledReviewFormItemText>
           <ReviewImageForm images={images} upload={onUploadReviewImage} deleteImage={deleteReviewImage} />
         </>
       )}
@@ -140,6 +143,11 @@ function ReviewForm({ type }: ReviewFormProps) {
 }
 
 export default ReviewForm;
+
+const StyledImageDescription = styled.span`
+  font-size: ${FONT_SIZE.md};
+  font-weight: 500;
+`;
 
 const StyledReviewFormContainer = styled.form`
   display: flex;

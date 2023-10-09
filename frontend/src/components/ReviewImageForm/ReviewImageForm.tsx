@@ -17,7 +17,7 @@ function ReviewImageForm({ images, upload, deleteImage }: ReviewImageFormProps) 
 
   return (
     <StyledReviewImageFormWrapper>
-      {!isLimitImageCount && <ImageForm onChange={upload} />}
+      <ImageForm disabled={isLimitImageCount} onChange={upload} />
       {hasImage &&
         images.map((image, id) => (
           <StyledImageWrapper>
@@ -41,11 +41,15 @@ const StyledImageWrapper = styled.div`
 
 const StyledReviewImageFormWrapper = styled.div`
   display: flex;
+
+  & > * {
+    margin-right: 0.5rem;
+  }
 `;
 
 const StyledImage = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 108px;
+  height: 108px;
 
   border-radius: 20px;
 
