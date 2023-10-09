@@ -2,6 +2,7 @@ package com.celuveat.restaurant.fixture;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantPoint;
+import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
 import java.util.Random;
 
@@ -132,19 +133,43 @@ public class RestaurantFixture {
     public static class RestaurantPointFixture {
 
         public static LocationSearchCond 대성집만_포함한_검색_영역() {
-            return new LocationSearchCond(37.570945043671536, 37.57528178613561, 126.9600811054725, 126.96204984688943);
+            return 대성집만_포함한_검색_영역_요청().toCondition();
         }
 
         public static LocationSearchCond 하늘초밥만_포함한_검색_영역() {
-            return new LocationSearchCond(37.55513973710626, 37.55947739976768, 126.94575072929152, 126.94771947070845);
+            return 하늘초밥만_포함한_검색_영역_요청().toCondition();
         }
 
         public static LocationSearchCond 모던샤브하우스만_포함한_검색_영역() {
-            return new LocationSearchCond(37.56999357685741, 37.57216200735907, 126.97851187149867, 126.97949624220713);
+            return 모던샤브하우스만_포함한_검색_영역_요청().toCondition();
         }
 
         public static LocationSearchCond 대한민국_전체를_포함한_검색_영역() {
-            return new LocationSearchCond(31.555663574665545, 40.59357169075871, 125.66602297769718, 129.7199780558222);
+            return 대한민국_전체를_포함한_검색_영역_요청().toCondition();
+        }
+
+        public static LocationSearchCondRequest 대성집만_포함한_검색_영역_요청() {
+            return new LocationSearchCondRequest(
+                    37.570945043671536, 37.57528178613561, 126.9600811054725, 126.96204984688943
+            );
+        }
+
+        public static LocationSearchCondRequest 하늘초밥만_포함한_검색_영역_요청() {
+            return new LocationSearchCondRequest(
+                    37.55513973710626, 37.55947739976768, 126.94575072929152, 126.94771947070845
+            );
+        }
+
+        public static LocationSearchCondRequest 모던샤브하우스만_포함한_검색_영역_요청() {
+            return new LocationSearchCondRequest(
+                    37.56999357685741, 37.57216200735907, 126.97851187149867, 126.97949624220713
+            );
+        }
+
+        public static LocationSearchCondRequest 대한민국_전체를_포함한_검색_영역_요청() {
+            return new LocationSearchCondRequest(
+                    31.555663574665545, 40.59357169075871, 125.66602297769718, 129.7199780558222
+            );
         }
 
         public static RestaurantPoint 영역에_포함된_임의의_지점(

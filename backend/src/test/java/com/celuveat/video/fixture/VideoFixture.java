@@ -34,6 +34,7 @@ public class VideoFixture {
                 .build();
     }
 
+    // TODO 순서 변경
     public static Video 영상(String 영상_URL, Restaurant 음식점, Celeb 셀럽) {
         return Video.builder()
                 .celeb(셀럽)
@@ -43,6 +44,7 @@ public class VideoFixture {
                 .build();
     }
 
+    // TODO 순서 변경
     public static Video 영상(Restaurant 음식점, Celeb 셀럽) {
         return Video.builder()
                 .celeb(셀럽)

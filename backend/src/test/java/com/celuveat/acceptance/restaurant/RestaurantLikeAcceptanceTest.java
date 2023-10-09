@@ -15,7 +15,6 @@ import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.�
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.좋아요한_음식점_조회_요청_결과를_검증한다;
 import static com.celuveat.acceptance.restaurant.RestaurantLikeAcceptanceSteps.회원으로_음식점_검색_요청;
 import static com.celuveat.auth.fixture.OauthMemberFixture.멤버;
-import static com.celuveat.restaurant.fixture.LocationFixture.검색_영역_요청;
 import static com.celuveat.restaurant.fixture.LocationFixture.박스_1_2번_지점포함_요청;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
 
@@ -77,7 +76,7 @@ public class RestaurantLikeAcceptanceTest extends AcceptanceTest {
         음식점들에_좋아요를_누른다(좋아요_누를_음식점_아이디, 세션_아이디);
 
         // when
-        var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 검색_영역_요청(박스_1_2번_지점포함_요청), 세션_아이디);
+        var 응답 = 회원으로_음식점_검색_요청(음식점_검색_조건_요청(없음, 없음, 없음), 박스_1_2번_지점포함_요청, 세션_아이디);
 
         // then
         var 예상_응답 = 좋아요_포함된_예상_응답(전체_음식점);

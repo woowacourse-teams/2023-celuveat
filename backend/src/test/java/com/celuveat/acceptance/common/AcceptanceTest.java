@@ -13,6 +13,8 @@ import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.common.SeedData;
+import com.celuveat.common.TestData;
+import com.celuveat.common.TestDataInserter;
 import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.command.domain.Restaurant;
@@ -47,28 +49,44 @@ public abstract class AcceptanceTest {
 
     @MockBean
     protected OauthService oauthService;
+
     @MockBean
     protected ImageUploadClient imageUploadClient;
+
     @Autowired
     protected CelebRepository celebRepository;
+
     @Autowired
     protected RestaurantRepository restaurantRepository;
+
     @Autowired
     protected RestaurantImageRepository restaurantImageRepository;
+
     @Autowired
     protected VideoRepository videoRepository;
+
     @Autowired
     protected OauthMemberRepository oauthMemberRepository;
+
     @Autowired
     protected RestaurantLikeRepository restaurantLikeRepository;
+
     @Autowired
     protected RestaurantService restaurantService;
+
     @Autowired
     protected RestaurantReviewRepository restaurantReviewRepository;
+
     @Autowired
     protected Environment environment;
+
     @Autowired
     protected SeedData seedData;
+
+    @Autowired
+    protected TestDataInserter testDataInserter;
+
+    protected final TestData testData = new TestData();
 
     @LocalServerPort
     protected int port;
@@ -78,16 +96,26 @@ public abstract class AcceptanceTest {
         RestAssured.port = port;
     }
 
+    protected void 초기_데이터_저장() {
+        testDataInserter.insertData(testData);
+    }
+
     protected String 회원가입과_로그인후_세션아이디를_가져온다(OauthMember 멤버) {
         var 로그인_결과 = 회원가입후_로그인한다(멤버);
         return 세션_아이디를_가져온다(로그인_결과);
     }
 
     protected ExtractableResponse<Response> 회원가입후_로그인한다(OauthMember 멤버) {
-        String authCode = "authCode";
         회원를_저장한다(멤버);
+        String authCode = "authCode";
         when(oauthService.login(KAKAO, authCode)).thenReturn(멤버.id());
         return 로그인을_요청한다(authCode);
+    }
+
+    protected String 로그인후_세션아이디를_가져온다(OauthMember 멤버) {
+        String authCode = "authCode";
+        when(oauthService.login(KAKAO, authCode)).thenReturn(멤버.id());
+        return 세션_아이디를_가져온다(로그인을_요청한다(authCode));
     }
 
     protected void 셀럽을_저장한다(Celeb 셀럽) {
