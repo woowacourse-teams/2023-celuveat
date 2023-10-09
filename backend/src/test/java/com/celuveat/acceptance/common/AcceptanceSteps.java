@@ -65,6 +65,13 @@ public class AcceptanceSteps {
                 .isEqualTo(예외_타입.errorMessage());
     }
 
+    public static Long ID를_추출한다(
+            ExtractableResponse<Response> 응답
+    ) {
+        String location = 응답.header("Location");
+        return Long.valueOf(location.substring(location.lastIndexOf("/") + 1));
+    }
+
     public static <T> void 값이_존재한다(Optional<T> t) {
         assertThat(t).isPresent();
     }

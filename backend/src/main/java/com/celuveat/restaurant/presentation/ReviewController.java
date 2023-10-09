@@ -1,7 +1,5 @@
 package com.celuveat.restaurant.presentation;
 
-import static org.springframework.http.HttpStatus.CREATED;
-
 import com.celuveat.common.auth.Auth;
 import com.celuveat.common.auth.LooseAuth;
 import com.celuveat.common.client.ImageUploadClient;
@@ -14,6 +12,7 @@ import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
 import com.celuveat.restaurant.query.RestaurantReviewQueryService;
 import com.celuveat.restaurant.query.dto.RestaurantReviewsQueryResponse;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,13 +46,13 @@ public class ReviewController {
     }
 
     @PostMapping
-    ResponseEntity<Void> writeReview(
+    ResponseEntity<Long> writeReview(
             @Auth Long memberId,
             @ModelAttribute SaveReviewRequest request
     ) {
         imageUploadClient.upload(request.images());
-        restaurantReviewService.create(request.toCommand(memberId));
-        return ResponseEntity.status(CREATED).build();
+        Long id = restaurantReviewService.create(request.toCommand(memberId));
+        return ResponseEntity.created(URI.create("/reviews/" + id)).build();
     }
 
     @PatchMapping("/{reviewId}")
