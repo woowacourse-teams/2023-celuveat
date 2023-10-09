@@ -68,34 +68,6 @@ public class RestaurantFixture {
                 .build();
     }
 
-    // TODO : Remove
-    public static Restaurant 음식점(String name) {
-        return Restaurant.builder()
-                .name(name)
-                .roadAddress(name)
-                .naverMapUrl(name)
-                .phoneNumber(name)
-                .category("category:" + name)
-                .superCategory("superCategory:" + name)
-                .latitude(37.5206993d)
-                .longitude(127.019975d)
-                .build();
-    }
-
-    // TODO : Remove
-    public static Restaurant 음식점(String name, double latitude, double longitude) {
-        return Restaurant.builder()
-                .name(name)
-                .roadAddress(name)
-                .naverMapUrl(name)
-                .phoneNumber(name)
-                .category("category:" + name)
-                .superCategory("superCategory:" + name)
-                .latitude(latitude)
-                .longitude(longitude)
-                .build();
-    }
-
     public static String 상위_카테고리(String 하위_카테고리) {
         return switch (하위_카테고리) {
             case "감자탕", "게요리", "곰탕, 설렁탕",
