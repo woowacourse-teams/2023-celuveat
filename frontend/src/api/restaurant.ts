@@ -38,6 +38,11 @@ export const getUpdatedRestaurants = async () => {
   return response.data;
 };
 
+export const getRecommendedRestaurants = async () => {
+  const response = await apiClient.get('/main-page/recommendation');
+  return response.data;
+};
+
 export const postRevisedInfo = async ({
   restaurantId,
   data,

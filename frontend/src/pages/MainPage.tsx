@@ -8,9 +8,10 @@ import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { popularRestaurants } from '~/mocks/data/popularRestaurants';
 import { FONT_SIZE } from '~/styles/common';
 import Banner from '~/assets/banner/banner.svg';
+import { RestaurantData } from '~/@types/api.types';
+import { getRecommendedRestaurants } from '~/api/restaurant';
 
 function MainPage() {
   const navigate = useNavigate();
@@ -18,6 +19,11 @@ function MainPage() {
     queryKey: ['celebOptions'],
     queryFn: () => getCelebs(),
     suspense: true,
+  });
+
+  const { data: recommendedRestaurantData } = useQuery<RestaurantData[]>({
+    queryKey: ['recommendedRestaurants'],
+    queryFn: getRecommendedRestaurants,
   });
 
   const clickCelebIcon = (id: number) => {
@@ -61,8 +67,8 @@ function MainPage() {
         <div>
           <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
           <StyledPopularRestaurantBox>
-            {popularRestaurants.map(({ celebs, ...restaurant }) => (
-              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn />
+            {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
             ))}
           </StyledPopularRestaurantBox>
         </div>
