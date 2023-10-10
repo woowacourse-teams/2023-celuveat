@@ -136,7 +136,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             }
 
             @Test
-            void 카테고리_조회시_매핑된_카테고리로_조회한다() {
+            void 상위_카테고리로_조회시_포함된_하위_카테고리들이_조회된다() {
                 // when
                 var 응답 = 음식점_검색_요청(
                         음식점_검색_조건_요청_데이터(없음, "일식", 없음),

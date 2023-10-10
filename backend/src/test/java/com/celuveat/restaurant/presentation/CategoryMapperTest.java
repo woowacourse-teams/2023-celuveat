@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.celuveat.common.exception.BaseException;
 import com.celuveat.common.exception.BaseExceptionType;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("카테고리 매퍼(Category Mapper) 은(는)")
 class CategoryMapperTest {
 
     @Test
