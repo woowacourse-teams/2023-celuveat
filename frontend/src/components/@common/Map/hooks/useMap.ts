@@ -196,6 +196,10 @@ const useMap = ({ center, zoom, onClick, onIdle, markers, gestureHandling }: Use
   }, [zoom]);
 
   useEffect(() => {
+    if (map) map.panTo(center);
+  }, [center]);
+
+  useEffect(() => {
     if (map) {
       ['click', 'idle'].forEach(eventName => google.maps.event.clearListeners(map, eventName));
 

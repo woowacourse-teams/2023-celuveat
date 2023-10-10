@@ -75,7 +75,7 @@ function Map({ toggleMapExpand }: MapProps) {
 
     setBoundary(coordinateBoundary);
     setCurrentPage(0);
-    window.scrollTo(0, 0);
+    if (!isMobile) window.scrollTo(0, 0);
     setCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
   };
 

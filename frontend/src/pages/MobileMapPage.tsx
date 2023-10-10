@@ -95,7 +95,7 @@ const StyledRestaurantCardContainer = styled.div<{ isListShowed: boolean }>`
 `;
 
 const StyledMapContainer = styled.div<{ isListShowed: boolean }>`
-  display: ${({ isListShowed }) => isListShowed && 'none'};
+  display: ${({ isListShowed }) => (isListShowed ? 'none' : 'block')};
 
   width: 100%;
   height: 100%;

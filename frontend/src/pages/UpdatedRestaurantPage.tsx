@@ -15,14 +15,12 @@ function UpdatedRestaurantPage() {
 
   return (
     <StyledContainer>
-      <div>
-        <StyledLink to="/">
-          <StyledTitle>← 홈으로 돌아가기</StyledTitle>
-        </StyledLink>
-        <StyledBanner>
-          <Banner />
-        </StyledBanner>
-      </div>
+      <StyledLink to="/">
+        <StyledTitle>← 홈으로 돌아가기</StyledTitle>
+      </StyledLink>
+      <StyledBanner>
+        <Banner />
+      </StyledBanner>
       <StyledResultSection>
         <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
 
