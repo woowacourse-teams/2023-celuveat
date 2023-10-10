@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-property-unit-allowed-list */
 import { Suspense, lazy } from 'react';
 import { styled } from 'styled-components';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
@@ -30,9 +31,11 @@ function Root() {
       >
         <Layout>
           {isMobile ? <MobileHeader /> : <Header />}
-          <Outlet />
-          {!isMobile && <Footer />}
+          <OutletLayout>
+            <Outlet />
+          </OutletLayout>
           {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
+          {!isMobile && <Footer />}
         </Layout>
       </Suspense>
       <ScrollRestoration />
@@ -50,8 +53,18 @@ const StyledProcessing = styled.div`
 `;
 
 const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+
   width: 100vw;
-  min-height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+`;
+
+const OutletLayout = styled.div`
+  flex: 1;
+
+  width: 100%;
 `;
 
 export default Root;
