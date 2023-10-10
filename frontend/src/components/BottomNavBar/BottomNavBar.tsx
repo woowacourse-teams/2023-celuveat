@@ -1,21 +1,24 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HomeIcon from '~/assets/icons/home.svg';
 import SignInIcon from '~/assets/icons/sign-in.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
+import { getClickedIcon } from '~/utils/getClickedIcon';
 
 interface BottomNavBarProps {
   isHide: boolean;
 }
 
-type BottomIcons = 'home' | 'map' | 'user';
+type BottomIcons = 'home' | 'map' | 'user' | null;
 
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
-  const [clickedIcon, setClickedIcon] = useState<BottomIcons>('home');
+  const { pathname } = useLocation();
+  const [clickedIcon, setClickedIcon] = useState<BottomIcons>(getClickedIcon(pathname));
+
 
   const clickHome = () => {
     setClickedIcon('home');
@@ -27,8 +30,12 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   };
   const clickLogin = () => {
     setClickedIcon('user');
-    navigator('/signup');
+    navigator('/signUp', { state: { from: pathname } });
   };
+
+  useEffect(() => {
+    setClickedIcon(getClickedIcon(pathname));
+  }, [pathname]);
 
   useScrollBlock(ref);
 
@@ -60,6 +67,7 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
 
   width: 100vw;
   height: 48px;
+  min-height: 48px;
 
   background-color: var(--white);
 

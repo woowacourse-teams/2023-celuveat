@@ -33,10 +33,11 @@ function RegionResultPage() {
 
   return (
     <StyledContainer>
-      <StyledLink to="/">
-        <h5> ← {RECOMMENDED_REGION[region].name}</h5>
-      </StyledLink>
-      <StyledBanner src={`${SERVER_IMG_URL}regions/${region}.jpeg`} alt={region} />
+      <StyledBanner imgUrl={`${SERVER_IMG_URL}regions/${region}.jpeg`}>
+        <StyledLink to="/">
+          <StyledTitle> ← {RECOMMENDED_REGION[region].name.join(',')} 맛집</StyledTitle>
+        </StyledLink>
+      </StyledBanner>
       <StyledResultCount>
         {restaurantDataPages && restaurantDataPages.pages[0].totalElementsCount}개의 매장
       </StyledResultCount>
@@ -57,24 +58,28 @@ const StyledContainer = styled.div`
 
   width: 100%;
   min-height: 100vh;
-
-  padding: 1.6rem 1.2rem;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
 `;
 
 const StyledResultCount = styled.span`
   font-size: ${FONT_SIZE.md};
 `;
 
-const StyledBanner = styled.img`
+const StyledBanner = styled.div<{ imgUrl: string }>`
+  position: relative;
+
   width: 100%;
-  max-height: 160px;
+  height: 200px;
 
-  overflow: hidden;
-  object-fit: cover;
+  background: ${({ imgUrl }) => `linear-gradient(rgb(0 0 0 / 40%),transparent,transparent), url(${imgUrl})`};
+  background-size: cover;
+`;
 
-  border-radius: 12px;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const StyledTitle = styled.h5`
+  margin: 1.6rem 1.2rem;
+
+  color: var(--white);
 `;

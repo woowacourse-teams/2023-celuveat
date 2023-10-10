@@ -50,10 +50,6 @@ const StyledNavBar = styled.nav`
   display: flex;
   align-items: center;
 
-  position: sticky;
-  top: 80px;
-  z-index: 11;
-
   width: 100%;
   height: 80px;
 

@@ -98,6 +98,7 @@ const StyledLayout = styled.div`
   justify-content: center;
 
   width: 100%;
+  height: calc(100% - 48px);
 `;
 
 const StyledContainer = styled.div`
@@ -115,6 +116,7 @@ const StyledContainer = styled.div`
 
 const StyledBanner = styled.div`
   width: 100%;
+  height: 200px;
   max-height: 200px;
 
   object-fit: cover;
