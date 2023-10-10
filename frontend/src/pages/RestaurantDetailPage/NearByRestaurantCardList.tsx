@@ -25,7 +25,7 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
       <ul>
         {nearByRestaurant.content.map(restaurant =>
           isMobile ? (
-            <MiniRestaurantCard restaurant={restaurant} celebs={restaurant.celebs} flexColumn />
+            <MiniRestaurantCard restaurant={restaurant} celebs={restaurant.celebs} carousel={false} flexColumn />
           ) : (
             <StyledRestaurantCardContainer>
               <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
