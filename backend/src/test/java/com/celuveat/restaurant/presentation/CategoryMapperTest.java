@@ -9,25 +9,16 @@ import com.celuveat.common.exception.BaseExceptionType;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 @DisplayName("카테고리 매퍼(Category Mapper) 은(는)")
 class CategoryMapperTest {
 
-    @Test
-    void 카테고리가_null이면_빈리스트를_반환한다() {
-        // when
-        List<String> result = CategoryMapper.mapCategory(null);
-
-        // then
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void 카테고리가_빈문자열이면_빈리스트를_반환한다() {
-        // when
-        List<String> result = CategoryMapper.mapCategory("");
-
-        // then
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 카테고리가_null이나_빈문자열이면_빈리스트를_반환한다(String category) {
+        List<String> result = CategoryMapper.mapCategory(category);
         assertThat(result).isEmpty();
     }
 
