@@ -27,7 +27,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
   const ref = useRef();
   const [hoveredId] = useHoveredRestaurantState(state => [state.id]);
   const { isMobile } = useMediaQuery();
-  const [setPreview] = useMapState(state => [state.setPreview]);
+  const setPreview = useMapState(state => state.setPreview);
   useOnClickOutside(ref, () => setIsClicked(false));
 
   const clickMarker = () => {
