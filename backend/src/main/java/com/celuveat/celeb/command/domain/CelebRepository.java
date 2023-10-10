@@ -1,8 +1,8 @@
 package com.celuveat.celeb.command.domain;
 
-import static com.celuveat.admin.exception.AdminExceptionType.NOT_EXISTS_CELEB;
+import static com.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
 
-import com.celuveat.admin.exception.AdminException;
+import com.celuveat.celeb.exception.CelebException;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +12,6 @@ public interface CelebRepository extends JpaRepository<Celeb, Long> {
 
     default Celeb getByYoutubeChannelName(String youtubeChannelName) {
         return findByYoutubeChannelName(youtubeChannelName)
-                .orElseThrow(() -> new AdminException(NOT_EXISTS_CELEB));
+                .orElseThrow(() -> new CelebException(NOT_FOUND_CELEB));
     }
 }

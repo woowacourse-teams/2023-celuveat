@@ -14,5 +14,7 @@ public interface RestaurantLikeQueryDaoSupport extends JpaRepository<RestaurantL
     @EntityGraph(attributePaths = "restaurant")
     List<RestaurantLike> findAllByMemberIdOrderByCreatedDateDesc(Long memberId);
 
-    Integer countByRestaurant(Restaurant restaurant);
+    int countByRestaurant(Restaurant restaurant);
+
+    List<RestaurantLike> findAllByMemberIdAndRestaurantIdIn(Long memberId, List<Long> restaurantIds);
 }

@@ -28,7 +28,8 @@ public class LocalAuthController {
     ResponseEntity<Void> login(
             @RequestParam String id,
             HttpServletRequest request,
-            HttpServletResponse response) {
+            HttpServletResponse response
+    ) {
         OauthId oauthId = new OauthId(id, KAKAO);
         OauthMember oauthMember = new OauthMember(oauthId, id, null);
         OauthMember savedMember = oauthMemberRepository.findByOauthId(oauthId)

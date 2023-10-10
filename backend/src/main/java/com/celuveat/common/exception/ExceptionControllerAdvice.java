@@ -1,13 +1,14 @@
 package com.celuveat.common.exception;
 
+import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import com.celuveat.common.log.context.LogContext;
 import com.celuveat.common.log.context.LogContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -32,16 +33,21 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ExceptionResponse> handleMethodArgumentNotValid(HttpServletRequest request,
-                                                                   MethodArgumentNotValidException e) {
-        String errorMessage = e.getFieldErrors().stream()
+    ResponseEntity<ExceptionResponse> handleMethodArgumentNotValid(
+            HttpServletRequest request,
+            MethodArgumentNotValidException e
+    ) {
+        String globalErrorMessage = "[Global Error : " + e.getGlobalErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(joining(", ")) + "], \t";
+        String fieldErrorMessage = "[Field Error : " + e.getFieldErrors().stream()
                 .map(it -> it.getField() + " : " + it.getDefaultMessage())
-                .collect(Collectors.joining("  "));
+                .collect(joining("  ")) + "]";
         LogContext logContext = logContextHolder.get();
         log.info("[{}] 잘못된 요청이 들어왔습니다. URI: {},  내용:  {}",
-                logContext.logId(), request.getRequestURI(), errorMessage);
+                logContext.logId(), request.getRequestURI(), globalErrorMessage + fieldErrorMessage);
         return ResponseEntity.status(BAD_REQUEST)
-                .body(new ExceptionResponse(errorMessage));
+                .body(new ExceptionResponse(globalErrorMessage + fieldErrorMessage));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

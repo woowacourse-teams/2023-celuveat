@@ -50,8 +50,8 @@ public class OauthController {
 
     @GetMapping("/logout/{oauthServerType}")
     ResponseEntity<Void> logout(
-            @PathVariable OauthServerType oauthServerType,
             @Auth Long memberId,
+            @PathVariable OauthServerType oauthServerType,
             HttpServletRequest request
     ) {
         oauthService.logout(oauthServerType, memberId);
@@ -61,8 +61,8 @@ public class OauthController {
 
     @DeleteMapping("/withdraw/{oauthServerType}")
     ResponseEntity<Void> withdraw(
-            @PathVariable OauthServerType oauthServerType,
             @Auth Long memberId,
+            @PathVariable OauthServerType oauthServerType,
             HttpServletRequest request
     ) {
         oauthService.withdraw(oauthServerType, memberId);

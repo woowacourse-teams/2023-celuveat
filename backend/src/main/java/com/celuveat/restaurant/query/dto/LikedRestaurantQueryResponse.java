@@ -1,45 +1,33 @@
 package com.celuveat.restaurant.query.dto;
 
-import com.celuveat.celeb.command.domain.Celeb;
+import com.celuveat.common.util.RatingUtils;
 import com.celuveat.restaurant.command.domain.Restaurant;
-import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
-import lombok.Builder;
 
+// TODO 여기에 조회수, 평점 등에 대한 정보가 없는데 이대로 갈건지?, 만약 변경된다면 해당 클래스 대신 RestaurantWithoutDistanceQueryResponse를 사용할 것
 public record LikedRestaurantQueryResponse(
         Long id,
         String name,
         String category,
         String roadAddress,
-        @JsonProperty("lat") Double latitude,
-        @JsonProperty("lng") Double longitude,
+        @JsonProperty("lat") double latitude,
+        @JsonProperty("lng") double longitude,
         String phoneNumber,
         String naverMapUrl,
+        int viewCount,
+        int likeCount,
+        double rating,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
 
-    public static LikedRestaurantQueryResponse of(
+    public static LikedRestaurantQueryResponse from(
             Restaurant restaurant,
-            Map<Restaurant, List<Celeb>> celebsMap,
-            Map<Restaurant, List<RestaurantImage>> restaurantMap
+            List<CelebQueryResponse> celebs,
+            List<RestaurantImageQueryResponse> images
     ) {
-        return LikedRestaurantQueryResponse.builder()
-                .restaurant(restaurant)
-                .celebs(celebsMap.get(restaurant))
-                .restaurantImages(restaurantMap.get(restaurant))
-                .build();
-    }
-
-    @Builder
-    public LikedRestaurantQueryResponse(
-            Restaurant restaurant,
-            List<Celeb> celebs,
-            List<RestaurantImage> restaurantImages
-    ) {
-        this(
+        return new LikedRestaurantQueryResponse(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
@@ -48,8 +36,11 @@ public record LikedRestaurantQueryResponse(
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
-                celebs.stream().map(CelebQueryResponse::of).toList(),
-                restaurantImages.stream().map(RestaurantImageQueryResponse::of).toList()
+                restaurant.viewCount(),
+                restaurant.likeCount(),
+                RatingUtils.averageRating(restaurant.totalRating(), restaurant.reviewCount()),
+                celebs,
+                images
         );
     }
 }

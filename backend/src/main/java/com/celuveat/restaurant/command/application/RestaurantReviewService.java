@@ -8,6 +8,7 @@ import com.celuveat.restaurant.command.application.dto.UpdateReviewRequestComman
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,22 +22,27 @@ public class RestaurantReviewService {
     private final RestaurantRepository restaurantRepository;
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
+    private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
 
     public Long create(SaveReviewRequestCommand command) {
         OauthMember member = oauthMemberRepository.getById(command.memberId());
         Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
-        RestaurantReview restaurantReview = new RestaurantReview(command.content(), member, restaurant);
+        RestaurantReview restaurantReview = RestaurantReview.create(
+                restaurant, member,
+                command.content(), command.rating(), command.images()
+        );
         return restaurantReviewRepository.save(restaurantReview).id();
     }
 
     public void update(UpdateReviewRequestCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.updateContent(command.content(), command.memberId());
+        review.update(command.memberId(), command.content(), command.rating());
     }
 
     public void delete(DeleteReviewCommand command) {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
-        review.checkOwner(command.memberId());
+        review.delete(command.memberId());
+        restaurantReviewLikeRepository.deleteAllByRestaurantReview(review);
         restaurantReviewRepository.delete(review);
     }
 }

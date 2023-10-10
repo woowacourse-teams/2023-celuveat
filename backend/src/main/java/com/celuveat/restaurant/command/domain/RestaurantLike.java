@@ -10,11 +10,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @Table(uniqueConstraints = {
         @UniqueConstraint(
@@ -34,6 +32,20 @@ public class RestaurantLike extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private OauthMember member;
+
+    private RestaurantLike(Restaurant restaurant, OauthMember member) {
+        this.restaurant = restaurant;
+        this.member = member;
+    }
+
+    public static RestaurantLike create(Restaurant restaurant, OauthMember member) {
+        restaurant.clickLike();
+        return new RestaurantLike(restaurant, member);
+    }
+
+    public void cancel() {
+        this.restaurant.cancelLike();
+    }
 
     public Restaurant restaurant() {
         return restaurant;

@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminService {
 
     private final CelebRepository celebRepository;
+    private final VideoRepository videoRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
-    private final VideoRepository videoRepository;
 
     public void saveData(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {
@@ -57,10 +57,13 @@ public class AdminService {
         if (imageNames.length != instagramNames.length) {
             throw new AdminException(MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME);
         }
-
         List<RestaurantImage> images = new ArrayList<>();
         for (int i = 0; i < imageNames.length; i++) {
-            RestaurantImage restaurantImage = request.toRestaurantImage(imageNames[i].strip(), instagramNames[i].strip(), restaurant);
+            RestaurantImage restaurantImage = request.toRestaurantImage(
+                    imageNames[i].strip(),
+                    instagramNames[i].strip(),
+                    restaurant
+            );
             images.add(restaurantImage);
         }
         return images;
@@ -72,7 +75,6 @@ public class AdminService {
         if (videoUrls.length != uploadDates.length) {
             throw new AdminException(MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE);
         }
-
         List<Video> videos = new ArrayList<>();
         for (int i = 0; i < videoUrls.length; i++) {
             String videoUrl = videoUrls[i].strip();

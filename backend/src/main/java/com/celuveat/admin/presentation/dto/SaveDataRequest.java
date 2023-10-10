@@ -21,7 +21,8 @@ public record SaveDataRequest(
         String videoUploadDate,
         String latitude,
         String longitude,
-        String instagramName
+        String instagramName,
+        String superCategory
 ) {
 
     private static final int RESTAURANT_NAME = 0;
@@ -36,6 +37,7 @@ public record SaveDataRequest(
     private static final int LONGITUDE = 9;
     private static final int IMAGE_NAME = 10;
     private static final int INSTAGRAM_NAME = 11;
+    private static final int SUPER_CATEGORY = 12;
 
     public static SaveDataRequest from(String[] data) {
         return SaveDataRequest.builder()
@@ -51,6 +53,7 @@ public record SaveDataRequest(
                 .latitude(data[LATITUDE])
                 .longitude(data[LONGITUDE])
                 .instagramName(data[INSTAGRAM_NAME])
+                .superCategory(data[SUPER_CATEGORY])
                 .build();
     }
 
@@ -63,7 +66,6 @@ public record SaveDataRequest(
                 .longitude(Double.parseDouble(longitude))
                 .phoneNumber(phoneNumber)
                 .naverMapUrl(naverMapUrl)
-                .viewCount(0)
                 .build();
     }
 

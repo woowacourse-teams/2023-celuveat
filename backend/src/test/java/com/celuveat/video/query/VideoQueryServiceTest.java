@@ -1,136 +1,64 @@
 package com.celuveat.video.query;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-import com.celuveat.celeb.command.domain.Celeb;
-import com.celuveat.common.IntegrationTest;
-import com.celuveat.common.SeedData;
-import com.celuveat.video.command.domain.Video;
-import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dao.VideoQueryResponseDao;
+import com.celuveat.video.query.dao.VideoQueryResponseDao.VideoSearchCond;
+import com.celuveat.video.query.dto.VideoQueryResponse;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 
-@IntegrationTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @DisplayName("영상 조회용 서비스(VideoQueryService) 은(는)")
 class VideoQueryServiceTest {
 
-    @Autowired
-    private SeedData seedData;
+    private final VideoQueryResponseDao videoQueryResponseDao = mock(VideoQueryResponseDao.class);
+    private final VideoQueryService videoQueryService = new VideoQueryService(videoQueryResponseDao);
 
-    @Autowired
-    private VideoQueryService videoQueryService;
+    @Test
+    void 음식점_영상들을_조건에_따라_조회한다() {
+        // given
+        VideoSearchCond videoSearchCond = new VideoSearchCond(null, null);
+        PageRequest pageRequest = PageRequest.of(0, 18);
+        List<VideoQueryResponse> response = List.of(
+                new VideoQueryResponse(
+                        1L,
+                        "key1",
+                        LocalDate.now(),
+                        1L,
+                        "히밥",
+                        "@히밥",
+                        "https://히밥.profile.com"
+                ),
+                new VideoQueryResponse(
+                        2L,
+                        "key2",
+                        LocalDate.now(),
+                        2L,
+                        "성시경",
+                        "@성시경",
+                        "https://성시경.profile.com"
+                )
+        );
+        given(videoQueryService.findAllVideoWithCeleb(videoSearchCond, pageRequest))
+                .willReturn(PageableExecutionUtils.getPage(response, pageRequest, () -> 2));
 
-    @Nested
-    class 영상_검색 {
+        // when
+        List<VideoQueryResponse> result = videoQueryService
+                .findAllVideoWithCeleb(videoSearchCond, pageRequest)
+                .getContent();
 
-        @Test
-        void 영상_전체_검색() {
-            // given
-            List<Video> videos = seedData.insertVideoSeedData();
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
-                    .map(this::toVideoWithCelebQueryResponse)
-                    .toList();
-
-            // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, null),
-                    PageRequest.of(0, expected.size())
-            );
-
-            // then
-            assertThat(result.getContent())
-                    .usingRecursiveComparison()
-                    .isEqualTo(expected);
-        }
-
-        @Test
-        void 음식점ID로_영상_검색() {
-            // given
-            List<Video> videos = seedData.insertVideoSeedData();
-            Long expectedRestaurantId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
-                    .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
-                    .map(this::toVideoWithCelebQueryResponse)
-                    .toList();
-
-            // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(null, expectedRestaurantId),
-                    PageRequest.of(0, expected.size())
-            );
-
-            // then
-            assertThat(result.getContent())
-                    .usingRecursiveComparison()
-                    .isEqualTo(expected);
-        }
-
-        @Test
-        void 셀럽ID로_영상_검색() {
-            // given
-            List<Video> videos = seedData.insertVideoSeedData();
-            Long expectedCelebId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
-                    .filter(video -> video.celeb().id().equals(expectedCelebId))
-                    .map(this::toVideoWithCelebQueryResponse)
-                    .toList();
-
-            // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, null),
-                    PageRequest.of(0, expected.size())
-            );
-
-            // then
-            assertThat(result.getContent())
-                    .usingRecursiveComparison()
-                    .isEqualTo(expected);
-        }
-
-        @Test
-        void 음식점ID와_셀럽ID로_영상_검색() {
-            // given
-            List<Video> videos = seedData.insertVideoSeedData();
-            Long expectedRestaurantId = 1L;
-            Long expectedCelebId = 1L;
-            List<VideoWithCelebQueryResponse> expected = videos.stream()
-                    .filter(video -> video.restaurant().id().equals(expectedRestaurantId))
-                    .filter(video -> video.celeb().id().equals(expectedCelebId))
-                    .map(this::toVideoWithCelebQueryResponse)
-                    .toList();
-
-            // when
-            Page<VideoWithCelebQueryResponse> result = videoQueryService.findAllVideoWithCeleb(
-                    new VideoWithCelebQueryResponseDao.VideoSearchCond(expectedCelebId, expectedRestaurantId),
-                    PageRequest.of(0, expected.size())
-            );
-
-            // then
-            assertThat(result.getContent())
-                    .usingRecursiveComparison()
-                    .isEqualTo(expected);
-        }
-
-        private VideoWithCelebQueryResponse toVideoWithCelebQueryResponse(Video video) {
-            Celeb celeb = video.celeb();
-            return new VideoWithCelebQueryResponse(
-                    video.id(),
-                    video.youtubeUrl(),
-                    video.uploadDate(),
-                    celeb.id(),
-                    celeb.name(),
-                    celeb.youtubeChannelName(),
-                    celeb.profileImageUrl()
-            );
-        }
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(response);
     }
 }
