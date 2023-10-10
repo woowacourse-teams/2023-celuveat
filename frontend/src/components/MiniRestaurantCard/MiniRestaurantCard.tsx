@@ -28,7 +28,7 @@ function MiniRestaurantCard({
   setHoveredId = () => {},
   carousel = false,
 }: MiniRestaurantCardProps) {
-  const { id, images, name, roadAddress, category } = restaurant;
+  const { id, images, name, roadAddress, category, rating } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
@@ -42,8 +42,6 @@ function MiniRestaurantCard({
 
     toggleRestaurantLike();
   };
-
-  const rating = 5;
 
   return (
     <>
