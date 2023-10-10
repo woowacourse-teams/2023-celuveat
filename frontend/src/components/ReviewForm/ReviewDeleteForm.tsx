@@ -11,7 +11,7 @@ import TextButton from '~/components/@common/Button';
 
 function ReviewDeleteForm() {
   const { reviewId } = useReviewModalContext();
-  const { deleteReview } = useRestaurantReview();
+  const { deleteReview, isSubmitRequesting } = useRestaurantReview();
 
   const onDeleteReview: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
@@ -25,7 +25,14 @@ function ReviewDeleteForm() {
         <Alert width={32} />
         <p>정말 삭제하시겠습니까? 한 번 삭제된 리뷰는 복구가 불가능합니다.</p>
       </StyledWarningMessage>
-      <TextButton type="submit" onClick={onDeleteReview} colorType="dark" text="삭제하기" width="100%" />
+      <TextButton
+        type="submit"
+        onClick={onDeleteReview}
+        colorType="dark"
+        text="삭제하기"
+        width="100%"
+        disabled={isSubmitRequesting}
+      />
     </div>
   );
 }

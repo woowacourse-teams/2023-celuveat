@@ -14,11 +14,11 @@ export const Default: Story = {
   args: {
     images: [
       {
-        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgUrl: '4YSJ4YWz4YSP4YWz4YSF4YW14Yar4YSJ4YWj4Ya6IDIwMjMtMDktMjcg4YSL4YWp4YSS4YWuIDEyLjA2LjA4',
         imgFile: 'asdf' as unknown as Blob,
       },
       {
-        imgUrl: 'https://t1.daumcdn.net/cfile/tistory/224CEE3C577E3C7503',
+        imgUrl: '4YSJ4YWz4YSP4YWz4YSF4YW14Yar4YSJ4YWj4Ya6IDIwMjMtMDktMjcg4YSL4YWp4YSS4YWuIDEyLjA2LjA4',
         imgFile: 'asdf' as unknown as Blob,
       },
     ],

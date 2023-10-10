@@ -36,13 +36,13 @@ const options = {
 function ReviewForm({ type }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
   const { reviewId } = useReviewModalContext();
-  const { restaurantReviewsData, createReview, updateReview } = useRestaurantReview();
+  const { restaurantReviewsData, createReview, updateReview, isSubmitRequesting } = useRestaurantReview();
 
   const [text, setText] = useState('');
   const [images, setImages] = useState<ReviewUploadImageType[]>([]);
   const [rating, setRating] = useState<StarRate>(0);
 
-  const isSubmitDisabled = text.length === 0 || rating === 0;
+  const isSubmitDisabled = text.length === 0 || rating === 0 || isSubmitRequesting;
 
   useEffect(() => {
     if (type === 'update') {

@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
+import { useState } from 'react';
 import {
   deleteRestaurantReview,
   getRestaurantReview,
@@ -20,6 +21,7 @@ import type { RestaurantReviewData, RestaurantReviewPatchBody } from '~/@types/a
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
   const { id: restaurantId } = useParams();
+  const [isSubmitRequesting, setIsSubmitRequesting] = useState(false);
   const {
     onSuccess: onSuccessForReview,
     onFailure: onFailureForReview,
@@ -155,26 +157,36 @@ const useRestaurantReview = () => {
 
   return {
     isLoading,
+    isSubmitRequesting,
     restaurantReviewsData,
     getReviewIsLiked,
     toggleRestaurantReviewLike: (reviewId: number) => {
+      setIsSubmitRequesting(true);
       postReviewLike.mutate(reviewId);
       close();
     },
     createReview: (body: FormData) => {
+      setIsSubmitRequesting(true);
       createReview.mutate(body);
       close();
     },
+
     updateReview: ({ reviewId, body }: { reviewId: number; body: RestaurantReviewPatchBody }) => {
+      setIsSubmitRequesting(true);
       updateReview.mutate({ reviewId, body });
       close();
     },
+
     deleteReview: (reviewId: number) => {
+      setIsSubmitRequesting(true);
       deleteReview.mutate(reviewId);
+
       close();
     },
     postReviewReport: ({ reviewId, content }: { reviewId: number; content: string }) => {
+      setIsSubmitRequesting(true);
       postReviewReport.mutate({ reviewId, content });
+
       close();
     },
   };
