@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.query.dto;
 
+import com.celuveat.common.util.RatingUtils;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -9,11 +10,15 @@ public record LikedRestaurantQueryResponse(
         Long id,
         String name,
         String category,
+        String superCategory,
         String roadAddress,
         @JsonProperty("lat") double latitude,
         @JsonProperty("lng") double longitude,
         String phoneNumber,
         String naverMapUrl,
+        int viewCount,
+        int likeCount,
+        double rating,
         List<CelebQueryResponse> celebs,
         List<RestaurantImageQueryResponse> images
 ) {
@@ -27,11 +32,15 @@ public record LikedRestaurantQueryResponse(
                 restaurant.id(),
                 restaurant.name(),
                 restaurant.category(),
+                restaurant.superCategory(),
                 restaurant.roadAddress(),
                 restaurant.latitude(),
                 restaurant.longitude(),
                 restaurant.phoneNumber(),
                 restaurant.naverMapUrl(),
+                restaurant.viewCount(),
+                restaurant.likeCount(),
+                RatingUtils.averageRating(restaurant.totalRating(), restaurant.reviewCount()),
                 celebs,
                 images
         );

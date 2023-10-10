@@ -44,12 +44,11 @@ class RestaurantReviewsQueryResponseDaoTest extends DaoTest {
     private final RestaurantReviewLike 리뷰_1에_대한_로이스의_좋아요 = RestaurantReviewLike.create(대성집_리뷰_1, 로이스);
 
     @Override
-    protected TestData prepareTestData() {
+    protected void prepareTestData() {
         testData.addMembers(말랑, 로이스, 오도);
         testData.addRestaurants(대성집);
         testData.addRestaurantReviews(대성집_리뷰_1, 대성집_리뷰_2);
         testData.addRestaurantReviewLikes(리뷰_1에_대한_로이스의_좋아요);
-        return testData;
     }
 
     @Test

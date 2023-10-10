@@ -239,11 +239,15 @@ public class RestaurantAcceptanceSteps {
                 음식점.id(),
                 음식점.name(),
                 음식점.category(),
+                음식점.superCategory(),
                 음식점.roadAddress(),
                 음식점.latitude(),
                 음식점.longitude(),
                 음식점.phoneNumber(),
                 음식점.naverMapUrl(),
+                음식점.viewCount(),
+                좋아요_수,
+                평점,
                 celebQueryResponses(음식점, 셀럽들),
                 restaurantImageQueryResponses(음식점, 음식점_사진들)
         );

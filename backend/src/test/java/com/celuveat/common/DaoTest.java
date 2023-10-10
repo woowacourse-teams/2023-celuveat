@@ -26,8 +26,9 @@ public abstract class DaoTest {
 
     @BeforeEach
     void setUp() {
-        testDataInserter.insertData(prepareTestData());
+        prepareTestData();
+        testDataInserter.insertData(testData);
     }
 
-    protected abstract TestData prepareTestData();
+    protected abstract void prepareTestData();
 }
