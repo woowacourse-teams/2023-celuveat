@@ -5,6 +5,7 @@ import static com.celuveat.celeb.command.domain.QCeleb.celeb;
 import static com.celuveat.restaurant.command.domain.QRestaurant.restaurant;
 import static com.celuveat.restaurant.command.domain.QRestaurantImage.restaurantImage;
 import static com.celuveat.restaurant.command.domain.QRestaurantLike.restaurantLike;
+import static com.celuveat.restaurant.command.domain.QRestaurantRecommendation.restaurantRecommendation;
 import static com.celuveat.video.command.domain.QVideo.video;
 import static java.lang.Boolean.FALSE;
 import static java.util.function.Function.identity;
@@ -47,20 +48,7 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
             @Nullable Long memberId
     ) {
         List<RestaurantSearchWithoutDistanceResponse> latestRestaurants =
-                query.select(Projections.constructor(RestaurantSearchWithoutDistanceResponse.class,
-                                restaurant.id,
-                                restaurant.name,
-                                restaurant.category,
-                                restaurant.roadAddress,
-                                restaurant.restaurantPoint.latitude,
-                                restaurant.restaurantPoint.longitude,
-                                restaurant.phoneNumber,
-                                restaurant.naverMapUrl,
-                                restaurant.viewCount,
-                                restaurant.likeCount,
-                                restaurant.reviewCount,
-                                restaurant.totalRating
-                        ))
+                selectRestaurantSearchWithoutDistanceResponse()
                         .from(restaurant)
                         .orderBy(restaurant.id.desc())
                         .limit(10)
@@ -83,21 +71,7 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
             RegionCodeCond cond,
             Pageable pageable
     ) {
-        return query.selectDistinct(Projections.constructor(
-                        RestaurantSearchWithoutDistanceResponse.class,
-                        restaurant.id,
-                        restaurant.name,
-                        restaurant.category,
-                        restaurant.roadAddress,
-                        restaurant.restaurantPoint.latitude,
-                        restaurant.restaurantPoint.longitude,
-                        restaurant.phoneNumber,
-                        restaurant.naverMapUrl,
-                        restaurant.viewCount,
-                        restaurant.likeCount,
-                        restaurant.reviewCount,
-                        restaurant.totalRating
-                ))
+        return selectRestaurantSearchWithoutDistanceResponse()
                 .from(restaurant)
                 .join(administrativeDistrict).on(administrativeDistrict.code.in(cond.codes))
                 .where(stContainsCondition)
@@ -182,6 +156,34 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
                 .join(administrativeDistrict).on(administrativeDistrict.code.in(cond.codes))
                 .where(stContainsCondition);
         return countQuery::fetchOne;
+    }
+
+    public List<RestaurantSearchWithoutDistanceResponse> findRecommendation(final Long memberId) {
+        List<RestaurantSearchWithoutDistanceResponse> recommendRestaurants = selectRestaurantSearchWithoutDistanceResponse()
+                .from(restaurantRecommendation)
+                .join(restaurantRecommendation).on(restaurantRecommendation.restaurant.id.eq(restaurant.id))
+                .fetch();
+
+        settingCelebAndImageAndLiked(memberId, recommendRestaurants);
+        return recommendRestaurants;
+    }
+
+    private JPAQuery<RestaurantSearchWithoutDistanceResponse> selectRestaurantSearchWithoutDistanceResponse() {
+        return query.selectDistinct(Projections.constructor(
+                RestaurantSearchWithoutDistanceResponse.class,
+                restaurant.id,
+                restaurant.name,
+                restaurant.category,
+                restaurant.roadAddress,
+                restaurant.restaurantPoint.latitude,
+                restaurant.restaurantPoint.longitude,
+                restaurant.phoneNumber,
+                restaurant.naverMapUrl,
+                restaurant.viewCount,
+                restaurant.likeCount,
+                restaurant.reviewCount,
+                restaurant.totalRating
+        ));
     }
 
     public record RegionCodeCond(

@@ -6,6 +6,7 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
+import com.celuveat.restaurant.command.domain.RestaurantRecommendation;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.video.command.domain.Video;
@@ -42,6 +43,9 @@ public class TestData {
 
     @Default
     private final List<AdministrativeDistrict> administrativeDistricts = new ArrayList<>();
+
+    @Default
+    private final List<RestaurantRecommendation> restaurantRecommendations = new ArrayList<>();
 
     public void addMembers(OauthMember... members) {
         addMembers(Arrays.asList(members));
@@ -115,6 +119,14 @@ public class TestData {
         this.administrativeDistricts.addAll(administrativeDistricts);
     }
 
+    public void addRestaurantRecommendations(RestaurantRecommendation... restaurantRecommendations) {
+        addRestaurantRecommendations(Arrays.asList(restaurantRecommendations));
+    }
+
+    public void addRestaurantRecommendations(List<RestaurantRecommendation> restaurantRecommendations) {
+        this.restaurantRecommendations.addAll(restaurantRecommendations);
+    }
+
     public List<OauthMember> members() {
         return members;
     }
@@ -149,5 +161,9 @@ public class TestData {
 
     public List<AdministrativeDistrict> administrativeDistricts() {
         return administrativeDistricts;
+    }
+
+    public List<RestaurantRecommendation> restaurantRecommendations() {
+        return restaurantRecommendations;
     }
 }
