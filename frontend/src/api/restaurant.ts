@@ -33,6 +33,11 @@ export const getRestaurantsByAddress = async ({ codes, page }: { codes: number[]
   return response.data;
 };
 
+export const getUpdatedRestaurants = async () => {
+  const response = await apiClient.get('/main-page/latest');
+  return response.data;
+};
+
 export const postRevisedInfo = async ({
   restaurantId,
   data,
