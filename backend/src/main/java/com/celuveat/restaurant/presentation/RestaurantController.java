@@ -21,6 +21,7 @@ import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -87,14 +88,6 @@ public class RestaurantController {
                         memberId
                 );
         return ResponseEntity.ok(PageResponse.from(result));
-    }
-
-    @GetMapping("/latest")
-    ResponseEntity<List<RestaurantSearchWithoutDistanceResponse>> findLatest(
-            @LooseAuth Long memberId
-    ) {
-        List<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findLatest(memberId);
-        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/like")

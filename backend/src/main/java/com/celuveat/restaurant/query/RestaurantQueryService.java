@@ -17,6 +17,7 @@ import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse
 import jakarta.annotation.Nullable;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,11 @@ public class RestaurantQueryService {
         return restaurantSearchQueryResponseDao.findNearBy(restaurantId, distance, pageable, memberId);
     }
 
+    @Cacheable(
+            cacheManager = "restaurantCacheManager",
+            value = "region",
+            condition = "#memberId == null && #pageable.getPageNumber() < 5 && #pageable.getPageSize() == 18"
+    )
     public Page<RestaurantSearchWithoutDistanceResponse> findByRegionCode(
             RegionCodeCond cond,
             Pageable pageable,
@@ -75,10 +81,12 @@ public class RestaurantQueryService {
         return restaurantSearchWithoutDistanceQueryResponseDao.findByRegionCode(cond, pageable, memberId);
     }
 
+    @Cacheable(cacheManager = "restaurantCacheManager", value = "latest", condition = "#memberId == null")
     public List<RestaurantSearchWithoutDistanceResponse> findLatest(@Nullable Long memberId) {
         return restaurantSearchWithoutDistanceQueryResponseDao.findLatest(memberId);
     }
 
+    @Cacheable(cacheManager = "restaurantCacheManager", value = "recommend", condition = "#memberId == null")
     public List<RestaurantSearchWithoutDistanceResponse> findRecommendation(@Nullable Long memberId) {
         return restaurantSearchWithoutDistanceQueryResponseDao.findRecommendation(memberId);
     }
