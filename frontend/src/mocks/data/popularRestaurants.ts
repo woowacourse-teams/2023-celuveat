@@ -1,4 +1,6 @@
-export const popularRestaurants = [
+import { RestaurantData } from '~/@types/api.types';
+
+export const popularRestaurants: RestaurantData[] = [
   {
     lat: 37.5332565,
     lng: 126.9893001,
@@ -8,6 +10,7 @@ export const popularRestaurants = [
     roadAddress: '서울 용산구 녹사평대로 168-6 1층',
     phoneNumber: '02-790-2909',
     naverMapUrl: 'https://naver.me/xVl5YtVr',
+    rating: 4.99,
     viewCount: 5,
     distance: 6837750,
     isLiked: false,
@@ -32,6 +35,7 @@ export const popularRestaurants = [
     roadAddress: '서울 중구 만리재로 217',
     phoneNumber: '070-4177-0365',
     naverMapUrl: 'https://naver.me/G14FdoiO',
+    rating: 4.89,
     viewCount: 0,
     distance: 6835300,
     isLiked: false,
@@ -59,6 +63,7 @@ export const popularRestaurants = [
     roadAddress: '서울 중구 충무로4길 3',
     phoneNumber: '',
     naverMapUrl: 'https://naver.me/GvXgnZvR',
+    rating: 4.99,
     viewCount: 0,
     distance: 6834193,
     isLiked: false,
@@ -89,6 +94,7 @@ export const popularRestaurants = [
     roadAddress: '제주 제주시 가령로4길 3 1층',
     phoneNumber: '0507-1445-3444',
     naverMapUrl: 'https://naver.me/Gyeylsf3',
+    rating: 4.99,
     viewCount: 5,
     distance: 7288482,
     isLiked: false,
@@ -119,6 +125,7 @@ export const popularRestaurants = [
     roadAddress: '부산 부산진구 서전로38번길 62-9 2층',
     phoneNumber: '0507-1324-1031',
     naverMapUrl: 'https://naver.me/5dxyugxh',
+    rating: 4.99,
     viewCount: 7,
     distance: 7084023,
     isLiked: false,
@@ -156,6 +163,7 @@ export const popularRestaurants = [
     roadAddress: '서울 강남구 언주로98길 39-5 1층',
     phoneNumber: '02-558-9994',
     naverMapUrl: 'https://naver.me/xvjXiYW6',
+    rating: 4.99,
     viewCount: 6,
     distance: 6840453,
     isLiked: false,
@@ -185,6 +193,7 @@ export const popularRestaurants = [
     roadAddress: '전남 목포시 유달로97번길 2 1층',
     phoneNumber: '0507-1316-1658',
     naverMapUrl: 'https://naver.me/5te8XA89',
+    rating: 4.99,
     viewCount: 2,
     distance: 7146694,
     isLiked: false,
@@ -214,6 +223,7 @@ export const popularRestaurants = [
     roadAddress: '전남 목포시 해안로57번길 2',
     phoneNumber: '061-242-5653',
     naverMapUrl: 'https://naver.me/5PsUa52c',
+    rating: 4.99,
     viewCount: 1,
     distance: 7147498,
     isLiked: false,
