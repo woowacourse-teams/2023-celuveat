@@ -130,7 +130,7 @@ export const DetailPageSuccessHandler = [
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
     }
 
-    return res(ctx.status(201));
+    return res(ctx.delay(1000), ctx.status(201));
   }),
 
   rest.patch('/reviews/:reviewId', async (req, res, ctx) => {
@@ -166,7 +166,7 @@ export const DetailPageSuccessHandler = [
       }
     }
 
-    return res(ctx.status(204));
+    return res(ctx.delay(1000), ctx.status(204));
   }),
 
   rest.post('/reviews/:reviewId/like', async (req, res, ctx) => {
@@ -202,7 +202,7 @@ export const DetailPageSuccessHandler = [
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
     }
 
-    return res(ctx.status(200));
+    return res(ctx.delay(1000), ctx.status(200));
   }),
 ];
 

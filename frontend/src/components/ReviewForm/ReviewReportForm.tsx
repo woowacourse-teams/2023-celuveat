@@ -10,11 +10,11 @@ import TextButton from '~/components/@common/Button';
 
 function ReviewReportForm() {
   const { reviewId } = useReviewModalContext();
-  const { postReviewReport } = useRestaurantReview();
+  const { postReviewReport, isSubmitRequesting } = useRestaurantReview();
 
   const [text, setText] = useState('');
 
-  const isSubmitDisabled = text.length === 0;
+  const isSubmitDisabled = text.length === 0 || isSubmitRequesting;
 
   const onChange: React.ChangeEventHandler<HTMLTextAreaElement> = e => {
     setText(e.target.value);
