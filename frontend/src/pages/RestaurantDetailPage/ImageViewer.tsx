@@ -10,7 +10,7 @@ interface ImageViewerProps {
 function ImageViewer({ images }: ImageViewerProps) {
   const { isMobile } = useMediaQuery();
 
-  if (isMobile) return <ImageCarousel type="list" images={images} />;
+  if (isMobile) return <ImageCarousel type="list" images={images} showWaterMark />;
 
   return <ImageGrid images={images.map(({ name: url, author, sns }) => ({ waterMark: author, url, sns }))} />;
 }

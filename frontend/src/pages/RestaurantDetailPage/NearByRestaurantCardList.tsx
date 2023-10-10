@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { getNearByRestaurant } from '~/api/restaurant';
 import RestaurantCard from '~/components/RestaurantCard';
 import { hideScrollBar } from '~/styles/common';
 import type { RestaurantListData } from '~/@types/api.types';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 
 interface NearByRestaurantCardListProps {
   restaurantId: string;
@@ -15,16 +17,21 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
     queryFn: async () => getNearByRestaurant(restaurantId),
     suspense: true,
   });
+  const { isMobile } = useMediaQuery();
 
   return (
-    <StyledNearByRestaurant>
+    <StyledNearByRestaurant isMobile={isMobile}>
       <h5>주변 다른 식당</h5>
       <ul>
-        {nearByRestaurant.content.map(restaurant => (
-          <StyledRestaurantCardContainer>
-            <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
-          </StyledRestaurantCardContainer>
-        ))}
+        {nearByRestaurant.content.map(restaurant =>
+          isMobile ? (
+            <MiniRestaurantCard restaurant={restaurant} celebs={restaurant.celebs} carousel={false} flexColumn />
+          ) : (
+            <StyledRestaurantCardContainer>
+              <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+            </StyledRestaurantCardContainer>
+          ),
+        )}
       </ul>
     </StyledNearByRestaurant>
   );
@@ -32,7 +39,7 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
 
 export default NearByRestaurantCardList;
 
-const StyledNearByRestaurant = styled.section`
+const StyledNearByRestaurant = styled.section<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
 
@@ -46,11 +53,15 @@ const StyledNearByRestaurant = styled.section`
 
     padding: 2rem 0;
 
-    & > * {
-      min-width: 300px;
+    ${({ isMobile }) =>
+      !isMobile &&
+      css`
+        & > * {
+          min-width: 300px;
 
-      box-shadow: var(--shadow);
-    }
+          box-shadow: var(--shadow);
+        }
+      `}
   }
 `;
 

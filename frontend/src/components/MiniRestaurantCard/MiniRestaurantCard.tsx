@@ -13,18 +13,20 @@ import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface MiniRestaurantCardProps {
   restaurant: Restaurant;
-  celebs: Celeb[];
+  celebs?: Celeb[];
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
   flexColumn?: boolean;
   showWaterMark?: boolean;
+  carousel?: boolean;
 }
 
 function MiniRestaurantCard({
   restaurant,
-  celebs,
+  celebs = [],
   flexColumn = false,
-  showWaterMark = true,
+  showWaterMark = false,
   setHoveredId = () => {},
+  carousel = false,
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
@@ -55,7 +57,7 @@ function MiniRestaurantCard({
         flexColumn={flexColumn}
       >
         <StyledImageSection>
-          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} />
+          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} disabled={!carousel} />
           <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </StyledLikeButton>

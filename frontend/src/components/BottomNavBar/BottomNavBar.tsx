@@ -88,6 +88,7 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
 
   width: 100vw;
   height: 48px;
+  min-height: 48px;
 
   background-color: var(--white);
 

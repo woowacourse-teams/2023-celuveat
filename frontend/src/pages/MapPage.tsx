@@ -56,7 +56,8 @@ const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
   display: grid;
 
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 150px);
+
   grid-template-columns: 63vw 37vw;
 
   ${({ isMapExpanded }) =>
@@ -79,6 +80,10 @@ const StyledLayout = styled.main<{ isMapExpanded: boolean }>`
 const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
   z-index: 0;
 
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+
   ${({ isMapExpanded }) =>
     isMapExpanded &&
     css`
@@ -87,11 +92,10 @@ const StyledLeftSide = styled.section<{ isMapExpanded: boolean }>`
 `;
 
 const StyledRightSide = styled.section`
-  position: sticky;
-  top: 160px;
+  position: relative;
 
   width: 100%;
-  height: calc(100vh - 160px);
+  height: 100%;
 `;
 
 const StyledProcessing = styled.div`
