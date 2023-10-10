@@ -21,6 +21,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class AdminService {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
 
+    @CacheEvict(cacheManager = "restaurantCacheManager", value = {"latest", "region", "recommend"}, allEntries = true)
     public void saveData(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
@@ -99,6 +101,7 @@ public class AdminService {
         videoRepository.saveAll(videos);
     }
 
+    @CacheEvict(cacheManager = "celebCacheManager", value = "all", allEntries = true)
     public void saveCelebs(List<SaveCelebRequest> requests) {
         List<Celeb> celebs = requests.stream()
                 .map(SaveCelebRequest::toCeleb)
