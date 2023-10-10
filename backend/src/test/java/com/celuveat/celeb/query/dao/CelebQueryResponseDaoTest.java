@@ -18,12 +18,11 @@ class CelebQueryResponseDaoTest extends DaoTest {
     private CelebQueryResponseDao celebQueryResponseDao;
 
     @Override
-    protected TestData prepareTestData() {
+    protected void prepareTestData() {
         Celeb 성시경 = new Celeb("성시경", "@성시경", "성시경 프로필 url");
         Celeb 쯔양 = new Celeb("쯔양", "@쯔양", "쯔양 프로필 url");
         Celeb 마리아주 = new Celeb("마리아주", "@마리아주", "마리아주 프로필 url");
         testData.addCelebs(List.of(성시경, 쯔양, 마리아주));
-        return testData;
     }
 
     @Test

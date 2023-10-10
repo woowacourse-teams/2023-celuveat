@@ -31,7 +31,7 @@ class LikedRestaurantQueryResponseDaoTest extends DaoTest {
     private final Restaurant 모던샤브하우스 = 모던샤브하우스();
 
     @Override
-    protected TestData prepareTestData() {
+    protected void prepareTestData() {
         testData.addMembers(말랑, 오도);
         testData.addRestaurants(대성집, 하늘초밥, 모던샤브하우스);
         testData.addRestaurantLikes(
@@ -39,7 +39,6 @@ class LikedRestaurantQueryResponseDaoTest extends DaoTest {
                 RestaurantLike.create(하늘초밥, 말랑),
                 RestaurantLike.create(모던샤브하우스, 오도)
         );
-        return testData;
     }
 
     @Test

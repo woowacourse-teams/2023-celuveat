@@ -21,15 +21,13 @@ class OauthMemberProfileResponseDaoTest extends DaoTest {
     private OauthMember 말랑;
 
     @Override
-    protected TestData prepareTestData() {
-        TestData testData = new TestData();
+    protected void prepareTestData() {
         말랑 = OauthMember.builder()
                 .oauthId(new OauthId("mallang", KAKAO))
                 .profileImageUrl("https://mallang.jpg")
                 .nickname("말랑")
                 .build();
         testData.addMembers(말랑);
-        return testData;
     }
 
     @Test

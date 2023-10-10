@@ -42,7 +42,7 @@ class VideoQueryResponseDaoTest extends DaoTest {
     private final Video 맛객리우의_모던샤브하우스_영상 = 맛객리우의_모던샤브하우스_영상(맛객리우, 모던샤브하우스);
 
     @Override
-    protected TestData prepareTestData() {
+    protected void prepareTestData() {
         testData.addCelebs(성시경, 회사랑, 맛객리우);
         testData.addRestaurants(대성집, 하늘초밥, 모던샤브하우스);
         testData.addVideos(
@@ -50,7 +50,6 @@ class VideoQueryResponseDaoTest extends DaoTest {
                 회사랑의_하늘초밥_영상,
                 맛객리우의_모던샤브하우스_영상
         );
-        return testData;
     }
 
     @Test

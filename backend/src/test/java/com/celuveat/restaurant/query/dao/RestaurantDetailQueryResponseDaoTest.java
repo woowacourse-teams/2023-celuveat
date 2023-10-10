@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.common.DaoTest;
-import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantLike;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
@@ -49,12 +48,11 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
     private final RestaurantReview 대성집_리뷰_2 = RestaurantReview.create(대성집, 오도, "흠...", 2.0);
 
     @Override
-    protected TestData prepareTestData() {
+    protected void prepareTestData() {
         testData.addMembers(말랑, 오도);
         testData.addRestaurants(대성집, 좋아요_눌린_음식점);
         testData.addRestaurantLikes(RestaurantLike.create(좋아요_눌린_음식점, 말랑));
         testData.addRestaurantReviews(대성집_리뷰_1, 대성집_리뷰_2);
-        return testData;
     }
 
     @Test

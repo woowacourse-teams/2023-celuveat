@@ -48,8 +48,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
     private RestaurantSearchQueryResponseDao restaurantSearchQueryResponseDao;
 
     @Override
-    protected TestData prepareTestData() {
-        return testData; // ignored
+    protected void prepareTestData() {
     }
 
     @Nested
@@ -69,7 +68,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         private final RestaurantImage 모던샤브하우스_사진_1 = 모던샤브하우스_사진(모던샤브하우스, 1);
 
         @Override
-        protected TestData prepareTestData() {
+        protected void prepareTestData() {
             testData.addMembers(말랑, 도기);
             testData.addCelebs(성시경, 회사랑, 맛객리우);
             testData.addRestaurants(대성집, 하늘초밥, 모던샤브하우스);
@@ -91,7 +90,6 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     RestaurantReview.create(대성집, 말랑, "맛나요", 4.6),
                     RestaurantReview.create(대성집, 도기, "그냥 그래요", 4.35)
             );
-            return testData;
         }
 
         @Test
@@ -273,7 +271,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
         );
 
         @Override
-        protected TestData prepareTestData() {
+        protected void prepareTestData() {
             testData.addCelebs(성시경, 맛객리우);
             testData.addRestaurants(대성집, 대성집_1000m_거리_음식점, 대성집_2000m_거리_음식점, 대성집_3000m_거리_음식점);
             testData.addVideos(
@@ -282,7 +280,6 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     영상(성시경, 대성집_2000m_거리_음식점),
                     영상(맛객리우, 대성집_3000m_거리_음식점)
             );
-            return testData;
         }
 
         @Test
