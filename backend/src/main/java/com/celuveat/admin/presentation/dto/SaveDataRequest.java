@@ -61,7 +61,6 @@ public record SaveDataRequest(
         return Restaurant.builder()
                 .name(restaurantName)
                 .category(category)
-                .superCategory(superCategory)
                 .roadAddress(roadAddress)
                 .latitude(Double.parseDouble(latitude))
                 .longitude(Double.parseDouble(longitude))

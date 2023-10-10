@@ -16,7 +16,6 @@ public class RestaurantSearchQueryResponse {
     private Long id;
     private String name;
     private String category;
-    private String superCategory;
     private String roadAddress;
     @JsonProperty("lat")
     private double latitude;
@@ -34,7 +33,7 @@ public class RestaurantSearchQueryResponse {
 
     public RestaurantSearchQueryResponse(
             Long id, String name,
-            String category, String superCategory,
+            String category,
             String roadAddress,
             double latitude, double longitude,
             String phoneNumber, String naverMapUrl,
@@ -45,7 +44,6 @@ public class RestaurantSearchQueryResponse {
         this.id = id;
         this.name = name;
         this.category = category;
-        this.superCategory = superCategory;
         this.roadAddress = roadAddress;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -55,10 +53,6 @@ public class RestaurantSearchQueryResponse {
         this.likeCount = likeCount;
         this.rating = RatingUtils.averageRating(totalRating, reviewCount);
         this.distance = (int) distance;
-    }
-
-    public void setLiked(boolean liked) {
-        isLiked = liked;
     }
 
     public void setCelebs(List<CelebQueryResponse> celebs) {
@@ -83,10 +77,6 @@ public class RestaurantSearchQueryResponse {
 
     public String category() {
         return category;
-    }
-
-    public String superCategory() {
-        return superCategory;
     }
 
     public String roadAddress() {
@@ -120,6 +110,10 @@ public class RestaurantSearchQueryResponse {
     @JsonProperty("isLiked")
     public boolean isLiked() {
         return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
     public double rating() {

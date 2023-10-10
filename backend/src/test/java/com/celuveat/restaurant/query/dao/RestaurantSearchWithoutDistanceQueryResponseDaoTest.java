@@ -9,7 +9,6 @@ import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 import com.celuveat.administrativedistrict.domain.AdministrativeDistrict;
 import com.celuveat.common.DaoTest;
-import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.query.dao.RestaurantSearchWithoutDistanceQueryResponseDao.RegionCodeCond;
 import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
@@ -31,6 +30,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
     @Autowired
     private RestaurantSearchWithoutDistanceQueryResponseDao restaurantSearchWithoutDistanceQueryResponseDao;
 
+    @Override
     protected void prepareTestData() {
     }
 
@@ -80,7 +80,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(4.5)
                             .latitude(4.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑1동 대표 일식집")
@@ -90,7 +89,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(4.9)
                             .latitude(4.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             말랑2동에_속한_음식점들 = List.of(
@@ -102,7 +100,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(2.5)
                             .latitude(2.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑2동 대표 일식집")
@@ -112,7 +109,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(2.7)
                             .latitude(2.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             말랑특별시에만_속하는_음식점들 = List.of(
@@ -124,7 +120,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(7.5)
                             .latitude(7.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑특별시 대표 일식집")
@@ -134,7 +129,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(8.7)
                             .latitude(8.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             testData.addRestaurants(말랑1동에_속한_음식점들);
