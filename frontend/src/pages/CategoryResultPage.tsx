@@ -1,21 +1,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantListData } from '~/@types/api.types';
 import { getRestaurants } from '~/api/restaurant';
 import SearchResultBox from '~/components/SearchResultBox';
 import { WHOLE_BOUNDARY } from '~/constants/boundary';
-import useInfiniteScroll from '~/hooks/useInfiniteScroll';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import { FONT_SIZE } from '~/styles/common';
 
 function CategoryResultPage() {
   const { category } = useParams();
+  const ref = useRef<HTMLDivElement>();
 
-  const {
-    data: restaurantDataPages,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<RestaurantListData>({
+  const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
     queryKey: ['restaurants', category],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
@@ -30,8 +28,11 @@ function CategoryResultPage() {
     },
   });
 
-  useInfiniteScroll({ isFetchingNextPage, fetchNextPage, restaurantDataPages });
+  const entry = useIntersectionObserver(ref, {});
 
+  useEffect(() => {
+    if (entry) fetchNextPage();
+  }, [entry]);
   return (
     <StyledContainer>
       <StyledLink to="/">
@@ -44,6 +45,7 @@ function CategoryResultPage() {
       {restaurantDataPages?.pages.map(restaurantDataList => (
         <SearchResultBox restaurantDataList={restaurantDataList} />
       ))}
+      <div ref={ref} />
     </StyledContainer>
   );
 }

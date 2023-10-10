@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantListData } from '~/@types/api.types';
@@ -8,17 +9,14 @@ import ProfileImage from '~/components/@common/ProfileImage';
 import SearchResultBox from '~/components/SearchResultBox';
 import { WHOLE_BOUNDARY } from '~/constants/boundary';
 import { CELEB } from '~/constants/celeb';
-import useInfiniteScroll from '~/hooks/useInfiniteScroll';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import { FONT_SIZE } from '~/styles/common';
 
 function CelebResultPage() {
   const { celebId } = useParams();
+  const ref = useRef<HTMLDivElement>();
 
-  const {
-    data: restaurantDataPages,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<RestaurantListData>({
+  const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
     queryKey: ['restaurants', celebId],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
@@ -33,7 +31,11 @@ function CelebResultPage() {
     },
   });
 
-  useInfiniteScroll({ isFetchingNextPage, fetchNextPage, restaurantDataPages });
+  const entry = useIntersectionObserver(ref, {});
+
+  useEffect(() => {
+    if (entry) fetchNextPage();
+  }, [entry]);
 
   return (
     <StyledContainer>
@@ -54,6 +56,7 @@ function CelebResultPage() {
       {restaurantDataPages?.pages.map(restaurantDataList => (
         <SearchResultBox restaurantDataList={restaurantDataList} />
       ))}
+      <div ref={ref} />
     </StyledContainer>
   );
 }

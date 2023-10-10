@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RestaurantListData } from '~/@types/api.types';
@@ -7,17 +8,14 @@ import { getRestaurantsByAddress } from '~/api/restaurant';
 import SearchResultBox from '~/components/SearchResultBox';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
 import { SERVER_IMG_URL } from '~/constants/url';
-import useInfiniteScroll from '~/hooks/useInfiniteScroll';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import { FONT_SIZE } from '~/styles/common';
 
 function RegionResultPage() {
   const { region } = useParams<{ region: Region }>();
+  const ref = useRef<HTMLDivElement>();
 
-  const {
-    data: restaurantDataPages,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery<RestaurantListData>({
+  const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
     queryKey: ['restaurantsFilteredByRegion', region],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurantsByAddress({ codes: RECOMMENDED_REGION[region].code, page: pageParam }),
@@ -27,7 +25,11 @@ function RegionResultPage() {
     },
   });
 
-  useInfiniteScroll({ isFetchingNextPage, fetchNextPage, restaurantDataPages });
+  const entry = useIntersectionObserver(ref, {});
+
+  useEffect(() => {
+    if (entry) fetchNextPage();
+  }, [entry]);
 
   return (
     <StyledContainer>
@@ -40,7 +42,8 @@ function RegionResultPage() {
       </StyledResultCount>
       {restaurantDataPages?.pages.map(restaurantDataList => (
         <SearchResultBox restaurantDataList={restaurantDataList} />
-      ))}{' '}
+      ))}
+      <div ref={ref} />
     </StyledContainer>
   );
 }
