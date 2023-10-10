@@ -16,6 +16,8 @@ function SearchResultBox({ restaurantDataList }: SearchResultBoxProps) {
             restaurant={restaurant}
             celebs={celebs}
             showWaterMark={false}
+            showLike
+            showRating
           />
         ))}
     </StyledResultBox>

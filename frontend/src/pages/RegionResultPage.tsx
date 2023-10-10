@@ -82,6 +82,10 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledResultSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
   width: 100%;
 
   padding: 0 1.2rem;
