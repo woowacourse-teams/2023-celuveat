@@ -239,10 +239,14 @@ class RestaurantQueryServiceTest {
                                 1L,
                                 "말랑집",
                                 "한식",
+                                "한식",
                                 "말랑시 말랑구 말랑동",
                                 37.0, 126.0,
                                 "010-1234-1234",
                                 "naver",
+                                0,
+                                1,
+                                0.0,
                                 emptyList(),
                                 emptyList()
                         )
