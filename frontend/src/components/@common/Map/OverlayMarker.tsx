@@ -32,7 +32,7 @@ function OverlayMarker({ celeb, restaurant, map, quadrant }: OverlayMarkerProps)
 
   const clickMarker = () => {
     setIsClicked(true);
-    setPreview({ ...restaurant });
+    setPreview({ ...restaurant, celebs: [celeb] });
   };
 
   const clickModal = (e: MouseEvent) => {
