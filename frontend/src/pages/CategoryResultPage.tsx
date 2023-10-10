@@ -33,7 +33,7 @@ function CategoryResultPage() {
               key={`${restaurant.id}${celebs[0].id}`}
               restaurant={restaurant}
               celebs={celebs}
-              showWaterMark={false}
+              carousel
             />
           ))}
       </StyledResultBox>

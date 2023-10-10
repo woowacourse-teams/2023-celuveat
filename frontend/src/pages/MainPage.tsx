@@ -60,13 +60,7 @@ function MainPage() {
           <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
           <StyledPopularRestaurantBox>
             {popularRestaurants.map(({ celebs, ...restaurant }) => (
-              <MiniRestaurantCard
-                celebs={celebs}
-                restaurant={restaurant}
-                flexColumn
-                showWaterMark={false}
-                carousel={false}
-              />
+              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn />
             ))}
           </StyledPopularRestaurantBox>
         </div>

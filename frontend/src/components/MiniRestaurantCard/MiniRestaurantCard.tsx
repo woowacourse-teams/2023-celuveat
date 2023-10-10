@@ -24,9 +24,9 @@ function MiniRestaurantCard({
   restaurant,
   celebs,
   flexColumn = false,
-  showWaterMark = true,
+  showWaterMark = false,
   setHoveredId = () => {},
-  carousel = true,
+  carousel = false,
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
