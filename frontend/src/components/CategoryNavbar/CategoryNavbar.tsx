@@ -4,6 +4,7 @@ import NavItem from '~/components/@common/NavItem/NavItem';
 
 import type { RestaurantCategory } from '~/@types/restaurant.types';
 import { hideScrollBar } from '~/styles/common';
+import { getShortCategoryName } from '~/utils/getShortCategoryName';
 
 interface Category {
   label: RestaurantCategory;
@@ -39,7 +40,12 @@ function CategoryNavbar({
         if (!includeAll && label === '전체') return null;
         return (
           <StyledNavItemButton aria-label={label} data-label={label} type="button" onClick={clickCategory(label)}>
-            <NavItem label={label} icon={icon} isShow={selected === label} isInteractive={isInteractive} />
+            <NavItem
+              label={getShortCategoryName(label)}
+              icon={icon}
+              isShow={selected === label}
+              isInteractive={isInteractive}
+            />
           </StyledNavItemButton>
         );
       })}
