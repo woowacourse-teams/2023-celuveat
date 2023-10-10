@@ -141,12 +141,12 @@ const StyledReviewImgWrapper = styled.div`
 
   margin: 1.2rem 0;
 
-  ${StyledReviewImg} + ${StyledReviewImg} {
-    margin-left: 1rem;
-  }
-
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${StyledReviewImg} + ${StyledReviewImg} {
+    margin-left: 1rem;
   }
 `;
 

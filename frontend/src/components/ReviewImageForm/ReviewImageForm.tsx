@@ -41,6 +41,12 @@ const StyledImageWrapper = styled.div`
 
 const StyledReviewImageFormWrapper = styled.div`
   display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   & > * {
     margin-right: 0.5rem;
