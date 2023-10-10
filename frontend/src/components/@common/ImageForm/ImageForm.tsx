@@ -1,23 +1,24 @@
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
 interface ImageFormProps extends React.ComponentPropsWithoutRef<'input'> {
+  disabled?: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function ImageForm({ onChange, ...restProps }: ImageFormProps) {
+function ImageForm({ onChange, disabled = false, ...restProps }: ImageFormProps) {
   return (
-    <StyledButton>
+    <StyledButton disabled={disabled}>
       +
-      <input type="file" onChange={onChange} {...restProps} />
+      <input type="file" disabled={disabled} onChange={onChange} {...restProps} />
     </StyledButton>
   );
 }
 
 export default ImageForm;
 
-const StyledButton = styled.label`
-  padding: 4.8rem;
+const StyledButton = styled.label<{ disabled: boolean }>`
+  padding: 4.2rem;
 
   border: 4px solid #ddd;
   border-radius: 20px;
@@ -34,4 +35,12 @@ const StyledButton = styled.label`
   input[type='file'] {
     display: none;
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background-color: #ddd;
+
+      cursor: not-allowed;
+    `}
 `;

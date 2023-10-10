@@ -1,7 +1,7 @@
-import { styled } from 'styled-components';
+/* eslint-disable react/no-unknown-property */
+import { styled, css } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 
-import GroupIcon from '~/assets/icons/etc/groups.svg';
 import ThumpUpIcon from '~/assets/icons/etc/thumb-up.svg';
 import SpeakerphoneIcon from '~/assets/icons/etc/speakerphone.svg';
 
@@ -70,8 +70,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
         )}
       </StyledProfileAndButton>
       <StyledStarRatingWrapper>
-        <StarRating rate={review.rating} size="12px" />
-        <StyledStarRatingText>{review.rating}</StyledStarRatingText>
+        <StarRating rate={review.rating} size="8px" />
       </StyledStarRatingWrapper>
       <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
       <StyledReviewImgWrapper>
@@ -79,23 +78,18 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
           <StyledReviewImg src={reviewImageUrl.imgUrl} alt={`${review.nickname}이 쓴 리뷰 사진${idx}`} />
         ))}
       </StyledReviewImgWrapper>
-      <StyledReviewLikeCountWrapper>
-        <div>
-          <GroupIcon />
-          <StyledReviewText>{review.likeCount}</StyledReviewText>
-          명이 추천했어요
-        </div>
-      </StyledReviewLikeCountWrapper>
+
       <StyledReviewButtonsWrapper>
         {!isUsersReview && (
           <>
             <StyledReviewButton
+              isLiked={getReviewIsLiked(review.id)}
               onClick={() => {
                 toggleRestaurantReviewLike(review.id);
               }}
             >
-              <ThumpUpIcon fill={getReviewIsLiked(review.id) ? '#ff7b54' : 'white'} />
-              <span>추천 {getReviewIsLiked(review.id) ? '취소' : '하기'}</span>
+              <ThumpUpIcon stroke={getReviewIsLiked(review.id) ? '#ff7b54' : '#3a3b3c'} />
+              <StyledReviewText isLiked={getReviewIsLiked(review.id)}>{review.likeCount}</StyledReviewText>
             </StyledReviewButton>
             <StyledReviewButton
               onClick={() => {
@@ -103,8 +97,8 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
                 openReviewModal('report');
               }}
             >
-              <SpeakerphoneIcon />
-              <span>신고 하기</span>
+              <SpeakerphoneIcon stroke="#3a3b3c" />
+              <StyledReviewText>신고</StyledReviewText>
             </StyledReviewButton>
           </>
         )}
@@ -115,16 +109,20 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
 
 export default RestaurantReviewItem;
 
+const StyledReviewText = styled.span<{ isLiked?: boolean }>`
+  color: #3a3b3c;
+
+  ${({ isLiked }) =>
+    isLiked &&
+    css`
+      font-weight: 600;
+    `}
+`;
+
 const StyledStarRatingWrapper = styled.div`
   margin-top: 1.2rem;
 
   display: flex;
-`;
-
-const StyledStarRatingText = styled.span`
-  color: #ff7b54;
-  font-size: 26px;
-  font-weight: bold;
 `;
 
 const StyledReviewImg = styled.img`
@@ -137,41 +135,38 @@ const StyledReviewImgWrapper = styled.div`
   margin: 1.2rem 0;
 `;
 
-const StyledReviewText = styled.span`
-  margin-left: 0.5rem;
-
-  font-size: ${FONT_SIZE.lg};
-  font-weight: 500;
-`;
-
-const StyledReviewButton = styled.button`
+const StyledReviewButton = styled.button<{ isLiked?: boolean }>`
   display: flex;
   align-items: center;
 
-  padding: 0;
+  padding: 0.6rem;
   margin: 0;
 
-  border: none;
+  border: ${({ isLiked }) => `1px solid ${isLiked ? '#ff7b54' : '#e4e4e5'}`};
+  border-radius: 5px;
   background: none;
 
-  font-size: ${FONT_SIZE.md};
-  font-weight: 500;
+  font-size: ${FONT_SIZE.sm};
 
   & > span {
     margin-left: 0.5rem;
   }
 
-  @media (hover: hover) {
-    &:hover {
-      & > span {
-        color: #ff7b54;
-      }
+  ${({ isLiked }) =>
+    isLiked &&
+    css`
+      background-color: #ffe6d7;
+    `}
 
-      & > svg {
-        fill: #ff7b54;
+  ${({ isLiked }) =>
+    !isLiked &&
+    css`
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--gray-2);
+        }
       }
-    }
-  }
+    `}
 `;
 
 const StyledProfileNickName = styled.span`
@@ -240,17 +235,6 @@ const StyledRestaurantReviewItemWrapper = styled.div`
   border-radius: 20px;
 
   box-shadow: var(--shadow);
-`;
-
-const StyledReviewLikeCountWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  width: 100%;
-
-  margin: 1.2rem 0;
-
-  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledReviewButtonsWrapper = styled.div`

@@ -85,11 +85,11 @@ function RestaurantDetail() {
 
         <NearByRestaurantCardList restaurantId={restaurantId} />
 
+        <MapSection lat={restaurant.lat} lng={restaurant.lng} />
+
         <ReviewModalProvider>
           <RestaurantReviewWrapper />
         </ReviewModalProvider>
-
-        <MapSection lat={restaurant.lat} lng={restaurant.lng} />
       </StyledMainRestaurantDetail>
 
       {isMobile && (
