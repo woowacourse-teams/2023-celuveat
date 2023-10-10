@@ -13,7 +13,7 @@ import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface MiniRestaurantCardProps {
   restaurant: Restaurant;
-  celebs: Celeb[];
+  celebs?: Celeb[];
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
   flexColumn?: boolean;
   showWaterMark?: boolean;
@@ -21,7 +21,7 @@ interface MiniRestaurantCardProps {
 
 function MiniRestaurantCard({
   restaurant,
-  celebs,
+  celebs = [],
   flexColumn = false,
   showWaterMark = true,
   setHoveredId = () => {},

@@ -1,17 +1,22 @@
 import { create } from 'zustand';
-import type { RestaurantData } from '~/@types/api.types';
+import { Celeb } from '~/@types/celeb.types';
 import type { Coordinate } from '~/@types/map.types';
+import { Restaurant } from '~/@types/restaurant.types';
+
+interface Preview extends Restaurant {
+  celebs?: Celeb[];
+}
 
 interface MapState {
   center: Coordinate;
   zoom: number;
-  preview: RestaurantData | null;
+  preview: Preview | null;
 }
 
 interface MapAction {
   setCenter: (newCenter: Coordinate) => void;
   setZoom: (newZoom: number) => void;
-  setPreview: (newRestaurant: RestaurantData) => void;
+  setPreview: (newRestaurant: Preview) => void;
 }
 
 const JamsilCampus = { lat: 37.515271, lng: 127.1029949 };
