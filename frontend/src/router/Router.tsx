@@ -6,6 +6,7 @@ const MapPage = lazy(() => import('~/pages/MapPage'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
 const RestaurantDetailPage = lazy(() => import('~/pages/RestaurantDetailPage/index'));
 const SignUpPage = lazy(() => import('~/pages/SignUpPage'));
+const UserPage = lazy(() => import('~/pages/UserPage'));
 const WishListPage = lazy(() => import('~/pages/WishListPage'));
 const WithdrawalPage = lazy(() => import('~/pages/WithdrawalPage'));
 const PrivacyPolicy = lazy(() => import('~/pages/PrivacyPolicyPage'));
@@ -28,6 +29,7 @@ function Router() {
         { path: '/policy', element: <PrivacyPolicy /> },
         { path: '/restaurants/:id', element: <RestaurantDetailPage /> },
         { path: '/signUp', element: <SignUpPage /> },
+        { path: '/user', element: <UserPage /> },
         { path: '/restaurants/like', element: <WishListPage /> },
         { path: '/withdrawal', element: <WithdrawalPage /> },
         { path: '/oauth/redirect/kakao', element: <OauthRedirectPage type="kakao" /> },

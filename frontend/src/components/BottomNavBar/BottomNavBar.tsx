@@ -1,54 +1,75 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
+import { useQuery } from '@tanstack/react-query';
 import HomeIcon from '~/assets/icons/home.svg';
-import SignInIcon from '~/assets/icons/sign-in.svg';
+import UserIcon from '~/assets/icons/user.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
+import HeartIcon from '~/assets/icons/navbar-heart.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
-import { getClickedIcon } from '~/utils/getClickedIcon';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
+import { ProfileData } from '~/@types/api.types';
+import { getProfile } from '~/api/user';
 
 interface BottomNavBarProps {
   isHide: boolean;
 }
 
-type BottomIcons = 'home' | 'map' | 'user' | null;
-
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
   const { pathname } = useLocation();
-  const [clickedIcon, setClickedIcon] = useState<BottomIcons>(getClickedIcon(pathname));
+  const [selected, setHomeSelected, setMapSelected, setUserSelected, setWishListSelected] = useBottomNavBarState(
+    state => [
+      state.selected,
+      state.setHomeSelected,
+      state.setMapSelected,
+      state.setUserSelected,
+      state.setWishListSelected,
+    ],
+    shallow,
+  );
 
+  const { isSuccess: isLogin } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: () => getProfile(),
+  });
 
   const clickHome = () => {
-    setClickedIcon('home');
+    setHomeSelected();
     navigator('/');
   };
   const clickMap = () => {
-    setClickedIcon('map');
+    setMapSelected();
     navigator('/map');
   };
-  const clickLogin = () => {
-    setClickedIcon('user');
-    navigator('/signUp', { state: { from: pathname } });
+  const clickWishList = () => {
+    setWishListSelected();
+    navigator('/restaurants/like');
   };
+  const clickUser = () => {
+    setUserSelected();
 
-  useEffect(() => {
-    setClickedIcon(getClickedIcon(pathname));
-  }, [pathname]);
+    if (isLogin) navigator('/user');
+    else navigator('/signUp', { state: { from: pathname } });
+  };
 
   useScrollBlock(ref);
 
   return (
     <StyledBottomNavBar isHide={isHide} ref={ref}>
       <StyledNavBarButton onClick={clickHome}>
-        <HomeIcon fill={clickedIcon === 'home' ? '#000' : 'none'} />
+        <HomeIcon fill={selected === 'home' ? '#000' : 'none'} />
       </StyledNavBarButton>
       <StyledNavBarButton onClick={clickMap}>
-        <MapIcon strokeWidth={clickedIcon === 'map' ? 2 : 1.2} />
+        <MapIcon strokeWidth={selected === 'map' ? 2 : 1.2} />
       </StyledNavBarButton>
-      <StyledNavBarButton onClick={clickLogin}>
-        <SignInIcon fill={clickedIcon === 'user' ? '#000' : 'none'} />
+      <StyledNavBarButton onClick={clickWishList}>
+        <HeartIcon fill={selected === 'wishList' ? '#000' : 'none'} />
+      </StyledNavBarButton>
+      <StyledNavBarButton onClick={clickUser}>
+        <UserIcon fill={selected === 'user' ? '#000' : 'none'} />
       </StyledNavBarButton>
     </StyledBottomNavBar>
   );

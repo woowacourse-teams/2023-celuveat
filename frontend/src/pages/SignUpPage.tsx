@@ -1,15 +1,26 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import LoginButton from '~/components/@common/LoginButton';
 import CeluveatIcon from '~/assets/icons/celuveat-login-icon.svg';
 import { FONT_SIZE } from '~/styles/common';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const [setHomeSelected, setUserSelected] = useBottomNavBarState(state => [
+    state.setHomeSelected,
+    state.setUserSelected,
+  ]);
 
   const clickHomeButton = () => {
+    setHomeSelected();
     navigate('/');
   };
+
+  useEffect(() => {
+    setUserSelected();
+  }, []);
 
   return (
     <StyledContainer>

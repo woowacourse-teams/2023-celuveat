@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { styled, css } from 'styled-components';
 
 import Map from '~/components/@common/Map';
@@ -9,10 +9,16 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 import MobileMapPage from './MobileMapPage';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function MapPage() {
   const { isMobile } = useMediaQuery();
   const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
+  const setMapSelected = useBottomNavBarState(state => state.setMapSelected);
+
+  useEffect(() => {
+    setMapSelected();
+  }, []);
 
   if (isMobile)
     return (

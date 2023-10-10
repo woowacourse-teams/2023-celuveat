@@ -1,13 +1,20 @@
 import { styled, css } from 'styled-components';
 
+import { useEffect } from 'react';
 import RestaurantWishList from '~/components/RestaurantWishList';
 import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { FONT_SIZE } from '~/styles/common';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function WishListPage() {
   const { isMobile } = useMediaQuery();
+  const setWishListSelected = useBottomNavBarState(state => state.setWishListSelected);
+
+  useEffect(() => {
+    setWishListSelected();
+  }, []);
 
   return (
     <LoginErrorHandleComponent>
