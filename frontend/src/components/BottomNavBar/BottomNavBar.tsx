@@ -19,6 +19,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   const { pathname } = useLocation();
   const [clickedIcon, setClickedIcon] = useState<BottomIcons>(getClickedIcon(pathname));
 
+
   const clickHome = () => {
     setClickedIcon('home');
     navigator('/');
@@ -29,7 +30,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
   };
   const clickLogin = () => {
     setClickedIcon('user');
-    navigator('/signup');
+    navigator('/signUp', { state: { from: pathname } });
   };
 
   useEffect(() => {
