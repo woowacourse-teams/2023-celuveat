@@ -26,9 +26,14 @@ public record RestaurantImageQueryResponse(
         return new RestaurantImageQueryResponse(
                 restaurantImage.restaurant().id(),
                 restaurantImage.id(),
-                Base64Util.encode(restaurantImage.name()),
+                restaurantImage.name(),
                 restaurantImage.author(),
                 restaurantImage.socialMedia().name()
         );
+    }
+
+    @Override
+    public String name() {
+        return Base64Util.encode(name);
     }
 }

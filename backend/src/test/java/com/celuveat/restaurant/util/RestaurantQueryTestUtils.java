@@ -140,7 +140,7 @@ public class RestaurantQueryTestUtils {
                 .map(사진 -> new RestaurantImageQueryResponse(
                         음식점.id(),
                         사진.id(),
-                        Base64Util.encode(사진.name()),
+                        사진.name(),
                         사진.author(),
                         사진.socialMedia().name())
                 ).toList();

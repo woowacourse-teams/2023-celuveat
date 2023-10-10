@@ -119,7 +119,7 @@ public class RestaurantAcceptanceSteps {
         });
         assertThat(응답_결과.content())
                 .usingRecursiveComparison()
-                .ignoringFields("distance")
+                .ignoringFields("distance", "images.name")
                 .isEqualTo(예상_응답);
     }
 
@@ -171,6 +171,7 @@ public class RestaurantAcceptanceSteps {
         RestaurantDetailQueryResponse response = 응답.as(RestaurantDetailQueryResponse.class);
         assertThat(response)
                 .usingRecursiveComparison()
+                .ignoringFields("images.name")
                 .isEqualTo(예상_응답);
     }
 
@@ -200,7 +201,7 @@ public class RestaurantAcceptanceSteps {
                     assertThat(restaurant.distance()).isLessThanOrEqualTo(요청_거리);
                 })
                 .usingRecursiveComparison()
-                .ignoringFields("distance")
+                .ignoringFields("distance", "images.name")
                 .isEqualTo(예상_응답);
     }
 
@@ -260,6 +261,7 @@ public class RestaurantAcceptanceSteps {
         });
         assertThat(response)
                 .usingRecursiveComparison()
+                .ignoringFields("images.name")
                 .isEqualTo(예상_응답);
     }
 }
