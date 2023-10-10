@@ -1,74 +1,51 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { createContext, useContext, useState } from 'react';
-import { ProfileData } from '~/@types/api.types';
-import useBooleanState from '../useBooleanState';
+import { createContext, useContext, useMemo, useState } from 'react';
+
+import useBooleanState from '~/hooks/useBooleanState';
+import useCheckLogin from '~/hooks/server/useCheckLogin';
+
+import type { ReviewFormType } from '~/@types/review.types';
 
 interface ReviewModalContextState {
   reviewId: number;
   setReviewId: React.Dispatch<number>;
-  formType: string;
+  formType: ReviewFormType;
   isModalOpen: boolean;
   openModal: VoidFunction;
   closeModal: VoidFunction;
-  clickUpdateReview: VoidFunction;
-  clickDeleteReview: VoidFunction;
-  openCreateReview: VoidFunction;
-  openShowAll: VoidFunction;
+  openReviewModal: (reviewFormType: ReviewFormType) => void;
 }
 
 const ReviewModalContext = createContext<ReviewModalContextState | null>(null);
 
 export const useReviewModalContext = () => useContext(ReviewModalContext);
 
-function ReviewModalProvider({ children }: { children: React.ReactNode }) {
-  const qc = useQueryClient();
+interface ReviewModalProviderProps {
+  children: React.ReactNode;
+}
 
-  const profileData: ProfileData = qc.getQueryData(['profile']);
-  const [formType, setFormType] = useState('');
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+function ReviewModalProvider({ children }: ReviewModalProviderProps) {
+  const { isLogin } = useCheckLogin();
+
+  const [formType, setFormType] = useState<ReviewFormType>(null);
   const [reviewId, setReviewId] = useState(null);
 
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  const value = {
-    reviewId,
-    setReviewId,
-    formType,
-    openModal,
-    isModalOpen,
-    closeModal,
-    clickUpdateReview: () => {
-      if (!profileData) {
-        setFormType('');
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
-        openModal();
-        return;
-      }
-      setFormType('update');
+  const openReviewModal = (reviewFormType: ReviewFormType) => {
+    if (!isLogin && reviewFormType !== 'all') {
+      setFormType(null);
       openModal();
-    },
-    clickDeleteReview: () => {
-      if (!profileData) {
-        setFormType('');
-        openModal();
-        return;
-      }
-      setFormType('delete');
-      openModal();
-    },
-    openCreateReview: () => {
-      if (!profileData) {
-        setFormType('');
-        openModal();
-        return;
-      }
-      setFormType('create');
-      openModal();
-    },
-    openShowAll: () => {
-      setFormType('all');
-      openModal();
-    },
+      return;
+    }
+
+    setFormType(reviewFormType);
+    openModal();
   };
+
+  const value = useMemo(
+    () => ({ reviewId, formType, isModalOpen, setReviewId, openModal, closeModal, openReviewModal }),
+    [reviewId, formType, isModalOpen, isLogin],
+  );
 
   return <ReviewModalContext.Provider value={value}>{children}</ReviewModalContext.Provider>;
 }

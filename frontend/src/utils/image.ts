@@ -1,5 +1,8 @@
 import { SERVER_IMG_URL } from '~/constants/url';
 
-const getImgUrl = (imgUrl: string, type: 'webp' | 'jpeg') => `${SERVER_IMG_URL}${type}/${imgUrl}.${type}`;
+export const getImgUrl = (imgUrl: string, type: 'webp' | 'jpeg') => `${SERVER_IMG_URL}${type}/${imgUrl}.${type}`;
 
-export default getImgUrl;
+export const getReviewImgUrl = (imgUrl: string, type: 'webp' | 'jpeg') =>
+  `https://www.celuveat.com/review/${imgUrl}.${type}`;
+
+export const changeImgFileExtension = (fileName: string) => fileName.replace(/\.(png|jpeg|jpg)$/, '.webp');

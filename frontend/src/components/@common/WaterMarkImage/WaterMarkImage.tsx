@@ -1,15 +1,16 @@
 import { styled, css } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
-import getImgUrl from '~/utils/image';
+import { getImgUrl } from '~/utils/image';
 
 interface WaterMarkImageProps {
   waterMark: string;
   imageUrl?: string;
   type: 'list' | 'map';
   sns: string;
+  showWaterMark?: boolean;
 }
 
-function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
+function WaterMarkImage({ waterMark, imageUrl, type, sns, showWaterMark = true }: WaterMarkImageProps) {
   const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -24,7 +25,7 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
         <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
         <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
       </picture>
-      {waterMark && (
+      {waterMark && showWaterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
           {waterMark}
         </StyledWaterMark>
@@ -63,14 +64,16 @@ const StyledImage = styled.img`
 
 const StyledWaterMark = styled.div`
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 1%;
+  left: 1%;
 
   padding: 0.4rem 0.8rem;
 
   border-radius: ${BORDER_RADIUS.xs};
-  background-color: var(--white);
 
-  color: var(--black);
+  color: var(--white);
   font-size: ${FONT_SIZE.sm};
+  font-weight: 700;
+
+  cursor: pointer;
 `;

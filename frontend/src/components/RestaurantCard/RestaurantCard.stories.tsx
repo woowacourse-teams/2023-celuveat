@@ -15,6 +15,7 @@ const args = {
     distance: 2586,
     isLiked: false,
     likeCount: 8,
+    rating: 4.88,
     celebs: [
       {
         id: 7,

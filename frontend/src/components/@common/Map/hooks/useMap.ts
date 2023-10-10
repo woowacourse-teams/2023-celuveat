@@ -192,10 +192,6 @@ const useMap = ({ center, zoom, onClick, onIdle, markers, gestureHandling }: Use
   }, [ref]);
 
   useEffect(() => {
-    if (map) map.panTo(center);
-  }, [center]);
-
-  useEffect(() => {
     if (map) map.setZoom(zoom);
   }, [zoom]);
 

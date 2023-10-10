@@ -8,18 +8,25 @@ interface ParamTypes extends CoordinateBoundary {
   sort: 'distance' | 'like';
 }
 
-const getQueryString = ({ boundary, celebId, category, page, sort }: RestaurantsQueryParams) => {
+export const getRestaurantQueryString = ({ boundary, celebId, category, page, sort }: RestaurantsQueryParams) => {
   let params: ParamTypes = { ...boundary, sort };
 
-  if (celebId !== -1) params = { ...params, celebId: String(celebId) };
+  if (celebId !== -1 && celebId) params = { ...params, celebId: String(celebId) };
+  if (category !== '전체' && category) params = { ...params, category };
+  if (page !== 0 && page) params = { ...params, page: String(page) };
 
-  if (category !== '전체') params = { ...params, category };
+  const searchParams = new URLSearchParams(Object.assign(params));
 
-  if (page !== 0) params = { ...params, page: String(page) };
-
-  const queryString = new URLSearchParams(Object.assign(params)).toString();
-
-  return queryString;
+  return searchParams.toString();
 };
 
-export default getQueryString;
+const getQuerySting = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
+  const searchParams = new URLSearchParams(target);
+  const result = searchParams.toString();
+
+  const hasQuery = result.length > 0;
+
+  return hasQuery ? `?${searchParams.toString()}` : '';
+};
+
+export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting(window.location.search)}`;
