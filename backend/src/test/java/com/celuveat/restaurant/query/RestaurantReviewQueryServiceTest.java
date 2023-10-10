@@ -1,5 +1,7 @@
 package com.celuveat.restaurant.query;
 
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누르지_않음;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누름;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -39,7 +41,7 @@ class RestaurantReviewQueryServiceTest {
                                         "맛이 별로네..",
                                         LocalDate.now().toString(),
                                         2,
-                                        true,
+                                        좋아요_누름,
                                         1.0,
                                         List.of("말랑이의 리뷰 이미지1", "말랑이의 리뷰 이미지2")
                                 ),
@@ -51,7 +53,7 @@ class RestaurantReviewQueryServiceTest {
                                         "꿀맛..",
                                         LocalDate.now().toString(),
                                         5,
-                                        false,
+                                        좋아요_누르지_않음,
                                         5.0,
                                         Collections.emptyList()
                                 )

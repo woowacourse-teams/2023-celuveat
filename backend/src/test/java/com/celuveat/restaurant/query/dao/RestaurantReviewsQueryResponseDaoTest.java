@@ -4,6 +4,8 @@ import static com.celuveat.auth.fixture.OauthMemberFixture.로이스;
 import static com.celuveat.auth.fixture.OauthMemberFixture.말랑;
 import static com.celuveat.auth.fixture.OauthMemberFixture.오도;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누르지_않음;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누름;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
@@ -62,7 +64,7 @@ class RestaurantReviewsQueryResponseDaoTest extends DaoTest {
                         "흠...",
                         null,
                         0,
-                        false,
+                        좋아요_누르지_않음,
                         3.0,
                         Collections.emptyList()
                 ),
@@ -74,7 +76,7 @@ class RestaurantReviewsQueryResponseDaoTest extends DaoTest {
                         "음...",
                         null,
                         1,
-                        false,
+                        좋아요_누르지_않음,
                         1.0,
                         List.of("사진1", "사진2")
                 )
@@ -105,7 +107,7 @@ class RestaurantReviewsQueryResponseDaoTest extends DaoTest {
                         "흠...",
                         null,
                         0,
-                        false,
+                        좋아요_누르지_않음,
                         3.0,
                         Collections.emptyList()
                 ),
@@ -117,7 +119,7 @@ class RestaurantReviewsQueryResponseDaoTest extends DaoTest {
                         "음...",
                         null,
                         1,
-                        true,
+                        좋아요_누름,
                         1.0,
                         List.of("사진1", "사진2")
                 )

@@ -8,6 +8,9 @@ import java.util.Random;
 
 public class RestaurantFixture {
 
+    public static Boolean 좋아요_누름 = Boolean.TRUE;
+    public static Boolean 좋아요_누르지_않음 = Boolean.FALSE;
+
     public static Restaurant 하늘초밥() {
         return Restaurant.builder()
                 .name("하늘초밥")

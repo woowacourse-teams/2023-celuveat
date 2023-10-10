@@ -4,6 +4,7 @@ import static com.celuveat.celeb.fixture.CelebFixture.맛객리우;
 import static com.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celeb.fixture.CelebFixture.쯔양;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누르지_않음;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.하늘초밥;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.대성집_사진;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.하늘초밥_사진;
@@ -63,7 +64,7 @@ class RestaurantQueryServiceTest {
         given(restaurantDetailQueryResponseDao.find(1L, null))
                 .willReturn(restaurantDetailQueryResponse(
                         대성집(),
-                        false,
+                        좋아요_누르지_않음,
                         3.5,
                         List.of(쯔양, 성시경),
                         List.of(대성집_사진(대성집(), 1))
@@ -98,12 +99,12 @@ class RestaurantQueryServiceTest {
         )).willReturn(PageableExecutionUtils.getPage(List.of(
                 restaurantSearchQueryResponse(
                         대성집(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         List.of(쯔양, 맛객리우),
                         List.of(대성집_사진(대성집(), 1))),
                 restaurantSearchQueryResponse(
                         하늘초밥(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         List.of(성시경, 맛객리우),
                         List.of(하늘초밥_사진(하늘초밥(), 1)))
         ), pageRequest, () -> 2));
@@ -140,13 +141,13 @@ class RestaurantQueryServiceTest {
         )).willReturn(PageableExecutionUtils.getPage(List.of(
                 restaurantSearchQueryResponse(
                         대성집(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         700,
                         emptyList(),
                         emptyList()),
                 restaurantSearchQueryResponse(
                         하늘초밥(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         1000,
                         emptyList(),
                         emptyList())
@@ -178,12 +179,12 @@ class RestaurantQueryServiceTest {
         )).willReturn(PageableExecutionUtils.getPage(List.of(
                 restaurantSearchWithoutDistanceResponse(
                         대성집(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         emptyList(),
                         emptyList()),
                 restaurantSearchWithoutDistanceResponse(
                         하늘초밥(),
-                        false, 3.5,
+                        좋아요_누르지_않음, 3.5,
                         emptyList(),
                         emptyList())
         ), pageRequest, () -> 2));
@@ -209,12 +210,12 @@ class RestaurantQueryServiceTest {
                 .willReturn(List.of(
                         restaurantSearchWithoutDistanceResponse(
                                 대성집(),
-                                false, 3.5,
+                                좋아요_누르지_않음, 3.5,
                                 emptyList(),
                                 emptyList()),
                         restaurantSearchWithoutDistanceResponse(
                                 하늘초밥(),
-                                false, 3.5,
+                                좋아요_누르지_않음, 3.5,
                                 emptyList(),
                                 emptyList())
                 ));

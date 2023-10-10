@@ -10,6 +10,8 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.RestaurantPointF
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.모던샤브하우스;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누르지_않음;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누름;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.하늘초밥;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.대성집_사진;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.모던샤브하우스_사진;
@@ -116,7 +118,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     .isEqualTo(List.of(
                             restaurantSearchQueryResponse(
                                     대성집,
-                                    false,  // 좋아요 눌렀는지 여부
+                                    좋아요_누르지_않음,
                                     4.5,  // 평점: ((4.7 + 3.22) / 2) 를 소숫점 2째 자리에서 반올림
                                     List.of(성시경),
                                     List.of(대성집_사진_1, 대성집_사진_2)
@@ -129,19 +131,19 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     .isEqualTo(List.of(
                             restaurantSearchQueryResponse(
                                     하늘초밥,
-                                    false, 0,
+                                    좋아요_누르지_않음, 0,
                                     List.of(회사랑),
                                     List.of(하늘초밥_사진_1)
                             ),
                             restaurantSearchQueryResponse(
                                     모던샤브하우스,
-                                    false, 0,
+                                    좋아요_누르지_않음, 0,
                                     List.of(맛객리우),
                                     List.of(모던샤브하우스_사진_1)
                             ),
                             restaurantSearchQueryResponse(
                                     대성집,
-                                    false, 4.5,
+                                    좋아요_누르지_않음, 4.5,
                                     List.of(성시경),
                                     List.of(대성집_사진_1, 대성집_사진_2)
                             )
@@ -166,19 +168,19 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     .isEqualTo(List.of(
                             restaurantSearchQueryResponse(
                                     하늘초밥,
-                                    false, 0,
+                                    좋아요_누르지_않음, 0,
                                     List.of(회사랑),
                                     List.of(하늘초밥_사진_1)
                             ),
                             restaurantSearchQueryResponse(
                                     모던샤브하우스,
-                                    false, 0,
+                                    좋아요_누르지_않음, 0,
                                     List.of(맛객리우),
                                     List.of(모던샤브하우스_사진_1)
                             ),
                             restaurantSearchQueryResponse(
                                     대성집,
-                                    true, 4.5,
+                                    좋아요_누름, 4.5,
                                     List.of(성시경),
                                     List.of(대성집_사진_1, 대성집_사진_2)
                             )
@@ -203,7 +205,7 @@ class RestaurantSearchQueryResponseDaoTest extends DaoTest {
                     .isEqualTo(List.of(
                             restaurantSearchQueryResponse(
                                     대성집,
-                                    false, 4.5,
+                                    좋아요_누르지_않음, 4.5,
                                     List.of(성시경),
                                     List.of(대성집_사진_1, 대성집_사진_2)
                             )
