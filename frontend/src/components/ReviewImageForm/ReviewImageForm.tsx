@@ -3,10 +3,9 @@ import ImageForm from '~/components/@common/ImageForm';
 import { FONT_SIZE } from '~/styles/common';
 
 import DeleteIcon from '~/assets/icons/exit.svg';
-import { ReviewUploadImageType } from '~/@types/api.types';
 
 interface ReviewImageFormProps {
-  images?: ReviewUploadImageType[];
+  images?: string[];
   upload: React.ChangeEventHandler<HTMLInputElement>;
   deleteImage: (id: number) => void;
 }
@@ -21,7 +20,7 @@ function ReviewImageForm({ images, upload, deleteImage }: ReviewImageFormProps) 
       {hasImage &&
         images.map((image, id) => (
           <StyledImageWrapper>
-            <StyledImage src={image.imgUrl} alt="PREVIEW" />
+            <StyledImage src={image} alt="PREVIEW" />
             <StyledDeleteButton type="button" onClick={() => deleteImage(id)}>
               <DeleteIcon />
             </StyledDeleteButton>

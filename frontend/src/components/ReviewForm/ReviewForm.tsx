@@ -16,7 +16,7 @@ import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import { changeImgFileExtension } from '~/utils/image';
 
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
-import type { ReviewUploadImageType, StarRate } from '~/@types/api.types';
+import type { StarRate } from '~/@types/api.types';
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
@@ -39,8 +39,9 @@ function ReviewForm({ type }: ReviewFormProps) {
   const { restaurantReviewsData, createReview, updateReview, isSubmitRequesting } = useRestaurantReview();
 
   const [text, setText] = useState('');
-  const [images, setImages] = useState<ReviewUploadImageType[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [rating, setRating] = useState<StarRate>(0);
+  const [files, setFiles] = useState<Blob[]>([]);
 
   const isSubmitDisabled = text.length === 0 || rating === 0 || isSubmitRequesting;
 
@@ -50,7 +51,6 @@ function ReviewForm({ type }: ReviewFormProps) {
 
       setRating(targetReview.rating);
       setText(targetReview.content);
-      setImages(targetReview.images);
     }
   }, [restaurantReviewsData]);
 
@@ -64,7 +64,8 @@ function ReviewForm({ type }: ReviewFormProps) {
       const compressedFile = await imageCompression(webpFile, options);
       const compressedImageUrl = URL.createObjectURL(compressedFile);
 
-      setImages([...images, { imgUrl: compressedImageUrl, imgFile: compressedFile }]);
+      setImages([...images, compressedImageUrl]);
+      setFiles([...files, compressedFile]);
     } catch (error) {
       setImages([]);
     }
@@ -100,8 +101,8 @@ function ReviewForm({ type }: ReviewFormProps) {
 
     switch (type) {
       case 'create':
-        images.forEach(image => {
-          formData.append('images', image.imgFile, image.imgFile.name);
+        files.forEach(file => {
+          formData.append('images', file, file.name);
         });
         formData.append('restaurantId', restaurantId);
 
