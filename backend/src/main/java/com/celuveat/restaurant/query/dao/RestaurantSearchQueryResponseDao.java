@@ -37,6 +37,7 @@ import jakarta.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.LongSupplier;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,10 @@ public class RestaurantSearchQueryResponseDao {
     private final RestaurantQueryDaoSupport restaurantQueryDaoSupport;
     private final RestaurantLikeQueryDaoSupport restaurantLikeQueryDaoSupport;
     private final RestaurantImageQueryDaoSupport restaurantImageQueryDaoSupport;
+
+    private static double calculateMiddle(double x, double y) {
+        return (x + y) / 2.0;
+    }
 
     public Page<RestaurantSearchQueryResponse> find(
             RestaurantSearchCond restaurantCond,
@@ -83,7 +88,6 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
-                        restaurant.superCategory,
                         restaurant.roadAddress,
                         restaurant.restaurantPoint.latitude,
                         restaurant.restaurantPoint.longitude,
@@ -100,7 +104,7 @@ public class RestaurantSearchQueryResponseDao {
                 .join(celeb).on(celeb.eq(video.celeb))
                 .where(
                         celebIdEqual(restaurantCond.celebId),
-                        restaurantCategoryEqual(restaurantCond.category),
+                        restaurantCategoryIn(restaurantCond.categories),
                         restaurantNameLike(restaurantCond.restaurantName),
                         restaurantInArea(locationCond)
                 ).orderBy(applyOrderBy(pageable), restaurant.id.asc())
@@ -123,8 +127,8 @@ public class RestaurantSearchQueryResponseDao {
         return celebId == null ? null : celeb.id.eq(celebId);
     }
 
-    private BooleanExpression restaurantCategoryEqual(String superCategory) {
-        return StringUtils.isBlank(superCategory) ? null : restaurant.superCategory.eq(superCategory);
+    private BooleanExpression restaurantCategoryIn(List<String> categories) {
+        return (Objects.isNull(categories) || categories.isEmpty()) ? null : restaurant.category.in(categories);
     }
 
     private BooleanExpression restaurantNameLike(String restaurantName) {
@@ -160,7 +164,7 @@ public class RestaurantSearchQueryResponseDao {
                 .join(celeb).on(celeb.eq(video.celeb))
                 .where(
                         celebIdEqual(restaurantCond.celebId),
-                        restaurantCategoryEqual(restaurantCond.category),
+                        restaurantCategoryIn(restaurantCond.categories),
                         restaurantNameLike(restaurantCond.restaurantName),
                         restaurantInArea(locationCond)
                 );
@@ -194,7 +198,6 @@ public class RestaurantSearchQueryResponseDao {
                         restaurant.id,
                         restaurant.name,
                         restaurant.category,
-                        restaurant.superCategory,
                         restaurant.roadAddress,
                         restaurant.restaurantPoint.latitude,
                         restaurant.restaurantPoint.longitude,
@@ -299,7 +302,7 @@ public class RestaurantSearchQueryResponseDao {
 
     public record RestaurantSearchCond(
             Long celebId,
-            String category,
+            List<String> categories,
             String restaurantName
     ) {
 
@@ -320,9 +323,5 @@ public class RestaurantSearchQueryResponseDao {
             return calculateMiddle(lowLongitude, highLongitude);
         }
 
-    }
-
-    private static double calculateMiddle(double x, double y) {
-        return (x + y) / 2.0;
     }
 }

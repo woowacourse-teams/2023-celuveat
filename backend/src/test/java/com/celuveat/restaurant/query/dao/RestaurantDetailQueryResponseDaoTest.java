@@ -17,35 +17,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayName("음식점 상세조회 DAO(RestaurantDetailQueryResponseDao) 은(는)")
 class RestaurantDetailQueryResponseDaoTest extends DaoTest {
 
-    @Autowired
-    private RestaurantDetailQueryResponseDao restaurantDetailQueryResponseDao;
-
     private final OauthMember 말랑 = 말랑();
     private final OauthMember 오도 = 오도();
     private final Restaurant 대성집 = Restaurant.builder()
             .name("대성집")
             .category("곰탕,설렁탕")
-            .superCategory("국, 국밥")
             .roadAddress("서울 종로구 행촌동 209-35")
             .latitude(37.5727172)
             .longitude(126.9609577)
             .phoneNumber("02-735-4259")
             .naverMapUrl("https://map.naver.com/v5/entry/place/13517178?c=15,0,0,0,dh")
             .build();
-
     private final Restaurant 좋아요_눌린_음식점 = Restaurant.builder()
             .name("좋아요 눌린 음식점")
             .category("한식")
-            .superCategory("한식")
             .roadAddress("말랑시 말랑구 말랑동 123-45")
             .latitude(38.5727172)
             .longitude(127.9409577)
             .phoneNumber("01-2345-6789")
             .naverMapUrl("https://map.naver.com/v5/entry/place/mallang")
             .build();
-
     private final RestaurantReview 대성집_리뷰_1 = RestaurantReview.create(대성집, 말랑, "음...", 4.0);
     private final RestaurantReview 대성집_리뷰_2 = RestaurantReview.create(대성집, 오도, "흠...", 2.0);
+    @Autowired
+    private RestaurantDetailQueryResponseDao restaurantDetailQueryResponseDao;
 
     @Override
     protected void prepareTestData() {
@@ -63,7 +58,6 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
         // then
         assertThat(result.name()).isEqualTo("대성집");
         assertThat(result.category()).isEqualTo("곰탕,설렁탕");
-        assertThat(result.superCategory()).isEqualTo("국, 국밥");
         assertThat(result.roadAddress()).isEqualTo("서울 종로구 행촌동 209-35");
         assertThat(result.latitude()).isEqualTo(37.5727172);
         assertThat(result.longitude()).isEqualTo(126.9609577);
@@ -93,7 +87,6 @@ class RestaurantDetailQueryResponseDaoTest extends DaoTest {
         // then
         assertThat(result.name()).isEqualTo("좋아요 눌린 음식점");
         assertThat(result.category()).isEqualTo("한식");
-        assertThat(result.superCategory()).isEqualTo("한식");
         assertThat(result.roadAddress()).isEqualTo("말랑시 말랑구 말랑동 123-45");
         assertThat(result.latitude()).isEqualTo(38.5727172);
         assertThat(result.longitude()).isEqualTo(127.9409577);

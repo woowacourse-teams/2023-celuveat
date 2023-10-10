@@ -1,5 +1,6 @@
 package com.celuveat.restaurant.presentation.dto;
 
+import com.celuveat.restaurant.presentation.CategoryMapper;
 import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.RestaurantSearchCond;
 
 public record RestaurantSearchCondRequest(
@@ -11,7 +12,7 @@ public record RestaurantSearchCondRequest(
     public RestaurantSearchCond toCondition() {
         return new RestaurantSearchCond(
                 celebId,
-                category,
+                CategoryMapper.mapCategory(category),
                 restaurantName
         );
     }

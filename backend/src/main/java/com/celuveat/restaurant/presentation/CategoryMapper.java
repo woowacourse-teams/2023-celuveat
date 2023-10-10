@@ -3,11 +3,13 @@ package com.celuveat.restaurant.presentation;
 import static com.celuveat.restaurant.exception.RestaurantExceptionType.UNSUPPORTED_CATEGORY;
 
 import com.celuveat.restaurant.exception.RestaurantException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CategoryMapper {
-        
+
     private static Map<String, List<String>> mapper = Map.ofEntries(
             Map.entry("한식", List.of(
                     "감자탕",
@@ -196,6 +198,9 @@ public class CategoryMapper {
     }
 
     public static List<String> mapCategory(String category) {
+        if (Objects.isNull(category) || category.isEmpty()) {
+            return Collections.emptyList();
+        }
         if (mapper.containsKey(category)) {
             return mapper.get(category);
         }

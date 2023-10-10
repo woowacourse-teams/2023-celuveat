@@ -31,7 +31,9 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
     @Autowired
     private RestaurantSearchWithoutDistanceQueryResponseDao restaurantSearchWithoutDistanceQueryResponseDao;
 
-    protected void prepareTestData() {
+    @Override
+    protected TestData prepareTestData() {
+        return testData;
     }
 
     @Nested
@@ -45,7 +47,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
         private List<Restaurant> 말랑특별시에만_속하는_음식점들;
 
         @Override
-        protected void prepareTestData() {
+        protected TestData prepareTestData() {
             Polygon<G2D> 영역1 = polygon(WGS84, ring(
                     g(4.0, 4.0),
                     g(5.0, 4.0),
@@ -80,7 +82,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(4.5)
                             .latitude(4.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑1동 대표 일식집")
@@ -90,7 +91,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(4.9)
                             .latitude(4.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             말랑2동에_속한_음식점들 = List.of(
@@ -102,7 +102,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(2.5)
                             .latitude(2.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑2동 대표 일식집")
@@ -112,7 +111,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(2.7)
                             .latitude(2.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             말랑특별시에만_속하는_음식점들 = List.of(
@@ -124,7 +122,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(7.5)
                             .latitude(7.2)
                             .category("한식")
-                            .superCategory("한식")
                             .build(),
                     Restaurant.builder()
                             .name("말랑특별시 대표 일식집")
@@ -134,12 +131,12 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             .longitude(8.7)
                             .latitude(8.1)
                             .category("일식")
-                            .superCategory("일식")
                             .build()
             );
             testData.addRestaurants(말랑1동에_속한_음식점들);
             testData.addRestaurants(말랑2동에_속한_음식점들);
             testData.addRestaurants(말랑특별시에만_속하는_음식점들);
+            return testData;
         }
 
         @Test
@@ -195,7 +192,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
     class 최근_추가된_음식점_조회_시 extends DaoTest {
 
         @Override
-        protected void prepareTestData() {
+        protected TestData prepareTestData() {
             testData.addRestaurants(
                     음식점("음식점1", "한식", 37.123, 126.123),
                     음식점("음식점2", "한식", 37.1234, 126.123),
@@ -210,6 +207,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                     음식점("음식점11", "한식", 37.1243, 126.123),
                     음식점("음식점12", "한식", 37.1244, 126.123)
             );
+            return testData;
         }
 
         @Test

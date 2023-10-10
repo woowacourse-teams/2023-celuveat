@@ -21,9 +21,6 @@ public class Restaurant extends BaseEntity {
     private String category;
 
     @Column(nullable = false)
-    private String superCategory;
-
-    @Column(nullable = false)
     private String roadAddress;
 
     private String phoneNumber;
@@ -46,7 +43,6 @@ public class Restaurant extends BaseEntity {
     public Restaurant(
             String name,
             String category,
-            String superCategory,
             String roadAddress,
             String phoneNumber,
             String naverMapUrl,
@@ -55,7 +51,6 @@ public class Restaurant extends BaseEntity {
     ) {
         this.name = name;
         this.category = category;
-        this.superCategory = superCategory;
         this.roadAddress = roadAddress;
         this.phoneNumber = phoneNumber;
         this.naverMapUrl = naverMapUrl;
@@ -90,10 +85,6 @@ public class Restaurant extends BaseEntity {
 
     public String category() {
         return category;
-    }
-
-    public String superCategory() {
-        return superCategory;
     }
 
     public String roadAddress() {
