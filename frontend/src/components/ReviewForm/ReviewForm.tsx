@@ -100,7 +100,7 @@ function ReviewForm({ type }: ReviewFormProps) {
     switch (type) {
       case 'create':
         images.forEach(image => {
-          formData.append('images', image.imgFile);
+          formData.append('images', image.imgFile, image.imgFile.name);
         });
         formData.append('restaurantId', restaurantId);
 
