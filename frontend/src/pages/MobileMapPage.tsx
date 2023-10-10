@@ -74,7 +74,7 @@ const StyledMobileLayout = styled.main`
   position: relative;
 
   width: 100%;
-  height: calc(100% - 48px);
+  height: calc(100vh - 136px);
 `;
 
 const StyledRestaurantCardContainer = styled.div<{ isListShowed: boolean }>`

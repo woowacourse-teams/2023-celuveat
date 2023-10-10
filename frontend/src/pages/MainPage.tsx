@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { getCelebs } from '~/api/celeb';
@@ -39,9 +39,11 @@ function MainPage() {
         <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
       </Helmet>
       <StyledContainer>
-        <StyledBanner>
-          <Banner />
-        </StyledBanner>
+        <Link to="/updated-recent">
+          <StyledBanner>
+            <Banner />
+          </StyledBanner>
+        </Link>
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
           <StyledIconBox>
@@ -98,7 +100,7 @@ const StyledLayout = styled.div`
   justify-content: center;
 
   width: 100%;
-  height: calc(100% - 48px);
+  height: calc(100vh - 88px);
 `;
 
 const StyledContainer = styled.div`
