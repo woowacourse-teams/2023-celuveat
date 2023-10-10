@@ -56,7 +56,7 @@ public class RestaurantReview extends BaseEntity {
     }
 
     private void validateRating(double rating) {
-        if (0.0 >= rating || rating > 5.0) {
+        if (rating <= 0.0 || 5.0 < rating) {
             throw new RestaurantReviewException(BAD_REVIEW_VALUE);
         }
     }
