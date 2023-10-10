@@ -70,7 +70,7 @@ const StyledUserAndFooterDivider = styled.div`
   align-items: center;
 
   width: 100vw;
-  height: calc(100vh - 92px);
+  height: calc(100dvh - 88px);
 `;
 
 const StyledUserContainer = styled.main`

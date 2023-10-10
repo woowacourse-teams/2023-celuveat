@@ -61,6 +61,8 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  position: relative;
+
   width: 100%;
   height: 80px;
 
