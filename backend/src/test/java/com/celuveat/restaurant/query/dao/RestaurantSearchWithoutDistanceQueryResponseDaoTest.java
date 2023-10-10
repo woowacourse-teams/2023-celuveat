@@ -1,6 +1,10 @@
 package com.celuveat.restaurant.query.dao;
 
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.모던샤브하우스;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.하늘초밥;
+import static com.celuveat.restaurant.fixture.RestaurantRecommendationFixture.추천_음식점;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.geolatte.geom.builder.DSL.g;
 import static org.geolatte.geom.builder.DSL.polygon;
@@ -226,6 +230,33 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                             "음식점5",
                             "음식점4",
                             "음식점3"
+                    );
+        }
+    }
+
+    @Nested
+    class 추천_음식점_조회_시 extends DaoTest {
+
+        @Override
+        protected void prepareTestData() {
+            Restaurant 하늘초밥 = 하늘초밥();
+            Restaurant 모던샤브하우스 = 모던샤브하우스();
+            testData.addRestaurants(하늘초밥, 모던샤브하우스, 대성집());
+            testData.addRestaurantRecommendations(추천_음식점(모던샤브하우스), 추천_음식점(하늘초밥));
+        }
+
+        @Test
+        void 추천_음식점을_조회한다() {
+            // when
+            List<RestaurantSearchWithoutDistanceResponse> latest = restaurantSearchWithoutDistanceQueryResponseDao
+                    .findRecommendation(/* 회원 ID */null);
+
+            // then
+            assertThat(latest)
+                    .extracting(RestaurantSearchWithoutDistanceResponse::getName)
+                    .containsExactly(
+                            "하늘초밥",
+                            "모던샤브하우스"
                     );
         }
     }

@@ -5,6 +5,7 @@ import com.celuveat.auth.command.domain.OauthMemberRepository;
 import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
+import com.celuveat.restaurant.command.domain.RestaurantRecommendationRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
@@ -29,6 +30,7 @@ public class TestDataInserter {
     private final RestaurantReviewRepository restaurantReviewRepository;
     private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
     private final TestAdministrativeDistrictRepository administrativeDistrictRepository;
+    private final RestaurantRecommendationRepository restaurantRecommendationRepository;
 
     public TestData insertData(TestDataCreator testDataCreator) {
         TestData testData = testDataCreator.create();
@@ -45,6 +47,7 @@ public class TestDataInserter {
         restaurantReviewRepository.saveAll(testData.restaurantReviews());
         restaurantReviewLikeRepository.saveAll(testData.restaurantReviewLikes());
         administrativeDistrictRepository.saveAll(testData.administrativeDistricts());
+        restaurantRecommendationRepository.saveAll(testData.restaurantRecommendations());
         return testData;
     }
 }

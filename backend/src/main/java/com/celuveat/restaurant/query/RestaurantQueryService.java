@@ -79,7 +79,10 @@ public class RestaurantQueryService {
         return restaurantSearchWithoutDistanceQueryResponseDao.findLatest(memberId);
     }
 
-    // TODO 왜 이건 페이징 안하지..?
+    public List<RestaurantSearchWithoutDistanceResponse> findRecommendation(@Nullable Long memberId) {
+        return restaurantSearchWithoutDistanceQueryResponseDao.findRecommendation(memberId);
+    }
+
     public List<LikedRestaurantQueryResponse> findLikedByMemberId(Long memberId) {
         return likedRestaurantQueryResponseDao.findLikedByMemberId(memberId);
     }

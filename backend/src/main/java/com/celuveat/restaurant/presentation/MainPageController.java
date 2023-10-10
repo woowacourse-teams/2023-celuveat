@@ -43,4 +43,11 @@ public class MainPageController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/recommendation")
+    ResponseEntity<List<RestaurantSearchWithoutDistanceResponse>> findRecommendation(
+            @LooseAuth Long memberId
+    ) {
+        List<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findRecommendation(memberId);
+        return ResponseEntity.ok(result);
+    }
 }
