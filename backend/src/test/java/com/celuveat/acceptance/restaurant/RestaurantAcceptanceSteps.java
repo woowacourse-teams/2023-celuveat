@@ -239,7 +239,6 @@ public class RestaurantAcceptanceSteps {
                 음식점.id(),
                 음식점.name(),
                 음식점.category(),
-                음식점.superCategory(),
                 음식점.roadAddress(),
                 음식점.latitude(),
                 음식점.longitude(),

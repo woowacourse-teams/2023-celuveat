@@ -9,7 +9,6 @@ import static org.geolatte.geom.crs.CoordinateReferenceSystems.WGS84;
 
 import com.celuveat.administrativedistrict.domain.AdministrativeDistrict;
 import com.celuveat.common.DaoTest;
-import com.celuveat.common.TestData;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.query.dao.RestaurantSearchWithoutDistanceQueryResponseDao.RegionCodeCond;
 import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
@@ -32,8 +31,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
     private RestaurantSearchWithoutDistanceQueryResponseDao restaurantSearchWithoutDistanceQueryResponseDao;
 
     @Override
-    protected TestData prepareTestData() {
-        return testData;
+    protected void prepareTestData() {
     }
 
     @Nested
@@ -47,7 +45,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
         private List<Restaurant> 말랑특별시에만_속하는_음식점들;
 
         @Override
-        protected TestData prepareTestData() {
+        protected void prepareTestData() {
             Polygon<G2D> 영역1 = polygon(WGS84, ring(
                     g(4.0, 4.0),
                     g(5.0, 4.0),
@@ -136,7 +134,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
             testData.addRestaurants(말랑1동에_속한_음식점들);
             testData.addRestaurants(말랑2동에_속한_음식점들);
             testData.addRestaurants(말랑특별시에만_속하는_음식점들);
-            return testData;
         }
 
         @Test
@@ -192,7 +189,7 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
     class 최근_추가된_음식점_조회_시 extends DaoTest {
 
         @Override
-        protected TestData prepareTestData() {
+        protected void prepareTestData() {
             testData.addRestaurants(
                     음식점("음식점1", "한식", 37.123, 126.123),
                     음식점("음식점2", "한식", 37.1234, 126.123),
@@ -207,7 +204,6 @@ class RestaurantSearchWithoutDistanceQueryResponseDaoTest extends DaoTest {
                     음식점("음식점11", "한식", 37.1243, 126.123),
                     음식점("음식점12", "한식", 37.1244, 126.123)
             );
-            return testData;
         }
 
         @Test
