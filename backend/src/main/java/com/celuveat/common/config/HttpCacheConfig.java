@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
 @Configuration
-public class CacheConfig implements WebMvcConfigurer {
+public class HttpCacheConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
