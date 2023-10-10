@@ -73,7 +73,7 @@ export interface RestaurantReview {
   isLiked: boolean;
   likeCount: number;
   rating: StarRate;
-  reviewImageUrls: ReviewUploadImageType[];
+  images: ReviewUploadImageType[];
 }
 
 export interface RestaurantReviewData {

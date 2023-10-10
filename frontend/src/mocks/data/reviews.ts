@@ -14,7 +14,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 5,
-    reviewImageUrls: [
+    images: [
       {
         imgUrl: '4YSJ4YWz4YSP4YWz4YSF4YW14Yar4YSJ4YWj4Ya6IDIwMjMtMDktMjcg4YSL4YWp4YSS4YWuIDEyLjA2LjA4',
         imgFile: 'asdf' as unknown as Blob,
@@ -43,7 +43,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 5,
-    reviewImageUrls: [
+    images: [
       {
         imgUrl: '4YSJ4YWz4YSP4YWz4YSF4YW14Yar4YSJ4YWj4Ya6IDIwMjMtMDktMjcg4YSL4YWp4YSS4YWuIDEyLjA2LjA4',
         imgFile: 'asdf' as unknown as Blob,
@@ -68,7 +68,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 4,
-    reviewImageUrls: [],
+    images: [],
   },
   {
     id: 4,
@@ -80,7 +80,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 3,
-    reviewImageUrls: [
+    images: [
       {
         imgUrl: '4YSJ4YWz4YSP4YWz4YSF4YW14Yar4YSJ4YWj4Ya6IDIwMjMtMDktMjcg4YSL4YWp4YSS4YWuIDEyLjA2LjA4',
         imgFile: 'asdf' as unknown as Blob,
@@ -105,7 +105,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 4.5,
-    reviewImageUrls: [],
+    images: [],
   },
   {
     id: 6,
@@ -117,7 +117,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 5,
-    reviewImageUrls: [],
+    images: [],
   },
   {
     id: 7,
@@ -129,7 +129,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     likeCount: 97,
     rating: 5,
-    reviewImageUrls: [],
+    images: [],
   },
   {
     id: 8,
@@ -141,7 +141,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     rating: 5,
     likeCount: 97,
-    reviewImageUrls: [],
+    images: [],
   },
   {
     id: 9,
@@ -153,7 +153,7 @@ const reviews: RestaurantReview[] = [
     isLiked: false,
     rating: 5,
     likeCount: 97,
-    reviewImageUrls: [],
+    images: [],
   },
 ];
 

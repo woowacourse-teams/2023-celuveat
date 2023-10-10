@@ -50,7 +50,7 @@ function ReviewForm({ type }: ReviewFormProps) {
 
       setRating(targetReview.rating);
       setText(targetReview.content);
-      setImages(targetReview.reviewImageUrls);
+      setImages(targetReview.images);
     }
   }, [restaurantReviewsData]);
 

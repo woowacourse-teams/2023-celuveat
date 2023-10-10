@@ -123,7 +123,7 @@ export const DetailPageSuccessHandler = [
       likeCount: 97,
       rating: 4,
       createdDate: `${year}-${month}-${day}` as HyphenatedDate,
-      reviewImageUrls: makeImage(3),
+      images: makeImage(3),
     });
 
     if (JSESSION === undefined) {
@@ -146,7 +146,7 @@ export const DetailPageSuccessHandler = [
 
     review['content'] = content;
     review['rating'] = rating;
-    review['reviewImageUrls'] = makeImage(2);
+    review['images'] = makeImage(2);
 
     return res(ctx.status(204));
   }),

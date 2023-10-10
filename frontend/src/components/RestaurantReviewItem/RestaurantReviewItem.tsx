@@ -74,9 +74,9 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
       </StyledStarRatingWrapper>
       <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
       <StyledReviewImgWrapper>
-        {review?.reviewImageUrls?.map((reviewImageUrl, idx) => (
+        {review?.images?.map((image, idx) => (
           <StyledReviewImg
-            src={getReviewImgUrl(reviewImageUrl.imgUrl, 'webp')}
+            src={getReviewImgUrl(image.imgUrl, 'webp')}
             alt={`${review.nickname}이 쓴 리뷰 사진${idx}`}
           />
         ))}
