@@ -1,6 +1,7 @@
 package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
 import java.util.List;
@@ -53,7 +54,10 @@ public record RestaurantReviewsQueryResponse(
                     restaurantReview.likeCount(),
                     isLiked,
                     restaurantReview.rating(),
-                    images.stream().map(RestaurantReviewImage::name).toList()
+                    images.stream()
+                            .map(RestaurantReviewImage::name)
+                            .map(Base64Util::encode)
+                            .toList()
             );
         }
     }
