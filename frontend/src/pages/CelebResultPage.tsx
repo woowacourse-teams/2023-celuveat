@@ -1,27 +1,41 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { RestaurantData, RestaurantListData } from '~/@types/api.types';
+import { RestaurantListData } from '~/@types/api.types';
 import { CelebId } from '~/@types/celeb.types';
 import { getRestaurants } from '~/api/restaurant';
 import ProfileImage from '~/components/@common/ProfileImage';
-import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import SearchResultBox from '~/components/SearchResultBox';
 import { WHOLE_BOUNDARY } from '~/constants/boundary';
 import { CELEB } from '~/constants/celeb';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import { FONT_SIZE } from '~/styles/common';
 
 function CelebResultPage() {
   const { celebId } = useParams();
+  const ref = useRef<HTMLDivElement>();
 
-  const { data: restaurantDataList } = useQuery<RestaurantListData>({
+  const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
     queryKey: ['restaurants', celebId],
-    queryFn: () =>
+    queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
         boundary: WHOLE_BOUNDARY,
         celebId: Number(celebId),
         sort: 'like',
+        page: pageParam,
       }),
+    getNextPageParam: lastPage => {
+      if (lastPage.totalPage > lastPage.currentPage) return lastPage.currentPage + 1;
+      return undefined;
+    },
   });
+
+  const entry = useIntersectionObserver(ref, {});
+
+  useEffect(() => {
+    if (entry) fetchNextPage();
+  }, [entry]);
 
   return (
     <StyledContainer>
@@ -35,18 +49,14 @@ function CelebResultPage() {
           size="72px"
         />
       </StyledBanner>
-      <StyledResultCount>{restaurantDataList && restaurantDataList.totalElementsCount}개의 매장</StyledResultCount>
-      <StyledResultBox>
-        {restaurantDataList &&
-          restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
-            <MiniRestaurantCard
-              key={`${restaurant.id}${celebs[0].id}`}
-              restaurant={restaurant}
-              celebs={celebs}
-              showWaterMark={false}
-            />
-          ))}
-      </StyledResultBox>
+      <StyledResultCount>
+        {restaurantDataPages && restaurantDataPages.pages[0].totalElementsCount}개의 매장
+      </StyledResultCount>
+
+      {restaurantDataPages?.pages.map(restaurantDataList => (
+        <SearchResultBox restaurantDataList={restaurantDataList} />
+      ))}
+      <div ref={ref} />
     </StyledContainer>
   );
 }
@@ -71,12 +81,6 @@ const StyledLink = styled(Link)`
 
 const StyledResultCount = styled.span`
   font-size: ${FONT_SIZE.md};
-`;
-
-const StyledResultBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
 `;
 
 const StyledBanner = styled.div`
