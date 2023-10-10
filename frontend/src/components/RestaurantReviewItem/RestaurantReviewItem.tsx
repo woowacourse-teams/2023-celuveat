@@ -12,8 +12,9 @@ import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
-
 import { getProfile } from '~/api/user';
+import { getReviewImgUrl } from '~/utils/image';
+
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
 interface RestaurantReviewItemProps {
@@ -74,7 +75,10 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
       <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
       <StyledReviewImgWrapper>
         {review?.reviewImageUrls?.map((reviewImageUrl, idx) => (
-          <StyledReviewImg src={reviewImageUrl.imgUrl} alt={`${review.nickname}이 쓴 리뷰 사진${idx}`} />
+          <StyledReviewImg
+            src={getReviewImgUrl(reviewImageUrl.imgUrl, 'webp')}
+            alt={`${review.nickname}이 쓴 리뷰 사진${idx}`}
+          />
         ))}
       </StyledReviewImgWrapper>
 
