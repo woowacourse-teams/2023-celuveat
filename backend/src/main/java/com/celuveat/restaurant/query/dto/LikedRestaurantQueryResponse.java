@@ -2,29 +2,21 @@ package com.celuveat.restaurant.query.dto;
 
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class LikedRestaurantQueryResponse {
-
-    private Long id;
-    private String name;
-    private String category;
-    private String roadAddress;
-    @JsonProperty("lat")
-    private Double latitude;
-    @JsonProperty("lng")
-    private Double longitude;
-    private String phoneNumber;
-    private String naverMapUrl;
-    private List<CelebQueryResponse> celebs = new ArrayList<>();
-    private List<RestaurantImageQueryResponse> images = new ArrayList<>();
+// TODO 여기에 조회수, 평점 등에 대한 정보가 없는데 이대로 갈건지?, 만약 변경된다면 해당 클래스 대신 RestaurantWithoutDistanceQueryResponse를 사용할 것
+public record LikedRestaurantQueryResponse(
+        Long id,
+        String name,
+        String category,
+        String roadAddress,
+        @JsonProperty("lat") double latitude,
+        @JsonProperty("lng") double longitude,
+        String phoneNumber,
+        String naverMapUrl,
+        List<CelebQueryResponse> celebs,
+        List<RestaurantImageQueryResponse> images
+) {
 
     public static LikedRestaurantQueryResponse from(
             Restaurant restaurant,

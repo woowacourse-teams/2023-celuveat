@@ -4,7 +4,7 @@ import com.celuveat.restaurant.command.application.dto.UpdateReviewRequestComman
 
 public record UpdateReviewRequest(
         String content,
-        Double rating
+        double rating
 ) {
 
     public UpdateReviewRequestCommand toCommand(Long reviewId, Long memberId) {

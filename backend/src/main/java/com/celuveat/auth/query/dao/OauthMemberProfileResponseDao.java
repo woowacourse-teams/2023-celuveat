@@ -1,12 +1,13 @@
 package com.celuveat.auth.query.dao;
 
 import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.auth.query.dao.support.OauthMemberQueryDaoSupport;
 import com.celuveat.auth.query.dto.OauthMemberProfileResponse;
+import com.celuveat.common.dao.Dao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Dao
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class OauthMemberProfileResponseDao {

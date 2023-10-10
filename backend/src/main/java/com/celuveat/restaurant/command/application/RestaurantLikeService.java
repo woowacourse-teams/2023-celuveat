@@ -27,13 +27,12 @@ public class RestaurantLikeService {
     }
 
     private void cancelLike(RestaurantLike like) {
-        Restaurant restaurant = like.restaurant();
-        restaurant.cancelLike();
+        like.cancel();
         restaurantLikeRepository.delete(like);
     }
 
     private Runnable clickLike(Restaurant restaurant, OauthMember member) {
-        restaurant.clickLike();
-        return () -> restaurantLikeRepository.save(new RestaurantLike(restaurant, member));
+        RestaurantLike like = RestaurantLike.create(restaurant, member);
+        return () -> restaurantLikeRepository.save(like);
     }
 }

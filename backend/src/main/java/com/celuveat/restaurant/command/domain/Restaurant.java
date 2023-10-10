@@ -4,15 +4,13 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.celuveat.common.domain.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.geolatte.geom.Point;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class Restaurant extends BaseEntity {
 
@@ -28,18 +26,13 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String roadAddress;
 
-    @Column(nullable = false)
-    private Double latitude;
-
-    @Column(nullable = false)
-    private Double longitude;
-
     private String phoneNumber;
 
     @Column(nullable = false)
     private String naverMapUrl;
 
-    private Point<?> point;
+    @Embedded
+    private RestaurantPoint restaurantPoint;
 
     private int viewCount;
 
@@ -48,6 +41,26 @@ public class Restaurant extends BaseEntity {
     private int reviewCount;
 
     private double totalRating;
+
+    @Builder
+    public Restaurant(
+            String name,
+            String category,
+            String superCategory,
+            String roadAddress,
+            String phoneNumber,
+            String naverMapUrl,
+            double latitude,
+            double longitude
+    ) {
+        this.name = name;
+        this.category = category;
+        this.superCategory = superCategory;
+        this.roadAddress = roadAddress;
+        this.phoneNumber = phoneNumber;
+        this.naverMapUrl = naverMapUrl;
+        this.restaurantPoint = new RestaurantPoint(latitude, longitude);
+    }
 
     public void clickLike() {
         this.likeCount += 1;
@@ -71,13 +84,6 @@ public class Restaurant extends BaseEntity {
         this.reviewCount -= 1;
     }
 
-    public Double averageRating() {
-        if (this.totalRating == 0) {
-            return 0.0;
-        }
-        return (double) Math.round((this.totalRating / this.reviewCount) * 10 / 10);
-    }
-
     public String name() {
         return name;
     }
@@ -94,20 +100,28 @@ public class Restaurant extends BaseEntity {
         return roadAddress;
     }
 
-    public Double latitude() {
-        return latitude;
-    }
-
-    public Double longitude() {
-        return longitude;
-    }
-
     public String phoneNumber() {
         return phoneNumber;
     }
 
     public String naverMapUrl() {
         return naverMapUrl;
+    }
+
+    public RestaurantPoint restaurantPoint() {
+        return restaurantPoint;
+    }
+
+    public double latitude() {
+        return restaurantPoint.latitude();
+    }
+
+    public double longitude() {
+        return restaurantPoint.longitude();
+    }
+
+    public Point<?> point() {
+        return restaurantPoint.point();
     }
 
     public Integer viewCount() {
@@ -118,15 +132,11 @@ public class Restaurant extends BaseEntity {
         return likeCount;
     }
 
-    public Point<?> point() {
-        return point;
-    }
-
     public int reviewCount() {
         return reviewCount;
     }
 
-    public Double totalRating() {
+    public double totalRating() {
         return totalRating;
     }
 }

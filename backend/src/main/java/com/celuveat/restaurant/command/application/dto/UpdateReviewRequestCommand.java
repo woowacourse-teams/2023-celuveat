@@ -4,6 +4,6 @@ public record UpdateReviewRequestCommand(
         String content,
         Long reviewId,
         Long memberId,
-        Double rating
+        double rating
 ) {
 }

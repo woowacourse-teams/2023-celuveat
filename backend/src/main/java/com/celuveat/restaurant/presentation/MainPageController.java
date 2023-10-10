@@ -2,9 +2,9 @@ package com.celuveat.restaurant.presentation;
 
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.LooseAuth;
-import com.celuveat.restaurant.presentation.dto.DistrictCodeCondRequest;
+import com.celuveat.restaurant.presentation.dto.RegionCodeCondRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
-import com.celuveat.restaurant.query.dto.RestaurantByAddressResponse;
+import com.celuveat.restaurant.query.dto.RestaurantSearchWithoutDistanceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +20,15 @@ public class MainPageController {
 
     private final RestaurantQueryService restaurantQueryService;
 
+    // TODO : API 변경될 수 있는지 확인 후, 가능하다면 옮기기
     @GetMapping("/address")
-    ResponseEntity<PageResponse<RestaurantByAddressResponse>> findByAddress(
-            @ModelAttribute DistrictCodeCondRequest districtCodeCondRequest,
-            @PageableDefault(size = 18) Pageable pageable,
-            @LooseAuth Long memberId
+    ResponseEntity<PageResponse<RestaurantSearchWithoutDistanceResponse>> findAllByRegionCode(
+            @LooseAuth Long memberId,
+            @ModelAttribute RegionCodeCondRequest regionCodeCondRequest,
+            @PageableDefault(size = 18) Pageable pageable
     ) {
-        Page<RestaurantByAddressResponse> result = restaurantQueryService.findAllByAddress(
-                districtCodeCondRequest.toCondition(), pageable, memberId
+        Page<RestaurantSearchWithoutDistanceResponse> result = restaurantQueryService.findByRegionCode(
+                regionCodeCondRequest.toCondition(), pageable, memberId
         );
         return ResponseEntity.ok(PageResponse.from(result));
     }

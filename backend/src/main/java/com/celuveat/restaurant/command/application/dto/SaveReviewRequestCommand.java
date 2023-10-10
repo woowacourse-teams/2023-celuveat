@@ -1,22 +1,22 @@
 package com.celuveat.restaurant.command.application.dto;
 
+import java.util.Collections;
 import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
 
 public record SaveReviewRequestCommand(
         String content,
         Long memberId,
         Long restaurantId,
-        Double rating,
-        List<MultipartFile> images
+        double rating,
+        List<String> images
 ) {
 
     public SaveReviewRequestCommand(
             String content,
             Long memberId,
             Long restaurantId,
-            Double rating
+            double rating
     ) {
-        this(content, memberId, restaurantId, rating, List.of());
+        this(content, memberId, restaurantId, rating, Collections.emptyList());
     }
 }

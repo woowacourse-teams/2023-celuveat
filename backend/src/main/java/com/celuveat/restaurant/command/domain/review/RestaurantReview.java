@@ -1,6 +1,9 @@
 package com.celuveat.restaurant.command.domain.review;
 
+import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.BAD_REVIEW_VALUE;
 import static com.celuveat.restaurant.exception.RestaurantReviewExceptionType.PERMISSION_DENIED;
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -11,11 +14,13 @@ import com.celuveat.restaurant.exception.RestaurantReviewException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class RestaurantReview extends BaseEntity {
 
@@ -29,31 +34,71 @@ public class RestaurantReview extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    private Double rating;
+    private double rating;
 
     private int likeCount;
 
-    public RestaurantReview(String content, OauthMember member, Restaurant restaurant, Double rating) {
-        this(content, member, restaurant, rating, 0);
+    @OneToMany(orphanRemoval = true, cascade = {PERSIST, REMOVE})
+    @JoinColumn(name = "restaurant_review_id", updatable = false, nullable = false)
+    private List<RestaurantReviewImage> images = new ArrayList<>();
+
+    private RestaurantReview(
+            Restaurant restaurant, OauthMember member,
+            String content, double rating,
+            List<RestaurantReviewImage> images
+    ) {
+        validateRating(rating);
+        this.restaurant = restaurant;
+        this.member = member;
+        this.content = content;
+        this.rating = rating;
+        this.images = images;
     }
 
-    public void update(String content, Long memberId, Double updateRating) {
-        checkOwner(memberId);
+    private void validateRating(double rating) {
+        if (rating <= 0.0 || 5.0 < rating) {
+            throw new RestaurantReviewException(BAD_REVIEW_VALUE);
+        }
+    }
+
+    public static RestaurantReview create(
+            Restaurant restaurant, OauthMember member,
+            String content, double rating
+    ) {
+        return create(restaurant, member, content, rating, Collections.emptyList());
+    }
+
+    public static RestaurantReview create(
+            Restaurant restaurant, OauthMember member,
+            String content, double rating,
+            List<String> imageNames
+    ) {
+        List<RestaurantReviewImage> images = imageNames.stream()
+                .map(RestaurantReviewImage::new)
+                .toList();
+        RestaurantReview review = new RestaurantReview(restaurant, member, content, rating, images);
+        restaurant.addReviewRating(rating);
+        return review;
+    }
+
+    public void update(Long memberId, String content, double updateRating) {
+        validateOwner(memberId);
+        validateRating(updateRating);
         restaurant.deleteReviewRating(rating);
         restaurant.addReviewRating(updateRating);
         this.content = content;
         this.rating = updateRating;
     }
 
-    public void delete(Long memberId) {
-        checkOwner(memberId);
-        restaurant.deleteReviewRating(rating);
-    }
-
-    private void checkOwner(Long memberId) {
+    private void validateOwner(Long memberId) {
         if (!member.id().equals(memberId)) {
             throw new RestaurantReviewException(PERMISSION_DENIED);
         }
+    }
+
+    public void delete(Long memberId) {
+        validateOwner(memberId);
+        restaurant.deleteReviewRating(rating);
     }
 
     public void cancelLike() {
@@ -76,11 +121,15 @@ public class RestaurantReview extends BaseEntity {
         return restaurant;
     }
 
-    public Double rating() {
+    public double rating() {
         return rating;
     }
 
     public int likeCount() {
         return likeCount;
+    }
+
+    public List<RestaurantReviewImage> images() {
+        return images;
     }
 }

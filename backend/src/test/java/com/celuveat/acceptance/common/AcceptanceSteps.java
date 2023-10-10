@@ -18,6 +18,7 @@ public class AcceptanceSteps {
 
     public static final HttpStatus 정상_처리 = HttpStatus.OK;
     public static final HttpStatus 생성됨 = HttpStatus.CREATED;
+    public static final HttpStatus 리디렉션 = HttpStatus.FOUND;
     public static final HttpStatus 잘못된_요청 = HttpStatus.BAD_REQUEST;
     public static final HttpStatus 인증되지_않음 = HttpStatus.UNAUTHORIZED;
     public static final HttpStatus 권한_없음 = HttpStatus.FORBIDDEN;
@@ -62,6 +63,13 @@ public class AcceptanceSteps {
         ExceptionResponse exceptionResponse = 응답.as(ExceptionResponse.class);
         assertThat(exceptionResponse.message())
                 .isEqualTo(예외_타입.errorMessage());
+    }
+
+    public static Long ID를_추출한다(
+            ExtractableResponse<Response> 응답
+    ) {
+        String location = 응답.header("Location");
+        return Long.valueOf(location.substring(location.lastIndexOf("/") + 1));
     }
 
     public static <T> void 값이_존재한다(Optional<T> t) {

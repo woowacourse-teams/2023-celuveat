@@ -1,26 +1,23 @@
 package com.celuveat.common;
 
-import static java.util.stream.Collectors.groupingBy;
-
+import com.celuveat.administrativedistrict.domain.AdministrativeDistrict;
+import com.celuveat.auth.command.domain.OauthMember;
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.RestaurantLike;
+import com.celuveat.restaurant.command.domain.review.RestaurantReview;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
 import com.celuveat.video.command.domain.Video;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import lombok.Builder;
 import lombok.Builder.Default;
 
-/**
- * EX) private TestData testData = new TestData();
- * <p>
- * private final TestDataCreator testDataCreator = () -> { testData.addCelebs(셀럽들); testData.addRestaurants(음식점들);
- * testData.addImages(음식점사진들); testData.addVideos(음식점영상들); return testData; };
- *
- * @BeforeEach void setUp() { testDataInserter.insertData(testDataCreator); }
- */
 public class TestData {
+
+    @Default
+    private final List<OauthMember> members = new ArrayList<>();
 
     @Default
     private final List<Celeb> celebs = new ArrayList<>();
@@ -34,54 +31,92 @@ public class TestData {
     @Default
     private final List<Video> videos = new ArrayList<>();
 
-    public TestData() {
+    @Default
+    private final List<RestaurantLike> restaurantLikes = new ArrayList<>();
+
+    @Default
+    private final List<RestaurantReview> restaurantReviews = new ArrayList<>();
+
+    @Default
+    private final List<RestaurantReviewLike> restaurantReviewLikes = new ArrayList<>();
+
+    @Default
+    private final List<AdministrativeDistrict> administrativeDistricts = new ArrayList<>();
+
+    public void addMembers(OauthMember... members) {
+        addMembers(Arrays.asList(members));
     }
 
-    @Builder
-    public TestData(
-            List<Celeb> celebs,
-            List<Restaurant> restaurants,
-            List<RestaurantImage> restaurantImages,
-            List<Video> videos
-    ) {
-        this.celebs.addAll(celebs);
-        this.restaurants.addAll(restaurants);
-        this.restaurantImages.addAll(restaurantImages);
-        this.videos.addAll(videos);
+    public void addMembers(List<OauthMember> members) {
+        this.members.addAll(members);
+    }
+
+    public void addCelebs(Celeb... celebs) {
+        addCelebs(Arrays.asList(celebs));
     }
 
     public void addCelebs(List<Celeb> celebs) {
         this.celebs.addAll(celebs);
     }
 
-    public void addCelebs(Map<String, Celeb> celebs) {
-        this.celebs.addAll(celebs.values().stream().toList());
+    public void addRestaurants(Restaurant... restaurants) {
+        addRestaurants(Arrays.asList(restaurants));
     }
 
     public void addRestaurants(List<Restaurant> restaurants) {
         this.restaurants.addAll(restaurants);
     }
 
-    public void addImages(List<RestaurantImage> images) {
+    public void addRestaurantImages(RestaurantImage... images) {
+        addRestaurantImages(Arrays.asList(images));
+    }
+
+    public void addRestaurantImages(List<RestaurantImage> images) {
         this.restaurantImages.addAll(images);
     }
 
-    public void addVideo(Video video) {
-        this.videos.add(video);
+    public void addVideos(Video... videos) {
+        addVideos(Arrays.asList(videos));
     }
 
     public void addVideos(List<Video> videos) {
         this.videos.addAll(videos);
     }
 
-    public Map<Restaurant, List<RestaurantImage>> imageWithRestaurant() {
-        return restaurantImages.stream()
-                .collect(groupingBy(RestaurantImage::restaurant));
+    public void addRestaurantLikes(RestaurantLike... restaurantLikes) {
+        addRestaurantLikes(Arrays.asList(restaurantLikes));
     }
 
-    public Map<Restaurant, List<Video>> videoWithRestaurant() {
-        return videos.stream()
-                .collect(groupingBy(Video::restaurant));
+    public void addRestaurantLikes(List<RestaurantLike> restaurantLikes) {
+        this.restaurantLikes.addAll(restaurantLikes);
+    }
+
+    public void addRestaurantReviews(RestaurantReview... restaurantReviews) {
+        addRestaurantReviews(Arrays.asList(restaurantReviews));
+    }
+
+    public void addRestaurantReviews(List<RestaurantReview> restaurantReviews) {
+        this.restaurantReviews.addAll(restaurantReviews);
+    }
+
+    public void addRestaurantReviewLikes(RestaurantReviewLike... restaurantReviewLikes) {
+        addRestaurantReviewLikes(Arrays.asList(restaurantReviewLikes));
+    }
+
+    public void addRestaurantReviewLikes(List<RestaurantReviewLike> restaurantReviewLikes) {
+        this.restaurantReviewLikes.addAll(restaurantReviewLikes);
+    }
+
+    public void addAdministrativeDistricts(AdministrativeDistrict... administrativeDistricts) {
+        addAdministrativeDistricts(Arrays.asList(administrativeDistricts));
+    }
+
+    public void addAdministrativeDistricts(List<AdministrativeDistrict> administrativeDistricts) {
+        this.administrativeDistricts.addAll(administrativeDistricts);
+    }
+
+    public List<OauthMember> members() {
+        return members;
     }
 
     public List<Celeb> celebs() {
@@ -98,5 +133,21 @@ public class TestData {
 
     public List<Video> videos() {
         return videos;
+    }
+
+    public List<RestaurantLike> restaurantLikes() {
+        return restaurantLikes;
+    }
+
+    public List<RestaurantReview> restaurantReviews() {
+        return restaurantReviews;
+    }
+
+    public List<RestaurantReviewLike> restaurantReviewLikes() {
+        return restaurantReviewLikes;
+    }
+
+    public List<AdministrativeDistrict> administrativeDistricts() {
+        return administrativeDistricts;
     }
 }

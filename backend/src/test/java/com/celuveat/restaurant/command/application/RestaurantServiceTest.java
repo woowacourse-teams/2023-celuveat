@@ -1,6 +1,6 @@
 package com.celuveat.restaurant.command.application;
 
-import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.common.IntegrationTest;
@@ -14,13 +14,12 @@ class RestaurantServiceTest extends IntegrationTest {
     @Test
     void 조회수를_1_증가시킨다() {
         // given
-        Restaurant 음식점 = restaurantRepository.save(음식점("로이스 1호점"));
-        int expected = 음식점.viewCount() + 1;
+        Restaurant 대성집 = restaurantRepository.save(대성집());
 
         // when
-        restaurantService.increaseViewCount(음식점.id());
+        restaurantService.increaseViewCount(대성집.id());
 
         // then
-        assertThat(음식점.viewCount()).isEqualTo(expected);
+        assertThat(대성집.viewCount()).isEqualTo(1);
     }
 }
