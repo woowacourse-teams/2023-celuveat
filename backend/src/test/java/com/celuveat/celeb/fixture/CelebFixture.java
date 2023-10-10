@@ -5,6 +5,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 public class CelebFixture {
 
+    public static Celeb 회사랑(Long id) {
+        Celeb 회사랑 = 회사랑();
+        ReflectionTestUtils.setField(회사랑, "id", id);
+        return 회사랑;
+    }
+
     public static Celeb 회사랑() {
         return Celeb.builder()
                 .name("회사랑")
@@ -14,10 +20,10 @@ public class CelebFixture {
                 .build();
     }
 
-    public static Celeb 회사랑(Long id) {
-        Celeb 회사랑 = 회사랑();
-        ReflectionTestUtils.setField(회사랑, "id", id);
-        return 회사랑;
+    public static Celeb 맛객리우(Long id) {
+        Celeb 맛객리우 = 맛객리우();
+        ReflectionTestUtils.setField(맛객리우, "id", id);
+        return 맛객리우;
     }
 
     public static Celeb 맛객리우() {
@@ -29,10 +35,10 @@ public class CelebFixture {
                 .build();
     }
 
-    public static Celeb 맛객리우(Long id) {
-        Celeb 맛객리우 = 맛객리우();
-        ReflectionTestUtils.setField(맛객리우, "id", id);
-        return 맛객리우;
+    public static Celeb 성시경(Long id) {
+        Celeb 성시경 = 성시경();
+        ReflectionTestUtils.setField(성시경, "id", id);
+        return 성시경;
     }
 
     public static Celeb 성시경() {
@@ -44,10 +50,10 @@ public class CelebFixture {
                 .build();
     }
 
-    public static Celeb 성시경(Long id) {
-        Celeb 성시경 = 성시경();
-        ReflectionTestUtils.setField(성시경, "id", id);
-        return 성시경;
+    public static Celeb 쯔양(Long id) {
+        Celeb 쯔양 = 쯔양();
+        ReflectionTestUtils.setField(쯔양, "id", id);
+        return 쯔양;
     }
 
     public static Celeb 쯔양() {
@@ -57,12 +63,6 @@ public class CelebFixture {
                         "https://yt3.googleusercontent.com/_s3C7XpwVKVr_5gDrmYJh9AOkU3wFlY9FWyZBVGVP_v7B09P5O4bbEZaWGpiuyT78Dk-aElE=s176-c-k-c0x00ffffff-no-rj"
                 ).youtubeChannelName("@tzuyang6145")
                 .build();
-    }
-
-    public static Celeb 쯔양(Long id) {
-        Celeb 쯔양 = 쯔양();
-        ReflectionTestUtils.setField(쯔양, "id", id);
-        return 쯔양;
     }
 
     public static Celeb 셀럽(String name) {

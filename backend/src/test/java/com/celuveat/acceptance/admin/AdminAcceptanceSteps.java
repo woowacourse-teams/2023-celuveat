@@ -18,6 +18,18 @@ public class AdminAcceptanceSteps {
     private static final String TAB = "\t";
     public static final String 줄바꿈 = System.lineSeparator();
 
+    public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", "");
+    }
+
+    public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름, String 인스타_아이디) {
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", 인스타_아이디);
+    }
+
+    public static String 영상_업로드_날짜가_잘못된_입력_생성(String 셀럽_이름, String 음식점_이름, String 영상_업로드_날짜) {
+        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", 영상_업로드_날짜, "");
+    }
+
     public static String 데이터_입력_생성(
             String 셀럽_이름,
             String 음식점_이름,
@@ -38,18 +50,6 @@ public class AdminAcceptanceSteps {
                 TAB + 음식점_이름 +
                 TAB + 인스타_아이디 +
                 TAB + "슈퍼 카테고리";
-    }
-
-    public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {
-        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", "");
-    }
-
-    public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름, String 인스타_아이디) {
-        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", 인스타_아이디);
-    }
-
-    public static String 영상_업로드_날짜가_잘못된_입력_생성(String 셀럽_이름, String 음식점_이름, String 영상_업로드_날짜) {
-        return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", 영상_업로드_날짜, "");
     }
 
     public static List<SaveDataRequest> 데이터저장_요청_객체_생성(String rawData) {

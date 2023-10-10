@@ -24,15 +24,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class RestaurantReviewAcceptanceSteps {
 
+    public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점) {
+        return 리뷰_요청_데이터(내용, 음식점_아이디, 평점, Collections.emptyList());
+    }
+
     public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점, List<String> images) {
         List<MultipartFile> list = images.stream()
                 .map(RestaurantReviewAcceptanceSteps::multipartFile)
                 .toList();
         return new SaveReviewRequest(내용, 음식점_아이디, 평점, list);
-    }
-
-    public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점) {
-        return 리뷰_요청_데이터(내용, 음식점_아이디, 평점, Collections.emptyList());
     }
 
     private static MultipartFile multipartFile(String name) {

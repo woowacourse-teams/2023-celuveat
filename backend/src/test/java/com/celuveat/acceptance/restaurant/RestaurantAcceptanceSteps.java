@@ -54,6 +54,13 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static ExtractableResponse<Response> 음식점_검색_요청(
+            RestaurantSearchCondRequest 음식점_검색_조건,
+            LocationSearchCondRequest 위치_검색_조건
+    ) {
+        return 음식점_검색_요청(null, 음식점_검색_조건, 위치_검색_조건);
+    }
+
+    public static ExtractableResponse<Response> 음식점_검색_요청(
             String 세션_ID,
             RestaurantSearchCondRequest 음식점_검색_조건,
             LocationSearchCondRequest 위치_검색_조건
@@ -72,13 +79,6 @@ public class RestaurantAcceptanceSteps {
                 .then()
                 .log().all()
                 .extract();
-    }
-
-    public static ExtractableResponse<Response> 음식점_검색_요청(
-            RestaurantSearchCondRequest 음식점_검색_조건,
-            LocationSearchCondRequest 위치_검색_조건
-    ) {
-        return 음식점_검색_요청(null, 음식점_검색_조건, 위치_검색_조건);
     }
 
 
@@ -124,6 +124,13 @@ public class RestaurantAcceptanceSteps {
     }
 
     public static ExtractableResponse<Response> 음식점_상세_조회_요청(
+            Long 음식점_ID,
+            Long 셀럽_ID
+    ) {
+        return 음식점_상세_조회_요청(null, 음식점_ID, 셀럽_ID);
+    }
+
+    public static ExtractableResponse<Response> 음식점_상세_조회_요청(
             String 세션_ID,
             Long 음식점_ID,
             Long 셀럽_ID
@@ -136,13 +143,6 @@ public class RestaurantAcceptanceSteps {
                 .then()
                 .log().all()
                 .extract();
-    }
-
-    public static ExtractableResponse<Response> 음식점_상세_조회_요청(
-            Long 음식점_ID,
-            Long 셀럽_ID
-    ) {
-        return 음식점_상세_조회_요청(null, 음식점_ID, 셀럽_ID);
     }
 
     public static RestaurantDetailQueryResponse 상세_조회_응답(
@@ -174,6 +174,10 @@ public class RestaurantAcceptanceSteps {
                 .isEqualTo(예상_응답);
     }
 
+    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리) {
+        return 근처_음식점_조회_요청(null, 특정_음식점_ID, 요청_거리);
+    }
+
     public static ExtractableResponse<Response> 근처_음식점_조회_요청(String 세션_아이디, Long 특정_음식점_ID, int 요청_거리) {
         return given(세션_아이디)
                 .queryParams("distance", 요청_거리)
@@ -181,10 +185,6 @@ public class RestaurantAcceptanceSteps {
                 .then()
                 .log().all()
                 .extract();
-    }
-
-    public static ExtractableResponse<Response> 근처_음식점_조회_요청(Long 특정_음식점_ID, int 요청_거리) {
-        return 근처_음식점_조회_요청(null, 특정_음식점_ID, 요청_거리);
     }
 
     public static void 특정_거리_이내에_있는_음식점인지_검증한다(
