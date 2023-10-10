@@ -16,19 +16,23 @@ interface MiniRestaurantCardProps {
   celebs?: Celeb[];
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
   flexColumn?: boolean;
-  showWaterMark?: boolean;
   carousel?: boolean;
+  showWaterMark?: boolean;
+  showRating?: boolean;
+  showLike?: boolean;
 }
 
 function MiniRestaurantCard({
   restaurant,
   celebs = [],
   flexColumn = false,
-  showWaterMark = false,
   setHoveredId = () => {},
   carousel = false,
+  showWaterMark = false,
+  showRating = false,
+  showLike = false,
 }: MiniRestaurantCardProps) {
-  const { id, images, name, roadAddress, category } = restaurant;
+  const { id, images, name, roadAddress, category, rating } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
@@ -43,8 +47,6 @@ function MiniRestaurantCard({
     toggleRestaurantLike();
   };
 
-  const rating = 5;
-
   return (
     <>
       <StyledContainer
@@ -58,16 +60,20 @@ function MiniRestaurantCard({
       >
         <StyledImageSection>
           <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} disabled={!carousel} />
-          <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
-          </StyledLikeButton>
+          {showLike && (
+            <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
+              <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+            </StyledLikeButton>
+          )}
         </StyledImageSection>
         <StyledInfoSection>
           <StyledInfoTopSection>
             <StyledName role="columnheader">{name}</StyledName>
-            <StyledRating>
-              <Star /> {rating.toFixed(2)}
-            </StyledRating>
+            {showRating && (
+              <StyledRating>
+                <Star /> {rating.toFixed(2)}
+              </StyledRating>
+            )}
           </StyledInfoTopSection>
           <StyledCategory>{category}</StyledCategory>
           <StyledAddress>{roadAddress}</StyledAddress>

@@ -38,12 +38,15 @@ function RegionResultPage() {
           <StyledTitle> ← {RECOMMENDED_REGION[region].name.join(',')} 맛집</StyledTitle>
         </StyledLink>
       </StyledBanner>
-      <StyledResultCount>
-        {restaurantDataPages && restaurantDataPages.pages[0].totalElementsCount}개의 매장
-      </StyledResultCount>
-      {restaurantDataPages?.pages.map(restaurantDataList => (
-        <SearchResultBox restaurantDataList={restaurantDataList} />
-      ))}
+      <StyledResultSection>
+        <StyledResultCount>
+          {restaurantDataPages && restaurantDataPages.pages[0].totalElementsCount}개의 매장
+        </StyledResultCount>
+
+        {restaurantDataPages?.pages.map(restaurantDataList => (
+          <SearchResultBox restaurantDataList={restaurantDataList} />
+        ))}
+      </StyledResultSection>
       <div ref={ref} />
     </StyledContainer>
   );
@@ -76,6 +79,16 @@ const StyledBanner = styled.div<{ imgUrl: string }>`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+const StyledResultSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  width: 100%;
+
+  padding: 0 1.2rem;
 `;
 
 const StyledTitle = styled.h5`

@@ -23,6 +23,7 @@ export interface RestaurantData {
   distance: number;
   isLiked: boolean;
   likeCount: number;
+  rating: number;
   celebs: { id: number; name: string; youtubeChannelName: string; profileImageUrl: string }[];
   images: { id: number; name: string; author: string; sns: string }[];
 }
