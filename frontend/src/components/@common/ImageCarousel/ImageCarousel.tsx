@@ -14,7 +14,7 @@ interface ImageCarouselProps {
   disabled?: boolean;
 }
 
-function ImageCarousel({ images, type, showWaterMark = true, disabled = false }: ImageCarouselProps) {
+function ImageCarousel({ images, type, showWaterMark = false, disabled = false }: ImageCarouselProps) {
   const ref = useRef<HTMLDivElement>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const { isMobile } = useMediaQuery();

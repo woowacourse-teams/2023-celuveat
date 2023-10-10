@@ -111,7 +111,7 @@ function RestaurantDetailPage() {
               </div>
             </StyledDetailHeader>
             {isMobile ? (
-              <ImageCarousel type="list" images={images} />
+              <ImageCarousel type="list" images={images} showWaterMark />
             ) : (
               <ImageGrid images={images.map(({ name: url, author, sns }) => ({ waterMark: author, url, sns }))} />
             )}
