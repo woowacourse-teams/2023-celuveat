@@ -31,6 +31,8 @@ import static com.celuveat.restaurant.fixture.RestaurantFixture.RestaurantPointF
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.모던샤브하우스;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.음식점;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누르지_않음;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.좋아요_누름;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.하늘초밥;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.대성집_사진;
 import static com.celuveat.restaurant.fixture.RestaurantImageFixture.모던샤브하우스_사진;
@@ -115,21 +117,47 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 하늘초밥,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(회사랑),
                                 List.of(하늘초밥_사진_1)
                         ),
                         음식점_검색_결과(
                                 모던샤브하우스,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(맛객리우),
                                 List.of(모던샤브하우스_사진_1)
                         ),
                         음식점_검색_결과(
                                 대성집,
-                                false, 4.5,
+                                좋아요_누르지_않음, 4.5,
                                 List.of(회사랑, 성시경),
                                 List.of(대성집_사진_1, 대성집_사진_2)
+                        )
+                );
+                조회_결과를_검증한다(예상_응답, 응답);
+            }
+
+            @Test
+            void 상위_카테고리로_조회시_포함된_하위_카테고리들이_조회된다() {
+                // when
+                var 응답 = 음식점_검색_요청(
+                        음식점_검색_조건_요청_데이터(없음, "일식", 없음),
+                        대한민국_전체를_포함한_검색_영역_요청()
+                );
+
+                // then
+                var 예상_응답 = List.of(
+                        음식점_검색_결과(
+                                하늘초밥,
+                                좋아요_누르지_않음, 0,
+                                List.of(회사랑),
+                                List.of(하늘초밥_사진_1)
+                        ),
+                        음식점_검색_결과(
+                                모던샤브하우스,
+                                좋아요_누르지_않음, 0,
+                                List.of(맛객리우),
+                                List.of(모던샤브하우스_사진_1)
                         )
                 );
                 조회_결과를_검증한다(예상_응답, 응답);
@@ -147,19 +175,19 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집,
-                                false, 4.5,
+                                좋아요_누르지_않음, 4.5,
                                 List.of(회사랑, 성시경),
                                 List.of(대성집_사진_1, 대성집_사진_2)
                         ),
                         음식점_검색_결과(
                                 하늘초밥,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(회사랑),
                                 List.of(하늘초밥_사진_1)
                         ),
                         음식점_검색_결과(
                                 모던샤브하우스,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(맛객리우),
                                 List.of(모던샤브하우스_사진_1)
                         )
@@ -183,7 +211,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집,
-                                true, 4.5,
+                                좋아요_누름, 4.5,
                                 List.of(회사랑, 성시경),
                                 List.of(대성집_사진_1, 대성집_사진_2)
                         )
@@ -203,7 +231,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집,
-                                false, 4.5,
+                                좋아요_누르지_않음, 4.5,
                                 List.of(성시경, 회사랑),
                                 List.of(대성집_사진_1, 대성집_사진_2)
                         )
@@ -223,19 +251,19 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집,
-                                false, 4.5,
+                                좋아요_누르지_않음, 4.5,
                                 List.of(회사랑, 성시경),
                                 List.of(대성집_사진_1, 대성집_사진_2)
                         ),
                         음식점_검색_결과(
                                 하늘초밥,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(회사랑),
                                 List.of(하늘초밥_사진_1)
                         ),
                         음식점_검색_결과(
                                 모던샤브하우스,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(맛객리우),
                                 List.of(모던샤브하우스_사진_1)
                         )
@@ -269,21 +297,21 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 1000).getFirst(),
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 1000).getSecond()
             );
+            private final RestaurantImage 대성집_1000m_거리_음식점_사진_1 = 대성집_사진(대성집_1000m_거리_음식점, 1);
+            private final RestaurantImage 대성집_1000m_거리_음식점_사진_2 = 대성집_사진(대성집_1000m_거리_음식점, 2);
             private final Restaurant 대성집_2000m_거리_음식점 = 음식점(
                     "대성집 2000m 거리 음식점",
                     "한식",
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 2000).getFirst(),
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 2000).getSecond()
             );
+            private final RestaurantImage 대성집_2000m_거리_음식점_사진_1 = 대성집_사진(대성집_2000m_거리_음식점, 1);
             private final Restaurant 대성집_3000m_거리_음식점 = 음식점(
                     "대성집 3000m 거리 음식점",
                     "한식",
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 3000).getFirst(),
                     일정_거리내_위경도(대성집.latitude(), 대성집.longitude(), 3000).getSecond()
             );
-            private final RestaurantImage 대성집_1000m_거리_음식점_사진_1 = 대성집_사진(대성집_1000m_거리_음식점, 1);
-            private final RestaurantImage 대성집_1000m_거리_음식점_사진_2 = 대성집_사진(대성집_1000m_거리_음식점, 2);
-            private final RestaurantImage 대성집_2000m_거리_음식점_사진_1 = 대성집_사진(대성집_2000m_거리_음식점, 1);
 
             @BeforeEach
             void setUp() {
@@ -314,13 +342,13 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집_1000m_거리_음식점,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(맛객리우),
                                 List.of(대성집_1000m_거리_음식점_사진_1, 대성집_1000m_거리_음식점_사진_2)
                         ),
                         음식점_검색_결과(
                                 대성집_2000m_거리_음식점,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(성시경),
                                 List.of(대성집_2000m_거리_음식점_사진_1)
                         )
@@ -338,13 +366,13 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 var 예상_응답 = List.of(
                         음식점_검색_결과(
                                 대성집_1000m_거리_음식점,
-                                true, 0,
+                                좋아요_누름, 0,
                                 List.of(맛객리우),
                                 List.of(대성집_1000m_거리_음식점_사진_1, 대성집_1000m_거리_음식점_사진_2)
                         ),
                         음식점_검색_결과(
                                 대성집_2000m_거리_음식점,
-                                false, 0,
+                                좋아요_누르지_않음, 0,
                                 List.of(성시경),
                                 List.of(대성집_2000m_거리_음식점_사진_1)
                         )
@@ -389,7 +417,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 // then
                 var 예상_응답 = 상세_조회_응답(
                         대성집,
-                        false,
+                        좋아요_누르지_않음,
                         3.0,
                         List.of(성시경),
                         List.of(대성집_사진_1, 대성집_사진_2)
@@ -408,7 +436,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
                 // then
                 var 예상_응답 = 상세_조회_응답(
                         대성집,
-                        true,
+                        좋아요_누름,
                         3.0,
                         List.of(성시경),
                         List.of(대성집_사진_1, 대성집_사진_2)
@@ -491,7 +519,7 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
             var 음식점_상세_조회_응답 = 음식점_상세_조회_요청(말랑_세션_ID, 대성집.id(), 성시경.id());
             var 예상_응답 = 상세_조회_응답(
                     대성집,
-                    true,
+                    좋아요_누름,
                     1,
                     0.0,
                     List.of(성시경),
