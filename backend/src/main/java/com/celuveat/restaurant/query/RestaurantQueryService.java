@@ -83,7 +83,6 @@ public class RestaurantQueryService {
         return restaurantSearchWithoutDistanceQueryResponseDao.findRecommendation(memberId);
     }
 
-    // TODO 왜 이건 페이징 안하지..?
     public List<LikedRestaurantQueryResponse> findLikedByMemberId(Long memberId) {
         return likedRestaurantQueryResponseDao.findLikedByMemberId(memberId);
     }
