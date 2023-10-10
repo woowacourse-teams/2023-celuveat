@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.auth.command.domain.OauthMember;
+import com.celuveat.common.util.Base64Util;
 import com.celuveat.restaurant.presentation.dto.ReportReviewRequest;
 import com.celuveat.restaurant.presentation.dto.SaveReviewRequest;
 import com.celuveat.restaurant.presentation.dto.UpdateReviewRequest;
@@ -115,7 +116,9 @@ public class RestaurantReviewAcceptanceSteps {
                 좋아요_수,
                 좋아요_여부,
                 리뷰_평점,
-                Arrays.asList(이미지_이름들)
+                Arrays.stream(이미지_이름들)
+                        .map(Base64Util::encode)
+                        .toList()
         );
     }
 

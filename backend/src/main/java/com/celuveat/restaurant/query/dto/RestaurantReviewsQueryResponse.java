@@ -38,6 +38,7 @@ public record RestaurantReviewsQueryResponse(
             double rating,
             List<String> images
     ) {
+
         public static RestaurantReviewSingleQueryResponse of(
                 RestaurantReview restaurantReview,
                 List<RestaurantReviewImage> images,
@@ -56,9 +57,15 @@ public record RestaurantReviewsQueryResponse(
                     restaurantReview.rating(),
                     images.stream()
                             .map(RestaurantReviewImage::name)
-                            .map(Base64Util::encode)
                             .toList()
             );
+        }
+
+        @Override
+        public List<String> images() {
+            return images.stream()
+                    .map(Base64Util::encode)
+                    .toList();
         }
     }
 }
