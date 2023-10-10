@@ -5,17 +5,16 @@ import GroupIcon from '~/assets/icons/etc/groups.svg';
 import ThumpUpIcon from '~/assets/icons/etc/thumb-up.svg';
 import SpeakerphoneIcon from '~/assets/icons/etc/speakerphone.svg';
 
+import StarRating from '~/components/@common/StarRating';
 import ProfileImage from '~/components/@common/ProfileImage';
 
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
+import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
 
-import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-
-import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
-import StarRating from '~/components/@common/StarRating';
+import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -128,13 +127,25 @@ const StyledStarRatingText = styled.span`
 `;
 
 const StyledReviewImg = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
 `;
 
 const StyledReviewImgWrapper = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+
   margin: 1.2rem 0;
+
+  ${StyledReviewImg} + ${StyledReviewImg} {
+    margin-left: 1rem;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledReviewText = styled.span`

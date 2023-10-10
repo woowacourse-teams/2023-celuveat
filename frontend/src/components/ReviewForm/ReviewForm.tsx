@@ -13,9 +13,10 @@ import TextButton from '~/components/@common/Button';
 
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
+import { changeImgFileExtension } from '~/utils/image';
+
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
 import type { ReviewUploadImageType, StarRate } from '~/@types/api.types';
-import { changeImgFileExtension } from '~/utils/image';
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
