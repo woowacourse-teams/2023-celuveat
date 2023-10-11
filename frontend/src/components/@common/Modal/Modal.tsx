@@ -7,25 +7,24 @@ import { hideScrollBar } from '~/styles/common';
 
 interface ModalProps {
   title?: string;
-  blockScrollOnMount?: boolean;
   isOpen: boolean;
   close: VoidFunction;
   children: React.ReactElement;
 }
 
-function Modal({ children, close, isOpen, title, blockScrollOnMount = true }: ModalProps) {
+function Modal({ children, close, isOpen, title }: ModalProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useMediaQuery();
 
   useEffect(() => {
-    if (blockScrollOnMount) {
+    if (isOpen) {
       document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.body.style.removeProperty('overflow');
     };
-  }, [blockScrollOnMount]);
+  }, [isOpen]);
 
   return (
     <Portal isOpen={isOpen} close={close}>
