@@ -1,7 +1,7 @@
 import { apiUserClient } from './apiClient';
 import type { Oauth } from '~/@types/oauth.types';
 
-export const getAccessToken = async (type: Oauth, code: string) => {
+export const getAccessToken = async ({ type, code }: { type: Oauth; code: string }) => {
   const response = await apiUserClient.get(`/oauth/login/${type}?code=${code}`);
   return response.data;
 };

@@ -71,7 +71,7 @@ const StyledDropDownWrapper = styled.ul`
   align-content: center;
 
   position: absolute;
-  top: calc(100% - 8px);
+  top: 72px;
   right: 18px;
   z-index: 1000;
 

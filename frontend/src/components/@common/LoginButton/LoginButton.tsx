@@ -1,13 +1,17 @@
 import { styled, css } from 'styled-components';
-import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { OAUTH_BUTTON_MESSAGE, OAUTH_LINK } from '~/constants/api';
 
 import KaKao from '~/assets/icons/oauth/kakao.svg';
 import Naver from '~/assets/icons/oauth/naver.svg';
 import Google from '~/assets/icons/oauth/google.svg';
-import { Oauth } from '~/@types/oauth.types';
 
 import { FONT_SIZE } from '~/styles/common';
+import usePathNameState from '~/hooks/store/usePathnameState';
+import { getUrlStringWithQuery } from '~/utils/getQueryString';
+import { MSW_GET_OAUTH_CODE_URL, MSW_LOGIN_URL } from '~/constants/url';
+
+import type { Oauth } from '~/@types/oauth.types';
 
 interface LoginButtonProps {
   type: Oauth;
@@ -19,14 +23,28 @@ const LoginIcon: Record<string, React.ReactNode> = {
   google: <Google width={24} />,
 };
 
+const doLogin = (type: Oauth) => {
+  if (process.env.NODE_ENV === 'development') {
+    window.location.href = MSW_LOGIN_URL;
+    window.location.href = MSW_GET_OAUTH_CODE_URL;
+    return;
+  }
+
+  window.location.href = OAUTH_LINK[type];
+};
+
 function LoginButton({ type }: LoginButtonProps) {
+  const location = useLocation();
+  const setPath = usePathNameState(state => state.setPath);
+
+  const loginBeforeUrl =
+    location.pathname === '/signUp'
+      ? getUrlStringWithQuery(location.state.from)
+      : getUrlStringWithQuery(location.pathname);
+
   const onClick = () => {
-    if (process.env.NODE_ENV === 'development') {
-      window.location.href = 'https://d.api.celuveat.com/login/local?id=abc';
-      window.location.href = '/oauth/redirect/kakao?code=12312421';
-    } else {
-      window.location.href = OAUTH_LINK[type];
-    }
+    doLogin(type);
+    setPath(loginBeforeUrl);
   };
 
   return (

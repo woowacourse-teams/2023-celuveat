@@ -44,3 +44,7 @@ server:
       cookie:
         http-only: false
         secure: false
+aws:
+  s3:
+    bucket:
+    key:

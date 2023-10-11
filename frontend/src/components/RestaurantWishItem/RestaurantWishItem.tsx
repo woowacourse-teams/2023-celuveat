@@ -18,7 +18,7 @@ interface RestaurantWishItemProps {
 }
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
-  const { id, images, name, roadAddress, category, phoneNumber } = restaurant;
+  const { id, images, name, roadAddress, category, phoneNumber, likeCount } = restaurant;
   const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
   const navigate = useNavigate();
 
@@ -47,6 +47,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
             <StyledAddress>{phoneNumber}</StyledAddress>
           </StyledInfo>
           <StyledProfileImageSection>
+            <span>좋아요 {likeCount.toLocaleString()}개</span>
             {celebs && <ProfileImageList celebs={celebs} size="42px" />}
           </StyledProfileImageSection>
         </section>
@@ -109,7 +110,18 @@ const StyledCategory = styled.span`
 `;
 
 const StyledProfileImageSection = styled.div`
-  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  min-width: fit-content;
+
+  & > span {
+    font-size: ${FONT_SIZE.sm};
+    font-weight: 700;
+    padding-top: 0.4rem;
+  }
 `;
 
 const LikeButton = styled.button`

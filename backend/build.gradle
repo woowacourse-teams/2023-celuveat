@@ -42,7 +42,14 @@ dependencies {
     implementation "com.querydsl:querydsl-core"
     implementation "com.querydsl:querydsl-collections"
 
+    // FOR AWS S3
+    implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation 'software.amazon.awssdk:s3control'
+
+    implementation 'org.hibernate:hibernate-spatial:6.2.5.Final'
+
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    implementation "com.querydsl:querydsl-sql-spatial"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 
@@ -62,6 +69,9 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
 
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // FOR h2 spatial
+    testRuntimeOnly 'org.orbisgis:h2gis:2.2.0'
 }
 
 tasks.named('test') {

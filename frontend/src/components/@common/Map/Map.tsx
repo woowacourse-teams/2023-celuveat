@@ -9,8 +9,6 @@ import { mapUIBase } from '~/styles/common';
 import MyLocation from '~/assets/icons/my-location.svg';
 import LeftBracket from '~/assets/icons/left-bracket.svg';
 import RightBracket from '~/assets/icons/right-bracket.svg';
-import Minus from '~/assets/icons/minus.svg';
-import Plus from '~/assets/icons/plus.svg';
 
 import type { Coordinate } from '~/@types/map.types';
 
@@ -77,7 +75,8 @@ function Map({ toggleMapExpand }: MapProps) {
 
     setBoundary(coordinateBoundary);
     setCurrentPage(0);
-    window.scrollTo(0, 0);
+    if (!isMobile) window.scrollTo(0, 0);
+    setCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
   };
 
   const clickMyLocationButton = () => {
@@ -89,12 +88,6 @@ function Map({ toggleMapExpand }: MapProps) {
       setZoom(16);
     });
   };
-
-  const clickZoom =
-    (number: number): React.MouseEventHandler<HTMLButtonElement> =>
-    () => {
-      setZoom(zoom + number);
-    };
 
   const clickMapExpand = () => {
     setIsMapExpanded(prev => !prev);
@@ -122,15 +115,6 @@ function Map({ toggleMapExpand }: MapProps) {
         <StyledMyPositionButtonUI onClick={clickMyLocationButton} type="button">
           <MyLocation />
         </StyledMyPositionButtonUI>
-        <StyledZoomUI>
-          <button type="button" onClick={clickZoom(1)}>
-            <Plus />
-          </button>
-          <div />
-          <button type="button" onClick={clickZoom(-1)}>
-            <Minus />
-          </button>
-        </StyledZoomUI>
         {!isMobile && (
           <StyledMapExpandButton onClick={clickMapExpand}>
             {isMapExpanded ? <RightBracket /> : <LeftBracket />}
@@ -169,36 +153,11 @@ const StyledLoadingUI = styled.div`
 const StyledMyPositionButtonUI = styled.button`
   ${mapUIBase}
   position: absolute;
-  top: 129px;
+  top: 24px;
   right: 24px;
 
   width: 40px;
   height: 40px;
-`;
-
-const StyledZoomUI = styled.div`
-  ${mapUIBase}
-  flex-direction: column;
-
-  position: absolute;
-  top: 24px;
-  right: 24px;
-
-  & > button {
-    ${mapUIBase}
-    width: 40px;
-    height: 40px;
-    box-shadow: none;
-  }
-
-  & > div {
-    width: 100%;
-    height: 1px;
-
-    background-color: var(--black);
-
-    opacity: 0.1;
-  }
 `;
 
 const StyledMapExpandButton = styled.button`

@@ -1,7 +1,7 @@
 package com.celuveat.video.query;
 
-import com.celuveat.video.query.dao.VideoWithCelebQueryResponseDao;
-import com.celuveat.video.query.dto.VideoWithCelebQueryResponse;
+import com.celuveat.video.query.dao.VideoQueryResponseDao;
+import com.celuveat.video.query.dto.VideoQueryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class VideoQueryService {
 
-    private final VideoWithCelebQueryResponseDao videoWithCelebQueryResponseDao;
+    private final VideoQueryResponseDao videoQueryResponseDao;
 
-    public Page<VideoWithCelebQueryResponse> findAllVideoWithCeleb(
-            VideoWithCelebQueryResponseDao.VideoSearchCond videoSearchCond,
+    public Page<VideoQueryResponse> findAllVideoWithCeleb(
+            VideoQueryResponseDao.VideoSearchCond videoSearchCond,
             Pageable pageable
     ) {
-        return videoWithCelebQueryResponseDao.find(videoSearchCond, pageable);
+        return videoQueryResponseDao.find(videoSearchCond, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.celuveat.admin.command.application;
 
+import static com.celuveat.admin.exception.AdminExceptionType.ALREADY_EXISTS_RESTAURANT_AND_VIDEO;
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,17 +32,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminService {
 
     private final CelebRepository celebRepository;
+    private final VideoRepository videoRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
-    private final VideoRepository videoRepository;
 
     public void saveData(List<SaveDataRequest> requests) {
         for (SaveDataRequest request : requests) {
+            validateDuplicate(request);
+
             Celeb celeb = celebRepository.getByYoutubeChannelName(request.youtubeChannelName());
             Restaurant restaurant = getOrCreateRestaurant(request);
             List<RestaurantImage> restaurantImages = toRestaurantImages(request, restaurant);
             List<Video> videos = toVideos(request, celeb, restaurant);
             saveAllData(restaurant, restaurantImages, videos);
+        }
+    }
+
+    private void validateDuplicate(SaveDataRequest request) {
+        Optional<Restaurant> restaurant = restaurantRepository.findByNameAndRoadAddress(request.restaurantName(), request.roadAddress());
+        boolean existVideo = videoRepository.existsByYoutubeUrl(request.youtubeVideoUrl());
+
+        if (restaurant.isPresent() && existVideo) {
+            throw new AdminException(ALREADY_EXISTS_RESTAURANT_AND_VIDEO);
         }
     }
 
@@ -57,10 +70,13 @@ public class AdminService {
         if (imageNames.length != instagramNames.length) {
             throw new AdminException(MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME);
         }
-
         List<RestaurantImage> images = new ArrayList<>();
         for (int i = 0; i < imageNames.length; i++) {
-            RestaurantImage restaurantImage = request.toRestaurantImage(imageNames[i].strip(), instagramNames[i].strip(), restaurant);
+            RestaurantImage restaurantImage = request.toRestaurantImage(
+                    imageNames[i].strip(),
+                    instagramNames[i].strip(),
+                    restaurant
+            );
             images.add(restaurantImage);
         }
         return images;
@@ -72,7 +88,6 @@ public class AdminService {
         if (videoUrls.length != uploadDates.length) {
             throw new AdminException(MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE);
         }
-
         List<Video> videos = new ArrayList<>();
         for (int i = 0; i < videoUrls.length; i++) {
             String videoUrl = videoUrls[i].strip();

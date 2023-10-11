@@ -1,44 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import UserIcon from '~/assets/icons/etc/user.svg';
 import ProfileImage from '../@common/ProfileImage';
 import NavItem from '../@common/NavItem';
-import { getLogout, getProfile } from '~/api/user';
+import { getProfile } from '~/api/user';
 import type { ProfileData } from '~/@types/api.types';
+import useAuth from '~/hooks/server/useAuth';
+import useNavigateSignUp from '~/hooks/useNavigateSignUp';
 
 function UserButton() {
-  const navigator = useNavigate();
+  const { doLogoutMutation } = useAuth();
+  const { goSignUp } = useNavigateSignUp();
+
   const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
-    queryFn: () => getProfile(),
+    queryFn: getProfile,
   });
-
-  const clickLogin = () => navigator('/signUp');
-
-  const clickLogout = () => {
-    getLogout(profile.oauthServer);
-    window.location.href = '/';
-  };
 
   const clickLoginNavItem = () => {
     if (!isLogin) {
-      clickLogin();
+      goSignUp();
       return;
     }
 
-    clickLogout();
+    doLogoutMutation(profile.oauthServer);
   };
 
   return (
     <StyledNavBarButton type="button" onClick={clickLoginNavItem}>
       {isLogin ? (
-        <NavItem
-          label="로그아웃"
-          icon={<ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />}
-        />
+        <NavItem icon={<ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="24px" />} />
       ) : (
-        <NavItem label="로그인" icon={<UserIcon width={24} />} />
+        <NavItem icon={<UserIcon height={28} />} />
       )}
     </StyledNavBarButton>
   );

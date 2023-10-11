@@ -1,34 +1,41 @@
 import { styled } from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { useQueryClient } from '@tanstack/react-query';
+
+import Logo from '~/assets/icons/logo.svg';
 
 import InfoDropDown from '~/components/InfoDropDown';
 import LoginModal from '~/components/LoginModal';
 import SearchBar from '~/components/SearchBar';
 
+import useAuth from '~/hooks/server/useAuth';
 import useBooleanState from '~/hooks/useBooleanState';
 
-import Logo from '~/assets/icons/logo.svg';
+import { getProfile } from '~/api/user';
 
 import type { ProfileData } from '~/@types/api.types';
-import { getLogout } from '~/api/user';
 
 function Header() {
-  const qc = useQueryClient();
+  const { data: profileData } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+    retry: 1,
+  });
+
   const navigator = useNavigate();
   const { pathname } = useLocation();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const { doLogoutMutation } = useAuth();
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
-    const profileData: ProfileData = qc.getQueryData(['profile']);
+
     if (currentOption === '로그인') openModal();
     if (currentOption === '위시리스트') navigator('/restaurants/like');
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
     if (currentOption === '로그아웃') {
-      getLogout(profileData.oauthServer);
-      window.location.reload();
+      doLogoutMutation(profileData.oauthServer);
     }
   };
 
@@ -61,9 +68,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: relative;
 
   width: 100%;
   height: 80px;

@@ -1,4 +1,4 @@
-import { cloneElement, useRef } from 'react';
+import { cloneElement, useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import Exit from '~/assets/icons/exit.svg';
@@ -15,6 +15,16 @@ interface ModalProps {
 function Modal({ children, close, isOpen, title }: ModalProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useMediaQuery();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, [isOpen]);
 
   return (
     <Portal isOpen={isOpen} close={close}>

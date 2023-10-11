@@ -24,6 +24,8 @@ public record SaveDataRequest(
         String instagramName
 ) {
 
+    private static final String PREFIX = "@";
+
     private static final int RESTAURANT_NAME = 0;
     private static final int YOUTUBE_VIDEO_URL = 1;
     private static final int YOUTUBE_CHANNEL_NAME = 2;
@@ -63,7 +65,6 @@ public record SaveDataRequest(
                 .longitude(Double.parseDouble(longitude))
                 .phoneNumber(phoneNumber)
                 .naverMapUrl(naverMapUrl)
-                .viewCount(0)
                 .build();
     }
 
@@ -74,7 +75,7 @@ public record SaveDataRequest(
     ) {
         SocialMedia socialMedia = SocialMedia.from(instagramName);
         String author = switch (socialMedia) {
-            case INSTAGRAM -> instagramName;
+            case INSTAGRAM -> PREFIX + instagramName;
             default -> youtubeChannelName;
         };
 

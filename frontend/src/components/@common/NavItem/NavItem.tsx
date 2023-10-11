@@ -3,31 +3,37 @@ import { styled, css } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
 interface NavItemProps {
-  label: string;
+  label?: string;
   icon: React.ReactNode;
   isShow?: boolean;
+  isInteractive?: boolean;
 }
 
-function NavItem({ icon, label, isShow = false }: NavItemProps) {
+function NavItem({ icon, label, isShow = false, isInteractive = false }: NavItemProps) {
   return (
-    <StyledNavItem isShow={isShow} aria-selected={isShow}>
+    <StyledNavItem isShow={isShow} aria-selected={isShow} isInteractive={isInteractive}>
       <div>{icon}</div>
-      <div>
-        <span>{label}</span>
-      </div>
+      {label && (
+        <div>
+          <span>{label}</span>
+        </div>
+      )}
     </StyledNavItem>
   );
 }
 
 export default NavItem;
 
-const StyledNavItem = styled.div<{ isShow: boolean }>`
+const StyledNavItem = styled.div<{ isShow: boolean; isInteractive: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.8rem;
 
   width: 68px;
+
+  padding: 0.4rem;
 
   border: none;
   background: none;
@@ -43,60 +49,20 @@ const StyledNavItem = styled.div<{ isShow: boolean }>`
     height: 40px;
   }
 
-  & > *:first-child > svg {
-    fill: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
-  }
+  ${({ isInteractive }) =>
+    isInteractive &&
+    css`
+      &:hover {
+        border-radius: 12px;
+        background-color: var(--gray-1);
+      }
+    `}
 
-  &:hover > *:first-child > svg {
-    fill: var(--black);
-  }
-
-  & > * > * {
-    color: ${({ isShow }) => (isShow ? 'var(--black)' : '#717171')};
-  }
-
-  &:hover > * > * {
-    color: var(--black);
-  }
-
-  ${({ isShow }) =>
-    isShow
-      ? css`
-          & > div:last-child {
-            position: relative;
-
-            &::after {
-              position: absolute;
-              top: calc(100% + 10px);
-              z-index: -1;
-
-              height: 2px;
-
-              background-color: var(--black);
-              white-space: nowrap;
-              inset-inline: 0;
-              content: '';
-            }
-          }
-        `
-      : css`
-          &:hover {
-            & > div:last-child {
-              position: relative;
-
-              &::after {
-                position: absolute;
-                top: calc(100% + 10px);
-                z-index: -1;
-
-                height: 2px;
-
-                background: var(--gray-2);
-                white-space: nowrap;
-                inset-inline: 0;
-                content: '';
-              }
-            }
-          }
-        `};
+  ${({ isInteractive, isShow }) =>
+    isInteractive &&
+    isShow &&
+    css`
+      border-radius: 12px;
+      background-color: var(--gray-1);
+    `};
 `;

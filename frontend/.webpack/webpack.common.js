@@ -26,4 +26,10 @@ module.exports = {
   optimization: {
     minimizer: ['...', new CssMinimizerPlugin()],
   },
+
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
 };

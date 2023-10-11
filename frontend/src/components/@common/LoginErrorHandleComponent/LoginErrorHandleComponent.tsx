@@ -1,25 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
+import useNavigateSignUp from '~/hooks/useNavigateSignUp';
 
 interface LoginErrorHandleComponentProps {
   children: React.ReactNode;
 }
 
 function LoginErrorHandleComponent({ children }: LoginErrorHandleComponentProps) {
-  const navigator = useNavigate();
+  const { goSignUp } = useNavigateSignUp();
 
   const { isLoading, isFetching, isSuccess } = useQuery<ProfileData>({
     queryKey: ['profile'],
-    queryFn: () => getProfile(),
+    queryFn: getProfile,
     retry: 1,
   });
 
   useEffect(() => {
     if (!isFetching && !isSuccess) {
-      navigator('/signUp');
+      goSignUp();
     }
   }, [isFetching, isSuccess]);
 

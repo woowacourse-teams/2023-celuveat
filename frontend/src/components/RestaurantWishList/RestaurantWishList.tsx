@@ -8,6 +8,7 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 
 import type { RestaurantData } from '~/@types/api.types';
 import { getRestaurantWishList } from '~/api/user';
+import MiniRestaurantCard from '../MiniRestaurantCard';
 
 function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
@@ -21,9 +22,13 @@ function RestaurantWishList() {
     <StyledRestaurantCardListContainer>
       {restaurantData?.length !== 0 ? (
         <StyledRestaurantCardList isMobile={isMobile}>
-          {restaurantData?.map(({ celebs, ...restaurant }) => (
-            <RestaurantWishItem restaurant={restaurant} celebs={celebs} />
-          ))}
+          {restaurantData?.map(({ celebs, ...restaurant }) =>
+            isMobile ? (
+              <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showLike showRating />
+            ) : (
+              <RestaurantWishItem restaurant={restaurant} celebs={celebs} />
+            ),
+          )}
         </StyledRestaurantCardList>
       ) : (
         <>

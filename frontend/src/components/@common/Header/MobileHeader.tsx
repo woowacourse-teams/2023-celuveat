@@ -8,7 +8,7 @@ import Logo from '~/assets/icons/logo-icon.svg';
 function MobileHeader() {
   const { pathname } = useLocation();
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/map';
 
   return (
     <StyledTopNavBar isHome={isHome}>
@@ -19,11 +19,12 @@ function MobileHeader() {
         <h5>celuveat</h5>
         <div />
       </header>
-      {isHome && (
+
+      <StyledSearchBarBox isHome={isHome}>
         <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
           <SearchBar />
         </Wrapper>
-      )}
+      </StyledSearchBarBox>
     </StyledTopNavBar>
   );
 }
@@ -35,7 +36,6 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   flex-direction: column;
   align-items: center;
 
-  position: fixed;
   z-index: 100;
 
   width: 100%;
@@ -44,7 +44,7 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   padding: 0 0.8rem;
 
   background-color: var(--white);
-  box-shadow: var(--map-shadow);
+  box-shadow: var(--shadow);
 
   & > header {
     display: flex;
@@ -60,4 +60,10 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
       font-size: ${FONT_SIZE.lg};
     }
   }
+`;
+
+const StyledSearchBarBox = styled.div<{ isHome: boolean }>`
+  display: ${({ isHome }) => (isHome ? 'block' : 'none')};
+
+  width: 100%;
 `;

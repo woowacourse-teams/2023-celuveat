@@ -15,7 +15,8 @@
       {
         "runtime": "automatic"
       }
-    ]
+    ],
+    "@babel/preset-typescript"
   ],
   "plugins": [
     [
@@ -23,7 +24,8 @@
       {
         "rootPathPrefix": "~",
         "rootPathSuffix": "src"
-      }
+      },
+      "react-refresh/babel"
     ]
   ],
   "env": {
