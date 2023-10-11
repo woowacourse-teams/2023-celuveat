@@ -136,7 +136,7 @@ public abstract class AcceptanceTest {
         return restaurantReviewRepository.save(음식점_리뷰).id();
     }
 
-    protected <T> void 데이터_수_검증(int expected, JpaRepository<T, Long> repository) {
+    protected <T> void 데이터_수_검증(JpaRepository<T, Long> repository, int expected) {
         assertThat(repository.count()).isEqualTo(expected);
     }
 
