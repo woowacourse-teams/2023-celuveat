@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
@@ -9,12 +9,14 @@ import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { FONT_SIZE } from '~/styles/common';
-import Banner from '~/assets/banner/banner.svg';
 import { RestaurantData } from '~/@types/api.types';
 import { getRecommendedRestaurants } from '~/api/restaurant';
+import { SERVER_IMG_URL } from '~/constants/url';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 function MainPage() {
   const navigate = useNavigate();
+  const { isMobile } = useMediaQuery();
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
     queryFn: () => getCelebs(),
@@ -46,9 +48,13 @@ function MainPage() {
       </Helmet>
       <StyledContainer>
         <Link to="/updated-recent">
-          <StyledBanner>
-            <Banner />
-          </StyledBanner>
+          <StyledBannerSection>
+            <StyledBanner
+              alt="최근 업데이트된 맛집"
+              src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
+              isMobile={isMobile}
+            />
+          </StyledBannerSection>
         </Link>
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
@@ -122,14 +128,28 @@ const StyledContainer = styled.div`
   box-sizing: content-box;
 `;
 
-const StyledBanner = styled.div`
+const StyledBannerSection = styled.section`
+  display: flex;
+  justify-content: center;
+
   width: 100%;
+`;
+
+const StyledBanner = styled.img<{ isMobile: boolean }>`
+  width: 100%;
+  max-width: 800px;
   height: 200px;
   max-height: 200px;
 
   object-fit: cover;
 
   overflow: hidden;
+
+  ${({ isMobile }) =>
+    !isMobile &&
+    css`
+      margin: 1.2rem;
+    `}
 `;
 
 const StyledIconBox = styled.div`

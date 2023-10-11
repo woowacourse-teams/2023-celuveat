@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { getUpdatedRestaurants } from '~/api/restaurant';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import { SERVER_IMG_URL } from '~/constants/url';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import { FONT_SIZE } from '~/styles/common';
-import Banner from '~/assets/banner/banner.svg';
 
 function UpdatedRestaurantPage() {
+  const { isMobile } = useMediaQuery();
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['updatedRestaurants'],
     queryFn: getUpdatedRestaurants,
@@ -18,9 +20,13 @@ function UpdatedRestaurantPage() {
       <StyledLink to="/">
         <StyledTitle>← 홈으로 돌아가기</StyledTitle>
       </StyledLink>
-      <StyledBanner>
-        <Banner />
-      </StyledBanner>
+      <StyledBannerSection>
+        <StyledBanner
+          alt="최근 업데이트된 맛집"
+          src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
+          isMobile={isMobile}
+        />
+      </StyledBannerSection>
       <StyledResultSection>
         <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
 
@@ -46,14 +52,28 @@ const StyledContainer = styled.div`
   padding-bottom: 4.8rem;
 `;
 
-const StyledBanner = styled.div`
+const StyledBannerSection = styled.section`
+  display: flex;
+  justify-content: center;
+
   width: 100%;
+`;
+
+const StyledBanner = styled.img<{ isMobile: boolean }>`
+  width: 100%;
+  max-width: 800px;
   height: 200px;
   max-height: 200px;
 
   object-fit: cover;
 
   overflow: hidden;
+
+  ${({ isMobile }) =>
+    !isMobile &&
+    css`
+      margin: 1.2rem;
+    `}
 `;
 
 const StyledResultCount = styled.span`
