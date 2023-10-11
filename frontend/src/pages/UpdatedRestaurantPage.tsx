@@ -24,10 +24,11 @@ function UpdatedRestaurantPage() {
       <StyledResultSection>
         <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
 
-        {restaurantData?.map(restaurant => (
-          <MiniRestaurantCard restaurant={restaurant} showRating showLike />
+        {restaurantData?.map(({ celebs, ...restaurant }) => (
+          <MiniRestaurantCard celebs={celebs} restaurant={restaurant} showRating showLike />
         ))}
       </StyledResultSection>
+      <div />
     </StyledContainer>
   );
 }
@@ -41,6 +42,7 @@ const StyledContainer = styled.div`
 
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 `;
 
 const StyledBanner = styled.div`
