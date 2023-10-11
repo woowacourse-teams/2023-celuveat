@@ -52,7 +52,7 @@ function ReviewForm({ type }: ReviewFormProps) {
       setRating(targetReview.rating);
       setText(targetReview.content);
     }
-  }, [restaurantReviewsData]);
+  }, [restaurantReviewsData, images, files]);
 
   const onUploadReviewImage: React.ChangeEventHandler<HTMLInputElement> = async e => {
     const imageFile = e.target.files[0];
@@ -72,8 +72,8 @@ function ReviewForm({ type }: ReviewFormProps) {
   };
 
   const deleteReviewImage = (reviewImageId: number) => {
-    setImages(images.filter((_, id) => id !== reviewImageId));
-    setFiles(files.filter((_, id) => id !== reviewImageId));
+    setFiles(prev => prev.filter((_, id) => id !== reviewImageId));
+    setImages(prev => prev.filter((_, id) => id !== reviewImageId));
   };
 
   const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {
