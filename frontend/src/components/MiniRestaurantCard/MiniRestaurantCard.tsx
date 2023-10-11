@@ -20,6 +20,7 @@ interface MiniRestaurantCardProps {
   showWaterMark?: boolean;
   showRating?: boolean;
   showLike?: boolean;
+  showDistance?: boolean;
 }
 
 function MiniRestaurantCard({
@@ -31,8 +32,9 @@ function MiniRestaurantCard({
   showWaterMark = false,
   showRating = false,
   showLike = false,
+  showDistance = false,
 }: MiniRestaurantCardProps) {
-  const { id, images, name, roadAddress, category, rating } = restaurant;
+  const { id, images, name, roadAddress, category, rating, distance } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ function MiniRestaurantCard({
           </StyledInfoTopSection>
           <StyledCategory>{category}</StyledCategory>
           <StyledAddress>{roadAddress}</StyledAddress>
+          {showDistance && <StyledAddress>{distance}m 이내</StyledAddress>}
         </StyledInfoSection>
       </StyledContainer>
 

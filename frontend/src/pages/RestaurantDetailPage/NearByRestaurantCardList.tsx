@@ -32,6 +32,7 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
               flexColumn
               showLike
               showRating
+              showDistance
             />
           ) : (
             <StyledRestaurantCardContainer>
