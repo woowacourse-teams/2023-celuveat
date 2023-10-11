@@ -38,7 +38,7 @@ class RestaurantImageSuggestionServiceTest extends IntegrationTest {
 
         // then
         assertThat(imageSuggestions).hasSize(2);
-        assertThat(imageSuggestions).extracting("name")
+        assertThat(imageSuggestions).extracting("imageName")
                 .containsExactlyInAnyOrder("imageA", "imageB");
     }
 }

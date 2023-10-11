@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class RestaurantImageSuggestion extends BaseEntity {
 
     @Column(nullable = false)
-    private String name;
+    private String imageName;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
@@ -28,8 +28,8 @@ public class RestaurantImageSuggestion extends BaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public String name() {
-        return name;
+    public String imageName() {
+        return imageName;
     }
 
     public OauthMember member() {
