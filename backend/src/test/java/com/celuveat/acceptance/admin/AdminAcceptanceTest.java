@@ -2,10 +2,17 @@ package com.celuveat.acceptance.admin;
 
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_저장_요청;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.성시경의_하늘초밥_데이터_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.줄바꿈;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.쯔양의_하늘초밥_데이터_입력_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.회사랑의_국민연금_데이터_입력_생성;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.회사랑의_하늘초밥_데이터_입력_생성;
+import static com.celuveat.celeb.fixture.CelebFixture.성시경;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
+import static com.celuveat.celeb.fixture.CelebFixture.쯔양;
+import static com.celuveat.celeb.fixture.CelebFixture.회사랑;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;
@@ -21,31 +28,26 @@ class AdminAcceptanceTest extends AcceptanceTest {
         @Test
         void 엑셀_스프레드_시트에서_긁은_데이터를_DB에_저장한다() {
             // given
-            셀럽을_저장한다(셀럽("도기"));
-            셀럽을_저장한다(셀럽("로이스"));
-            셀럽을_저장한다(셀럽("말랑"));
-            셀럽을_저장한다(셀럽("오도"));
+            셀럽을_저장한다(회사랑());
+            셀럽을_저장한다(쯔양());
+            셀럽을_저장한다(성시경());
 
-            String 입력_데이터 = 데이터_입력_생성("도기", "국민연금")
+            String 입력_데이터 = 회사랑의_하늘초밥_데이터_입력_생성()
                     + 줄바꿈
-                    + 데이터_입력_생성("도기", "농민백암순대")
+                    + 회사랑의_국민연금_데이터_입력_생성()
                     + 줄바꿈
-                    + 데이터_입력_생성("로이스", "신천직화")
+                    + 쯔양의_하늘초밥_데이터_입력_생성()
                     + 줄바꿈
-                    + 데이터_입력_생성("오도", "국민연금")
-                    + 줄바꿈
-                    + 데이터_입력_생성("말랑", "바스버거")
-                    + 줄바꿈
-                    + 데이터_입력_생성("말랑", "신천직화");
+                    + 성시경의_하늘초밥_데이터_입력_생성();
 
             // when
             데이터_저장_요청(입력_데이터);
 
             // then
-            데이터_수_검증(4, celebRepository);
-            데이터_수_검증(4, restaurantRepository);
-            데이터_수_검증(6, restaurantImageRepository);
-            데이터_수_검증(6, videoRepository);
+            데이터_수_검증(celebRepository, 3);
+            데이터_수_검증(restaurantRepository, 2);
+            데이터_수_검증(restaurantImageRepository, 4);
+            데이터_수_검증(videoRepository, 4);
         }
 
         @Test
@@ -58,7 +60,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
             데이터_저장_요청(입력_데이터);
 
             // then
-            데이터_수_검증(2, restaurantImageRepository);
+            데이터_수_검증(restaurantImageRepository, 2);
         }
     }
 
@@ -80,7 +82,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
             셀럽_저장_요청(입력_데이터);
 
             // then
-            데이터_수_검증(4, celebRepository);
+            데이터_수_검증(celebRepository, 4);
         }
     }
 }

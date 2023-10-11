@@ -15,6 +15,7 @@ public enum AdminExceptionType implements BaseExceptionType {
     INVALID_URL_PATTERN(BAD_REQUEST, "URL 패턴이 잘못됐습니다. 확인 후 다시 입력해주세요."),
     MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE(BAD_REQUEST, "유튜브 영상 링크와 업로드 일에 입력된 값의 개수가 다릅니다."),
     MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME(BAD_REQUEST, "사진 이름의 수와 출처가 1:1 매핑이 아닙니다."),
+    ALREADY_EXISTS_RESTAURANT_AND_VIDEO(BAD_REQUEST, "이미 동일한 음식점 정보와 유튜브 영상이 저장되어 있습니다."),
     ;
 
     private final HttpStatus httpStatus;

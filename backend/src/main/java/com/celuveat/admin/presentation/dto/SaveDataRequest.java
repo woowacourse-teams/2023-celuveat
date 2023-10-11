@@ -21,9 +21,10 @@ public record SaveDataRequest(
         String videoUploadDate,
         String latitude,
         String longitude,
-        String instagramName,
-        String superCategory
+        String instagramName
 ) {
+
+    private static final String PREFIX = "@";
 
     private static final int RESTAURANT_NAME = 0;
     private static final int YOUTUBE_VIDEO_URL = 1;
@@ -37,7 +38,6 @@ public record SaveDataRequest(
     private static final int LONGITUDE = 9;
     private static final int IMAGE_NAME = 10;
     private static final int INSTAGRAM_NAME = 11;
-    private static final int SUPER_CATEGORY = 12;
 
     public static SaveDataRequest from(String[] data) {
         return SaveDataRequest.builder()
@@ -53,7 +53,6 @@ public record SaveDataRequest(
                 .latitude(data[LATITUDE])
                 .longitude(data[LONGITUDE])
                 .instagramName(data[INSTAGRAM_NAME])
-                .superCategory(data[SUPER_CATEGORY])
                 .build();
     }
 
@@ -76,7 +75,7 @@ public record SaveDataRequest(
     ) {
         SocialMedia socialMedia = SocialMedia.from(instagramName);
         String author = switch (socialMedia) {
-            case INSTAGRAM -> instagramName;
+            case INSTAGRAM -> PREFIX + instagramName;
             default -> youtubeChannelName;
         };
 
