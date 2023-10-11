@@ -44,7 +44,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/images")
+    @PostMapping("/restaurant-images")
     ResponseEntity<Void> uploadImage(@ModelAttribute SaveImageRequest request) {
         imageUploadClient.upload(request.image());
         adminService.saveImage(request.toCommand());

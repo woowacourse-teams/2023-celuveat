@@ -128,7 +128,7 @@ public class AdminAcceptanceSteps {
         requestSpecification.multiPart(멀티파트_스팩을_추출한다("image", 요청.image()));
         return requestSpecification
                 .contentType("multipart/form-data")
-                .when().post("/admin/images")
+                .when().post("/admin/restaurant-images")
                 .then().log().all()
                 .extract();
     }
