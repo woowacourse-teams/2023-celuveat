@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
@@ -13,6 +14,7 @@ import { RestaurantData } from '~/@types/api.types';
 import { getRecommendedRestaurants } from '~/api/restaurant';
 import { SERVER_IMG_URL } from '~/constants/url';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function MainPage() {
   const navigate = useNavigate();
@@ -22,6 +24,11 @@ function MainPage() {
     queryFn: () => getCelebs(),
     suspense: true,
   });
+  const setHomeSelected = useBottomNavBarState(state => state.setHomeSelected);
+
+  useEffect(() => {
+    setHomeSelected();
+  }, []);
 
   const { data: recommendedRestaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['recommendedRestaurants'],

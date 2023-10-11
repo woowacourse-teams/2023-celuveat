@@ -44,6 +44,7 @@ const StyledTopNavBar = styled.nav<{ isHome: boolean }>`
   padding: 0 0.8rem;
 
   background-color: var(--white);
+  box-shadow: var(--shadow);
 
   & > header {
     display: flex;

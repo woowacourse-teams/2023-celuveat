@@ -51,10 +51,13 @@ function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, cat
           <div>
             <div>{celebs[0].youtubeChannelName}</div>
             <div>|</div>
-            <button type="button" onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}>
+            <StyledYoutubeButton
+              type="button"
+              onClick={openNewWindow(`https://www.youtube.com/${celebs[0].youtubeChannelName}`)}
+            >
               <Youtube width={28} />
               <div>유튜브 바로가기</div>
-            </button>
+            </StyledYoutubeButton>
           </div>
         </div>
         <ProfileImageList celebs={celebs} size="56px" />
@@ -160,6 +163,12 @@ const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
       background: none;
     }
   }
+`;
+
+const StyledYoutubeButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledMainVideo = styled.div`
