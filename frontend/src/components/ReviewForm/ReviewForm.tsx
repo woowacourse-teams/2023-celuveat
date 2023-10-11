@@ -73,6 +73,7 @@ function ReviewForm({ type }: ReviewFormProps) {
 
   const deleteReviewImage = (reviewImageId: number) => {
     setImages(images.filter((_, id) => id !== reviewImageId));
+    setFiles(files.filter((_, id) => id !== reviewImageId));
   };
 
   const onClickStarRate: React.MouseEventHandler<HTMLButtonElement> = e => {

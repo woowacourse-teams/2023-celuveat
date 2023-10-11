@@ -1,4 +1,4 @@
-import { cloneElement, useRef } from 'react';
+import { cloneElement, useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import Exit from '~/assets/icons/exit.svg';
@@ -7,14 +7,25 @@ import { hideScrollBar } from '~/styles/common';
 
 interface ModalProps {
   title?: string;
+  blockScrollOnMount?: boolean;
   isOpen: boolean;
   close: VoidFunction;
   children: React.ReactElement;
 }
 
-function Modal({ children, close, isOpen, title }: ModalProps) {
+function Modal({ children, close, isOpen, title, blockScrollOnMount = true }: ModalProps) {
   const modalContentRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useMediaQuery();
+
+  useEffect(() => {
+    if (blockScrollOnMount) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, [blockScrollOnMount]);
 
   return (
     <Portal isOpen={isOpen} close={close}>

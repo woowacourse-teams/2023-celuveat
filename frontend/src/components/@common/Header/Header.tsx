@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Wrapper } from '@googlemaps/react-wrapper';
 
@@ -12,10 +12,17 @@ import SearchBar from '~/components/SearchBar';
 import useAuth from '~/hooks/server/useAuth';
 import useBooleanState from '~/hooks/useBooleanState';
 
+import { getProfile } from '~/api/user';
+
 import type { ProfileData } from '~/@types/api.types';
 
 function Header() {
-  const qc = useQueryClient();
+  const { data: profileData } = useQuery<ProfileData>({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+    retry: 1,
+  });
+
   const navigator = useNavigate();
   const { pathname } = useLocation();
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
@@ -23,7 +30,7 @@ function Header() {
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
-    const profileData: ProfileData = qc.getQueryData(['profile']);
+
     if (currentOption === '로그인') openModal();
     if (currentOption === '위시리스트') navigator('/restaurants/like');
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
