@@ -47,6 +47,9 @@ function MobileMapPage() {
           <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         ))}
         <div />
+        <div />
+        <div />
+        <div />
       </StyledRestaurantCardContainer>
       <StyledMapContainer isListShowed={isListShowed}>
         <Map />
@@ -88,9 +91,8 @@ const StyledRestaurantCardContainer = styled.div<{ isListShowed: boolean }>`
   z-index: 1;
 
   width: 100%;
-  height: 100vh;
 
-  padding: 1.2rem 0.8rem;
+  padding: 1.2rem 0.8rem 2.4rem;
 
   background-color: var(--white);
 `;

@@ -28,7 +28,6 @@ function UpdatedRestaurantPage() {
           <MiniRestaurantCard celebs={celebs} restaurant={restaurant} showRating showLike />
         ))}
       </StyledResultSection>
-      <div />
     </StyledContainer>
   );
 }
@@ -43,6 +42,8 @@ const StyledContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+
+  padding-bottom: 4.8rem;
 `;
 
 const StyledBanner = styled.div`
