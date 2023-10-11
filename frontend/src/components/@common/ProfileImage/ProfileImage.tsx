@@ -23,6 +23,8 @@ const StyledProfile = styled.img<{ size: string; boxShadow: boolean }>`
   border-radius: 50%;
   background: none;
 
+  object-fit: cover;
+
   ${({ boxShadow }) =>
     boxShadow &&
     css`
