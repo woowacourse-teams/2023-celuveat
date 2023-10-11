@@ -35,7 +35,7 @@ function MobileMapPage() {
       <StyledPreview>
         <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         <StyledShutDownButton type="button" onClick={() => setPreview(null)}>
-          <Down />
+          <Down width="24" height="24" />
         </StyledShutDownButton>
       </StyledPreview>
     );
