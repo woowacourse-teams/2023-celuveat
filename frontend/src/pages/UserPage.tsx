@@ -71,6 +71,8 @@ const StyledUserAndFooterDivider = styled.div`
 
   width: 100vw;
   height: calc(100dvh - 88px);
+
+  padding-bottom: 4.4rem;
 `;
 
 const StyledUserContainer = styled.main`
