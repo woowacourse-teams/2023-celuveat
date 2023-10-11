@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { styled } from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
 import HomeIcon from '~/assets/icons/home.svg';
@@ -11,6 +11,7 @@ import useScrollBlock from '~/hooks/useScrollBlock';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
+import useNavigateSignUp from '~/hooks/useNavigateSignUp';
 
 interface BottomNavBarProps {
   isHide: boolean;
@@ -19,7 +20,7 @@ interface BottomNavBarProps {
 function BottomNavBar({ isHide }: BottomNavBarProps) {
   const ref = useRef();
   const navigator = useNavigate();
-  const { pathname } = useLocation();
+  const { goSignUp } = useNavigateSignUp();
   const [selected, setHomeSelected, setMapSelected, setUserSelected, setWishListSelected] = useBottomNavBarState(
     state => [
       state.selected,
@@ -52,7 +53,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
     setUserSelected();
 
     if (isLogin) navigator('/user');
-    else navigator('/signUp', { state: { from: pathname } });
+    else goSignUp();
   };
 
   useScrollBlock(ref);

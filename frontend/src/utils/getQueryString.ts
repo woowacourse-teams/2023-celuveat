@@ -20,7 +20,7 @@ export const getRestaurantQueryString = ({ boundary, celebId, category, page, so
   return searchParams.toString();
 };
 
-const getQuerySting = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
+export const getQueryString = (target: string | string[][] | Record<string, string> | URLSearchParams) => {
   const searchParams = new URLSearchParams(target);
   const result = searchParams.toString();
 
@@ -29,4 +29,4 @@ const getQuerySting = (target: string | string[][] | Record<string, string> | UR
   return hasQuery ? `?${searchParams.toString()}` : '';
 };
 
-export const getUrlStringWithQuery = (url: string) => `${url}${getQuerySting(window.location.search)}`;
+export const getUrlStringWithQuery = (url: string) => `${url}${getQueryString(window.location.search)}`;
