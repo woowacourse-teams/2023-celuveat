@@ -31,15 +31,15 @@ function UserPage() {
     return (
       <StyledUserAndFooterDivider>
         <StyledUserContainer>
-          <h2>프로필</h2>
+          <h4>프로필</h4>
           <StyledProfileSection>
             <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="120px" />
-            <h3>{profile.nickname}</h3>
+            <h5>{profile.nickname}</h5>
             <div>{profile.oauthServer} 계정입니다.</div>
           </StyledProfileSection>
           <StyledLine />
           <StyledServiceSection>
-            <h3>서비스</h3>
+            <h4>서비스</h4>
             <button type="button" onClick={clickWishListService}>
               위시리스트
             </button>
