@@ -25,7 +25,7 @@ function UpdatedRestaurantPage() {
         <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
 
         {restaurantData?.map(restaurant => (
-          <MiniRestaurantCard restaurant={restaurant} />
+          <MiniRestaurantCard restaurant={restaurant} showRating showLike />
         ))}
       </StyledResultSection>
     </StyledContainer>

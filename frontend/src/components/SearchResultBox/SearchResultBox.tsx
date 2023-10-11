@@ -15,7 +15,6 @@ function SearchResultBox({ restaurantDataList }: SearchResultBoxProps) {
             key={`${restaurant.id}${celebs[0].id}`}
             restaurant={restaurant}
             celebs={celebs}
-            showWaterMark={false}
             showLike
             showRating
           />

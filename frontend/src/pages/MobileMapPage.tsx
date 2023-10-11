@@ -32,7 +32,7 @@ function MobileMapPage() {
 
     return (
       <StyledPreview>
-        <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showWaterMark={false} showRating showLike />
+        <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         <StyledShutDownButton type="button" onClick={() => setPreview(null)}>
           <Down />
         </StyledShutDownButton>
@@ -44,7 +44,7 @@ function MobileMapPage() {
     <StyledMobileLayout>
       <StyledRestaurantCardContainer isListShowed={isListShowed}>
         {restaurantDataList?.content.map(({ celebs, ...restaurant }) => (
-          <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showWaterMark={false} />
+          <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         ))}
       </StyledRestaurantCardContainer>
       <StyledMapContainer isListShowed={isListShowed}>
