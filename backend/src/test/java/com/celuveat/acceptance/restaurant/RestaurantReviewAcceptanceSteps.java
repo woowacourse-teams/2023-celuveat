@@ -50,7 +50,7 @@ public class RestaurantReviewAcceptanceSteps {
                 .multiPart(content)
                 .multiPart(restaurantId)
                 .multiPart(rating);
-        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다(image)));
+        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다("images", image)));
         return requestSpecification
                 .contentType("multipart/form-data")
                 .when().post("/reviews")

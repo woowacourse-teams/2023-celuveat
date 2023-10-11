@@ -1,5 +1,8 @@
 package com.celuveat.admin.presentation.dto;
 
+import static com.celuveat.restaurant.command.domain.SocialMedia.INSTAGRAM;
+import static com.celuveat.restaurant.command.domain.SocialMedia.YOUTUBE;
+
 import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
@@ -74,7 +77,7 @@ public record SaveDataRequest(
             String instagramName,
             Restaurant restaurant
     ) {
-        SocialMedia socialMedia = SocialMedia.from(instagramName);
+        SocialMedia socialMedia = toSocialMedia(instagramName);
         String author = switch (socialMedia) {
             case INSTAGRAM -> instagramName;
             default -> youtubeChannelName;
@@ -86,6 +89,13 @@ public record SaveDataRequest(
                 .socialMedia(socialMedia)
                 .restaurant(restaurant)
                 .build();
+    }
+
+    private SocialMedia toSocialMedia(String instagramName) {
+        if (instagramName.strip().isBlank()) {
+            return YOUTUBE;
+        }
+        return INSTAGRAM;
     }
 
     public Video toVideo(String youtubeVideoUrl, LocalDate uploadDate, Celeb celeb, Restaurant restaurant) {

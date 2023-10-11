@@ -14,12 +14,14 @@ import static com.celuveat.celeb.exception.CelebExceptionType.NOT_FOUND_CELEB;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.command.domain.SocialMedia.INSTAGRAM;
 import static com.celuveat.restaurant.command.domain.SocialMedia.YOUTUBE;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.하늘초밥;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.celuveat.acceptance.admin.AdminAcceptanceSteps;
+import com.celuveat.admin.command.application.dto.SaveImageCommand;
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
@@ -27,8 +29,12 @@ import com.celuveat.celeb.command.domain.Celeb;
 import com.celuveat.celeb.exception.CelebException;
 import com.celuveat.common.IntegrationTest;
 import com.celuveat.common.exception.BaseExceptionType;
+import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
+import com.celuveat.restaurant.command.domain.SocialMedia;
 import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -306,6 +312,34 @@ class AdminServiceTest extends IntegrationTest {
             BaseExceptionType exceptionType = assertThrows(AdminException.class,
                     () -> 셀럽_저장_요청_생성(입력_데이터)).exceptionType();
             assertThat(exceptionType).isEqualTo(INVALID_URL_PATTERN);
+        }
+    }
+
+    @Nested
+    class 이미지_저장 {
+
+        private Restaurant 대성집;
+
+        @BeforeEach
+        void setUp() {
+            대성집 = restaurantRepository.save(대성집());
+        }
+
+        @Test
+        void 음식점_이미지를_저장한다() {
+            // given
+            SaveImageCommand saveImageCommand = new SaveImageCommand(대성집.id(), "오도", "imageA", "instagram");
+            RestaurantImage expected = new RestaurantImage("imageA", "오도", SocialMedia.INSTAGRAM, 대성집);
+
+            // when
+            Long imageId = adminService.saveImage(saveImageCommand);
+            Optional<RestaurantImage> result = restaurantImageRepository.findById(imageId);
+
+            // then
+            assertThat(result).isPresent();
+            assertThat(result.get()).usingRecursiveComparison()
+                    .ignoringExpectedNullFields()
+                    .isEqualTo(expected);
         }
     }
 }

@@ -4,10 +4,17 @@ import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_입�
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.데이터_저장_요청;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_입력_생성;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.셀럽_저장_요청;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.음식점_이미지_저장_요청;
+import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.음식점_이미지_저장_요청_데이터;
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.줄바꿈;
+import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
+import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
+import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 
 import com.celuveat.acceptance.common.AcceptanceTest;
+import com.celuveat.restaurant.command.domain.Restaurant;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -81,6 +88,30 @@ class AdminAcceptanceTest extends AcceptanceTest {
 
             // then
             데이터_수_검증(4, celebRepository);
+        }
+    }
+
+    @Nested
+    class 이미지를_저장한다 {
+
+        private final Restaurant 대성집 = 대성집();
+
+        @BeforeEach
+        void setUp() {
+            testData.addRestaurants(대성집);
+            초기_데이터_저장();
+        }
+
+        @Test
+        void 음식점_이미지를_저장한다() {
+            // given
+            var 음식점_이미지 = 음식점_이미지_저장_요청_데이터(대성집.id(), "오도", "instagram", "imageA");
+
+            // when
+            var 응답 = 음식점_이미지_저장_요청(음식점_이미지);
+
+            // then
+            응답_상태를_검증한다(응답, 생성됨);
         }
     }
 }

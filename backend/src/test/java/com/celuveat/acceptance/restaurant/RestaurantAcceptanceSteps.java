@@ -125,7 +125,7 @@ public class RestaurantAcceptanceSteps {
                 .build();
         RequestSpecification requestSpecification = given(세션_아이디)
                 .multiPart(restaurantId);
-        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다(image)));
+        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다("images", image)));
         return requestSpecification
                 .contentType("multipart/form-data")
                 .when().post("/restaurants/images")
@@ -133,10 +133,10 @@ public class RestaurantAcceptanceSteps {
                 .extract();
     }
 
-    public static MultiPartSpecification 멀티파트_스팩을_추출한다(MultipartFile image) {
+    public static MultiPartSpecification 멀티파트_스팩을_추출한다(String 컨트롤네임, MultipartFile image) {
         try {
             return new MultiPartSpecBuilder(image.getBytes())
-                    .controlName("images")
+                    .controlName(컨트롤네임)
                     .fileName(image.getName())
                     .charset(UTF_8)
                     .build();

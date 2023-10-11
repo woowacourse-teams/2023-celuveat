@@ -1,22 +1,28 @@
 package com.celuveat.acceptance.admin;
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.멀티파트_스팩을_추출한다;
 import static io.restassured.http.ContentType.TEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
+import com.celuveat.admin.presentation.dto.SaveImageRequest;
+import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public class AdminAcceptanceSteps {
 
+    public static final String 줄바꿈 = System.lineSeparator();
     private static final String CELEB_SAVE_REQUEST_URL = "/admin/celebs";
     private static final String DATA_SAVE_REQUEST_URL = "/admin/data";
     private static final String TAB = "\t";
-    public static final String 줄바꿈 = System.lineSeparator();
 
     public static String 데이터_입력_생성(String 셀럽_이름, String 음식점_이름) {
         return 데이터_입력_생성(셀럽_이름, 음식점_이름, "유튜브영상링크", "2027. 7. 2.", "");
@@ -89,6 +95,41 @@ public class AdminAcceptanceSteps {
                 .body(data)
                 .when().post(CELEB_SAVE_REQUEST_URL)
                 .then()
+                .extract();
+    }
+
+    public static SaveImageRequest 음식점_이미지_저장_요청_데이터(Long 음식점_아이디, String 저자, String 소셜미디어, String 사진이름) {
+        MultipartFile image = RestaurantAcceptanceSteps.multipartFile(사진이름);
+        return new SaveImageRequest(음식점_아이디, 저자, 사진이름, 소셜미디어, image);
+    }
+
+    public static ExtractableResponse<Response> 음식점_이미지_저장_요청(SaveImageRequest 요청) {
+        var restaurantId = new MultiPartSpecBuilder(요청.restaurantId())
+                .controlName("restaurantId")
+                .charset(UTF_8)
+                .build();
+        var author = new MultiPartSpecBuilder(요청.author())
+                .controlName("author")
+                .charset(UTF_8)
+                .build();
+        var name = new MultiPartSpecBuilder(요청.name())
+                .controlName("name")
+                .charset(UTF_8)
+                .build();
+        var socialMedia = new MultiPartSpecBuilder(요청.socialMedia())
+                .controlName("socialMedia")
+                .charset(UTF_8)
+                .build();
+        RequestSpecification requestSpecification = given()
+                .multiPart(restaurantId)
+                .multiPart(author)
+                .multiPart(name)
+                .multiPart(socialMedia);
+        requestSpecification.multiPart(멀티파트_스팩을_추출한다("image", 요청.image()));
+        return requestSpecification
+                .contentType("multipart/form-data")
+                .when().post("/admin/images")
+                .then().log().all()
                 .extract();
     }
 }

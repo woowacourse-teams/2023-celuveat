@@ -4,6 +4,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMA
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
 
+import com.celuveat.admin.command.application.dto.SaveImageCommand;
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
@@ -13,6 +14,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
+import com.celuveat.restaurant.command.domain.SocialMedia;
 import com.celuveat.video.command.domain.Video;
 import com.celuveat.video.command.domain.VideoRepository;
 import java.time.LocalDate;
@@ -104,5 +106,16 @@ public class AdminService {
                 .map(SaveCelebRequest::toCeleb)
                 .toList();
         celebRepository.saveAll(celebs);
+    }
+
+    public Long saveImage(SaveImageCommand command) {
+        Restaurant restaurant = restaurantRepository.getById(command.restaurantId());
+        RestaurantImage restaurantImage = RestaurantImage.builder()
+                .name(command.name())
+                .author(command.author())
+                .socialMedia(SocialMedia.from(command.socialMedia()))
+                .restaurant(restaurant)
+                .build();
+        return restaurantImageRepository.save(restaurantImage).id();
     }
 }

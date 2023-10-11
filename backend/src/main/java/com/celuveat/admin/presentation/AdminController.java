@@ -1,14 +1,19 @@
 package com.celuveat.admin.presentation;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.celuveat.admin.command.application.AdminService;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
 import com.celuveat.admin.presentation.dto.SaveDataRequest;
+import com.celuveat.admin.presentation.dto.SaveImageRequest;
+import com.celuveat.common.client.ImageUploadClient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +27,7 @@ public class AdminController {
 
     static final String TAB = "\t";
 
+    private final ImageUploadClient imageUploadClient;
     private final AdminService adminService;
 
     @PostMapping("/data")
@@ -36,6 +42,13 @@ public class AdminController {
         List<SaveCelebRequest> request = toRequest(rawData, SaveCelebRequest::new);
         adminService.saveCelebs(request);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/images")
+    ResponseEntity<Void> uploadImage(@ModelAttribute SaveImageRequest request) {
+        imageUploadClient.upload(request.image());
+        adminService.saveImage(request.toCommand());
+        return ResponseEntity.status(CREATED).build();
     }
 
     private <T> List<T> toRequest(String rawData, Function<String[], T> function) {
