@@ -5,12 +5,15 @@ import static org.springframework.http.HttpStatus.CREATED;
 import com.celuveat.common.PageResponse;
 import com.celuveat.common.auth.Auth;
 import com.celuveat.common.auth.LooseAuth;
+import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantCorrectionService;
+import com.celuveat.restaurant.command.application.RestaurantImageSuggestionService;
 import com.celuveat.restaurant.command.application.RestaurantLikeService;
 import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
+import com.celuveat.restaurant.presentation.dto.SuggestImagesRequest;
 import com.celuveat.restaurant.query.RestaurantQueryService;
 import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.LocationSearchCond;
 import com.celuveat.restaurant.query.dao.RestaurantSearchQueryResponseDao.RestaurantSearchCond;
@@ -39,10 +42,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
+    private final ImageUploadClient imageUploadClient;
     private final RestaurantService restaurantService;
     private final RestaurantLikeService restaurantLikeService;
     private final RestaurantQueryService restaurantQueryService;
     private final RestaurantCorrectionService restaurantCorrectionService;
+    private final RestaurantImageSuggestionService restaurantImageSuggestionService;
 
     @GetMapping("/{restaurantId}")
     ResponseEntity<RestaurantDetailQueryResponse> findById(
@@ -101,6 +106,13 @@ public class RestaurantController {
     ResponseEntity<List<LikedRestaurantQueryResponse>> findLikedByMember(@Auth Long memberId) {
         List<LikedRestaurantQueryResponse> result = restaurantQueryService.findLikedByMemberId(memberId);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/images")
+    ResponseEntity<Void> suggestImages(@ModelAttribute SuggestImagesRequest request, @Auth Long memberId) {
+        imageUploadClient.upload(request.images());
+        restaurantImageSuggestionService.suggestImages(request.toCommand(memberId));
+        return ResponseEntity.status(CREATED).build();
     }
 
     @PostMapping("/{restaurantId}/correction")

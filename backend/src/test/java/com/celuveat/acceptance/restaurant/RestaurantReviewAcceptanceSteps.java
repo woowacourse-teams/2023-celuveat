@@ -1,6 +1,7 @@
 package com.celuveat.acceptance.restaurant;
 
 import static com.celuveat.acceptance.common.AcceptanceSteps.given;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.멀티파트_스팩을_추출한다;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,13 +15,10 @@ import com.celuveat.restaurant.query.dto.RestaurantReviewsQueryResponse.Restaura
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import io.restassured.specification.MultiPartSpecification;
 import io.restassured.specification.RequestSpecification;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 public class RestaurantReviewAcceptanceSteps {
@@ -31,15 +29,9 @@ public class RestaurantReviewAcceptanceSteps {
 
     public static SaveReviewRequest 리뷰_요청_데이터(String 내용, Long 음식점_아이디, Double 평점, List<String> images) {
         List<MultipartFile> list = images.stream()
-                .map(RestaurantReviewAcceptanceSteps::multipartFile)
+                .map(RestaurantAcceptanceSteps::multipartFile)
                 .toList();
         return new SaveReviewRequest(내용, 음식점_아이디, 평점, list);
-    }
-
-    private static MultipartFile multipartFile(String name) {
-        return new MockMultipartFile(
-                name, name, "multipart/form-data", name.getBytes()
-        );
     }
 
     public static ExtractableResponse<Response> 리뷰_작성_요청(String 세션_아이디, SaveReviewRequest 요청) {
@@ -58,28 +50,12 @@ public class RestaurantReviewAcceptanceSteps {
                 .multiPart(content)
                 .multiPart(restaurantId)
                 .multiPart(rating);
-        int 사진_수 = 요청.images().size();
-        for (int i = 0; i < 사진_수; i++) {
-            requestSpecification.multiPart(멀티파트_스팩을_추출한다(요청, i));
-        }
+        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다(image)));
         return requestSpecification
                 .contentType("multipart/form-data")
                 .when().post("/reviews")
                 .then().log().all()
                 .extract();
-    }
-
-    private static MultiPartSpecification 멀티파트_스팩을_추출한다(SaveReviewRequest 요청, int index) {
-        var image = 요청.images().get(index);
-        try {
-            return new MultiPartSpecBuilder(image.getBytes())
-                    .controlName("images")
-                    .fileName(image.getName())
-                    .charset(UTF_8)
-                    .build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static ExtractableResponse<Response> 리뷰_조회_요청(String 세션_아이디, Long 음식점_아이디) {

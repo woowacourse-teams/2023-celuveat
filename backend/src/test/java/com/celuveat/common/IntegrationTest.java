@@ -6,12 +6,14 @@ import com.celuveat.auth.command.domain.authcode.AuthCodeRequestUrlProviderCompo
 import com.celuveat.celeb.command.domain.CelebRepository;
 import com.celuveat.common.client.ImageUploadClient;
 import com.celuveat.restaurant.command.application.RestaurantCorrectionService;
+import com.celuveat.restaurant.command.application.RestaurantImageSuggestionService;
 import com.celuveat.restaurant.command.application.RestaurantLikeService;
 import com.celuveat.restaurant.command.application.RestaurantReviewLikeService;
 import com.celuveat.restaurant.command.application.RestaurantReviewReportService;
 import com.celuveat.restaurant.command.application.RestaurantReviewService;
 import com.celuveat.restaurant.command.application.RestaurantService;
 import com.celuveat.restaurant.command.domain.RestaurantImageRepository;
+import com.celuveat.restaurant.command.domain.RestaurantImageSuggestionRepository;
 import com.celuveat.restaurant.command.domain.RestaurantLikeRepository;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.correction.RestaurantCorrectionRepository;
@@ -62,6 +64,9 @@ public abstract class IntegrationTest {
     protected RestaurantReviewRepository restaurantReviewRepository;
 
     @Autowired
+    protected RestaurantImageSuggestionRepository restaurantImageSuggestionRepository;
+
+    @Autowired
     protected AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
 
     @Autowired
@@ -90,6 +95,9 @@ public abstract class IntegrationTest {
 
     @Autowired
     protected RestaurantReviewReportService restaurantReviewReportService;
+
+    @Autowired
+    protected RestaurantImageSuggestionService restaurantImageSuggestionService;
 
     @Autowired
     protected RestaurantReviewService restaurantReviewService;

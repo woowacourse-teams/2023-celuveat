@@ -27,6 +27,7 @@ public class AuthConfig implements WebMvcConfigurer {
         registry.addInterceptor(setUpAuthInterceptor())
                 .addPathPatterns(
                         "/restaurants/**/like",
+                        "/restaurants/images",
                         "/reviews/**",
                         "/members/**",
                         "/oauth/logout/**",

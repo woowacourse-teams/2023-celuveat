@@ -5,6 +5,7 @@ import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.celebQueryRe
 import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.restaurantDetailQueryResponse;
 import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.restaurantImageQueryResponses;
 import static com.celuveat.restaurant.util.RestaurantQueryTestUtils.restaurantSearchQueryResponse;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.celuveat.celeb.command.domain.Celeb;
@@ -14,16 +15,23 @@ import com.celuveat.restaurant.command.domain.RestaurantImage;
 import com.celuveat.restaurant.presentation.dto.LocationSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.RestaurantSearchCondRequest;
 import com.celuveat.restaurant.presentation.dto.SuggestCorrectionRequest;
+import com.celuveat.restaurant.presentation.dto.SuggestImagesRequest;
 import com.celuveat.restaurant.query.dto.LikedRestaurantQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantDetailQueryResponse;
 import com.celuveat.restaurant.query.dto.RestaurantSearchQueryResponse;
+import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import io.restassured.specification.MultiPartSpecification;
+import io.restassured.specification.RequestSpecification;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class RestaurantAcceptanceSteps {
 
@@ -101,6 +109,46 @@ public class RestaurantAcceptanceSteps {
                 .then()
                 .log().all()
                 .extract();
+    }
+
+    public static SuggestImagesRequest 음식점_이미지_제안_요청_데이터(Long 음식점_아이디, List<String> 사진이름들) {
+        List<MultipartFile> images = 사진이름들.stream()
+                .map(RestaurantAcceptanceSteps::multipartFile)
+                .toList();
+        return new SuggestImagesRequest(음식점_아이디, images);
+    }
+
+    public static ExtractableResponse<Response> 음식점_이미지_제안_요청(String 세션_아이디, SuggestImagesRequest 요청) {
+        var restaurantId = new MultiPartSpecBuilder(요청.restaurantId())
+                .controlName("restaurantId")
+                .charset(UTF_8)
+                .build();
+        RequestSpecification requestSpecification = given(세션_아이디)
+                .multiPart(restaurantId);
+        요청.images().forEach(image -> requestSpecification.multiPart(멀티파트_스팩을_추출한다(image)));
+        return requestSpecification
+                .contentType("multipart/form-data")
+                .when().post("/restaurants/images")
+                .then().log().all()
+                .extract();
+    }
+
+    public static MultiPartSpecification 멀티파트_스팩을_추출한다(MultipartFile image) {
+        try {
+            return new MultiPartSpecBuilder(image.getBytes())
+                    .controlName("images")
+                    .fileName(image.getName())
+                    .charset(UTF_8)
+                    .build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static MultipartFile multipartFile(String name) {
+        return new MockMultipartFile(
+                name, name, "multipart/form-data", name.getBytes()
+        );
     }
 
     public static RestaurantSearchQueryResponse 음식점_검색_결과(

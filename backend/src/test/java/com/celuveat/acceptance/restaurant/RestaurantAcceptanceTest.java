@@ -13,6 +13,8 @@ import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음�
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_검색_조건_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_상세_조회_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_이미지_제안_요청;
+import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_이미지_제안_요청_데이터;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.음식점_좋아요_정렬_검색_요청;
 import static com.celuveat.acceptance.restaurant.RestaurantAcceptanceSteps.정보_수정_제안_요청;
@@ -281,6 +283,34 @@ public class RestaurantAcceptanceTest extends AcceptanceTest {
 
                 // then
                 응답_상태를_검증한다(응답, 잘못된_요청);
+            }
+        }
+
+        @Nested
+        class 음식점_제안_API {
+
+            private final OauthMember 말랑 = 말랑();
+            private final Restaurant 대성집 = 대성집();
+
+            @BeforeEach
+            void setUp() {
+                testData.addMembers(말랑);
+                testData.addRestaurants(대성집);
+                초기_데이터_저장();
+            }
+
+            @Test
+            void 음식점_이미지를_제안한다() {
+                // given
+                var 말랑_세션_아이디 = 로그인후_세션아이디를_가져온다(말랑);
+                var 말랑_이미지_제안 = 음식점_이미지_제안_요청_데이터(대성집.id(),
+                        List.of("mallang review image 1", "mallang review image2"));
+
+                // when
+                var 응답 = 음식점_이미지_제안_요청(말랑_세션_아이디, 말랑_이미지_제안);
+
+                // then
+                응답_상태를_검증한다(응답, 생성됨);
             }
         }
 
