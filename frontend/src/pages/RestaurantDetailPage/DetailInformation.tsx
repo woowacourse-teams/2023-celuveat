@@ -8,6 +8,7 @@ import Copy from '~/assets/icons/copy.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getRestaurantVideo } from '~/api/restaurant';
+import SuggestionButton from '~/components/SuggestionButton';
 
 interface DetailInformationProps {
   restaurantId: string;
@@ -74,6 +75,7 @@ function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, cat
           </button>
         </div>
         <div>카테고리 : {category}</div>
+        <SuggestionButton />
       </div>
       <StyledMainVideo>
         <h5>영상으로 보기</h5>
