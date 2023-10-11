@@ -22,25 +22,31 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
   return (
     <StyledNearByRestaurant isMobile={isMobile}>
       <h5>주변 다른 식당</h5>
-      <ul>
-        {nearByRestaurant.content.map(restaurant =>
-          isMobile ? (
-            <MiniRestaurantCard
-              restaurant={restaurant}
-              celebs={restaurant.celebs}
-              carousel={false}
-              flexColumn
-              showLike
-              showRating
-              showDistance
-            />
-          ) : (
-            <StyledRestaurantCardContainer>
-              <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
-            </StyledRestaurantCardContainer>
-          ),
-        )}
-      </ul>
+      {nearByRestaurant.content.length === 0 ? (
+        <div>
+          <h5>주변에 다른 식당이 없어요.</h5>
+        </div>
+      ) : (
+        <ul>
+          {nearByRestaurant.content.map(restaurant =>
+            isMobile ? (
+              <MiniRestaurantCard
+                restaurant={restaurant}
+                celebs={restaurant.celebs}
+                carousel={false}
+                flexColumn
+                showLike
+                showRating
+                showDistance
+              />
+            ) : (
+              <StyledRestaurantCardContainer>
+                <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
+              </StyledRestaurantCardContainer>
+            ),
+          )}
+        </ul>
+      )}
     </StyledNearByRestaurant>
   );
 }
@@ -52,6 +58,13 @@ const StyledNearByRestaurant = styled.section<{ isMobile: boolean }>`
   flex-direction: column;
 
   margin: 3.2rem 0;
+
+  & > div > h5 {
+    margin: 4rem 0;
+
+    color: var(--gray-3);
+    text-align: center;
+  }
 
   & > ul {
     ${hideScrollBar}
