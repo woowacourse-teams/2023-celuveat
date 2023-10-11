@@ -20,6 +20,7 @@ public class AwsS3ImageUploadClient implements ImageUploadClient {
     private final S3Client s3Client;
     private final AwsS3Property awsS3Property;
 
+    @Override
     @SneakyThrows
     public void upload(MultipartFile file) {
         String encodedFileName = getEncodedFileName(file);
@@ -34,7 +35,7 @@ public class AwsS3ImageUploadClient implements ImageUploadClient {
     }
 
     @Override
-    public void upload(final List<MultipartFile> file) {
+    public void upload(List<MultipartFile> file) {
         if (file == null || file.isEmpty()) {
             return;
         }
