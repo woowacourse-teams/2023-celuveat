@@ -23,7 +23,8 @@ function MobileMapPage() {
   );
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
-    queryFn: () => getRestaurants({ boundary, celebId, sort, category: restaurantCategory, page: currentPage }),
+    queryFn: () =>
+      getRestaurants({ boundary, celebId, sort: 'distance', category: restaurantCategory, page: currentPage }),
     keepPreviousData: true,
   });
 
