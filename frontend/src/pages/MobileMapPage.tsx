@@ -46,6 +46,7 @@ function MobileMapPage() {
         {restaurantDataList?.content.map(({ celebs, ...restaurant }) => (
           <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         ))}
+        <div />
       </StyledRestaurantCardContainer>
       <StyledMapContainer isListShowed={isListShowed}>
         <Map />
