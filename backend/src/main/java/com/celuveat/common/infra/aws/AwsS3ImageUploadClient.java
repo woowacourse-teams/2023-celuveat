@@ -26,6 +26,8 @@ public class AwsS3ImageUploadClient implements ImageUploadClient {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(awsS3Property.bucket())
                 .key(awsS3Property.key() + encodedFileName)
+                .contentType(file.getContentType())
+                .contentDisposition("inline")
                 .build();
         RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
         s3Client.putObject(putObjectRequest, requestBody);
