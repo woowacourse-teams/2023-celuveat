@@ -11,6 +11,7 @@ import type { Restaurant } from '~/@types/restaurant.types';
 import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import WaterMarkImage from '../@common/WaterMarkImage';
+import ProfileImageList from '../@common/ProfileImageList';
 
 interface MiniRestaurantCardProps {
   restaurant: Restaurant;
@@ -81,6 +82,7 @@ function MiniRestaurantCard({
           <StyledCategory>{category}</StyledCategory>
           <StyledAddress>{roadAddress}</StyledAddress>
           {showDistance && <StyledAddress>{distance}m 이내</StyledAddress>}
+          <StyledProfileSection>{celebs && <ProfileImageList celebs={celebs} size="24px" />}</StyledProfileSection>
         </StyledInfoSection>
       </StyledContainer>
 
@@ -137,6 +139,8 @@ const StyledName = styled.h5`
 `;
 
 const StyledAddress = styled.span`
+  width: calc(100% - 28px);
+
   ${truncateText(1)}
   color: var(--gray-4);
   font-size: ${FONT_SIZE.sm};
@@ -179,4 +183,10 @@ const StyledInfoTopSection = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const StyledProfileSection = styled.div`
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
 `;
