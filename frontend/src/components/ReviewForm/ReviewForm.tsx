@@ -17,6 +17,7 @@ import { changeImgFileExtension } from '~/utils/image';
 
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
 import type { StarRate } from '~/@types/api.types';
+import Spinner from '~/components/@common/Spinner';
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
@@ -134,13 +135,19 @@ function ReviewForm({ type }: ReviewFormProps) {
         </>
       )}
 
-      <TextButton
-        type="submit"
-        onClick={submitReviewForm}
-        text={SUBMIT_BUTTON_TEXT[type]}
-        colorType="dark"
-        disabled={isSubmitDisabled}
-      />
+      {isSubmitRequesting ? (
+        <StyledSpinnerWrapper>
+          <Spinner size="20px" />
+        </StyledSpinnerWrapper>
+      ) : (
+        <TextButton
+          type="submit"
+          onClick={submitReviewForm}
+          text={SUBMIT_BUTTON_TEXT[type]}
+          colorType="dark"
+          disabled={isSubmitDisabled}
+        />
+      )}
     </StyledReviewFormContainer>
   );
 }
@@ -181,4 +188,16 @@ const StyledTextArea = styled.textarea`
 const StyledReviewFormItemText = styled.span`
   font-size: ${FONT_SIZE.lg};
   font-weight: bold;
+`;
+
+const StyledSpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 1.2rem 2.4rem;
+
+  background-color: var(--primary-3);
 `;
