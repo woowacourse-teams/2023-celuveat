@@ -55,13 +55,11 @@ function MainPage() {
       </Helmet>
       <StyledContainer>
         <Link to="/updated-recent">
-          <StyledBannerSection>
-            <StyledBanner
-              alt="최근 업데이트된 맛집"
-              src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
-              isMobile={isMobile}
-            />
-          </StyledBannerSection>
+          <StyledBanner
+            alt="최근 업데이트된 맛집"
+            src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
+            isMobile={isMobile}
+          />
         </Link>
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
@@ -128,31 +126,29 @@ const StyledContainer = styled.div`
   max-width: 1240px;
 
   margin: 0 auto;
+
   padding-bottom: 4.4rem;
-`;
-
-const StyledBannerSection = styled.section`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
 `;
 
 const StyledBanner = styled.img<{ isMobile: boolean }>`
   width: 100%;
-  max-width: 800px;
-  height: 200px;
-  max-height: 200px;
+
+  margin: 0 auto;
 
   object-fit: cover;
 
   overflow: hidden;
 
   ${({ isMobile }) =>
-    !isMobile &&
-    css`
-      margin: 1.2rem;
-    `}
+    isMobile
+      ? css`
+          height: 200px;
+        `
+      : css`
+          height: 240px;
+
+          margin: 1.2rem;
+        `}
 `;
 
 const StyledIconBox = styled.div`
