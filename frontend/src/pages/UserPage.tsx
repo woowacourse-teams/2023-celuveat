@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import type { ProfileData } from '~/@types/api.types';
 import Footer from '~/components/@common/Footer';
 import ProfileImage from '~/components/@common/ProfileImage';
@@ -8,10 +9,12 @@ import useAuth from '~/hooks/server/useAuth';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import { getProfile } from '~/api/user';
 import SignUpPage from './SignUpPage';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function UserPage() {
   const navigator = useNavigate();
   const { doLogoutMutation } = useAuth();
+  const setUserSelected = useBottomNavBarState(state => state.setUserSelected);
 
   const { data: profile, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
@@ -26,6 +29,10 @@ function UserPage() {
     doLogoutMutation(profile.oauthServer);
     navigator('/');
   };
+
+  useEffect(() => {
+    setUserSelected();
+  }, []);
 
   if (isLogin)
     return (
