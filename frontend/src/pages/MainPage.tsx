@@ -125,7 +125,7 @@ const StyledContainer = styled.div`
 
   box-sizing: content-box;
 
-  max-height: 1240px;
+  max-width: 1240px;
 
   margin: 0 auto;
   padding-bottom: 4.4rem;

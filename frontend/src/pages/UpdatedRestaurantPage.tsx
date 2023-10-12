@@ -47,14 +47,13 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
+
+  margin: 0 auto;
   overflow-x: hidden;
 
   padding-bottom: 4.8rem;
-
-  max-height: 1240px;
-
-  margin: 0 auto;
 `;
 
 const StyledBannerSection = styled.section`
