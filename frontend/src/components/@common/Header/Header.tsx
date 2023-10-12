@@ -15,6 +15,7 @@ import useBooleanState from '~/hooks/useBooleanState';
 import { getProfile } from '~/api/user';
 
 import type { ProfileData } from '~/@types/api.types';
+import TextButton from '../Button';
 
 function Header() {
   const { data: profileData } = useQuery<ProfileData>({
@@ -39,7 +40,7 @@ function Header() {
     }
   };
 
-  const isHome = pathname === '/';
+  const isMapPage = pathname === '/map';
 
   return (
     <>
@@ -47,13 +48,17 @@ function Header() {
         <Link aria-label="셀럽잇 홈페이지" role="button" to="/">
           <Logo width={136} />
         </Link>
-        {isHome && (
+        {isMapPage && (
           <Wrapper apiKey={process.env.GOOGLE_MAP_API_KEY} language="ko" libraries={['places']}>
             <SearchBar />
           </Wrapper>
         )}
-
-        <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+        <StyledRightSection>
+          {!isMapPage && (
+            <TextButton text="지도로 보기" colorType="dark" type="button" onClick={() => navigator('/map')} />
+          )}
+          <InfoDropDown externalOnClick={handleInfoDropDown} isOpen={isModalOpen} label="로그인" />
+        </StyledRightSection>
       </StyledHeader>
 
       <LoginModal close={closeModal} isOpen={isModalOpen} />
@@ -62,6 +67,11 @@ function Header() {
 }
 
 export default Header;
+
+const StyledRightSection = styled.section`
+  display: flex;
+  gap: 2.4rem;
+`;
 
 const StyledHeader = styled.header`
   display: flex;
