@@ -73,10 +73,12 @@ function MobileMapPage() {
             <MapIcon width={24} />
           </StyledToggleButton>
         ) : (
-          <StyledToggleButton type="button" onClick={() => setIsListShowed(true)}>
-            <span>리스트</span>
-            <ListIcon width={20} stroke="#fff" />
-          </StyledToggleButton>
+          storage?.content.length !== 0 && (
+            <StyledToggleButton type="button" onClick={() => setIsListShowed(true)}>
+              <span>리스트</span>
+              <ListIcon width={20} stroke="#fff" />
+            </StyledToggleButton>
+          )
         )}
         {preview && !isListShowed && getPreview()}
       </StyledModal>
