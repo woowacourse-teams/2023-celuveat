@@ -10,6 +10,7 @@ import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
 import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
+import WaterMarkImage from '../@common/WaterMarkImage';
 
 interface MiniRestaurantCardProps {
   restaurant: Restaurant;
@@ -61,7 +62,7 @@ function MiniRestaurantCard({
         flexColumn={flexColumn}
       >
         <StyledImageSection>
-          <ImageCarousel images={images} type="list" showWaterMark={showWaterMark} disabled={!carousel} />
+          <WaterMarkImage imageUrl={images[0]?.name} type="list" sns={images[0]?.sns} />
           {showLike && (
             <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
               <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
