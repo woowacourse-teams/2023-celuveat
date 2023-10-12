@@ -56,7 +56,7 @@ function MobileMapPage() {
     <StyledMobileLayout>
       <StyledRestaurantCardContainer isListShowed={isListShowed} ref={listRef}>
         {storage?.content.map(({ celebs, ...restaurant }) => (
-          <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
+          <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike hideProfile />
         ))}
         <div />
         <div />

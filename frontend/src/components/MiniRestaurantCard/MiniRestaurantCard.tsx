@@ -1,7 +1,6 @@
 import { css, styled } from 'styled-components';
 import { MouseEventHandler, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ImageCarousel from '../@common/ImageCarousel';
 import Love from '~/assets/icons/love.svg';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 import Star from '~/assets/icons/star.svg';
@@ -23,6 +22,7 @@ interface MiniRestaurantCardProps {
   showRating?: boolean;
   showLike?: boolean;
   showDistance?: boolean;
+  hideProfile?: boolean;
 }
 
 function MiniRestaurantCard({
@@ -35,6 +35,7 @@ function MiniRestaurantCard({
   showRating = false,
   showLike = false,
   showDistance = false,
+  hideProfile = false,
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category, rating, distance } = restaurant;
   const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
@@ -82,7 +83,9 @@ function MiniRestaurantCard({
           <StyledCategory>{category}</StyledCategory>
           <StyledAddress>{roadAddress}</StyledAddress>
           {showDistance && <StyledAddress>{distance}m 이내</StyledAddress>}
-          <StyledProfileSection>{celebs && <ProfileImageList celebs={celebs} size="24px" />}</StyledProfileSection>
+          {!hideProfile && (
+            <StyledProfileSection>{celebs && <ProfileImageList celebs={celebs} size="24px" />}</StyledProfileSection>
+          )}
         </StyledInfoSection>
       </StyledContainer>
 
