@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { VideoList } from '~/@types/api.types';
 import { Celeb } from '~/@types/celeb.types';
 import ProfileImageList from '~/components/@common/ProfileImageList';
@@ -10,15 +11,25 @@ import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getRestaurantVideo } from '~/api/restaurant';
 import SuggestionButton from '~/components/SuggestionButton';
 
+import Naver from '~/assets/icons/naver-place.svg';
+
 interface DetailInformationProps {
   restaurantId: string;
   celebs: Celeb[];
   roadAddress: string;
   phoneNumber: string;
   category: string;
+  naverMapUrl: string;
 }
 
-function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, category }: DetailInformationProps) {
+function DetailInformation({
+  restaurantId,
+  celebs,
+  roadAddress,
+  phoneNumber,
+  category,
+  naverMapUrl,
+}: DetailInformationProps) {
   const { isMobile } = useMediaQuery();
 
   const { data: restaurantVideo } = useQuery<VideoList>({
@@ -78,6 +89,11 @@ function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, cat
           </button>
         </div>
         <div>카테고리 : {category}</div>
+        {isMobile && (
+          <StyledNaverPlaceLink href={naverMapUrl} target="_blank" rel="noreferrer">
+            <Naver width={16} /> 네이버 플레이스로 보기
+          </StyledNaverPlaceLink>
+        )}
         <SuggestionButton />
       </div>
       <StyledMainVideo>
@@ -94,6 +110,10 @@ function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, cat
 }
 
 export default DetailInformation;
+
+const StyledNaverPlaceLink = styled.a`
+  text-decoration: none;
+`;
 
 const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
   display: flex;

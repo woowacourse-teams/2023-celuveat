@@ -65,6 +65,7 @@ function RestaurantDetail() {
           <DetailInformation
             restaurantId={restaurantId}
             celebs={celebs}
+            naverMapUrl={restaurant.naverMapUrl}
             roadAddress={restaurant.roadAddress}
             phoneNumber={restaurant.phoneNumber}
             category={restaurant.category}
