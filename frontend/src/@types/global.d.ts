@@ -11,5 +11,5 @@ declare module '*.svg' {
 }
 
 interface Window {
-  kakao: any;
+  Kakao: any;
 }
