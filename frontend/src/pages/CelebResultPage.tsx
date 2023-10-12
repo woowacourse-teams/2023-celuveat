@@ -70,10 +70,12 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
-  overflow-x: hidden;
 
   padding: 1.6rem 1.2rem;
+  margin: 0 auto;
+  overflow-x: hidden;
 `;
 
 const StyledLink = styled(Link)`

@@ -31,9 +31,9 @@ function Root() {
       >
         <Layout>
           {isMobile ? <MobileHeader /> : <Header />}
-          <OutletLayout>
-            <Outlet />
-          </OutletLayout>
+
+          <Outlet />
+
           {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
           {!isMobile && <Footer />}
         </Layout>
@@ -50,12 +50,6 @@ const StyledProcessing = styled.div`
   align-items: center;
 
   height: 100vh;
-`;
-
-const OutletLayout = styled.div`
-  flex: 1;
-
-  width: 100%;
 `;
 
 const Layout = styled.div`

@@ -46,7 +46,7 @@ function MainPage() {
   };
 
   return (
-    <StyledLayout>
+    <>
       <Helmet>
         <meta property="og:title" content="Celuveat" />
         <meta property="og:url" content="celuveat.com" />
@@ -104,7 +104,7 @@ function MainPage() {
           </StyledCategoryBox>
         </div>
       </StyledContainer>
-    </StyledLayout>
+    </>
   );
 }
 
@@ -114,25 +114,21 @@ const StyledTitle = styled.h5`
   margin-left: 1.6rem;
 `;
 
-const StyledLayout = styled.div`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  padding-bottom: 4.4rem;
-`;
-
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 1200px;
 
   overflow-x: hidden;
 
   box-sizing: content-box;
+
+  max-height: 1240px;
+
+  margin: 0 auto;
+  padding-bottom: 4.4rem;
 `;
 
 const StyledBannerSection = styled.section`

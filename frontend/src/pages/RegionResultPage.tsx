@@ -61,7 +61,10 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
+
+  margin: 0 auto;
 `;
 
 const StyledResultCount = styled.span`

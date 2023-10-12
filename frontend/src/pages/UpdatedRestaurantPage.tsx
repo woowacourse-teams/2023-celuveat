@@ -51,6 +51,10 @@ const StyledContainer = styled.div`
   overflow-x: hidden;
 
   padding-bottom: 4.8rem;
+
+  max-height: 1240px;
+
+  margin: 0 auto;
 `;
 
 const StyledBannerSection = styled.section`
