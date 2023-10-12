@@ -1,17 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { getRestaurantWishList } from '~/api/user';
 import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 import { FONT_SIZE } from '~/styles/common';
 
 function WishListPage() {
+  const setWishListSelected = useBottomNavBarState(state => state.setWishListSelected);
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['restaurants', 'like'],
     queryFn: () => getRestaurantWishList(),
-    suspense: true,
   });
+
+  useEffect(() => {
+    setWishListSelected();
+  }, []);
 
   return (
     <LoginErrorHandleComponent>
