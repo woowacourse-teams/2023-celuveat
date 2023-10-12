@@ -29,14 +29,12 @@ function Root() {
           </StyledProcessing>
         }
       >
-        <Layout>
-          {isMobile ? <MobileHeader /> : <Header />}
+        {isMobile ? <MobileHeader /> : <Header />}
 
-          <Outlet />
+        <Outlet />
 
-          {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
-          {!isMobile && <Footer />}
-        </Layout>
+        {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
+        {!isMobile && <Footer />}
       </Suspense>
       <ScrollRestoration />
       <Toast />
@@ -50,10 +48,6 @@ const StyledProcessing = styled.div`
   align-items: center;
 
   height: 100vh;
-`;
-
-const Layout = styled.div`
-  width: 100vw;
 `;
 
 export default Root;

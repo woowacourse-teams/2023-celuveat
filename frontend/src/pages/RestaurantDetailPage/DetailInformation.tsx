@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import { VideoList } from '~/@types/api.types';
 import { Celeb } from '~/@types/celeb.types';
 import ProfileImageList from '~/components/@common/ProfileImageList';
@@ -90,9 +89,9 @@ function DetailInformation({
         </div>
         <div>카테고리 : {category}</div>
         {isMobile && (
-          <StyledNaverPlaceLink href={naverMapUrl} target="_blank" rel="noreferrer">
+          <a href={naverMapUrl} target="_blank" rel="noreferrer">
             <Naver width={16} /> 네이버 플레이스로 보기
-          </StyledNaverPlaceLink>
+          </a>
         )}
         <SuggestionButton />
       </div>
@@ -110,10 +109,6 @@ function DetailInformation({
 }
 
 export default DetailInformation;
-
-const StyledNaverPlaceLink = styled.a`
-  text-decoration: none;
-`;
 
 const StyledDetailInfo = styled.section<{ isMobile: boolean }>`
   display: flex;
@@ -189,6 +184,8 @@ const StyledYoutubeButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledMainVideo = styled.div`
