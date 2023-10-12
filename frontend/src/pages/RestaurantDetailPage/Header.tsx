@@ -46,8 +46,8 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
           </StyledShareButton>
           <ShareButton type="kakao" meta={meta}>
             <img
-              width={24}
-              height={24}
+              width={28}
+              height={28}
               src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
               alt="카카오톡 공유 보내기 버튼"
             />
@@ -68,11 +68,7 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
 
 export default Header;
 
-const StyledShareButtonWrapper = styled.div`
-  & > * {
-    margin-left: 1rem;
-  }
-`;
+const StyledShareButtonWrapper = styled.div``;
 
 const StyledDetailHeader = styled.section`
   display: flex;
