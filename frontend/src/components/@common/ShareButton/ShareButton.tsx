@@ -10,7 +10,6 @@ interface ShareButtonProps {
 
 function ShareButton({ type, children, meta }: ShareButtonProps) {
   const onClickShareButton = (metaTag: LinkProps) => {
-    console.log(metaTag);
     switch (type) {
       case 'kakao':
         shareKakaoLink(metaTag);

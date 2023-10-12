@@ -15,11 +15,12 @@ import TextButton from '../Button';
 function Header() {
   const navigator = useNavigate();
   const { pathname } = useLocation();
-  const { value: isModalOpen, setFalse: closeModal } = useBooleanState(false);
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
 
   const handleInfoDropDown = (event: React.MouseEvent<HTMLElement>) => {
     const currentOption = event.currentTarget.dataset.name;
 
+    if (currentOption === '로그인') openModal();
     if (currentOption === '마이 페이지') navigator('/user');
     if (currentOption === '위시리스트') navigator('/restaurants/like');
     if (currentOption === '회원 탈퇴') navigator('/withdrawal');
