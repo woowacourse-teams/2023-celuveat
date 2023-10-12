@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import NotFound from '~/assets/not-found.svg';
 import Footer from '~/components/@common/Footer';
 import { Header, MobileHeader } from '~/components/@common/Header';
@@ -8,6 +9,13 @@ import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 function NotFoundPage() {
   const { isMobile } = useMediaQuery();
+  const navigator = useNavigate();
+
+  const goHome = () => {
+    navigator('/');
+  };
+
+  const errorSvgSize = isMobile ? '100%' : '550px';
 
   return (
     <StyledContainer isMobile={isMobile}>
@@ -18,12 +26,14 @@ function NotFoundPage() {
           <div>
             <h3>죄송합니다.</h3>
             <h3>페이지를 찾을 수 없어요.</h3>
+            <StyledHomeButton onClick={goHome} isMobile={isMobile}>
+              홈으로 돌아가기
+            </StyledHomeButton>
           </div>
         </section>
         <section>
-          <NotFound />
+          <NotFound width={errorSvgSize} height={errorSvgSize} />
         </section>
-        <StyledHomeButton isMobile={isMobile}>홈으로 돌아가기</StyledHomeButton>
       </StyledNotFoundPage>
       {isMobile && (
         <div>
@@ -56,15 +66,28 @@ const StyledNotFoundPage = styled.main<{ isMobile: boolean }>`
   position: relative;
 
   & > section:first-child {
+    margin-top: 2rem;
+
     display: flex;
     flex-direction: column;
-    gap: 2.4rem;
+    align-items: ${({ isMobile }) => isMobile && 'center'};
+    gap: 3rem;
+
+    & > * {
+      ${({ isMobile }) =>
+        isMobile &&
+        css`
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2rem;
+        `};
+    }
   }
 `;
 
 const StyledHomeButton = styled.button<{ isMobile: boolean }>`
-  position: absolute;
-  bottom: -3.6rem;
+  margin-top: 2rem;
 
   padding: 1.6rem 4.8rem;
 
