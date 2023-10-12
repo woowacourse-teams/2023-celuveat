@@ -9,6 +9,7 @@ import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.음식점_이�
 import static com.celuveat.acceptance.admin.AdminAcceptanceSteps.줄바꿈;
 import static com.celuveat.acceptance.common.AcceptanceSteps.생성됨;
 import static com.celuveat.acceptance.common.AcceptanceSteps.응답_상태를_검증한다;
+import static com.celuveat.acceptance.common.AcceptanceSteps.찾을수_없음;
 import static com.celuveat.celeb.fixture.CelebFixture.셀럽;
 import static com.celuveat.restaurant.fixture.RestaurantFixture.대성집;
 
@@ -103,7 +104,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        void 음식점_이미지를_저장한다() {
+        void 이미_저장되어_있는_음식점의_이미지를_추가한다() {
             // given
             var 음식점_이미지 = 음식점_이미지_저장_요청_데이터(대성집.id(), "오도", "instagram", "imageA");
 
@@ -112,6 +113,18 @@ class AdminAcceptanceTest extends AcceptanceTest {
 
             // then
             응답_상태를_검증한다(응답, 생성됨);
+        }
+
+        @Test
+        void 존재하지_않는_음식점_이미지를_저장하려하면_예외가_발생한다() {
+            // given
+            var 음식점_이미지 = 음식점_이미지_저장_요청_데이터(100L, "오도", "instagram", "imageA");
+
+            // when
+            var 응답 = 음식점_이미지_저장_요청(음식점_이미지);
+
+            // then
+            응답_상태를_검증한다(응답, 찾을수_없음);
         }
     }
 }
