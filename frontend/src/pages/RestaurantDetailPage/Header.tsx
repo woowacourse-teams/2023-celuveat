@@ -43,15 +43,15 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
         <StyledShareButtonWrapper>
           <StyledShareButton type="button" onClick={share}>
             <ShareIcon />
-            <ShareButton type="kakao" meta={meta}>
-              <img
-                width={24}
-                height={24}
-                src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-                alt="카카오톡 공유 보내기 버튼"
-              />
-            </ShareButton>
           </StyledShareButton>
+          <ShareButton type="kakao" meta={meta}>
+            <img
+              width={24}
+              height={24}
+              src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+              alt="카카오톡 공유 보내기 버튼"
+            />
+          </ShareButton>
         </StyledShareButtonWrapper>
       </StyledTitleSection>
       <div role="group">
