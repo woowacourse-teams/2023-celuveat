@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +15,8 @@ import useHoveredRestaurantState from '~/hooks/store/useHoveredRestaurantState';
 import FilterSelectBox from '../FilterSelectBox';
 import { getRestaurants } from '~/api/restaurant';
 
-function RestaurantCardList() {
+function RestaurantCardList({ scrollTop }: { scrollTop: () => void }) {
+  const ref = useRef<HTMLDivElement>();
   const { isMobile } = useMediaQuery();
   const [boundary, celebId, currentPage, restaurantCategory, setCurrentPage, sort, setSort] =
     useRestaurantsQueryStringState(
@@ -42,7 +43,8 @@ function RestaurantCardList() {
   const clickPageButton: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
     const pageValue = e.currentTarget.value;
-    window.scrollTo(0, 0);
+    ref.current.scrollTo(0, 0);
+    scrollTop();
 
     if (pageValue === 'prev') return setCurrentPage(currentPage - 1);
     if (pageValue === 'next') return setCurrentPage(currentPage + 1);
@@ -61,7 +63,7 @@ function RestaurantCardList() {
     );
 
   return (
-    <StyledRestaurantCardListContainer data-cy="음식점 리스트" aria-label="음식점 리스트">
+    <StyledRestaurantCardListContainer data-cy="음식점 리스트" aria-label="음식점 리스트" ref={ref}>
       {restaurantDataList.content.length !== 0 ? (
         <>
           {!isMobile && (
