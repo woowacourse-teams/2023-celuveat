@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { lazy } from 'react';
 
 const Root = lazy(() => import('./Root'));
+const NotFoundPage = lazy(() => import('~/pages/NotFoundPage'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
 const MainPage = lazy(() => import('~/pages/MainPage'));
 const RestaurantDetailPage = lazy(() => import('~/pages/RestaurantDetailPage/index'));
@@ -21,6 +22,7 @@ function Router() {
     {
       path: '/',
       element: <Root />,
+      errorElement: <NotFoundPage />,
       children: [
         { index: true, element: <MainPage /> },
         { path: '/map', element: <MapPage /> },
