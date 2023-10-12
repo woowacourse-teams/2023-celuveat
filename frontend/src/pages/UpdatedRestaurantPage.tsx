@@ -13,6 +13,7 @@ function UpdatedRestaurantPage() {
   const { data: restaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['updatedRestaurants'],
     queryFn: getUpdatedRestaurants,
+    suspense: true,
   });
 
   return (

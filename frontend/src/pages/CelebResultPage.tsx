@@ -29,6 +29,7 @@ function CelebResultPage() {
       if (lastPage.totalPage > lastPage.currentPage) return lastPage.currentPage + 1;
       return undefined;
     },
+    suspense: true,
   });
 
   const entry = useIntersectionObserver(ref, {});
