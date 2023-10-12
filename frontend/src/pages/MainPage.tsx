@@ -128,7 +128,7 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
 
   overflow-x: hidden;
 
