@@ -142,6 +142,7 @@ public class RestaurantSearchWithoutDistanceQueryResponseDao {
                     .collect(toMap(identity(), (ignored) -> FALSE));
         }
         List<Long> memberLikedRestaurantIds = query.select(restaurantLike.restaurant.id)
+                .from(restaurantLike)
                 .where(
                         restaurantLike.member.id.eq(memberId),
                         restaurantLike.restaurant.id.in(ids)
