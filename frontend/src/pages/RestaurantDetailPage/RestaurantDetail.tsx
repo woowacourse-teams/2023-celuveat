@@ -57,7 +57,7 @@ function RestaurantDetail() {
           likeCount={restaurant.likeCount}
           meta={{
             title: restaurant.name,
-            description: `${restaurant.name}의 상세페이지입니다.`,
+            description: `${celebs[0].name}이(가) 추천한 맛집, ${restaurant.name}의 정보를 확인해보세요.`,
             imageUrl: getImgUrl(restaurant.images[0].name, 'webp'),
             link: `${process.env.PUBLIC_URL}${detailPageUrl}`,
           }}
