@@ -11,7 +11,7 @@ import { FONT_SIZE } from '~/styles/common';
 function UpdatedRestaurantPage() {
   const { isMobile } = useMediaQuery();
   const { data: restaurantData } = useQuery<RestaurantData[]>({
-    queryKey: ['updatedRestaurants'],
+    queryKey: ['restaurants', { type: 'updated-recent' }],
     queryFn: getUpdatedRestaurants,
     suspense: true,
   });

@@ -17,7 +17,7 @@ function CelebResultPage() {
   const ref = useRef<HTMLDivElement>();
 
   const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
-    queryKey: ['restaurants', celebId],
+    queryKey: ['restaurants', { type: 'celeb' }, celebId],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
         boundary: WHOLE_BOUNDARY,

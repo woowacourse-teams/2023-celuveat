@@ -14,7 +14,7 @@ function CategoryResultPage() {
   const ref = useRef<HTMLDivElement>();
 
   const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
-    queryKey: ['restaurants', category],
+    queryKey: ['restaurants', { type: 'category' }, category],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
         boundary: WHOLE_BOUNDARY,

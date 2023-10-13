@@ -1,6 +1,5 @@
 import { shallow } from 'zustand/shallow';
-import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { Query, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
@@ -18,33 +17,39 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     }),
     shallow,
   );
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const toggleLike = useMutation({
     mutationFn: postRestaurantLike,
 
+    onMutate: toggleIsLiked,
+
     onError: (error: AxiosError) => {
       if (error.response.status < 500) {
         openModal();
+        toggleIsLiked();
       } else {
         onFailure(error.response.data as string);
       }
     },
 
     onSuccess: () => {
-      const message = `위시리스트에 ${!isLiked ? '저장' : '삭제'}됨.`;
+      const message = `위시리스트에 ${isLiked ? '저장' : '삭제'}됨.`;
       const imgUrl = restaurant.images[0].name;
 
-      toggleIsLiked();
       onSuccess(message, { url: imgUrl, alt: `좋아요한 ${restaurant.name}` });
-      // queryClient.invalidateQueries({ queryKey: ['restaurantDetail'] });
+      return queryClient.invalidateQueries({
+        queryKey: ['restaurants'],
+        predicate: (query: Query<unknown, unknown, unknown, [string, { type: string }]>) =>
+          query.queryKey[0] === 'restaurants' && query.queryKey[1]?.type !== 'wish-list',
+      });
     },
   });
 
-  const toggleRestaurantLike = useCallback(() => {
+  const toggleRestaurantLike = () => {
     toggleLike.mutate(restaurant.id);
     close();
-  }, []);
+  };
 
   return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike };
 };

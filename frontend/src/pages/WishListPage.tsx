@@ -11,7 +11,7 @@ import { FONT_SIZE } from '~/styles/common';
 function WishListPage() {
   const setWishListSelected = useBottomNavBarState(state => state.setWishListSelected);
   const { data: restaurantData } = useQuery<RestaurantData[]>({
-    queryKey: ['restaurants', 'like'],
+    queryKey: ['restaurants', { type: 'wish-list' }],
     queryFn: () => getRestaurantWishList(),
   });
 

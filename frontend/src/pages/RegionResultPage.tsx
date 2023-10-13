@@ -16,7 +16,7 @@ function RegionResultPage() {
   const ref = useRef<HTMLDivElement>();
 
   const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
-    queryKey: ['restaurantsFilteredByRegion', region],
+    queryKey: ['restaurants', { type: 'region' }, region],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurantsByAddress({ codes: RECOMMENDED_REGION[region].code, page: pageParam }),
     getNextPageParam: lastPage => {
