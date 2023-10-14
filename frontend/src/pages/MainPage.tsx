@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 import { getCelebs } from '~/api/celeb';
@@ -12,13 +12,11 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import { FONT_SIZE } from '~/styles/common';
 import { RestaurantData } from '~/@types/api.types';
 import { getRecommendedRestaurants } from '~/api/restaurant';
-import { SERVER_IMG_URL } from '~/constants/url';
-import useMediaQuery from '~/hooks/useMediaQuery';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
+import BannerSlider from './MainPage/BannerSlider';
 
 function MainPage() {
   const navigate = useNavigate();
-  const { isMobile } = useMediaQuery();
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
     queryFn: () => getCelebs(),
@@ -54,13 +52,7 @@ function MainPage() {
         <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
       </Helmet>
       <StyledContainer>
-        <Link to="/updated-recent">
-          <StyledBanner
-            alt="최근 업데이트된 맛집"
-            src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
-            isMobile={isMobile}
-          />
-        </Link>
+        <BannerSlider />
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
           <StyledIconBox>
@@ -119,8 +111,6 @@ const StyledContainer = styled.div`
 
   width: 100%;
 
-  overflow-x: hidden;
-
   box-sizing: content-box;
 
   max-width: 1240px;
@@ -128,27 +118,6 @@ const StyledContainer = styled.div`
   margin: 0 auto;
 
   padding-bottom: 4.4rem;
-`;
-
-const StyledBanner = styled.img<{ isMobile: boolean }>`
-  width: 100%;
-
-  margin: 0 auto;
-
-  object-fit: cover;
-
-  overflow: hidden;
-
-  ${({ isMobile }) =>
-    isMobile
-      ? css`
-          height: 200px;
-        `
-      : css`
-          height: 240px;
-
-          margin: 1.2rem;
-        `}
 `;
 
 const StyledIconBox = styled.div`
