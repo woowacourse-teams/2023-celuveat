@@ -3,19 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import Slider from 'react-slick';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { FONT_SIZE } from '~/styles/common';
+import { FONT_SIZE, hideScrollBar } from '~/styles/common';
 import { RestaurantData } from '~/@types/api.types';
 import { getRecommendedRestaurants } from '~/api/restaurant';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 import BannerSlider from './MainPage/BannerSlider';
+import { CelebCarouselSettings, RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 function MainPage() {
+  const { isMobile } = useMediaQuery();
   const navigate = useNavigate();
   const { data: celebOptions } = useQuery({
     queryKey: ['celebOptions'],
@@ -52,35 +56,67 @@ function MainPage() {
         <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
       </Helmet>
       <StyledContainer>
-        <BannerSlider />
+        {isMobile ? (
+          <BannerSlider />
+        ) : (
+          <StyledSliderContainer>
+            <BannerSlider />
+          </StyledSliderContainer>
+        )}
+
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
-          <StyledIconBox>
-            {celebOptions.map(celeb => {
-              const { name, profileImageUrl, id } = celeb;
-              return (
-                <StyledCeleb onClick={() => clickCelebIcon(id)}>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
-                  <span>{name}</span>
-                </StyledCeleb>
-              );
-            })}
-          </StyledIconBox>
+          {isMobile ? (
+            <StyledIconBox>
+              {celebOptions.map(celeb => {
+                const { name, profileImageUrl, id } = celeb;
+                return (
+                  <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                    <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                    <span>{name}</span>
+                  </StyledCeleb>
+                );
+              })}
+            </StyledIconBox>
+          ) : (
+            <StyledSliderContainer>
+              <Slider {...CelebCarouselSettings}>
+                {celebOptions.map(celeb => {
+                  const { name, profileImageUrl, id } = celeb;
+                  return (
+                    <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                      <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                      <span>{name}</span>
+                    </StyledCeleb>
+                  );
+                })}
+              </Slider>
+            </StyledSliderContainer>
+          )}
         </div>
+
         <div>
           <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
-          <StyledPopularRestaurantBox>
-            {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
-              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
-            ))}
-          </StyledPopularRestaurantBox>
+          {isMobile ? (
+            <StyledPopularRestaurantBox>
+              {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
+              ))}
+            </StyledPopularRestaurantBox>
+          ) : (
+            <StyledSliderContainer>
+              <Slider {...RestaurantCardCarouselSettings}>
+                {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                  <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating isCarouselItem />
+                ))}
+              </Slider>
+            </StyledSliderContainer>
+          )}
         </div>
 
         <div>
           <StyledTitle>어디로 가시나요?</StyledTitle>
-          <StyledIconBox>
-            <RegionList />
-          </StyledIconBox>
+          <RegionList />
         </div>
         <div>
           <StyledTitle>카테고리</StyledTitle>
@@ -99,10 +135,6 @@ function MainPage() {
 }
 
 export default MainPage;
-
-const StyledTitle = styled.h5`
-  margin-left: 1.6rem;
-`;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -136,7 +168,7 @@ const StyledIconBox = styled.div`
 `;
 
 const StyledCeleb = styled.div`
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
@@ -155,11 +187,17 @@ const StyledPopularRestaurantBox = styled.div`
 
   overflow-x: scroll;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  ${hideScrollBar}
 `;
 
 const StyledCategoryBox = styled.div`
   padding: 1.6rem 0.8rem;
+`;
+
+const StyledTitle = styled.h5`
+  margin-left: 1.6rem;
+`;
+
+const StyledSliderContainer = styled.div`
+  padding: 2rem 4rem;
 `;

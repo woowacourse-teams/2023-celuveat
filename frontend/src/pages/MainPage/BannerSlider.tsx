@@ -3,25 +3,13 @@ import Slider from 'react-slick';
 import styled, { css } from 'styled-components';
 import { SERVER_IMG_URL } from '~/constants/url';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import Next from '~/assets/icons/arrow/next.svg';
-import Prev from '~/assets/icons/arrow/prev.svg';
+import { BannerCarouselSettings } from '~/constants/carouselSettings';
 
 function BannerSlider() {
   const { isMobile } = useMediaQuery();
 
-  const settings = {
-    arrows: true,
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    nextArrow: <Next />,
-    prevArrow: <Prev />,
-  };
   return (
-    <Slider {...settings}>
+    <Slider {...BannerCarouselSettings}>
       <Link to="/updated-recent">
         <StyledBanner
           alt="최근 업데이트된 맛집"

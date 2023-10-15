@@ -23,6 +23,7 @@ interface MiniRestaurantCardProps {
   showLike?: boolean;
   showDistance?: boolean;
   hideProfile?: boolean;
+  isCarouselItem?: boolean;
 }
 
 function MiniRestaurantCard({
@@ -32,6 +33,7 @@ function MiniRestaurantCard({
   setHoveredId = () => {},
   carousel = false,
   showWaterMark = false,
+  isCarouselItem = false,
   showRating = false,
   showLike = false,
   showDistance = false,
@@ -62,6 +64,7 @@ function MiniRestaurantCard({
         aria-label={`${name} 카드`}
         tabIndex={0}
         flexColumn={flexColumn}
+        isCarouselItem={isCarouselItem}
       >
         <StyledImageSection>
           <WaterMarkImage imageUrl={images[0]?.name} type="list" sns={images[0]?.sns} />
@@ -103,14 +106,23 @@ function areEqual(prevProps: MiniRestaurantCardProps, nextProps: MiniRestaurantC
 
 export default memo(MiniRestaurantCard, areEqual);
 
-const StyledContainer = styled.li<{ flexColumn: boolean }>`
+const StyledContainer = styled.li<{ flexColumn: boolean; isCarouselItem: boolean }>`
   display: flex;
+
+  ${({ isCarouselItem }) =>
+    isCarouselItem &&
+    css`
+      margin: 0 auto;
+    `}
 
   ${({ flexColumn }) =>
     flexColumn &&
     css`
       flex-direction: column;
       justify-content: start;
+      align-items: center;
+
+      width: 200px;
     `}
 
   cursor: pointer;
