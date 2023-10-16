@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RestaurantReviewReportRepository extends JpaRepository<RestaurantReviewReport, Long> {
 
     List<RestaurantReviewReport> findAllByRestaurantReviewId(Long restaurantReviewId);
+
+    void deleteAllByRestaurantReview(RestaurantReview review);
 }
