@@ -75,4 +75,4 @@ jobs:
       - name: ✨ 배포 스크립트 실행
         run: |
           export APP_VERSION_TAG=${{ secrets.APP_VERSION_TAG }}
-          sh deploy.sh
+          sh /home/ubuntu/deploy.sh
