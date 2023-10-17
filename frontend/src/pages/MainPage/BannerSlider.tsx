@@ -9,7 +9,7 @@ function BannerSlider() {
   const { isMobile } = useMediaQuery();
 
   return (
-    <Slider {...BannerCarouselSettings}>
+    <Slider {...BannerCarouselSettings} arrows={!isMobile}>
       <Link to="/updated-recent">
         <StyledBanner
           alt="최근 업데이트된 맛집"
