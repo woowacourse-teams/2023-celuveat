@@ -17,15 +17,16 @@ import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 import BannerSlider from './MainPage/BannerSlider';
 import { CelebCarouselSettings, RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import { celebOptions } from '~/constants/celeb';
 
 function MainPage() {
   const { isMobile } = useMediaQuery();
   const navigate = useNavigate();
-  const { data: celebOptions } = useQuery({
-    queryKey: ['celebOptions'],
-    queryFn: () => getCelebs(),
-    suspense: true,
-  });
+  // const { data: celebOptions } = useQuery({
+  //   queryKey: ['celebOptions'],
+  //   queryFn: () => getCelebs(),
+  //   suspense: true,
+  // });
   const setHomeSelected = useBottomNavBarState(state => state.setHomeSelected);
 
   useEffect(() => {
