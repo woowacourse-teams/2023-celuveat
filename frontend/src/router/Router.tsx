@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { lazy } from 'react';
 
 const Root = lazy(() => import('./Root'));
-const EventPageDetail = lazy(() => import('~/pages/EventPageDetail'));
+const EventDetailPage = lazy(() => import('~/pages/EventDetailPage'));
 const EventFormPage = lazy(() => import('~/pages/EventFormPage'));
 const NotFoundPage = lazy(() => import('~/pages/NotFoundPage'));
 const MapPage = lazy(() => import('~/pages/MapPage'));
@@ -29,7 +29,7 @@ function Router() {
         { index: true, element: <MainPage /> },
         { path: '/category/:category', element: <CategoryResultPage /> },
         { path: '/celeb/:celebId', element: <CelebResultPage /> },
-        { path: '/event', element: <EventPageDetail /> },
+        { path: '/event', element: <EventDetailPage /> },
         { path: '/event-form', element: <EventFormPage /> },
         { path: '/map', element: <MapPage /> },
         { path: '/policy', element: <PrivacyPolicy /> },

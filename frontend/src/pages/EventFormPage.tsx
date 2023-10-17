@@ -1,13 +1,14 @@
 import { ChangeEvent, MouseEvent, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import imageCompression from 'browser-image-compression';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import ReviewImageForm from '~/components/ReviewImageForm';
 import { FONT_SIZE } from '~/styles/common';
 import { changeImgFileExtension } from '~/utils/image';
 import TextButton from '~/components/@common/Button';
 import { postEventForm } from '~/api/event';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 const options = {
   maxSizeMB: 1,
@@ -18,6 +19,7 @@ const options = {
 function EventFormPage() {
   const [images, setImages] = useState<string[]>([]);
   const [files, setFiles] = useState<Blob[]>([]);
+  const { isMobile } = useMediaQuery();
   const instagramIdRef = useRef<string>('');
   const restaurantNameRef = useRef<string>('');
   const navigate = useNavigate();
@@ -74,15 +76,18 @@ function EventFormPage() {
   };
 
   return (
-    <StyledContainer>
-      <h2>사진 등록 이벤트 참여하기!</h2>
+    <StyledContainer isMobile={isMobile}>
+      <StyledLink to="/event">
+        <h3>← 사진 등록 이벤트 참여하기</h3>
+      </StyledLink>
       <StyledSection>
         <h4>인스타아이디</h4>
-        <div>사진이 활용되면 해당 계정으로 DM을 보내드립니다.</div>
+        <StyledDescription>사진이 활용되면 해당 계정으로 DM을 보내드립니다.</StyledDescription>
         <StyledInput placeholder="ex) celuveat" onChange={onChangeInstagramIdHandler} />
       </StyledSection>
       <StyledSection>
         <h4>음식점 이름</h4>
+        <StyledDescription>사진에 해당하는 음식점 명을 입력해주세요</StyledDescription>
         <StyledInput placeholder="ex) 꿉당 성수점" onChange={onChangeRestaurantNameHandler} />
       </StyledSection>
       <StyledSection>
@@ -96,16 +101,25 @@ function EventFormPage() {
 
 export default EventFormPage;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 4.8rem;
 
   width: 100%;
   max-width: 1240px;
+  min-height: 100vh;
 
-  padding: 4rem;
   margin: 0 auto;
+
+  ${({ isMobile }) =>
+    isMobile
+      ? css`
+          padding: 2rem 1.2rem 8rem;
+        `
+      : css`
+          padding: 2rem;
+        `}
 `;
 
 const StyledSection = styled.section`
@@ -123,4 +137,12 @@ const StyledInput = styled.input`
 
   border: none;
   border-bottom: 1px solid black;
+`;
+
+const StyledDescription = styled.div`
+  color: var(--gray-3);
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
 `;
