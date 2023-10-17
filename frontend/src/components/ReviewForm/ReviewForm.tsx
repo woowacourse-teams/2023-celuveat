@@ -23,6 +23,10 @@ interface ReviewFormProps {
   type: ReviewSubmitButtonType;
 }
 
+interface BlobType extends Blob {
+  name?: string;
+}
+
 export const SUBMIT_BUTTON_TEXT = {
   create: '등록하기',
   update: '수정하기',
@@ -42,7 +46,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [rating, setRating] = useState<StarRate>(0);
-  const [files, setFiles] = useState<Blob[]>([]);
+  const [files, setFiles] = useState<BlobType[]>([]);
 
   const isSubmitDisabled = text.length === 0 || rating === 0 || isSubmitRequesting;
 
