@@ -72,21 +72,8 @@ jobs:
     if: ${{ needs.backend-docker-build-and-push.result == 'success' }}
     needs: [ backend-docker-build-and-push ]
     steps:
-      - name: ✨ DockerHub에서 Image Pull
+      - name: ✨ 배포 스크립트 실행
         run: |
-          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_PASSWORD }}
-          docker pull ${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          docker stop ${{ env.DOCKER_CONTAINER_NAME }} || true
-          docker container prune -f
-          docker image prune -f
-
-      - name: ✨ Docker Image 실행
-        run: |
-          docker run \
-            -d \
-            --name ${{ env.DOCKER_CONTAINER_NAME }} \
-            -p 8080:8080 \
-            -p 18080:18080 \
-            -e "SPRING_PROFILES_ACTIVE=${{ env.PROFILE }}" \
-            -v ${{ env.SERVER_LOG_DIR_PATH }}:${{ env.DOCKER_LOG_DIR_PATH }} \
-            ${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          export APP_VERSION_TAG=${{ secrets.APP_VERSION_TAG }}
+          pwd
+          sh /home/ubuntu/deploy.sh

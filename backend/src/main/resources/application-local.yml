@@ -48,3 +48,9 @@ aws:
   s3:
     bucket:
     key:
+
+event:
+  aws:
+    s3:
+      bucket:
+      key:
