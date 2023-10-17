@@ -22,3 +22,9 @@ export const apiUserFilesClient = axios.create({
   },
   withCredentials: true,
 });
+export const apiFilesClient = axios.create({
+  baseURL: `${process.env.BASE_URL}`,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+});

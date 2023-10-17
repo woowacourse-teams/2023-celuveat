@@ -18,11 +18,7 @@ function BannerSlider() {
         />
       </Link>
       <Link to="/event">
-        <StyledBanner
-          alt="사진 등록 이벤트"
-          src={`${SERVER_IMG_URL}banner/image-review-banner.jpg`}
-          isMobile={isMobile}
-        />
+        <StyledBanner alt="사진 등록 이벤트" src={`${SERVER_IMG_URL}banner/event-banner.jpeg`} isMobile={isMobile} />
       </Link>
     </Slider>
   );
@@ -43,6 +39,6 @@ const StyledBanner = styled.img<{ isMobile: boolean }>`
           height: 200px;
         `
       : css`
-          height: 270px;
+          height: 300px;
         `}
 `;
