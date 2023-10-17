@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
+import Modal from 'celuveat-react-modal';
 import LoginButton from '~/components/@common/LoginButton';
-import Modal from '../@common/Modal';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -8,8 +9,10 @@ interface LoginModalProps {
 }
 
 function LoginModal({ isOpen, close }: LoginModalProps) {
+  const { isMobile } = useMediaQuery();
+
   return (
-    <Modal isOpen={isOpen} close={close} title="로그인 및 회원가입">
+    <Modal isOpen={isOpen} close={close} title="로그인 및 회원가입" isMobile={isMobile}>
       <StyledLoginModalContent>
         <LoginButton type="kakao" />
         <LoginButton type="google" />
