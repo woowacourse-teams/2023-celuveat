@@ -40,7 +40,7 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
     <StyledDetailHeader tabIndex={0}>
       <StyledTitleSection>
         <h3>{name}</h3>
-        <StyledShareButtonWrapper>
+        <div>
           <StyledShareButton type="button" onClick={share}>
             <ShareIcon />
           </StyledShareButton>
@@ -52,7 +52,7 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
               alt="카카오톡 공유 보내기 버튼"
             />
           </ShareButton>
-        </StyledShareButtonWrapper>
+        </div>
       </StyledTitleSection>
       <div role="group">
         <div aria-label={`조회수 ${viewCount}`}>
@@ -67,8 +67,6 @@ function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
 }
 
 export default Header;
-
-const StyledShareButtonWrapper = styled.div``;
 
 const StyledDetailHeader = styled.section`
   display: flex;
