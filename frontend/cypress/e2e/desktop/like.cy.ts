@@ -17,6 +17,6 @@ describe('좋아요 관련 기능을 테스트 한다.', () => {
 
     // 좋아요를 취소한다.
     cy.get('li[aria-label="소문난성수감자탕 카드"]').find('button').click();
-    cy.get('li[aria-label="소문난성수감자탕 카드"]').find('button').find('svg').should('have.attr', 'fill', '#000');
+    cy.shouldIsLiked('소문난성수감자탕 카드', false);
   });
 });

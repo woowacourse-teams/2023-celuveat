@@ -9,6 +9,13 @@ Cypress.Commands.add('shouldBeList', restaurantNames => {
   });
 });
 
+Cypress.Commands.add('shouldIsLiked', (restaurantName, isLiked) => {
+  cy.getByAriaLabel(restaurantName)
+    .find('button')
+    .find('svg')
+    .should('have.attr', 'fill', isLiked ? 'red' : '#000');
+});
+
 Cypress.Commands.add('loginGoogle', () => {
   cy.origin('https://accounts.google.com', () => {
     Cypress.on(

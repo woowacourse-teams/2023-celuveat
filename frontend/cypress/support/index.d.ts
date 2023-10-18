@@ -13,5 +13,6 @@ declare namespace Cypress {
     loginGoogle(): Chainable;
     loginGoogleForDesktop(): Chainable;
     loginGoogleForMobile(): Chainable;
+    shouldIsLiked(restaurantName: string, isLiked: boolean): Chainable;
   }
 }

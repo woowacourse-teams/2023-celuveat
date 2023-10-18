@@ -29,7 +29,7 @@ describe('API 테스트', () => {
 
     cy.loginGoogleForDesktop();
 
-    cy.get('li[aria-label="오띠젤리 카드"]').find('button').find('svg').should('have.attr', 'fill', 'red');
+    cy.shouldIsLiked('오띠젤리 카드', true);
   });
 
   it('압구정에 있는 음식점들을 찾고 로그인 시 내가 좋아요한 음식점이 표시된다.', () => {
@@ -60,7 +60,7 @@ describe('API 테스트', () => {
 
     cy.loginGoogleForDesktop();
 
-    cy.get('li[aria-label="엘픽 카드"]').find('button').find('svg').should('have.attr', 'fill', 'red');
+    cy.shouldIsLiked('엘픽 카드', true);
   });
 
   it('카테고리가 "한식"인 음식점들을 찾고 로그인 시 내가 좋아요한 음식점이 표시된다.', () => {
@@ -95,6 +95,6 @@ describe('API 테스트', () => {
 
     cy.loginGoogleForDesktop();
 
-    cy.get('li[aria-label="청실홍실 카드"]').find('button').find('svg').should('have.attr', 'fill', 'red');
+    cy.shouldIsLiked('청실홍실 카드', true);
   });
 });
