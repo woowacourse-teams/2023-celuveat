@@ -33,11 +33,11 @@ describe('API 테스트', () => {
   });
 
   it('압구정에 있는 음식점들을 찾고 로그인 시 내가 좋아요한 음식점이 표시된다.', () => {
-    cy.intercept('GET', 'https://d.api.celuveat.com/main-page/region?codes=1168011000,1168010400&page=0').as(
+    cy.intercept('GET', 'https://d.api.celuveat.com/main-page/region?codes=1168011000,1168010400,1168010700&page=0').as(
       'regionRestaurantsPage1',
     );
 
-    cy.intercept('GET', 'https://d.api.celuveat.com/main-page/region?codes=1168011000,1168010400&page=1').as(
+    cy.intercept('GET', 'https://d.api.celuveat.com/main-page/region?codes=1168011000,1168010400,1168010700&page=1').as(
       'regionRestaurantsPage2',
     );
 
