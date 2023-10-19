@@ -37,7 +37,8 @@
     "mocks",
     "fileTransformer.js",
     "cypress",
-    "cypress.config.ts"
+    "cypress.config.ts",
+    "cypress.config.js"
   ],
   "rules": {
     "no-console": "warn",
