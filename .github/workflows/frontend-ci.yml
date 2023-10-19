@@ -54,6 +54,7 @@ jobs:
 
       - name: 🍔 yarn install
         run: pwd && ls && yarn install
+        working-directory: ${{ env.working-directory }}
 
       - name: 🍔 eslint 테스트
         run: pwd && ls && yarn lint
