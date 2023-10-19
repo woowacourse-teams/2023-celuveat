@@ -53,7 +53,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: 🍔 yarn install
-        run: yarn install
+        run: pwd && ls && yarn install
 
       - name: 🍔 eslint 테스트
         run: pwd && ls && yarn lint
