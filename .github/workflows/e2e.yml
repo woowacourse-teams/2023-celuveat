@@ -23,5 +23,5 @@ jobs:
           echo '${{ secrets.CYPRESS_CONFIG_JSON }}' > cypress.env.json
 
       # https://github.com/cypress-io/github-action
-      - name: Cypress run 🚀
-        uses: cypress-io/github-action@v3
+      - name: 🍔 E2E 테스트
+        run: npx cypress run
