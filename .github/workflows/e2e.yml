@@ -10,11 +10,18 @@ on:
       - main
 
 jobs:
-  tests:
-    runs-on: ubuntu-20.04
+  frontend-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./frontend
+
+    name: 🍔테스트 딱 대라 💢👊
+
     steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.16.1'
 
       - name: Write the cypress.env.json file 📝
         # use quotes around the secret, as its value
