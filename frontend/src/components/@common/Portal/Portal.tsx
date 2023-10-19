@@ -8,7 +8,7 @@ interface PortalProps {
 }
 
 function Portal({ children, close, isOpen }: PortalProps) {
-  return isOpen && createPortal(cloneElement(children, { close }), document.querySelector('#modal'));
+  return isOpen && createPortal(cloneElement(children, { close }), document.querySelector('#portal'));
 }
 
 export default Portal;
