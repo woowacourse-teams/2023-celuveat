@@ -23,6 +23,10 @@ jobs:
         with:
           node-version: '18.16.1'
 
+      - name: 🍔 yarn install
+        run: pwd && ls && yarn install
+        working-directory: ${{ env.working-directory }}
+
       # https://github.com/cypress-io/github-action
       - name: 🍔 E2E 테스트
         run: npx cypress run --env GOOGLE_EMAIL_FOR_TESTING=${{ secrets.GOOGLE_EMAIL_FOR_TESTING }},GOOGLE_PASSWORD_FOR_TESTING=${{ secrets.GOOGLE_PASSWORD_FOR_TESTING }}
