@@ -4,6 +4,7 @@ import static com.celuveat.admin.exception.AdminExceptionType.ALREADY_EXISTS_RES
 import static com.celuveat.admin.exception.AdminExceptionType.ILLEGAL_DATE_FORMAT;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_IMAGE_NAME_AND_INSTAGRAM_NAME;
 import static com.celuveat.admin.exception.AdminExceptionType.MISMATCH_COUNT_YOUTUBE_VIDEO_LINK_AND_UPLOAD_DATE;
+import static java.util.Collections.emptyList;
 
 import com.celuveat.admin.exception.AdminException;
 import com.celuveat.admin.presentation.dto.SaveCelebRequest;
@@ -49,7 +50,8 @@ public class AdminService {
     }
 
     private void validateDuplicate(SaveDataRequest request) {
-        Optional<Restaurant> restaurant = restaurantRepository.findByNameAndRoadAddress(request.restaurantName(), request.roadAddress());
+        Optional<Restaurant> restaurant =
+                restaurantRepository.findByNameAndRoadAddress(request.restaurantName(), request.roadAddress());
         boolean existVideo = videoRepository.existsByYoutubeUrl(request.youtubeVideoUrl());
 
         if (restaurant.isPresent() && existVideo) {
@@ -65,6 +67,10 @@ public class AdminService {
     }
 
     private List<RestaurantImage> toRestaurantImages(SaveDataRequest request, Restaurant restaurant) {
+        if (request.imageName().isBlank()) {
+            return emptyList();
+        }
+
         String[] imageNames = request.imageName().split(",");
         String[] instagramNames = request.instagramName().split(",");
         if (imageNames.length != instagramNames.length) {

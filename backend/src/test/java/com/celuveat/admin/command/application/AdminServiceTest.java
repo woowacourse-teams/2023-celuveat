@@ -294,6 +294,32 @@ class AdminServiceTest extends IntegrationTest {
             // then
             assertThat(exceptionType).isEqualTo(ALREADY_EXISTS_RESTAURANT_AND_VIDEO);
         }
+
+        @Test
+        void 음식점_사진이_없으면_사진을_제외하고_저장한다() {
+            // given
+            celebRepository.save(성시경());
+            String rawData = "하늘초밥" +
+                    "\thttps://www.youtube.com/watch?v=GeZRxKUCFtM" +
+                    "\t@sungsikyung" +
+                    "\t2021. 9. 21." +
+                    "\thttps://map.naver.com/v5/entry/place/1960457705?entry=plt&c=15,0,0,0,dh" +
+                    "\t초밥,롤" +
+                    "\t0507-1366-4573" +
+                    "\t서울 서대문구 이화여대2길 14 1층 하늘초밥" +
+                    "\t37.5572713" +
+                    "\t126.9466788" +
+                    "\t" +
+                    "\t";
+            List<SaveDataRequest> 요청 = 데이터저장_요청_객체_생성(rawData);
+
+            // when
+            adminService.saveData(요청);
+
+            // then
+            List<RestaurantImage> restaurantImages = restaurantImageRepository.findAll();
+            assertThat(restaurantImages.size()).isZero();
+        }
     }
 
     @Nested
