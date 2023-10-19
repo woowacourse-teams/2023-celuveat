@@ -34,7 +34,5 @@ jobs:
           json: ${{ secrets.CYPRESS_CONFIG_JSON }}
 
       - name: 🍔 E2E 테스트
-        uses: cypress-io/github-action@v6
-        with:
-          start: pwd && ls && yarn install && yarn cy:run
-          browser: chrome
+        run: pwd && ls && npx cypress run --browser chrome
+        working-directory: ${{ env.working-directory }}
