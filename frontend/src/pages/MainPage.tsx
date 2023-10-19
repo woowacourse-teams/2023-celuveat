@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 import Slider from 'react-slick';
-import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
