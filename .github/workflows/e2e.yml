@@ -56,6 +56,8 @@ jobs:
           json: ${{ secrets.CYPRESS_CONFIG_JSON }}
 
       - name: 🍔 E2E 테스트
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v2
+        working-directory: ${{ env.working-directory }}
         with:
+          start: yarn cy:run
           browser: chrome
