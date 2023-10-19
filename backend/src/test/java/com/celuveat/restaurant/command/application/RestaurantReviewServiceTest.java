@@ -18,6 +18,8 @@ import com.celuveat.restaurant.command.application.dto.UpdateReviewRequestComman
 import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewImage;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewLike;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewReport;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -259,6 +261,29 @@ class RestaurantReviewServiceTest extends IntegrationTest {
             assertThat(review.rating()).isEqualTo(5.0);
             assertThat(대성집.reviewCount()).isEqualTo(1);
             assertThat(대성집.totalRating()).isEqualTo(5.0);
+        }
+
+        @Test
+        void 리뷰를_제거하면_리뷰_좋아요와_리뷰_신고가_모두_삭제된다() {
+            // given
+            RestaurantReview restaurantReview = restaurantReviewRepository.save(
+                    RestaurantReview.create(대성집, 말랑, "좋아요", 5.0)
+            );
+            RestaurantReviewLike 리뷰_좋아요 = restaurantReviewLikeRepository.save(
+                    RestaurantReviewLike.create(restaurantReview, 도기)
+            );
+            RestaurantReviewReport 리뷰_신고 = restaurantReviewReportRepository.save(
+                    new RestaurantReviewReport("신고", restaurantReview, 도기)
+            );
+
+            // when
+            restaurantReviewService.delete(new DeleteReviewCommand(restaurantReview.id(), 말랑.id()));
+
+            // then
+            assertThat(대성집.reviewCount()).isEqualTo(0);
+            assertThat(대성집.totalRating()).isEqualTo(0.0);
+            assertThat(restaurantReviewReportRepository.findById(리뷰_신고.id())).isEmpty();
+            assertThat(restaurantReviewLikeRepository.findById(리뷰_좋아요.id())).isEmpty();
         }
     }
 }
