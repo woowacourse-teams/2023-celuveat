@@ -34,7 +34,6 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
             <MiniRestaurantCard
               restaurant={restaurant}
               celebs={restaurant.celebs}
-              carousel={false}
               flexColumn
               showLike
               showRating
@@ -49,7 +48,6 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
               <MiniRestaurantCard
                 restaurant={restaurant}
                 celebs={restaurant.celebs}
-                carousel={false}
                 flexColumn
                 showLike
                 showRating

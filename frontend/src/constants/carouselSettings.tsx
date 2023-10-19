@@ -90,7 +90,6 @@ export const RestaurantCardCarouselSettings = {
 };
 
 export const BannerCarouselSettings = {
-  arrows: true,
   dots: true,
   infinite: true,
   speed: 500,

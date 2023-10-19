@@ -5,7 +5,6 @@ import Chinese from '~/assets/icons/category/chinese.svg';
 import Japanese from '~/assets/icons/category/japanese.svg';
 import Beef from '~/assets/icons/category/beef.svg';
 import Soup from '~/assets/icons/category/soup.svg';
-import Bakery from '~/assets/icons/category/bakery.svg';
 import Noodle from '~/assets/icons/category/noodle.svg';
 import Pizza from '~/assets/icons/category/pizza.svg';
 import Sushi from '~/assets/icons/category/sushi.svg';

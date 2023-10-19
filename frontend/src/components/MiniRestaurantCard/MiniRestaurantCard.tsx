@@ -17,8 +17,6 @@ interface MiniRestaurantCardProps {
   celebs?: Celeb[];
   setHoveredId?: React.Dispatch<React.SetStateAction<number>>;
   flexColumn?: boolean;
-  carousel?: boolean;
-  showWaterMark?: boolean;
   showRating?: boolean;
   showLike?: boolean;
   showDistance?: boolean;
@@ -31,8 +29,6 @@ function MiniRestaurantCard({
   celebs = [],
   flexColumn = false,
   setHoveredId = () => {},
-  carousel = false,
-  showWaterMark = false,
   isCarouselItem = false,
   showRating = false,
   showLike = false,

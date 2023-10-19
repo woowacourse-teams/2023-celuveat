@@ -9,13 +9,16 @@ function BannerSlider() {
   const { isMobile } = useMediaQuery();
 
   return (
-    <Slider {...BannerCarouselSettings}>
+    <Slider {...BannerCarouselSettings} arrows={!isMobile}>
       <Link to="/updated-recent">
         <StyledBanner
           alt="최근 업데이트된 맛집"
           src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
           isMobile={isMobile}
         />
+      </Link>
+      <Link to="/event">
+        <StyledBanner alt="사진 등록 이벤트" src={`${SERVER_IMG_URL}banner/event-banner.jpeg`} isMobile={isMobile} />
       </Link>
     </Slider>
   );
@@ -36,8 +39,6 @@ const StyledBanner = styled.img<{ isMobile: boolean }>`
           height: 200px;
         `
       : css`
-          height: 240px;
-
-          margin: 1.2rem;
+          height: 300px;
         `}
 `;

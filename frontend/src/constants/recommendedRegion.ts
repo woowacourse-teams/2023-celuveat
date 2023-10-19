@@ -1,7 +1,7 @@
 export const RECOMMENDED_REGION = {
   apgujeong: {
     name: ['압구정', '청담'],
-    code: [1168011000, 1168010400],
+    code: [1168011000, 1168010400, 1168010700],
   },
   eulji: {
     name: ['을지로', '종로'],
@@ -9,7 +9,7 @@ export const RECOMMENDED_REGION = {
   },
   seongsu: {
     name: ['성수'],
-    code: [1120011400, 1120011500],
+    code: [1120000000],
   },
   hongdae: {
     name: ['홍대', '합정'],
