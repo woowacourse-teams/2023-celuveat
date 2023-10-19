@@ -23,17 +23,7 @@ jobs:
         with:
           node-version: '18.16.1'
 
-      - name: Write the cypress.env.json file 📝
-        # use quotes around the secret, as its value
-        # is simply inserted as a string into the command
-        run: |
-          echo '${{ secrets.CYPRESS_CONFIG_JSON }}' > cypress.env.json
-
-      - name: 🍔 yarn install
-        run: yarn install
-        working-directory: ${{ env.working-directory }}
-
       # https://github.com/cypress-io/github-action
       - name: 🍔 E2E 테스트
-        run: npx cypress run
+        run: npx cypress run --env GOOGLE_EMAIL_FOR_TESTING=${{ secrets.GOOGLE_EMAIL_FOR_TESTING }},GOOGLE_PASSWORD_FOR_TESTING=${{ secrets.GOOGLE_PASSWORD_FOR_TESTING }}
         working-directory: ${{ env.working-directory }}
