@@ -25,3 +25,4 @@ jobs:
       # https://github.com/cypress-io/github-action
       - name: 🍔 E2E 테스트
         run: npx cypress run
+        working-directory: ${{ env.working-directory }}
