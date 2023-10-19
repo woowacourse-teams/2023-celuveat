@@ -27,7 +27,6 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.working-directory }}
-          start: yarn start
           browser: chrome
         env:
           GOOGLE_EMAIL_FOR_TESTING: ${{secrets.GOOGLE_EMAIL_FOR_TESTING}}
