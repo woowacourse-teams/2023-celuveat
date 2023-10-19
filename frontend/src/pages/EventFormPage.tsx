@@ -16,9 +16,13 @@ const options = {
   useWebWorker: true,
 };
 
+interface BlobType extends Blob {
+  name?: string;
+}
+
 function EventFormPage() {
   const [images, setImages] = useState<string[]>([]);
-  const [files, setFiles] = useState<Blob[]>([]);
+  const [files, setFiles] = useState<BlobType[]>([]);
   const { isMobile } = useMediaQuery();
   const instagramIdRef = useRef<string>('');
   const restaurantNameRef = useRef<string>('');
