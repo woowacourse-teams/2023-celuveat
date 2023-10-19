@@ -29,6 +29,10 @@ jobs:
         run: |
           echo '${{ secrets.CYPRESS_CONFIG_JSON }}' > cypress.env.json
 
+      - name: 🍔 yarn install
+        run: yarn install
+        working-directory: ${{ env.working-directory }}
+
       # https://github.com/cypress-io/github-action
       - name: 🍔 E2E 테스트
         run: npx cypress run
