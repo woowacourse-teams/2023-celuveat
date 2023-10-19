@@ -60,16 +60,16 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
 
   return (
     <StyledBottomNavBar isHide={isHide} ref={ref}>
-      <StyledNavBarButton onClick={clickHome}>
+      <StyledNavBarButton type="button" onClick={clickHome}>
         <HomeIcon fill={selected === 'home' ? '#000' : 'none'} />
       </StyledNavBarButton>
-      <StyledNavBarButton onClick={clickMap}>
+      <StyledNavBarButton type="button" onClick={clickMap}>
         <MapIcon strokeWidth={selected === 'map' ? 2 : 1.2} />
       </StyledNavBarButton>
-      <StyledNavBarButton onClick={clickWishList}>
-        <HeartIcon fill={selected === 'wishList' ? '#000' : 'none'} />
+      <StyledNavBarButton type="button" onClick={clickWishList}>
+        <HeartIcon width={32} fill={selected === 'wishList' ? '#000' : 'none'} />
       </StyledNavBarButton>
-      <StyledNavBarButton onClick={clickUser}>
+      <StyledNavBarButton type="button" onClick={clickUser}>
         <UserIcon fill={selected === 'user' ? '#000' : 'none'} />
       </StyledNavBarButton>
     </StyledBottomNavBar>
@@ -100,10 +100,15 @@ const StyledBottomNavBar = styled.nav<{ isHide: boolean }>`
   transition: 0.4s ease-in-out;
 `;
 
-const StyledNavBarButton = styled.div`
+const StyledNavBarButton = styled.button`
   display: flex;
   justify-content: center;
 
   width: 28px;
   max-width: 28px;
+
+  padding: 0;
+
+  border: none;
+  background-color: transparent;
 `;

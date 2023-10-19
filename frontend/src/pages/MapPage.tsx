@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { styled, css } from 'styled-components';
 
 import Map from '~/components/@common/Map';
@@ -12,9 +12,14 @@ import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
 
 function MapPage() {
+  const ref = useRef<HTMLDivElement>();
   const { isMobile } = useMediaQuery();
   const { value: isMapExpanded, toggle: toggleExpandedMap } = useBooleanState(false);
   const setMapSelected = useBottomNavBarState(state => state.setMapSelected);
+
+  const scrollTop = () => {
+    ref.current.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     setMapSelected();
@@ -39,8 +44,8 @@ function MapPage() {
         <MapPageNavBar />
       </Suspense>
       <StyledLayout isMapExpanded={isMapExpanded}>
-        <StyledLeftSide isMapExpanded={isMapExpanded}>
-          <RestaurantCardList />
+        <StyledLeftSide isMapExpanded={isMapExpanded} ref={ref}>
+          <RestaurantCardList scrollTop={scrollTop} />
         </StyledLeftSide>
         <StyledRightSide>
           <Map toggleMapExpand={toggleExpandedMap} />

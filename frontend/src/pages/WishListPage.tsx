@@ -1,16 +1,19 @@
-import { styled, css } from 'styled-components';
-
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import RestaurantWishList from '~/components/RestaurantWishList';
+import styled from 'styled-components';
+import { RestaurantData } from '~/@types/api.types';
+import { getRestaurantWishList } from '~/api/user';
 import LoginErrorHandleComponent from '~/components/@common/LoginErrorHandleComponent';
-
-import useMediaQuery from '~/hooks/useMediaQuery';
-import { FONT_SIZE } from '~/styles/common';
+import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
+import { FONT_SIZE } from '~/styles/common';
 
 function WishListPage() {
-  const { isMobile } = useMediaQuery();
   const setWishListSelected = useBottomNavBarState(state => state.setWishListSelected);
+  const { data: restaurantData } = useQuery<RestaurantData[]>({
+    queryKey: ['restaurants', { type: 'wish-list' }],
+    queryFn: () => getRestaurantWishList(),
+  });
 
   useEffect(() => {
     setWishListSelected();
@@ -18,47 +21,65 @@ function WishListPage() {
 
   return (
     <LoginErrorHandleComponent>
-      <StyledWishListPageWrapper>
-        <StyledMobileLayout>
-          <StyledTitle isMobile={isMobile}>위시리스트</StyledTitle>
-          <RestaurantWishList />
-        </StyledMobileLayout>
-      </StyledWishListPageWrapper>
+      <StyledContainer>
+        <StyledTitle>위시리스트</StyledTitle>
+        <StyledResultSection>
+          {restaurantData?.length !== 0 ? (
+            <>
+              <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
+              {restaurantData?.map(({ celebs, ...restaurant }) => (
+                <MiniRestaurantCard celebs={celebs} restaurant={restaurant} showRating showLike />
+              ))}
+            </>
+          ) : (
+            <>
+              <h3>아직 좋아요를 누른 음식점이 없어요.</h3>
+              <StyledDescription>
+                위시리스트에 음식점을 추가하려면 음식점 카드의 좋아요 버튼을 눌러주세요!
+              </StyledDescription>
+            </>
+          )}
+        </StyledResultSection>
+      </StyledContainer>
     </LoginErrorHandleComponent>
   );
 }
 
 export default WishListPage;
 
-const StyledWishListPageWrapper = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 2.4rem;
 
   width: 100%;
-  min-height: 100dvh;
+  max-width: 1240px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+  overflow-x: hidden;
+
+  padding-bottom: 4.8rem;
 `;
 
-const StyledMobileLayout = styled.main`
+const StyledResultCount = styled.span`
+  font-size: ${FONT_SIZE.md};
+`;
+
+const StyledResultSection = styled.div`
   display: flex;
   flex-direction: column;
-
-  position: relative;
+  gap: 2.4rem;
 
   width: 100%;
-  height: 100%;
 
-  padding-bottom: 2.4rem;
+  padding: 0 1.2rem;
 `;
 
-const StyledTitle = styled.h3<{ isMobile: boolean }>`
-  width: 100%;
+const StyledTitle = styled.h5`
+  margin: 1.6rem 0.8rem 0;
+`;
 
-  padding: 2rem;
-
-  ${({ isMobile }) =>
-    isMobile &&
-    css`
-      font-size: ${FONT_SIZE.lg};
-    `}
+const StyledDescription = styled.div`
+  font-size: ${FONT_SIZE.md};
 `;

@@ -11,8 +11,9 @@ import { FONT_SIZE } from '~/styles/common';
 function UpdatedRestaurantPage() {
   const { isMobile } = useMediaQuery();
   const { data: restaurantData } = useQuery<RestaurantData[]>({
-    queryKey: ['updatedRestaurants'],
+    queryKey: ['restaurants', { type: 'updated-recent' }],
     queryFn: getUpdatedRestaurants,
+    suspense: true,
   });
 
   return (
@@ -20,13 +21,7 @@ function UpdatedRestaurantPage() {
       <StyledLink to="/">
         <StyledTitle>← 홈으로 돌아가기</StyledTitle>
       </StyledLink>
-      <StyledBannerSection>
-        <StyledBanner
-          alt="최근 업데이트된 맛집"
-          src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
-          isMobile={isMobile}
-        />
-      </StyledBannerSection>
+      <StyledBanner alt="최근 업데이트된 맛집" src={`${SERVER_IMG_URL}banner/recent-updated.jpg`} isMobile={isMobile} />
       <StyledResultSection>
         <StyledResultCount>{restaurantData?.length}개의 매장</StyledResultCount>
 
@@ -46,34 +41,34 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
+
+  margin: 0 auto;
   overflow-x: hidden;
 
   padding-bottom: 4.8rem;
 `;
 
-const StyledBannerSection = styled.section`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-`;
-
 const StyledBanner = styled.img<{ isMobile: boolean }>`
   width: 100%;
-  max-width: 800px;
-  height: 200px;
-  max-height: 200px;
+
+  margin: 0 auto;
 
   object-fit: cover;
 
   overflow: hidden;
 
   ${({ isMobile }) =>
-    !isMobile &&
-    css`
-      margin: 1.2rem;
-    `}
+    isMobile
+      ? css`
+          height: 200px;
+        `
+      : css`
+          height: 240px;
+
+          margin: 1.2rem;
+        `}
 `;
 
 const StyledResultCount = styled.span`

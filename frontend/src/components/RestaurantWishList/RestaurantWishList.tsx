@@ -14,7 +14,7 @@ function RestaurantWishList() {
   const { isMobile } = useMediaQuery();
 
   const { data: restaurantData } = useQuery<RestaurantData[]>({
-    queryKey: ['restaurants', 'like'],
+    queryKey: ['wish-list-restaurants', 'like'],
     queryFn: () => getRestaurantWishList(),
   });
 

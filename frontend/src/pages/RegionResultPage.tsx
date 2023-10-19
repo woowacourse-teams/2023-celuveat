@@ -16,13 +16,14 @@ function RegionResultPage() {
   const ref = useRef<HTMLDivElement>();
 
   const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
-    queryKey: ['restaurantsFilteredByRegion', region],
+    queryKey: ['restaurants', { type: 'region' }, region],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurantsByAddress({ codes: RECOMMENDED_REGION[region].code, page: pageParam }),
     getNextPageParam: lastPage => {
       if (lastPage.totalPage > lastPage.currentPage) return lastPage.currentPage + 1;
       return undefined;
     },
+    suspense: true,
   });
 
   const entry = useIntersectionObserver(ref, {});
@@ -60,7 +61,10 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
+
+  margin: 0 auto;
 `;
 
 const StyledResultCount = styled.span`

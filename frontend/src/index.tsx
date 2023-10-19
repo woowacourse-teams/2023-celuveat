@@ -4,6 +4,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from '~/App';
 import GlobalStyles from './styles/GlobalStyles';
 import { worker } from './mocks/browser';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import '~/assets/fonts/font.css';
 

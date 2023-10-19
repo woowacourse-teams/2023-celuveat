@@ -30,4 +30,5 @@ jobs:
           start: yarn start
           browser: chrome
         env:
-          BASE_URL: ${{secrets.DEV_BASE_URL}}
+          GOOGLE_EMAIL_FOR_TESTING: ${{secrets.GOOGLE_EMAIL_FOR_TESTING}}
+          GOOGLE_PASSWORD_FOR_TESTING: ${{secrets.GOOGLE_PASSWORD_FOR_TESTING}}

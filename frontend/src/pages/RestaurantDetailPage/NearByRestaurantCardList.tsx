@@ -1,11 +1,13 @@
+/* eslint-disable no-nested-ternary */
 import { useQuery } from '@tanstack/react-query';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import Slider from 'react-slick';
 import { getNearByRestaurant } from '~/api/restaurant';
-import RestaurantCard from '~/components/RestaurantCard';
 import { hideScrollBar } from '~/styles/common';
 import type { RestaurantListData } from '~/@types/api.types';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
+import { RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
 
 interface NearByRestaurantCardListProps {
   restaurantId: string;
@@ -26,26 +28,35 @@ function NearByRestaurantCardList({ restaurantId }: NearByRestaurantCardListProp
         <div>
           <h5>주변에 다른 식당이 없어요.</h5>
         </div>
+      ) : isMobile || nearByRestaurant.content.length <= 5 ? (
+        <StyledCardContainer>
+          {nearByRestaurant.content.map(restaurant => (
+            <MiniRestaurantCard
+              restaurant={restaurant}
+              celebs={restaurant.celebs}
+              flexColumn
+              showLike
+              showRating
+              showDistance
+            />
+          ))}
+        </StyledCardContainer>
       ) : (
-        <ul>
-          {nearByRestaurant.content.map(restaurant =>
-            isMobile ? (
+        <StyledSliderContainer>
+          <Slider {...RestaurantCardCarouselSettings}>
+            {nearByRestaurant.content.map(restaurant => (
               <MiniRestaurantCard
                 restaurant={restaurant}
                 celebs={restaurant.celebs}
-                carousel={false}
                 flexColumn
                 showLike
                 showRating
                 showDistance
+                isCarouselItem
               />
-            ) : (
-              <StyledRestaurantCardContainer>
-                <RestaurantCard type="map" restaurant={restaurant} celebs={restaurant.celebs} size="36px" />
-              </StyledRestaurantCardContainer>
-            ),
-          )}
-        </ul>
+            ))}
+          </Slider>
+        </StyledSliderContainer>
       )}
     </StyledNearByRestaurant>
   );
@@ -65,29 +76,19 @@ const StyledNearByRestaurant = styled.section<{ isMobile: boolean }>`
     color: var(--gray-3);
     text-align: center;
   }
-
-  & > ul {
-    ${hideScrollBar}
-    display: flex;
-    gap: 0 2rem;
-    overflow-x: scroll;
-
-    padding: 2rem 0;
-
-    ${({ isMobile }) =>
-      !isMobile &&
-      css`
-        & > * {
-          min-width: 300px;
-
-          box-shadow: var(--shadow);
-        }
-      `}
-  }
 `;
 
-const StyledRestaurantCardContainer = styled.div`
-  border-radius: 12px;
+const StyledCardContainer = styled.div`
+  ${hideScrollBar}
+  display: flex;
+  gap: 0 2rem;
+  overflow-x: scroll;
 
-  box-shadow: var(--map-shadow);
+  width: 100%;
+
+  padding: 2rem 0;
+`;
+
+const StyledSliderContainer = styled.div`
+  padding: 2rem 4rem;
 `;

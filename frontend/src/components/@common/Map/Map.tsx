@@ -66,7 +66,6 @@ function Map({ toggleMapExpand }: MapProps) {
   const onIdle = (m: google.maps.Map) => {
     setZoom(m.getZoom()!);
     setCurrentCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
-
     const lowLatitude = String(m.getBounds().getSouthWest().lat());
     const highLatitude = String(m.getBounds().getNorthEast().lat());
     const lowLongitude = String(m.getBounds().getSouthWest().lng());
@@ -75,8 +74,7 @@ function Map({ toggleMapExpand }: MapProps) {
 
     setBoundary(coordinateBoundary);
     setCurrentPage(0);
-    if (!isMobile) window.scrollTo(0, 0);
-    setCenter({ lat: m.getCenter().lat(), lng: m.getCenter().lng() });
+    window.scrollTo(0, 0);
   };
 
   const clickMyLocationButton = () => {

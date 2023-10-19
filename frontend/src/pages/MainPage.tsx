@@ -1,29 +1,32 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import Slider from 'react-slick';
 import { getCelebs } from '~/api/celeb';
 import ProfileImage from '~/components/@common/ProfileImage';
 import CategoryNavbar from '~/components/CategoryNavbar';
 import MiniRestaurantCard from '~/components/MiniRestaurantCard';
 import RegionList from '~/components/RegionList';
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
-import { FONT_SIZE } from '~/styles/common';
+import { FONT_SIZE, hideScrollBar } from '~/styles/common';
 import { RestaurantData } from '~/@types/api.types';
 import { getRecommendedRestaurants } from '~/api/restaurant';
-import { SERVER_IMG_URL } from '~/constants/url';
-import useMediaQuery from '~/hooks/useMediaQuery';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
+import BannerSlider from './MainPage/BannerSlider';
+import { CelebCarouselSettings, RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
+import useMediaQuery from '~/hooks/useMediaQuery';
+import { celebOptions } from '~/constants/celeb';
 
 function MainPage() {
-  const navigate = useNavigate();
   const { isMobile } = useMediaQuery();
-  const { data: celebOptions } = useQuery({
-    queryKey: ['celebOptions'],
-    queryFn: () => getCelebs(),
-    suspense: true,
-  });
+  const navigate = useNavigate();
+  // const { data: celebOptions } = useQuery({
+  //   queryKey: ['celebOptions'],
+  //   queryFn: () => getCelebs(),
+  //   suspense: true,
+  // });
   const setHomeSelected = useBottomNavBarState(state => state.setHomeSelected);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ function MainPage() {
   };
 
   return (
-    <StyledLayout>
+    <>
       <Helmet>
         <meta property="og:title" content="Celuveat" />
         <meta property="og:url" content="celuveat.com" />
@@ -54,43 +57,67 @@ function MainPage() {
         <meta name="description" property="og:description" content="셀럽 추천 맛집 서비스, 셀럽잇" />
       </Helmet>
       <StyledContainer>
-        <Link to="/updated-recent">
-          <StyledBannerSection>
-            <StyledBanner
-              alt="최근 업데이트된 맛집"
-              src={`${SERVER_IMG_URL}banner/recent-updated.jpg`}
-              isMobile={isMobile}
-            />
-          </StyledBannerSection>
-        </Link>
+        {isMobile ? (
+          <BannerSlider />
+        ) : (
+          <StyledSliderContainer>
+            <BannerSlider />
+          </StyledSliderContainer>
+        )}
+
         <div>
           <StyledTitle>셀럽 BEST</StyledTitle>
-          <StyledIconBox>
-            {celebOptions.map(celeb => {
-              const { name, profileImageUrl, id } = celeb;
-              return (
-                <StyledCeleb onClick={() => clickCelebIcon(id)}>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
-                  <span>{name}</span>
-                </StyledCeleb>
-              );
-            })}
-          </StyledIconBox>
+          {isMobile ? (
+            <StyledIconBox>
+              {celebOptions.map(celeb => {
+                const { name, profileImageUrl, id } = celeb;
+                return (
+                  <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                    <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                    <span>{name}</span>
+                  </StyledCeleb>
+                );
+              })}
+            </StyledIconBox>
+          ) : (
+            <StyledSliderContainer>
+              <Slider {...CelebCarouselSettings}>
+                {celebOptions.map(celeb => {
+                  const { name, profileImageUrl, id } = celeb;
+                  return (
+                    <StyledCeleb onClick={() => clickCelebIcon(id)}>
+                      <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
+                      <span>{name}</span>
+                    </StyledCeleb>
+                  );
+                })}
+              </Slider>
+            </StyledSliderContainer>
+          )}
         </div>
+
         <div>
           <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
-          <StyledPopularRestaurantBox>
-            {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
-              <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
-            ))}
-          </StyledPopularRestaurantBox>
+          {isMobile ? (
+            <StyledPopularRestaurantBox>
+              {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
+              ))}
+            </StyledPopularRestaurantBox>
+          ) : (
+            <StyledSliderContainer>
+              <Slider {...RestaurantCardCarouselSettings}>
+                {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                  <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating isCarouselItem />
+                ))}
+              </Slider>
+            </StyledSliderContainer>
+          )}
         </div>
 
         <div>
           <StyledTitle>어디로 가시나요?</StyledTitle>
-          <StyledIconBox>
-            <RegionList />
-          </StyledIconBox>
+          <RegionList />
         </div>
         <div>
           <StyledTitle>카테고리</StyledTitle>
@@ -104,23 +131,11 @@ function MainPage() {
           </StyledCategoryBox>
         </div>
       </StyledContainer>
-    </StyledLayout>
+    </>
   );
 }
 
 export default MainPage;
-
-const StyledTitle = styled.h5`
-  margin-left: 1.6rem;
-`;
-
-const StyledLayout = styled.div`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  padding-bottom: 4.4rem;
-`;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -128,35 +143,14 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 1200px;
-
-  overflow-x: hidden;
 
   box-sizing: content-box;
-`;
 
-const StyledBannerSection = styled.section`
-  display: flex;
-  justify-content: center;
+  max-width: 1240px;
 
-  width: 100%;
-`;
+  margin: 0 auto;
 
-const StyledBanner = styled.img<{ isMobile: boolean }>`
-  width: 100%;
-  max-width: 800px;
-  height: 200px;
-  max-height: 200px;
-
-  object-fit: cover;
-
-  overflow: hidden;
-
-  ${({ isMobile }) =>
-    !isMobile &&
-    css`
-      margin: 1.2rem;
-    `}
+  padding-bottom: 4.4rem;
 `;
 
 const StyledIconBox = styled.div`
@@ -175,7 +169,7 @@ const StyledIconBox = styled.div`
 `;
 
 const StyledCeleb = styled.div`
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
@@ -194,11 +188,17 @@ const StyledPopularRestaurantBox = styled.div`
 
   overflow-x: scroll;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  ${hideScrollBar}
 `;
 
 const StyledCategoryBox = styled.div`
   padding: 1.6rem 0.8rem;
+`;
+
+const StyledTitle = styled.h5`
+  margin-left: 1.6rem;
+`;
+
+const StyledSliderContainer = styled.div`
+  padding: 2rem 4rem;
 `;

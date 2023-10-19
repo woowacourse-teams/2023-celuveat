@@ -10,15 +10,25 @@ import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getRestaurantVideo } from '~/api/restaurant';
 import SuggestionButton from '~/components/SuggestionButton';
 
+import Naver from '~/assets/icons/naver-place.svg';
+
 interface DetailInformationProps {
   restaurantId: string;
   celebs: Celeb[];
   roadAddress: string;
   phoneNumber: string;
   category: string;
+  naverMapUrl: string;
 }
 
-function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, category }: DetailInformationProps) {
+function DetailInformation({
+  restaurantId,
+  celebs,
+  roadAddress,
+  phoneNumber,
+  category,
+  naverMapUrl,
+}: DetailInformationProps) {
   const { isMobile } = useMediaQuery();
 
   const { data: restaurantVideo } = useQuery<VideoList>({
@@ -78,6 +88,11 @@ function DetailInformation({ restaurantId, celebs, roadAddress, phoneNumber, cat
           </button>
         </div>
         <div>카테고리 : {category}</div>
+        {isMobile && (
+          <a href={naverMapUrl} target="_blank" rel="noreferrer">
+            <Naver width={16} /> 네이버 플레이스로 보기
+          </a>
+        )}
         <SuggestionButton />
       </div>
       <StyledMainVideo>
@@ -169,6 +184,8 @@ const StyledYoutubeButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  font-size: ${FONT_SIZE.md};
 `;
 
 const StyledMainVideo = styled.div`

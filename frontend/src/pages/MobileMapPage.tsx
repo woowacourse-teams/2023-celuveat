@@ -2,7 +2,8 @@
 import { styled } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
-import useBooleanState from '~/hooks/useBooleanState';
+import { useEffect, useRef } from 'react';
+// import useBooleanState from '~/hooks/useBooleanState';
 import MapIcon from '~/assets/icons/map.svg';
 import ListIcon from '~/assets/icons/list.svg';
 import Down from '~/assets/icons/down.svg';
@@ -13,14 +14,20 @@ import useMapState from '~/hooks/store/useMapState';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 import { RestaurantListData } from '~/@types/api.types';
 import { getRestaurants } from '~/api/restaurant';
+import useMapRestaurantListState from '~/hooks/store/useMapRestaurantListState';
 
 function MobileMapPage() {
-  const { value: isListShowed, toggle: toggleShowedList } = useBooleanState(false);
+  const listRef = useRef<HTMLDivElement>();
   const [preview, setPreview] = useMapState(state => [state.preview, state.setPreview]);
   const [boundary, celebId, currentPage, restaurantCategory, sort] = useRestaurantsQueryStringState(
     state => [state.boundary, state.celebId, state.currentPage, state.restaurantCategory, state.sort],
     shallow,
   );
+  const [isListShowed, setIsListShowed, storage, setStorage] = useMapRestaurantListState(
+    state => [state.isList, state.setIsList, state.storage, state.setStorage],
+    shallow,
+  );
+
   const { data: restaurantDataList } = useQuery<RestaurantListData>({
     queryKey: ['restaurants', boundary, celebId, restaurantCategory, currentPage, sort],
     queryFn: () =>
@@ -33,7 +40,7 @@ function MobileMapPage() {
 
     return (
       <StyledPreview>
-        <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
+        <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike hideProfile />
         <StyledShutDownButton type="button" onClick={() => setPreview(null)}>
           <Down width="24" height="24" />
         </StyledShutDownButton>
@@ -41,10 +48,14 @@ function MobileMapPage() {
     );
   };
 
+  useEffect(() => {
+    if (!isListShowed) setStorage(restaurantDataList);
+  }, [restaurantDataList]);
+
   return (
     <StyledMobileLayout>
-      <StyledRestaurantCardContainer isListShowed={isListShowed}>
-        {restaurantDataList?.content.map(({ celebs, ...restaurant }) => (
+      <StyledRestaurantCardContainer isListShowed={isListShowed} ref={listRef}>
+        {storage?.content.map(({ celebs, ...restaurant }) => (
           <MiniRestaurantCard restaurant={restaurant} celebs={celebs} showRating showLike />
         ))}
         <div />
@@ -57,15 +68,17 @@ function MobileMapPage() {
       </StyledMapContainer>
       <StyledModal>
         {isListShowed ? (
-          <StyledToggleButton type="button" onClick={toggleShowedList}>
+          <StyledToggleButton type="button" onClick={() => setIsListShowed(false)}>
             <span>지도</span>
             <MapIcon width={24} />
           </StyledToggleButton>
         ) : (
-          <StyledToggleButton type="button" onClick={toggleShowedList}>
-            <span>리스트</span>
-            <ListIcon width={20} stroke="#fff" />
-          </StyledToggleButton>
+          storage?.content.length !== 0 && (
+            <StyledToggleButton type="button" onClick={() => setIsListShowed(true)}>
+              <span>리스트</span>
+              <ListIcon width={20} stroke="#fff" />
+            </StyledToggleButton>
+          )
         )}
         {preview && !isListShowed && getPreview()}
       </StyledModal>
