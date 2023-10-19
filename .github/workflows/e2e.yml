@@ -23,11 +23,16 @@ jobs:
         run: yarn install
         working-directory: ${{ env.working-directory }}
 
+      - name: 🍔 cypress env 설정
+        env:
+          GOOGLE_EMAIL_FOR_TESTING: ${{secrets.GOOGLE_EMAIL_FOR_TESTING}}
+          GOOGLE_PASSWORD_FOR_TESTING: ${{secrets.GOOGLE_PASSWORD_FOR_TESTING}}
+        run: |
+          echo $GOOGLE_EMAIL_FOR_TESTING
+          echo $GOOGLE_PASSWORD_FOR_TESTING
+
       - name: 🍔 E2E 테스트
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.working-directory }}
           browser: chrome
-        env:
-          GOOGLE_EMAIL_FOR_TESTING: ${{secrets.GOOGLE_EMAIL_FOR_TESTING}}
-          GOOGLE_PASSWORD_FOR_TESTING: ${{secrets.GOOGLE_PASSWORD_FOR_TESTING}}
