@@ -2,3 +2,4 @@
 /dist
 /*.env
 /cypress.env.json
+yarn.lock
