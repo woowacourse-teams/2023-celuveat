@@ -56,8 +56,6 @@ jobs:
           json: ${{ secrets.CYPRESS_CONFIG_JSON }}
 
       - name: 🍔 E2E 테스트
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
-          start: yarn cy:run
-          wait-on-timeout: 120
           browser: chrome
