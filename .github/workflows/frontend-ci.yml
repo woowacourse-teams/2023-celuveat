@@ -56,7 +56,7 @@ jobs:
         run: yarn install
 
       - name: 🍔 eslint 테스트
-        run: pwd && yarn lint
+        run: pwd && ls && yarn lint
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 React 프로젝트 빌드
