@@ -47,6 +47,7 @@ jobs:
 
       - name: 🍔 yarn install
         run: yarn install
+        working-directory: ${{ env.working-directory }}
 
       - name: create-json
         id: create-json
