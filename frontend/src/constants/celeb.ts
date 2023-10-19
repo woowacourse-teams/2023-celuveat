@@ -75,7 +75,7 @@ export const CELEB = {
     name: '또간집',
     youtubeChannelName: '@STUDIO_SUZE',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/QbyeYFIBzd_UcW-QwKBLjwbKy2U7syqwAr2V1oZA6WZFyhbVLcUk4Kn7YXqg5fMHEg3B9dusGrA=s176-c-k-c0x00ffffff-no-rj',
+      'https://yt3.googleusercontent.com/ytc/APkrFKanwG55M-jYZzbjKPMHLjRMpgiPZRL9wtR0T7MDQQ=s176-c-k-c0x00ffffff-no-rj',
   },
   15: {
     name: '최자로드',
