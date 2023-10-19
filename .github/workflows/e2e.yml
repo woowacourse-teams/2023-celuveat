@@ -58,7 +58,6 @@ jobs:
       - name: 🍔 E2E 테스트
         uses: cypress-io/github-action@v5
         with:
-
-          start: yarn cypress:run
+          start: yarn cy:run
           wait-on-timeout: 120
           browser: chrome
