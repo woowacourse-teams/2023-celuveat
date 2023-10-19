@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "./node_modules/**/*", "build", "webpack", "jest", "dist"],
+  "exclude": ["node_modules", "./node_modules/**/*", "build", "webpack", "jest", "dist", "cypress"],
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
