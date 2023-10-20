@@ -27,5 +27,5 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.working-directory }}
+          build: yarn build
           start: yarn start:msw
-          browser: chrome
