@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7JYSJ2CJJ1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-7JYSJ2CJJ1');
+    </script>
     <meta charset="utf-8" />
     <meta property="og:title" content="Celuveat" />
     <meta property="og:url" content="celuveat.com" />
@@ -14,6 +25,23 @@
     <link rel="preload" href="/fonts/SUIT-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/SUIT-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link href="/fonts/font.css" as="font" type="type/css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      charset="UTF-8"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+    />
+
+    <script
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js"
+      integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH"
+      crossorigin="anonymous"
+    ></script>
 
     <title>셀럽잇 - CELUVEAT</title>
   </head>
@@ -23,6 +51,6 @@
       <div>현재 사용 중인 브라우저는 스크립트를 지원하지 않거나, 해당 기능이 활성화 되어 있지 않습니다.</div>
     </noscript>
     <div id="root"></div>
-    <div id="modal"></div>
+    <div id="portal"></div>
   </body>
 </html>

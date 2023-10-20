@@ -17,9 +17,14 @@ import { changeImgFileExtension } from '~/utils/image';
 
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
 import type { StarRate } from '~/@types/api.types';
+import Spinner from '~/components/@common/Spinner';
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
+}
+
+interface BlobType extends Blob {
+  name?: string;
 }
 
 export const SUBMIT_BUTTON_TEXT = {
@@ -41,7 +46,7 @@ function ReviewForm({ type }: ReviewFormProps) {
   const [text, setText] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [rating, setRating] = useState<StarRate>(0);
-  const [files, setFiles] = useState<Blob[]>([]);
+  const [files, setFiles] = useState<BlobType[]>([]);
 
   const isSubmitDisabled = text.length === 0 || rating === 0 || isSubmitRequesting;
 
@@ -134,13 +139,19 @@ function ReviewForm({ type }: ReviewFormProps) {
         </>
       )}
 
-      <TextButton
-        type="submit"
-        onClick={submitReviewForm}
-        text={SUBMIT_BUTTON_TEXT[type]}
-        colorType="dark"
-        disabled={isSubmitDisabled}
-      />
+      {isSubmitRequesting ? (
+        <StyledSpinnerWrapper>
+          <Spinner size="20px" />
+        </StyledSpinnerWrapper>
+      ) : (
+        <TextButton
+          type="submit"
+          onClick={submitReviewForm}
+          text={SUBMIT_BUTTON_TEXT[type]}
+          colorType="dark"
+          disabled={isSubmitDisabled}
+        />
+      )}
     </StyledReviewFormContainer>
   );
 }
@@ -181,4 +192,16 @@ const StyledTextArea = styled.textarea`
 const StyledReviewFormItemText = styled.span`
   font-size: ${FONT_SIZE.lg};
   font-weight: bold;
+`;
+
+const StyledSpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 1.2rem 2.4rem;
+
+  background-color: var(--primary-3);
 `;

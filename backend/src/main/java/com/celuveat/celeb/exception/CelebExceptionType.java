@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CelebExceptionType implements BaseExceptionType {
 
-    NOT_FOUND_CELEB(BAD_REQUEST, "음식점을 찾을 수 없습니다"),
+    NOT_FOUND_CELEB(BAD_REQUEST, "셀럽이 존재하지 않습니다."),
     ;
 
     private final HttpStatus httpStatus;

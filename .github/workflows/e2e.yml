@@ -15,6 +15,7 @@ jobs:
     name: E2E Test 딱 대라!
     env:
       working-directory: ./frontend
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,7 +28,9 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.working-directory }}
-          start: yarn start
-          browser: chrome
-        env:
-          BASE_URL: ${{secrets.DEV_BASE_URL}}
+          build: yarn build:msw
+          start: yarn start:msw
+          install-command: yarn --frozen-lockfile
+          parallel: true
+          wait-on: 'http://localhost:3000'
+          command: yarn cy:run

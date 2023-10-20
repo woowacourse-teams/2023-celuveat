@@ -4,14 +4,17 @@ import View from '~/assets/icons/view.svg';
 import Love from '~/assets/icons/black-love.svg';
 import { FONT_SIZE } from '~/styles/common';
 import ShareIcon from '~/assets/icons/share.svg';
+import ShareButton from '~/components/@common/ShareButton';
+import { LinkProps } from '~/@types/meta.types';
 
 interface HeaderProps {
   name: string;
   viewCount: number;
   likeCount: number;
+  meta: LinkProps;
 }
 
-function Header({ name, viewCount, likeCount }: HeaderProps) {
+function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
   const share = async () => {
     if (typeof navigator.share === 'undefined') {
       await copyClipBoard(window.location.href);
@@ -37,9 +40,19 @@ function Header({ name, viewCount, likeCount }: HeaderProps) {
     <StyledDetailHeader tabIndex={0}>
       <StyledTitleSection>
         <h3>{name}</h3>
-        <StyledShareButton type="button" onClick={share}>
-          <ShareIcon />
-        </StyledShareButton>
+        <div>
+          <StyledShareButton type="button" onClick={share}>
+            <ShareIcon />
+          </StyledShareButton>
+          <ShareButton type="kakao" meta={meta}>
+            <img
+              width={28}
+              height={28}
+              src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+              alt="카카오톡 공유 보내기 버튼"
+            />
+          </ShareButton>
+        </div>
       </StyledTitleSection>
       <div role="group">
         <div aria-label={`조회수 ${viewCount}`}>

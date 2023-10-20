@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { MouseEvent } from 'react';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import useBooleanState from '~/hooks/useBooleanState';
 
@@ -11,11 +13,21 @@ interface ProfileImageListProps {
 
 function ProfileImageList({ celebs, size }: ProfileImageListProps) {
   const { value: hover, setTrue, setFalse } = useBooleanState(false);
+  const navigate = useNavigate();
 
   return (
     <StyledProfileImageList onMouseEnter={setTrue} onMouseLeave={setFalse} size={size}>
       {celebs.map((celeb, index) => (
-        <StyledProfileImageWrapper key={celeb.id} index={index} hover={hover} length={celebs.length}>
+        <StyledProfileImageWrapper
+          key={celeb.id}
+          index={index}
+          hover={hover}
+          length={celebs.length}
+          onClick={(e: MouseEvent) => {
+            e.stopPropagation();
+            navigate(`/celeb/${celeb.id}`);
+          }}
+        >
           <ProfileImage name={celeb.name} imageUrl={celeb.profileImageUrl} size={size} />
         </StyledProfileImageWrapper>
       ))}

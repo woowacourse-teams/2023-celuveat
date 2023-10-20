@@ -14,7 +14,7 @@ function CategoryResultPage() {
   const ref = useRef<HTMLDivElement>();
 
   const { data: restaurantDataPages, fetchNextPage } = useInfiniteQuery<RestaurantListData>({
-    queryKey: ['restaurants', category],
+    queryKey: ['restaurants', { type: 'category' }, category],
     queryFn: ({ pageParam = 0 }) =>
       getRestaurants({
         boundary: WHOLE_BOUNDARY,
@@ -26,6 +26,7 @@ function CategoryResultPage() {
       if (lastPage.totalPage > lastPage.currentPage) return lastPage.currentPage + 1;
       return undefined;
     },
+    suspense: true,
   });
 
   const entry = useIntersectionObserver(ref, {});
@@ -58,10 +59,13 @@ const StyledContainer = styled.div`
   gap: 2.4rem;
 
   width: 100%;
+  max-width: 1240px;
   min-height: 100vh;
-  overflow-x: hidden;
 
   padding: 1.6rem 1.2rem;
+  margin: 0 auto;
+
+  overflow-x: hidden;
 `;
 
 const StyledLink = styled(Link)`

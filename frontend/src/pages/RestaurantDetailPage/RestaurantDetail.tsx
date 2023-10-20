@@ -1,9 +1,8 @@
 import { useRef } from 'react';
 import { styled, css } from 'styled-components';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import { Helmet } from 'react-helmet-async';
 import Header from './Header';
 import DetailInformation from './DetailInformation';
 import NearByRestaurantCardList from './NearByRestaurantCardList';
@@ -18,10 +17,13 @@ import Naver from '~/assets/icons/oauth/naver.svg';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
+
 import { getRestaurantDetail } from '~/api/restaurant';
 
 import type { RestaurantData } from '~/@types/api.types';
 import MapSection from './MapSection';
+import { getQueryString } from '~/utils/getQueryString';
+import { getImgUrl } from '~/utils/image';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -29,6 +31,8 @@ function RestaurantDetail() {
   const { id: restaurantId } = useParams();
   const [searchParams] = useSearchParams();
   const celebId = searchParams.get('celebId');
+  const { pathname } = useLocation();
+  const detailPageUrl = `${pathname}${getQueryString(window.location.search)}`;
 
   const {
     data: { celebs, ...restaurant },
@@ -46,18 +50,18 @@ function RestaurantDetail() {
 
   return (
     <>
-      <Helmet>
-        <meta property="og:title" content={`${restaurant.name}`} />
-        <meta property="og:url" content="celuveat.com" />
-        <meta
-          name="image"
-          property="og:image"
-          content={`https://www.celuveat.com/images-data/${restaurant.images[0].name}.jpeg`}
-        />
-        <meta name="description" property="og:description" content={`${celebs[0].name}이 추천한 맛집`} />
-      </Helmet>
       <StyledMainRestaurantDetail isMobile={isMobile} ref={layoutRef}>
-        <Header name={restaurant.name} viewCount={restaurant.viewCount} likeCount={restaurant.likeCount} />
+        <Header
+          name={restaurant.name}
+          viewCount={restaurant.viewCount}
+          likeCount={restaurant.likeCount}
+          meta={{
+            title: restaurant.name,
+            description: `${celebs[0].name}이(가) 추천한 맛집, ${restaurant.name}의 정보를 확인해보세요.`,
+            imageUrl: getImgUrl(restaurant.images[0].name, 'webp'),
+            link: `${process.env.PUBLIC_URL}${detailPageUrl}`,
+          }}
+        />
 
         <ImageViewer images={restaurant.images} />
 
@@ -65,6 +69,7 @@ function RestaurantDetail() {
           <DetailInformation
             restaurantId={restaurantId}
             celebs={celebs}
+            naverMapUrl={restaurant.naverMapUrl}
             roadAddress={restaurant.roadAddress}
             phoneNumber={restaurant.phoneNumber}
             category={restaurant.category}

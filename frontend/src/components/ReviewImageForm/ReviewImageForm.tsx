@@ -8,11 +8,12 @@ interface ReviewImageFormProps {
   images?: string[];
   upload: React.ChangeEventHandler<HTMLInputElement>;
   deleteImage: (id: number) => void;
+  limitLength?: number;
 }
 
-function ReviewImageForm({ images, upload, deleteImage }: ReviewImageFormProps) {
+function ReviewImageForm({ images, upload, deleteImage, limitLength = 3 }: ReviewImageFormProps) {
   const hasImage = images.length > 0;
-  const isLimitImageCount = images.length === 3;
+  const isLimitImageCount = images.length === limitLength;
 
   return (
     <StyledReviewImageFormWrapper>

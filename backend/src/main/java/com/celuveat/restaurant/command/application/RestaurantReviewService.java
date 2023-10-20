@@ -9,6 +9,7 @@ import com.celuveat.restaurant.command.domain.Restaurant;
 import com.celuveat.restaurant.command.domain.RestaurantRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReview;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewLikeRepository;
+import com.celuveat.restaurant.command.domain.review.RestaurantReviewReportRepository;
 import com.celuveat.restaurant.command.domain.review.RestaurantReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class RestaurantReviewService {
     private final OauthMemberRepository oauthMemberRepository;
     private final RestaurantReviewRepository restaurantReviewRepository;
     private final RestaurantReviewLikeRepository restaurantReviewLikeRepository;
+    private final RestaurantReviewReportRepository restaurantReviewReportRepository;
 
     public Long create(SaveReviewRequestCommand command) {
         OauthMember member = oauthMemberRepository.getById(command.memberId());
@@ -43,6 +45,7 @@ public class RestaurantReviewService {
         RestaurantReview review = restaurantReviewRepository.getById(command.reviewId());
         review.delete(command.memberId());
         restaurantReviewLikeRepository.deleteAllByRestaurantReview(review);
+        restaurantReviewReportRepository.deleteAllByRestaurantReview(review);
         restaurantReviewRepository.delete(review);
     }
 }

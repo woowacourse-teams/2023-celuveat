@@ -1,6 +1,6 @@
 import { rest } from 'msw';
-
-import restaurants from '../../data/restaurants';
+import restaurants from '~/mocks/data/restaurants';
+import { recommendation } from '~/mocks/data/recommendation';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
 
 export const newMainPageHandler = [
@@ -14,5 +14,9 @@ export const newMainPageHandler = [
     );
 
     return res(ctx.status(200), ctx.json({ content: restaurantFilteredByRegion }));
+  }),
+
+  rest.get('/main-page/recommendation', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(recommendation));
   }),
 ];

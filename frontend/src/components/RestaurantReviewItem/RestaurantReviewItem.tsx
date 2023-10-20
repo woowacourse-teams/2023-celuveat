@@ -13,7 +13,7 @@ import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
 import { getProfile } from '~/api/user';
-import { getReviewImgUrl } from '~/utils/image';
+import { getReviewImgUrl, lookImage } from '~/utils/image';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
 
@@ -78,6 +78,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
           <StyledReviewImg
             src={getReviewImgUrl(image, 'webp')}
             alt={`${review.nickname}이 쓴 리뷰 사진${idx}`}
+            onClick={() => lookImage(getReviewImgUrl(image, 'webp'))}
           />
         ))}
       </StyledReviewImgWrapper>
@@ -132,6 +133,8 @@ const StyledReviewImg = styled.img`
   width: 120px;
   height: 120px;
   object-fit: cover;
+
+  cursor: pointer;
 `;
 
 const StyledReviewImgWrapper = styled.div`

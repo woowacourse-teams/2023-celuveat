@@ -3,14 +3,13 @@ import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getImgUrl } from '~/utils/image';
 
 interface WaterMarkImageProps {
-  waterMark: string;
+  waterMark?: string;
   imageUrl?: string;
   type: 'list' | 'map';
   sns: string;
-  showWaterMark?: boolean;
 }
 
-function WaterMarkImage({ waterMark, imageUrl, type, sns, showWaterMark = true }: WaterMarkImageProps) {
+function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
   const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -25,7 +24,7 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns, showWaterMark = true }
         <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
         <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
       </picture>
-      {waterMark && showWaterMark && (
+      {waterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
           {waterMark}
         </StyledWaterMark>
@@ -49,6 +48,9 @@ const styledImgCssVariable = css`
 const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
   ${paintSkeleton}
   position: relative;
+  overflow: hidden;
+
+  border-radius: ${BORDER_RADIUS.md};
 
   width: 100%;
   min-width: 100%;
