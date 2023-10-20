@@ -2,7 +2,7 @@ describe('로그인 관련 로직을 테스트 한다.', () => {
   beforeEach(() => {
     cy.viewport('iphone-5');
 
-    cy.visit('/restaurants/311?celebId=7', {
+    cy.visit('http://127.0.0.1:3000/restaurants/311?celebId=7', {
       onBeforeLoad: (win: any) => {
         win.ontouchstart = true;
       },

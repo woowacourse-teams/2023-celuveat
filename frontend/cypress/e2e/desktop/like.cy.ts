@@ -1,6 +1,6 @@
 describe('좋아요 관련 기능을 테스트 한다.', () => {
   beforeEach(() => {
-    cy.visit('/restaurants/311?celebId=7');
+    cy.visit('http://127.0.0.1:3000/restaurants/311?celebId=7');
   });
 
   it('성시경 소문난성수감자탕 페이지에서 좋아요를 한 후 위시리스트에 잘 담겨 있는지 확인한다.', () => {
