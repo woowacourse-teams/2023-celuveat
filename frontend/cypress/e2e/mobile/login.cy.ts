@@ -2,7 +2,7 @@ describe('로그인 관련 로직을 테스트 한다.', () => {
   beforeEach(() => {
     cy.viewport('iphone-5');
 
-    cy.visit('http://127.0.0.1:3000/restaurants/311?celebId=7', {
+    cy.visit('/restaurants/311?celebId=7', {
       onBeforeLoad: (win: any) => {
         win.ontouchstart = true;
       },
@@ -14,7 +14,7 @@ describe('로그인 관련 로직을 테스트 한다.', () => {
 
   it('모바일에서 성시경, 소문난성수감자탕 페이지에서 로그인을 한 후 다시 성시경, 소문난성수감자탕 페이지로 돌아 간다.', () => {
     cy.location().should(loc => {
-      expect(loc.href).to.eq('http://127.0.0.1:3000/restaurants/311?celebId=7');
+      expect(loc.href).to.eq('http://localhost:3000/restaurants/311?celebId=7');
     });
   });
 
