@@ -24,10 +24,10 @@ Cypress.Commands.add('loginGoogle', () => {
     );
 
     cy.get('input[type="email"]').type(Cypress.env('GOOGLE_EMAIL_FOR_TESTING'));
-    cy.contains('다음').click().wait(20000);
+    cy.contains('Next').click().wait(20000);
 
     cy.get('[type="password"]').type(Cypress.env('GOOGLE_PASSWORD_FOR_TESTING'));
-    cy.contains('다음').click().wait(20000);
+    cy.get('Next').click().wait(20000);
   });
 });
 
