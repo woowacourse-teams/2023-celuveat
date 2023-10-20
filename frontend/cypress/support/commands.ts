@@ -24,10 +24,10 @@ Cypress.Commands.add('loginGoogle', () => {
     );
 
     cy.get('input[type="email"]').type(Cypress.env('GOOGLE_EMAIL_FOR_TESTING'));
-    cy.contains('Next').click().wait(20000);
+    cy.contains('다음').click().wait(20000);
 
     cy.get('[type="password"]').type(Cypress.env('GOOGLE_PASSWORD_FOR_TESTING'));
-    cy.get('Next').click().wait(20000);
+    cy.get('다음').click().wait(20000);
   });
 });
 
@@ -42,8 +42,4 @@ Cypress.Commands.add('loginGoogleForMobile', () => {
   cy.get('button[type="google"]').click(); // 구글 로그인 하기 버튼을 누른다.
 
   cy.loginGoogle();
-});
-
-Cypress.on('uncaught:exception', (err, runnable) => {
-  return false;
 });

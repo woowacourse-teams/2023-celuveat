@@ -10,24 +10,24 @@ on:
       - main
 
 jobs:
-  frontend-test:
+  cypress-run:
     runs-on: ubuntu-latest
+    name: E2E Test 딱 대라!
     env:
       working-directory: ./frontend
-
-    name: 🍔테스트 딱 대라 💢👊
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.16.1'
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: 🍔 yarn install
-        run: pwd && ls && yarn install
+        run: yarn install
         working-directory: ${{ env.working-directory }}
 
-      # https://github.com/cypress-io/github-action
       - name: 🍔 E2E 테스트
-        run: npx cypress run --env GOOGLE_EMAIL_FOR_TESTING=${{ secrets.GOOGLE_EMAIL_FOR_TESTING }},GOOGLE_PASSWORD_FOR_TESTING=${{ secrets.GOOGLE_PASSWORD_FOR_TESTING }}
-        working-directory: ${{ env.working-directory }}
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ${{ env.working-directory }}
+          start: yarn start:msw
+          browser: chrome
+        env:
+          BASE_URL: ${{secrets.DEV_BASE_URL}}

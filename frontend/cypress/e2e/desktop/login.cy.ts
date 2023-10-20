@@ -4,9 +4,10 @@ describe('로그인 관련 로직을 테스트 한다.', () => {
 
     cy.get('button[aria-label="로그인"]').click(); // 프로필 아이콘을 누른다.
     cy.get('li[data-name="로그인"]').click(); // 로그인 버튼을 누른다.
+    cy.contains('구글로 로그인하기').click(); // 로그인 버튼을 누른다.
 
-    cy.loginGoogleForDesktop();
+    // cy.loginGoogleForDesktop();
 
-    cy.get('button[aria-label="로그인"]').find('img').should('have.attr', 'alt', '준승 프로필');
+    cy.get('button[aria-label="로그인"]').find('img').should('have.attr', 'alt', '푸만능 프로필');
   });
 });
