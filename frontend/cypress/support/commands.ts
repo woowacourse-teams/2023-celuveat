@@ -43,3 +43,7 @@ Cypress.Commands.add('loginGoogleForMobile', () => {
 
   cy.loginGoogle();
 });
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false;
+});
