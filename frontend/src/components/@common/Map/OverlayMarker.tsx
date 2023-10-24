@@ -77,8 +77,8 @@ const fadeInAnimation = keyframes`
 
 const StyledModal = styled.div<{ quadrant: Quadrant }>`
   position: absolute;
-  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '48px' : '-288px')};
-  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '0px' : '-210px')};
+  top: ${({ quadrant }) => (quadrant === 1 || quadrant === 2 ? '38px' : '-300px')};
+  right: ${({ quadrant }) => (quadrant === 1 || quadrant === 4 ? '30px' : '-240px')};
 
   width: 248px;
 
