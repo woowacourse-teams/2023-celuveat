@@ -1,11 +1,10 @@
-import Modal from 'celuveat-react-modal';
 import LoginModal from '~/components/LoginModal';
 import RestaurantReviewList from '~/components/RestaurantReviewList';
 import { ReviewForm, ReviewDeleteForm, ReviewReportForm } from '~/components/ReviewForm';
 
 import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import useMediaQuery from '~/hooks/useMediaQuery';
+import Modal from '../@common/Modal';
 
 const REVIEW_FORM_TITLE = {
   create: '리뷰 작성하기',
@@ -18,7 +17,6 @@ const REVIEW_FORM_TITLE = {
 function ReviewModal() {
   const { restaurantReviewsData } = useRestaurantReview();
   const { formType, isModalOpen, closeModal } = useReviewModalContext();
-  const { isMobile } = useMediaQuery();
 
   if (formType === null) {
     return <LoginModal isOpen={isModalOpen} close={closeModal} />;
@@ -26,7 +24,7 @@ function ReviewModal() {
 
   return (
     <div>
-      <Modal title={REVIEW_FORM_TITLE[formType]} isOpen={isModalOpen} close={closeModal} isMobile={isMobile}>
+      <Modal title={REVIEW_FORM_TITLE[formType]} isOpen={isModalOpen} close={closeModal}>
         <>
           {formType === 'create' && <ReviewForm type="create" />}
           {formType === 'update' && <ReviewForm type="update" />}

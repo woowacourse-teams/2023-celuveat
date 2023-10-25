@@ -1,13 +1,12 @@
 import { styled } from 'styled-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Modal from 'celuveat-react-modal';
 import useBooleanState from '~/hooks/useBooleanState';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import TextButton from '../@common/Button';
 import Pencil from '~/assets/icons/pencil.svg';
 import { postRevisedInfo } from '~/api/restaurant';
-import useMediaQuery from '~/hooks/useMediaQuery';
+import Modal from '../@common/Modal';
 
 const labels = [
   '레스토랑이 폐점했어요.',
@@ -21,7 +20,6 @@ function SuggestionButton() {
   const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [textareaValue, setTextareaValue] = useState('');
-  const { isMobile } = useMediaQuery();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -48,7 +46,7 @@ function SuggestionButton() {
         <div>정보 수정 제안하기</div>
       </StyledButton>
 
-      <Modal title="정보 수정 제안" close={closeModal} isOpen={isModalOpen} isMobile={isMobile}>
+      <Modal title="정보 수정 제안" close={closeModal} isOpen={isModalOpen}>
         <StyledForm onSubmit={handleSubmit}>
           <h5>수정 항목</h5>
           <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
