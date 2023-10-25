@@ -61,6 +61,8 @@ function RestaurantDetail() {
             imageUrl: getImgUrl(restaurant.images[0].name, 'webp'),
             link: `${process.env.PUBLIC_URL}${detailPageUrl}`,
           }}
+          restaurantId={restaurant.id}
+          celebId={Number(celebId)}
         />
 
         <ImageViewer images={restaurant.images} />

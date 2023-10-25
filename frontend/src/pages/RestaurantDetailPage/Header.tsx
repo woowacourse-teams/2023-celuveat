@@ -12,16 +12,18 @@ interface HeaderProps {
   viewCount: number;
   likeCount: number;
   meta: LinkProps;
+  restaurantId: number;
+  celebId: number;
 }
 
-function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
+function Header({ name, viewCount, likeCount, meta, restaurantId, celebId }: HeaderProps) {
   const share = async () => {
     if (typeof navigator.share === 'undefined') {
-      await copyClipBoard(window.location.href);
+      await copyClipBoard(`https://celuveat.vercel.app/restaurant/${restaurantId}/${celebId}`);
       return;
     }
     try {
-      await navigator.share({ url: window.location.href });
+      await navigator.share({ url: `https://celuveat.vercel.app/restaurant/${restaurantId}/${celebId}` });
     } catch (e) {
       if (e.toString().includes('AbortError')) return;
     }
