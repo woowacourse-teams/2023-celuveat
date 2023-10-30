@@ -17,6 +17,7 @@ import BannerSlider from './MainPage/BannerSlider';
 import { CelebCarouselSettings, RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { celebOptions } from '~/constants/celeb';
+import MiniRestaurantCardSkeleton from '~/components/MiniRestaurantCard/MiniRestaurantCardSkeleton';
 
 function MainPage() {
   const { isMobile } = useMediaQuery();
@@ -99,16 +100,34 @@ function MainPage() {
           <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
           {isMobile ? (
             <StyledPopularRestaurantBox>
-              {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
-                <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
-              ))}
+              {recommendedRestaurantData ? (
+                recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                  <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
+                ))
+              ) : (
+                <>
+                  <MiniRestaurantCardSkeleton flexColumn />
+                  <MiniRestaurantCardSkeleton flexColumn />
+                  <MiniRestaurantCardSkeleton flexColumn />
+                  <MiniRestaurantCardSkeleton flexColumn />
+                  <MiniRestaurantCardSkeleton flexColumn />
+                </>
+              )}
             </StyledPopularRestaurantBox>
           ) : (
             <StyledSliderContainer>
               <Slider {...RestaurantCardCarouselSettings}>
-                {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
-                  <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating isCarouselItem />
-                ))}
+                {recommendedRestaurantData
+                  ? recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
+                      <MiniRestaurantCard
+                        celebs={celebs}
+                        restaurant={restaurant}
+                        flexColumn
+                        showRating
+                        isCarouselItem
+                      />
+                    ))
+                  : new Array(5).fill('1').map(() => <MiniRestaurantCardSkeleton flexColumn isCarouselItem />)}
               </Slider>
             </StyledSliderContainer>
           )}
