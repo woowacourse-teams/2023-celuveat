@@ -32,14 +32,7 @@ function Marker({ clickMarker, isClicked, restaurant, celeb, hoveredId }: Marker
   );
 }
 
-function areEqual(prevProps: MarkerProps, nextProps: MarkerProps) {
-  const { restaurant: prevRestaurant, celeb: prevCeleb } = prevProps;
-  const { restaurant: nextRestaurant, celeb: nextCeleb } = nextProps;
-
-  return prevRestaurant.id === nextRestaurant.id && prevCeleb.id === nextCeleb.id;
-}
-
-export default memo(Marker, areEqual);
+export default Marker;
 
 const scaleUp = keyframes`
   0% {
