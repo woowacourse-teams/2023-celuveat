@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import Skeleton from '~/components/@common/Skeleton';
+import { BORDER_RADIUS } from '~/styles/common';
 
 interface MiniRestaurantCardProps {
   flexColumn?: boolean;
@@ -9,11 +10,11 @@ interface MiniRestaurantCardProps {
 function MiniRestaurantCardSkeleton({ flexColumn, isCarouselItem }: MiniRestaurantCardProps) {
   return (
     <StyledContainer flexColumn={flexColumn} isCarouselItem={isCarouselItem}>
-      <Skeleton width="198px" height="188px" />
+      <Skeleton width="198px" height="188px" borderRadius={BORDER_RADIUS.xs} />
       <StyledDetail>
-        <Skeleton width="198px" height="20px" />
-        <Skeleton width="198px" height="12px" />
-        <Skeleton width="198px" height="20px" />
+        <Skeleton width="198px" height="20px" borderRadius={BORDER_RADIUS.xs} />
+        <Skeleton width="198px" height="12px" borderRadius={BORDER_RADIUS.xs} />
+        <Skeleton width="198px" height="20px" borderRadius={BORDER_RADIUS.xs} />
       </StyledDetail>
     </StyledContainer>
   );
