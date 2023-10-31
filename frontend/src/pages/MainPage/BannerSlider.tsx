@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import { SERVER_IMG_URL } from '~/constants/url';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BannerCarouselSettings } from '~/constants/carouselSettings';
+import { paintSkeleton } from '~/styles/common';
 
 function BannerSlider() {
   const { isMobile } = useMediaQuery();
@@ -41,4 +42,6 @@ const StyledBanner = styled.img<{ isMobile: boolean }>`
       : css`
           height: 300px;
         `}
+
+  ${paintSkeleton}
 `;
