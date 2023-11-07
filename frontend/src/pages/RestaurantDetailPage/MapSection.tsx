@@ -1,16 +1,26 @@
 import { Wrapper } from '@googlemaps/react-wrapper';
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { RestaurantData } from '~/@types/api.types';
+import { getRestaurantDetail } from '~/api/restaurant';
 import MapContent from '~/components/@common/Map/MapContent';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { BORDER_RADIUS } from '~/styles/common';
 
 interface MapSectionProps {
-  lat: number;
-  lng: number;
+  restaurantId: string;
+  celebId: string;
 }
 
-function MapSection({ lat, lng }: MapSectionProps) {
+function MapSection({ restaurantId, celebId }: MapSectionProps) {
   const { isMobile } = useMediaQuery();
+  const {
+    data: { lat, lng },
+  } = useQuery<RestaurantData>({
+    queryKey: ['restaurantDetail', restaurantId, celebId],
+    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    suspense: true,
+  });
 
   return (
     <StyledMapSection>

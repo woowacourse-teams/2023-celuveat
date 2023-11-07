@@ -1,14 +1,25 @@
+import { useQuery } from '@tanstack/react-query';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import LoginModal from '~/components/LoginModal';
 import WhiteLove from '~/assets/icons/love.svg';
-import type { Restaurant } from '~/@types/restaurant.types';
+import { RestaurantData } from '~/@types/api.types';
+import { getRestaurantDetail } from '~/api/restaurant';
 
 interface RestaurantDetailLikeButtonProps {
-  restaurant: Restaurant;
   showText?: boolean;
+  restaurantId: string;
+  celebId: string;
 }
 
-function RestaurantDetailLikeButton({ restaurant, showText = true }: RestaurantDetailLikeButtonProps) {
+function RestaurantDetailLikeButton({ showText = true, restaurantId, celebId }: RestaurantDetailLikeButtonProps) {
+  const {
+    data: { celebs, ...restaurant },
+  } = useQuery<RestaurantData>({
+    queryKey: ['restaurantDetail', restaurantId, celebId],
+    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    suspense: true,
+  });
+
   const { isModalOpen, isLiked, closeModal, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
 
   return (

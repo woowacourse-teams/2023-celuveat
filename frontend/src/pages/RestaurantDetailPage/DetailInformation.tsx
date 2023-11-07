@@ -1,35 +1,31 @@
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { VideoList } from '~/@types/api.types';
-import { Celeb } from '~/@types/celeb.types';
+import { RestaurantData, VideoList } from '~/@types/api.types';
 import ProfileImageList from '~/components/@common/ProfileImageList';
 import useMediaQuery from '~/hooks/useMediaQuery';
 import Copy from '~/assets/icons/copy.svg';
 import Youtube from '~/assets/icons/youtube.svg';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
-import { getRestaurantVideo } from '~/api/restaurant';
+import { getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
 import SuggestionButton from '~/components/SuggestionButton';
 
 import Naver from '~/assets/icons/naver-place.svg';
 
 interface DetailInformationProps {
   restaurantId: string;
-  celebs: Celeb[];
-  roadAddress: string;
-  phoneNumber: string;
-  category: string;
-  naverMapUrl: string;
+  celebId: string;
 }
 
-function DetailInformation({
-  restaurantId,
-  celebs,
-  roadAddress,
-  phoneNumber,
-  category,
-  naverMapUrl,
-}: DetailInformationProps) {
+function DetailInformation({ restaurantId, celebId }: DetailInformationProps) {
   const { isMobile } = useMediaQuery();
+
+  const {
+    data: { celebs, category, phoneNumber, roadAddress, naverMapUrl },
+  } = useQuery<RestaurantData>({
+    queryKey: ['restaurantDetail', restaurantId, celebId],
+    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    suspense: true,
+  });
 
   const { data: restaurantVideo } = useQuery<VideoList>({
     queryKey: ['restaurantVideo', restaurantId],
