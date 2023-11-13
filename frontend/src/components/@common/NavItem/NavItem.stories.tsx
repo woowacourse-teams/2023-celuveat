@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import All from '~/assets/icons/restaurantCategory/all.svg';
+import All from '~/assets/icons/category/all.svg';
 import NavItem from './NavItem';
 
 const meta: Meta<typeof NavItem> = {
