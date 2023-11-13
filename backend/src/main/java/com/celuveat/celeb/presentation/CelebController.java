@@ -21,4 +21,10 @@ public class CelebController {
         List<CelebQueryResponse> result = celebQueryService.find();
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/test")
+    ResponseEntity<Void> test() throws InterruptedException {
+        Thread.sleep(3000);
+        return ResponseEntity.ok().build();
+    }
 }
