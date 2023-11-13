@@ -24,7 +24,7 @@ public class CelebController {
 
     @GetMapping("/test")
     ResponseEntity<Void> test() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(10000);
         return ResponseEntity.ok().build();
     }
 }
