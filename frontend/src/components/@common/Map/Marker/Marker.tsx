@@ -1,5 +1,4 @@
 import styled, { css, keyframes } from 'styled-components';
-import { memo } from 'react';
 import Love from '~/assets/icons/love.svg';
 import ProfileImage from '../../ProfileImage';
 import { Restaurant } from '~/@types/restaurant.types';
