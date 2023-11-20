@@ -1,14 +1,25 @@
-import { Restaurant } from '~/@types/restaurant.types';
+import { useQuery } from '@tanstack/react-query';
+import { RestaurantData } from '~/@types/api.types';
+import { getRestaurantDetail } from '~/api/restaurant';
 import ImageCarousel from '~/components/@common/ImageCarousel';
 import ImageGrid from '~/components/@common/ImageGrid';
 import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ImageViewerProps {
-  images: Restaurant['images'];
+  restaurantId: string;
+  celebId: string;
 }
 
-function ImageViewer({ images }: ImageViewerProps) {
+function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
   const { isMobile } = useMediaQuery();
+
+  const {
+    data: { images },
+  } = useQuery<RestaurantData>({
+    queryKey: ['restaurantDetail', restaurantId, celebId],
+    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    suspense: true,
+  });
 
   if (isMobile) return <ImageCarousel type="list" images={images} showWaterMark />;
 

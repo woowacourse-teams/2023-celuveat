@@ -1,68 +1,78 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { DropDown } from 'celuveat-ui-library';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { ProfileData } from '~/@types/api.types';
 import { getProfile } from '~/api/user';
-
 import InfoButton from '~/components/@common/InfoButton';
-import InfoDropDownOption from '~/components/InfoDropDown/InfoDropDownOption';
-import { OPTION_FOR_NOT_USER, OPTION_FOR_USER } from '~/constants/options';
+import LoginModal from '~/components/LoginModal';
 import useBooleanState from '~/hooks/useBooleanState';
-import useOnClickOutside from '~/hooks/useOnClickOutside';
 
-interface DropDownProps {
-  isOpen?: boolean;
-  externalOnClick?: (e?: React.MouseEvent<HTMLElement>) => void;
-  label: string;
-}
+import { ProfileData } from '~/@types/api.types';
 
-function InfoDropDown({ externalOnClick, isOpen = false, label }: DropDownProps) {
-  const { value: isShow, toggle: onToggleDropDown, setFalse: closeDropDown } = useBooleanState(isOpen);
-  const ref = useRef();
-  useOnClickOutside(ref, closeDropDown);
-
-  const { data, isSuccess } = useQuery<ProfileData>({
+function InfoDropDown() {
+  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const { data, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
-    queryFn: () => getProfile(),
+    queryFn: getProfile,
   });
 
-  const options = isSuccess ? OPTION_FOR_USER : OPTION_FOR_NOT_USER;
+  const navigator = useNavigate();
 
-  const onSelection = () => (event?: React.MouseEvent<HTMLLIElement>) => {
-    if (externalOnClick) externalOnClick(event);
+  const goMyPage = () => {
+    navigator('/user');
+  };
+
+  const goWishList = () => {
+    navigator('/restaurants/like');
+  };
+
+  const goWithdrawal = () => {
+    navigator('/withdrawal');
   };
 
   return (
-    <StyledInfoDropDown aria-hidden>
-      <StyledInfoButtonWrapper ref={ref} onClick={onToggleDropDown} aria-label={label}>
-        <InfoButton profile={data} isShow={isShow} isSuccess={isSuccess} />
-      </StyledInfoButtonWrapper>
+    <>
+      <DropDown>
+        <DropDown.Trigger isCustom>
+          <StyledTriggerWrapper>
+            <InfoButton profile={data} isSuccess={isLogin} />
+          </StyledTriggerWrapper>
+        </DropDown.Trigger>
+        <DropDown.Options as="ul" isCustom>
+          <StyledDropDownWrapper>
+            {isLogin ? (
+              <>
+                <DropDown.Option as="li" isCustom externalClick={goMyPage}>
+                  <StyledDropDownOption>마이 페이지</StyledDropDownOption>
+                </DropDown.Option>
+                <DropDown.Option as="li" isCustom externalClick={goWishList}>
+                  <StyledDropDownOption>위시리스트</StyledDropDownOption>
+                </DropDown.Option>
+                <DropDown.Option as="li" isCustom externalClick={goWithdrawal}>
+                  <StyledDropDownOption>회원 탈퇴</StyledDropDownOption>
+                </DropDown.Option>
+              </>
+            ) : (
+              <DropDown.Option isCustom externalClick={openModal}>
+                <StyledDropDownOption>로그인</StyledDropDownOption>
+              </DropDown.Option>
+            )}
+          </StyledDropDownWrapper>
+        </DropDown.Options>
+      </DropDown>
 
-      {isShow && (
-        <StyledDropDownWrapper aria-hidden>
-          <StyledSelectContainer>
-            {options.map(({ id, value }) => (
-              <InfoDropDownOption key={id} value={value} onClick={onSelection()} />
-            ))}
-          </StyledSelectContainer>
-        </StyledDropDownWrapper>
-      )}
-    </StyledInfoDropDown>
+      <LoginModal close={closeModal} isOpen={isModalOpen} />
+    </>
   );
 }
 
 export default InfoDropDown;
 
-const StyledInfoButtonWrapper = styled.button`
+const StyledTriggerWrapper = styled.div`
   border: none;
-  background: transparent;
-
-  cursor: pointer;
+  background-color: transparent;
+  box-shadow: none;
   outline: none;
-`;
-
-const StyledInfoDropDown = styled.div`
-  display: relative;
 `;
 
 const StyledDropDownWrapper = styled.ul`
@@ -71,8 +81,8 @@ const StyledDropDownWrapper = styled.ul`
   align-content: center;
 
   position: absolute;
-  top: 72px;
-  right: 18px;
+  top: 64px;
+  right: 0;
   z-index: 1000;
 
   width: 216px;
@@ -85,13 +95,16 @@ const StyledDropDownWrapper = styled.ul`
   box-shadow: var(--shadow);
 `;
 
-const StyledSelectContainer = styled.div`
-  width: 100%;
-  height: fit-content;
+const StyledDropDownOption = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  margin: 1rem 0;
+  height: 44px;
 
-  background: transparent;
+  padding: 0 1rem;
 
-  overflow-y: auto;
+  &:hover {
+    background: var(--gray-1);
+  }
 `;

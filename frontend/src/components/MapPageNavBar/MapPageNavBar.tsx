@@ -1,25 +1,17 @@
 import { styled } from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
 import { shallow } from 'zustand/shallow';
-import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
 import CategoryNavbar from '../CategoryNavbar';
-import CelebDropDown from '../CelebDropDown/CelebDropDown';
+
 import RESTAURANT_CATEGORY from '~/constants/restaurantCategory';
 import useRestaurantsQueryStringState from '~/hooks/store/useRestaurantsQueryStringState';
 
-import { getCelebs } from '~/api/celeb';
+import CelebDropDown from '~/components/CelebDropDown/CelebDropDown';
 
 function MapPageNavBar() {
-  const [setCelebId, setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
-    state => [state.setCelebId, state.setCurrentPage, state.setRestaurantCategory],
+  const [setCurrentPage, setRestaurantCategory] = useRestaurantsQueryStringState(
+    state => [state.setCurrentPage, state.setRestaurantCategory],
     shallow,
   );
-
-  const { data: celebOptions } = useQuery({
-    queryKey: ['celebOptions'],
-    queryFn: () => getCelebs(),
-    suspense: true,
-  });
 
   const clickRestaurantCategory = (e: React.MouseEvent<HTMLElement>) => {
     const currentCategory = e.currentTarget.dataset.label;
@@ -28,16 +20,9 @@ function MapPageNavBar() {
     setCurrentPage(0);
   };
 
-  const clickCeleb = (e: React.MouseEvent<HTMLElement>) => {
-    const currentCelebId = Number(e.currentTarget.dataset.id);
-
-    setCelebId(currentCelebId);
-    setCurrentPage(0);
-  };
-
   return (
     <StyledNavBar>
-      <CelebDropDown celebs={[OPTION_FOR_CELEB_ALL, ...celebOptions]} externalOnClick={clickCeleb} />
+      <CelebDropDown />
       <StyledLine />
       <CategoryNavbar categories={RESTAURANT_CATEGORY} externalOnClick={clickRestaurantCategory} isInteractive />
     </StyledNavBar>
