@@ -22,7 +22,7 @@ jobs:
       - name: ✨ Node.js 설정
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 18.16.1
 
       - name: ✨ Yarn global cache 캐싱
         uses: actions/cache@v3
