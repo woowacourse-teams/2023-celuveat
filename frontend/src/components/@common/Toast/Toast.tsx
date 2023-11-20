@@ -55,6 +55,7 @@ const StyledToastWrapper = styled.div<StyledToastProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: 0.8rem;
 
   position: fixed;
   bottom: 0;
