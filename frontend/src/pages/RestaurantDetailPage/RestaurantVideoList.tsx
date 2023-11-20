@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useQueries } from '@tanstack/react-query';
 import styled from 'styled-components';
 import VideoCarousel from '~/components/@common/VideoCarousel';
 import type { VideoList } from '~/@types/api.types';
@@ -11,16 +11,21 @@ interface RestaurantVideoListProps {
 }
 
 function RestaurantVideoList({ restaurantId, celebId }: RestaurantVideoListProps) {
-  const { data: restaurantVideo } = useQuery<VideoList>({
-    queryKey: ['restaurantVideo', restaurantId],
-    queryFn: async () => getRestaurantVideo(restaurantId),
-    suspense: true,
-  });
-
-  const { data: celebVideo } = useQuery<VideoList>({
-    queryKey: ['celebVideo', celebId],
-    queryFn: async () => getCelebVideo(celebId),
-    suspense: true,
+  const [{ data: restaurantVideo }, { data: celebVideo }] = useQueries<
+    [UseQueryResult<VideoList>, UseQueryResult<VideoList>]
+  >({
+    queries: [
+      {
+        queryKey: ['restaurantVideo', restaurantId],
+        queryFn: async () => getRestaurantVideo(restaurantId),
+        suspense: true,
+      },
+      {
+        queryKey: ['celebVideo', celebId],
+        queryFn: async () => getCelebVideo(celebId),
+        suspense: true,
+      },
+    ],
   });
 
   return (
