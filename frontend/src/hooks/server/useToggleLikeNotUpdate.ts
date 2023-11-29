@@ -25,7 +25,10 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     onMutate: toggleIsLiked,
 
     onError: (error: AxiosError) => {
-      if (error.response.status < 500) {
+      if (error.response.status === 429) {
+        toggleIsLiked();
+      }
+      if (error.response.status === 401) {
         openModal();
         toggleIsLiked();
       } else {
@@ -44,14 +47,14 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
           query.queryKey[0] === 'restaurants' && query.queryKey[1]?.type !== 'wish-list',
       });
     },
-  });
+   });
 
   const toggleRestaurantLike = () => {
     toggleLike.mutate(restaurant.id);
     close();
   };
 
-  return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike };
+  return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike, toggleLike };
 };
 
 export default useToggleLikeNotUpdate;
