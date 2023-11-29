@@ -10,7 +10,7 @@ import { makeImage } from '~/mocks/utils';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { HyphenatedDate } from '~/@types/date.types';
-import type { RestaurantData, RestaurantReview, VideoList } from '~/@types/api.types';
+import type { RestaurantData, VideoList } from '~/@types/api.types';
 
 export const DetailPageSuccessHandler = [
   rest.get('/restaurants/:restaurantsId', (req, res, ctx) => {
