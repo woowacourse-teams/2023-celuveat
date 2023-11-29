@@ -17,7 +17,7 @@ function CeluveatRecommendedRestaurantSlider() {
   return (
     <Slider {...RestaurantCardCarouselSettings}>
       {recommendedRestaurantData?.map(({ celebs, ...restaurant }) => (
-        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating isCarouselItem />
+        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating isCarouselItem showLike />
       ))}
     </Slider>
   );

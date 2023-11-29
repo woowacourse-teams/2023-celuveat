@@ -17,7 +17,7 @@ function CeluveatRecommendedRestaurants() {
   return (
     <StyledPopularRestaurantBox>
       {recommendedRestaurantData.map(({ celebs, ...restaurant }) => (
-        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
+        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating showLike />
       ))}
     </StyledPopularRestaurantBox>
   );
