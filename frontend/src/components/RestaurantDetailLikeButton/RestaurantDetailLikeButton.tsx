@@ -23,17 +23,8 @@ function RestaurantDetailLikeButton({ showText = true, restaurantId, celebId }: 
 
   return (
     <button type="button" onClick={toggleRestaurantLike}>
-      {isLiked ? (
-        <>
-          <WhiteLove width={30} fill="#fff" />
-          {showText && <div>위시리스트에서 삭제하기</div>}
-        </>
-      ) : (
-        <>
-          <WhiteLove width={30} />
-          {showText && <div>위시리스트에 저장하기</div>}
-        </>
-      )}
+      <WhiteLove width={30} {...(isLiked && { fill: '#fff' })} />
+      {showText && <div>위시리스트에서 삭제하기</div>}
     </button>
   );
 }
