@@ -1,22 +1,23 @@
-import { styled } from 'styled-components';
-import { RestaurantReview } from '~/@types/api.types';
+import { css, styled } from 'styled-components';
 
 import RestaurantReviewItem from '~/components/RestaurantReviewItem';
-import useMediaQuery from '~/hooks/useMediaQuery';
+import { REVIEW_SHOW_COUNT } from '~/constants/options';
+import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 interface RestaurantReviewListProps {
-  reviews: RestaurantReview[];
-  isModal?: boolean;
+  isSummary?: boolean;
 }
 
-function RestaurantReviewList({ reviews, isModal = false }: RestaurantReviewListProps) {
-  const { isMobile } = useMediaQuery();
+function RestaurantReviewList({ isSummary }: RestaurantReviewListProps) {
+  const {
+    restaurantReviewsData: { reviews },
+  } = useRestaurantReview();
 
   return (
-    <StyledRestaurantReviewListWrapper>
-      <StyledRestaurantReviewList isMobile={isMobile || isModal}>
-        {reviews?.map(review => (
-          <RestaurantReviewItem key={review.id} review={review} isInModal={isModal} />
+    <StyledRestaurantReviewListWrapper isSummary={isSummary}>
+      <StyledRestaurantReviewList>
+        {reviews.slice(0, isSummary ? REVIEW_SHOW_COUNT : reviews.length).map(review => (
+          <RestaurantReviewItem key={review.id} review={review} />
         ))}
       </StyledRestaurantReviewList>
     </StyledRestaurantReviewListWrapper>
@@ -25,12 +26,18 @@ function RestaurantReviewList({ reviews, isModal = false }: RestaurantReviewList
 
 export default RestaurantReviewList;
 
-const StyledRestaurantReviewList = styled.div<{ isMobile: boolean }>`
-  display: flex;
+const StyledRestaurantReviewList = styled.div`
   flex-direction: column;
   gap: 4rem;
 `;
 
-const StyledRestaurantReviewListWrapper = styled.article`
+const StyledRestaurantReviewListWrapper = styled.article<{ isSummary: boolean }>`
   margin-bottom: 2rem;
+
+  ${({ isSummary }) =>
+    !isSummary &&
+    css`
+      height: 500px;
+      overflow-y: scroll;
+    `}
 `;

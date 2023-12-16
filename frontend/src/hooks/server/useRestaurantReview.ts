@@ -14,9 +14,9 @@ import {
 } from '~/api/restaurantReview';
 
 import useToastState from '~/hooks/store/useToastState';
-import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import type { RestaurantReviewData, RestaurantReviewPatchBody } from '~/@types/api.types';
+import useCeluveatModal from '../useCeluveatModal';
 
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ const useRestaurantReview = () => {
     shallow,
   );
 
-  const { closeModal } = useReviewModalContext();
+  const { closeModal } = useCeluveatModal();
 
   const errorHandler = (error: AxiosError) => {
     switch (error.response.status) {

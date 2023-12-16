@@ -8,7 +8,6 @@ import { FONT_SIZE, truncateText } from '~/styles/common';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 interface RestaurantCardProps {
@@ -21,7 +20,7 @@ interface RestaurantCardProps {
 
 function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId = () => {} }: RestaurantCardProps) {
   const { id, images, name, roadAddress, category, phoneNumber, likeCount } = restaurant;
-  const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
+  const { toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
 
@@ -36,37 +35,33 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
   };
 
   return (
-    <>
-      <StyledContainer
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        data-cy="음식점 카드"
-        aria-label={`${name} 카드`}
-        tabIndex={0}
-      >
-        <StyledImageViewer>
-          <ImageCarousel images={images} type={type} />
-          <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
-          </LikeButton>
-        </StyledImageViewer>
-        <StyledInfoSection type={type}>
-          <StyledInfo>
-            <StyledCategory>{category}</StyledCategory>
-            <StyledName role="columnheader">{name}</StyledName>
-            <StyledAddress>{roadAddress}</StyledAddress>
-            <StyledAddress>{phoneNumber}</StyledAddress>
-          </StyledInfo>
-          <StyledProfileImageSection>
-            <span>좋아요 {likeCount.toLocaleString()}개</span>
-            {celebs && <ProfileImageList celebs={celebs} size={size} />}
-          </StyledProfileImageSection>
-        </StyledInfoSection>
-      </StyledContainer>
-
-      <LoginModal isOpen={isModalOpen} close={closeModal} />
-    </>
+    <StyledContainer
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      data-cy="음식점 카드"
+      aria-label={`${name} 카드`}
+      tabIndex={0}
+    >
+      <StyledImageViewer>
+        <ImageCarousel images={images} type={type} />
+        <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
+          <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+        </LikeButton>
+      </StyledImageViewer>
+      <StyledInfoSection type={type}>
+        <StyledInfo>
+          <StyledCategory>{category}</StyledCategory>
+          <StyledName role="columnheader">{name}</StyledName>
+          <StyledAddress>{roadAddress}</StyledAddress>
+          <StyledAddress>{phoneNumber}</StyledAddress>
+        </StyledInfo>
+        <StyledProfileImageSection>
+          <span>좋아요 {likeCount.toLocaleString()}개</span>
+          {celebs && <ProfileImageList celebs={celebs} size={size} />}
+        </StyledProfileImageSection>
+      </StyledInfoSection>
+    </StyledContainer>
   );
 }
 

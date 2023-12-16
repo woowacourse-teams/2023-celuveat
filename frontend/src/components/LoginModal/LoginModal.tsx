@@ -1,20 +1,15 @@
 import { styled } from 'styled-components';
 import LoginButton from '~/components/@common/LoginButton';
-import Modal from '../@common/Modal';
+import Dialog from '../@common/Dialog';
 
-interface LoginModalProps {
-  isOpen: boolean;
-  close: VoidFunction;
-}
-
-function LoginModal({ isOpen, close }: LoginModalProps) {
+function LoginModal() {
   return (
-    <Modal isOpen={isOpen} close={close} title="로그인 및 회원가입">
+    <Dialog title="로그인 및 회원가입">
       <StyledLoginModalContent>
         <LoginButton type="kakao" />
         <LoginButton type="google" />
       </StyledLoginModalContent>
-    </Modal>
+    </Dialog>
   );
 }
 

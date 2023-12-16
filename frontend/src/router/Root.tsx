@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import { styled } from 'styled-components';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { Modal } from 'jeremy-reusable-modal';
 import Footer from '~/components/@common/Footer';
 import { Header, MobileHeader } from '~/components/@common/Header';
 import LoadingIndicator from '~/components/@common/LoadingIndicator';
@@ -21,24 +22,27 @@ function Root() {
   const helmetContext = {};
 
   return (
-    <HelmetProvider context={helmetContext}>
-      <Suspense
-        fallback={
-          <StyledProcessing>
-            <LoadingIndicator size={64} />
-          </StyledProcessing>
-        }
-      >
-        {isMobile ? <MobileHeader /> : <Header />}
+    <>
+      <HelmetProvider context={helmetContext}>
+        <Suspense
+          fallback={
+            <StyledProcessing>
+              <LoadingIndicator size={64} />
+            </StyledProcessing>
+          }
+        >
+          {isMobile ? <MobileHeader /> : <Header />}
 
-        <Outlet />
+          <Outlet />
 
-        {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
-        {!isMobile && <Footer />}
-      </Suspense>
-      <ScrollRestoration />
-      <Toast />
-    </HelmetProvider>
+          {isMobile && <BottomNavBar isHide={isListShowed && scrollDirection.y === 'down'} />}
+          {!isMobile && <Footer />}
+        </Suspense>
+        <ScrollRestoration />
+        <Toast />
+      </HelmetProvider>
+      <Modal portalId="portal" />
+    </>
   );
 }
 
