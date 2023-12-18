@@ -4691,10 +4691,12 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==
 
-celuveat-ui-library@^1.2.8:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/celuveat-ui-library/-/celuveat-ui-library-1.3.3.tgz#f49a52354a31cd23387336740e9a02be7d323c4d"
-  integrity sha512-2wNy4kPiycj3owJ7IdWpn5bMjfdiAb9aYy5/FQZgudoQg2aV14oV/m6e/GHHWpOQNaqw3qiQSfX1F9jmmxy6cg==
+celuveat-ui-library@^1.3.3:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/celuveat-ui-library/-/celuveat-ui-library-1.3.4.tgz#8f7117cb2f8fb6fce789d3c525980c901cf9b160"
+  integrity sha512-hpfhkvchzdvZuB+gHKBgJ09q+yMOWunk+npWBPj81buRMhPiwKweroCZTPRT0kUxmN7wo9L8pyKfYr8jz6F+4w==
+  dependencies:
+    zustand "^4.4.7"
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -7960,15 +7962,6 @@ jake@^10.8.5:
     chalk "^4.0.2"
     filelist "^1.0.4"
     minimatch "^3.1.2"
-
-jeremy-reusable-modal@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/jeremy-reusable-modal/-/jeremy-reusable-modal-0.0.6.tgz#31170ffe179606f923f9a19fa17e82953838afb8"
-  integrity sha512-IFCkXkeSIBghYKL4L/o66ygQHRuPxd46JMX/RJ6NmRCMELIBW09viTZoRbAlwnBUwnAK+i0T+8Z3CrjkeZXSaw==
-  dependencies:
-    react "^18.2.0"
-    react-dom "^18.2.0"
-    zustand "^4.4.7"
 
 jest-changed-files@^29.7.0:
   version "29.7.0"

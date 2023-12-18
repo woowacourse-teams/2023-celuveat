@@ -1,4 +1,4 @@
-import { Modal } from 'jeremy-reusable-modal';
+import { Modal } from 'celuveat-ui-library';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import Exit from '~/assets/icons/exit.svg';

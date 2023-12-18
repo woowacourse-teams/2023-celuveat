@@ -1,4 +1,4 @@
-import { useModal } from 'jeremy-reusable-modal';
+import { useModal } from 'celuveat-ui-library';
 import SuggestionForm from '~/components/Form/SuggestionForm';
 import FormModal from '~/components/FormModal/FormModal';
 import LoginModal from '~/components/LoginModal';
