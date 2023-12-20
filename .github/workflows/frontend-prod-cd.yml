@@ -45,7 +45,7 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          SOURCE_DIR: './dist'
+          SOURCE_DIR: './frontend/dist'
           AWS_REGION: 'ap-northeast-2'
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_ }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
