@@ -40,9 +40,9 @@ jobs:
       - name: ✨ 빌드
         run: yarn build:prod
 
-      - name: 배포
+      - name: ✨ 배포
         env:
-          SOURCE_DIR: './frontend/dist'
+          SOURCE_DIR: './dist'
           AWS_REGION: 'ap-northeast-2'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
