@@ -51,7 +51,7 @@ jobs:
           SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
           
       - name: ✨ 의존성 설치
-        run: rm -rf ./node_modules && yarn cache clean && yarn install
+        run: rm -rf ./node_modules && yarn cache clean && yarn install --frozen-lockfile
 
       - name: ✨ 빌드
         run: yarn build:prod
