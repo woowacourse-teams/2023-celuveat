@@ -39,17 +39,13 @@ jobs:
 
       - name: ✨ 빌드
         run: yarn build:prod
-        
-  deploy:
-    needs: build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@master
+
+      - name: 배포
       - uses: awact/s3-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          SOURCE_DIR: './frontend/dist'
+          SOURCE_DIR: './dist'
           AWS_REGION: 'ap-northeast-2'
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_ }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
