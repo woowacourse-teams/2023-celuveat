@@ -22,7 +22,7 @@ jobs:
       - name: ✨ Node.js 설정
         uses: actions/setup-node@v3
         with:
-          node-version: 18.16.1
+          node-version: 18.x
 
       - name: 환경변수 설정
         run: |
@@ -35,7 +35,7 @@ jobs:
           SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
           
       - name: ✨ 의존성 설치
-        run: rm -rf ./node_modules && yarn install
+        run: yarn install
 
       - name: ✨ 빌드
         run: yarn build:prod
