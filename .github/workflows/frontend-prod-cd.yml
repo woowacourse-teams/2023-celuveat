@@ -24,22 +24,6 @@ jobs:
         with:
           node-version: 18.16.1
 
-      - name: ✨ Yarn global cache 캐싱
-        uses: actions/cache@v3
-        with:
-          path: '**/.yarn'
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: ✨ Yarn project cache 캐싱
-        uses: actions/cache@v3
-        with:
-          path: '~/.yarn/cache'
-          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: 환경변수 설정
         run: |
           echo "BASE_URL=$BASE_URL" >> .prod.env
