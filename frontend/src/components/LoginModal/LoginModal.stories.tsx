@@ -20,9 +20,4 @@ export default meta;
 
 type Story = StoryObj<typeof LoginModal>;
 
-export const Default: Story = {
-  args: {
-    isOpen: true,
-    close: () => {},
-  },
-};
+export const Default: Story = {};

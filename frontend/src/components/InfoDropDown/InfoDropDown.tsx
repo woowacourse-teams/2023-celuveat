@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { getProfile } from '~/api/user';
 import InfoButton from '~/components/@common/InfoButton';
-import LoginModal from '~/components/LoginModal';
-import useBooleanState from '~/hooks/useBooleanState';
 
 import { ProfileData } from '~/@types/api.types';
+import useCeluveatModal from '~/hooks/useCeluveatModal';
 
 function InfoDropDown() {
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const { openLoginModal } = useCeluveatModal();
   const { data, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: getProfile,
@@ -31,38 +30,34 @@ function InfoDropDown() {
   };
 
   return (
-    <>
-      <DropDown>
-        <DropDown.Trigger isCustom>
-          <StyledTriggerWrapper>
-            <InfoButton profile={data} isSuccess={isLogin} />
-          </StyledTriggerWrapper>
-        </DropDown.Trigger>
-        <DropDown.Options as="ul" isCustom>
-          <StyledDropDownWrapper>
-            {isLogin ? (
-              <>
-                <DropDown.Option as="li" isCustom externalClick={goMyPage}>
-                  <StyledDropDownOption>마이 페이지</StyledDropDownOption>
-                </DropDown.Option>
-                <DropDown.Option as="li" isCustom externalClick={goWishList}>
-                  <StyledDropDownOption>위시리스트</StyledDropDownOption>
-                </DropDown.Option>
-                <DropDown.Option as="li" isCustom externalClick={goWithdrawal}>
-                  <StyledDropDownOption>회원 탈퇴</StyledDropDownOption>
-                </DropDown.Option>
-              </>
-            ) : (
-              <DropDown.Option isCustom externalClick={openModal}>
-                <StyledDropDownOption>로그인</StyledDropDownOption>
+    <DropDown>
+      <DropDown.Trigger isCustom>
+        <StyledTriggerWrapper>
+          <InfoButton profile={data} isSuccess={isLogin} />
+        </StyledTriggerWrapper>
+      </DropDown.Trigger>
+      <DropDown.Options as="ul" isCustom>
+        <StyledDropDownWrapper>
+          {isLogin ? (
+            <>
+              <DropDown.Option as="li" isCustom externalClick={goMyPage}>
+                <StyledDropDownOption>마이 페이지</StyledDropDownOption>
               </DropDown.Option>
-            )}
-          </StyledDropDownWrapper>
-        </DropDown.Options>
-      </DropDown>
-
-      <LoginModal close={closeModal} isOpen={isModalOpen} />
-    </>
+              <DropDown.Option as="li" isCustom externalClick={goWishList}>
+                <StyledDropDownOption>위시리스트</StyledDropDownOption>
+              </DropDown.Option>
+              <DropDown.Option as="li" isCustom externalClick={goWithdrawal}>
+                <StyledDropDownOption>회원 탈퇴</StyledDropDownOption>
+              </DropDown.Option>
+            </>
+          ) : (
+            <DropDown.Option isCustom externalClick={openLoginModal}>
+              <StyledDropDownOption>로그인</StyledDropDownOption>
+            </DropDown.Option>
+          )}
+        </StyledDropDownWrapper>
+      </DropDown.Options>
+    </DropDown>
   );
 }
 

@@ -46,7 +46,6 @@ const StyledProfileImageList = styled.div<{ size: string }>`
 
 const StyledProfileImageWrapper = styled.div<{ index: number; hover: boolean; length: number }>`
   position: absolute;
-  z-index: ${({ length, index }) => 10 + length - index};
 
   transition: 0.4s ease-in-out;
 
