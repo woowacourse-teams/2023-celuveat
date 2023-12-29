@@ -62,26 +62,26 @@ jobs:
           name: dev-dist
           path: frontend/dist
         
-  deploy:
-    needs: build
-    runs-on: [self-hosted, dev]
-    steps:
-      - name: ✨ 기존 폴더 삭제
-        working-directory: .
-        run: rm -rf dev
+  # deploy:
+  #   needs: build
+  #   runs-on: [self-hosted, dev]
+  #   steps:
+  #     - name: ✨ 기존 폴더 삭제
+  #       working-directory: .
+  #       run: rm -rf dev
 
-      - name: ✨ artifact로부터 EC2에 빌드결과물 다운로드
-        uses: actions/download-artifact@v3
-        with:
-          name: dev-dist
-          path: dev/dist
+  #     - name: ✨ artifact로부터 EC2에 빌드결과물 다운로드
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-dist
+  #         path: dev/dist
 
-      - name: ✨ S3 업로드
-        run: |
-          aws s3 sync dev ${{secrets.S3_FRONT_END_DEV_URI}} --delete
+  #     - name: ✨ S3 업로드
+  #       run: |
+  #         aws s3 sync dev ${{secrets.S3_FRONT_END_DEV_URI}} --delete
 
-      - name: ✨ 캐시 무효화
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.CLOUDFRONT_CELUVEAT_DEV_ID }} \
-            --paths "/*"
+  #     - name: ✨ 캐시 무효화
+  #       run: |
+  #         aws cloudfront create-invalidation \
+  #           --distribution-id ${{ secrets.CLOUDFRONT_CELUVEAT_DEV_ID }} \
+  #           --paths "/*"
