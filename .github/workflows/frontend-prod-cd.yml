@@ -48,5 +48,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
         run: |
-          aws s3 rm $AWS_S3_BUCKET_URI/path/to/js/ --recursive  
+          aws s3 rm $AWS_S3_BUCKET_URI --recursive --exclude "*.svg"
           aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
