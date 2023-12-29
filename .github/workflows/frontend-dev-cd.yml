@@ -1,0 +1,87 @@
+name: ✨ Celuveat frontend DEV CD ✨
+
+on:
+  push:
+    branches:
+      - develop-frontend*
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./frontend
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+
+    steps:
+      - name: ✨ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: ✨ Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.1
+
+      - name: ✨ Yarn global cache 캐싱
+        uses: actions/cache@v3
+        with:
+          path: '**/.yarn'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: ✨ Yarn project cache 캐싱
+        uses: actions/cache@v3
+        with:
+          path: '~/.yarn/cache'
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: 환경변수 설정
+        run: |
+          echo "BASE_URL=$BASE_URL" >> .dev.env
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .dev.env
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .dev.env
+        env:
+          BASE_URL: ${{secrets.DEV_BASE_URL}}
+          GOOGLE_MAP_API_KEY: ${{secrets.GOOGLE_MAP_API_KEY}}
+          SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
+          
+      - name: ✨ 의존성 설치
+        run: rm -rf ./node_modules yarn.lock && yarn cache clean && yarn install
+
+      - name: ✨ 빌드
+        run: yarn build:dev
+
+      - name: ✨ artifact로 빌드파일 다운로드 가능하게 만들기
+        uses: actions/upload-artifact@v3
+        with:
+          name: dev-dist
+          path: frontend/dist
+        
+  # deploy:
+  #   needs: build
+  #   runs-on: [self-hosted, dev]
+  #   steps:
+  #     - name: ✨ 기존 폴더 삭제
+  #       working-directory: .
+  #       run: rm -rf dev
+
+  #     - name: ✨ artifact로부터 EC2에 빌드결과물 다운로드
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: dev-dist
+  #         path: dev/dist
+
+  #     - name: ✨ S3 업로드
+  #       run: |
+  #         aws s3 sync dev ${{secrets.S3_FRONT_END_DEV_URI}} --delete
+
+  #     - name: ✨ 캐시 무효화
+  #       run: |
+  #         aws cloudfront create-invalidation \
+  #           --distribution-id ${{ secrets.CLOUDFRONT_CELUVEAT_DEV_ID }} \
+  #           --paths "/*"

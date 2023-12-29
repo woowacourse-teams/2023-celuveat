@@ -4,6 +4,9 @@ import InfoDropDown from './InfoDropDown';
 const meta: Meta<typeof InfoDropDown> = {
   title: 'Selector/InfoDropDown',
   component: InfoDropDown,
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;

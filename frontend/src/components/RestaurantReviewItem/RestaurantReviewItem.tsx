@@ -8,7 +8,6 @@ import SpeakerphoneIcon from '~/assets/icons/etc/speakerphone.svg';
 import StarRating from '~/components/@common/StarRating';
 import ProfileImage from '~/components/@common/ProfileImage';
 
-import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
@@ -16,13 +15,13 @@ import { getProfile } from '~/api/user';
 import { getReviewImgUrl, lookImage } from '~/utils/image';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
+import useCeluveatModal from '~/hooks/useCeluveatModal';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
-  isInModal: boolean;
 }
 
-function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) {
+function RestaurantReviewItem({ review }: RestaurantReviewItemProps) {
   const { data: profileData } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: getProfile,
@@ -30,7 +29,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
 
   const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
 
-  const { openReviewModal, setReviewId } = useReviewModalContext();
+  const { openReviewFormModal } = useCeluveatModal();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
@@ -50,8 +49,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
             <button
               type="button"
               onClick={() => {
-                setReviewId(review.id);
-                openReviewModal('update');
+                openReviewFormModal({ type: 'update', reviewId: review.id });
               }}
             >
               수정
@@ -60,8 +58,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
             <button
               type="button"
               onClick={() => {
-                setReviewId(review.id);
-                openReviewModal('delete');
+                openReviewFormModal({ type: 'delete', reviewId: review.id });
               }}
             >
               삭제
@@ -72,7 +69,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
       <StyledStarRatingWrapper>
         <StarRating rate={review.rating} size="8px" />
       </StyledStarRatingWrapper>
-      <StyledReviewContent isInModal={isInModal}>{review.content}</StyledReviewContent>
+      <StyledReviewContent>{review.content}</StyledReviewContent>
       <StyledReviewImgWrapper>
         {review?.images?.map((image, idx) => (
           <StyledReviewImg
@@ -97,8 +94,7 @@ function RestaurantReviewItem({ review, isInModal }: RestaurantReviewItemProps) 
             </StyledReviewButton>
             <StyledReviewButton
               onClick={() => {
-                setReviewId(review.id);
-                openReviewModal('report');
+                openReviewFormModal({ type: 'report', reviewId: review.id });
               }}
             >
               <SpeakerphoneIcon stroke="#3a3b3c" />
@@ -216,7 +212,7 @@ const StyledProfileInfoWrapper = styled.div`
   margin-left: 1rem;
 `;
 
-const StyledReviewContent = styled.div<{ isInModal: boolean }>`
+const StyledReviewContent = styled.div`
   margin-top: 1.2rem;
 
   color: #222;

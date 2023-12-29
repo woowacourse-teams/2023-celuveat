@@ -53,11 +53,11 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: 🍔 yarn install
-        run: pwd && ls && yarn install
+        run: rm -rf ./node_modules yarn.lock && yarn cache clean && yarn install
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 eslint 테스트
-        run: pwd && ls && yarn lint
+        run: yarn lint
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 React 프로젝트 빌드

@@ -1,0 +1,22 @@
+{
+  "name": "Celuveat",
+  "short_name": "Celuveat",
+  "description": "셀럽들이 다녀간 맛집들을 확인해보세요.",
+  "background_color": "#fff",
+  "theme_color": "#fcfcfc",
+  "dir": "ltr",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "categories": [
+    {
+      "id": "map",
+      "name": "맛집 지도"
+    }
+  ],
+  "icons": [{ "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }],
+  "id": "celuveat",
+  "lang": "ko",
+  "display_override": ["standalone", "window-controls-overlay"]
+}
