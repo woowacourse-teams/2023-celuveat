@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled, css } from 'styled-components';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getImgUrl } from '~/utils/image';
@@ -10,6 +11,8 @@ interface WaterMarkImageProps {
 }
 
 function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
+
   const onClickWaterMark = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -18,11 +21,16 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
   };
 
   return (
-    <StyledWaterMarkImage type={type}>
+    <StyledWaterMarkImage type={type} isImageLoading={isImageLoading}>
       <picture>
         <source type="images/webp" srcSet={getImgUrl(imageUrl, 'webp')} />
         <source type="images/jpeg" srcSet={getImgUrl(imageUrl, 'jpeg')} />
-        <StyledImage src={getImgUrl(imageUrl, 'webp')} alt="음식점" loading="lazy" />
+        <StyledImage
+          src={getImgUrl(imageUrl, 'webp')}
+          alt="음식점"
+          loading="lazy"
+          onLoad={() => setIsImageLoading(false)}
+        />
       </picture>
       {waterMark && (
         <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
@@ -45,15 +53,21 @@ const styledImgCssVariable = css`
   height: 100%;
 `;
 
-const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map' }>`
-  ${paintSkeleton}
+const StyledWaterMarkImage = styled.div<{ type: 'list' | 'map'; isImageLoading: boolean }>`
+  ${({ isImageLoading }) =>
+    isImageLoading &&
+    css`
+      ${paintSkeleton}
+      background: none;
+    `}
   position: relative;
   overflow: hidden;
 
-  border-radius: ${BORDER_RADIUS.md};
-
   width: 100%;
   min-width: 100%;
+
+  border-radius: ${BORDER_RADIUS.md};
+
   ${({ type }) => (type === 'list' ? `padding-top: 95%;` : `padding-top: 65%;`)}
 
   scroll-snap-align: start;
@@ -64,7 +78,7 @@ const StyledImage = styled.img`
   ${styledImgCssVariable}
 `;
 
-const StyledWaterMark = styled.div`
+const StyledWaterMark = styled.div.attrs({})`
   position: absolute;
   top: 1%;
   left: 1%;
