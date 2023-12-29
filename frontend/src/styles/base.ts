@@ -103,10 +103,6 @@ const base = css`
     border: none;
     border-radius: 12px;
   }
-
-  iframe {
-    display: none;
-  }
 `;
 
 export default base;
