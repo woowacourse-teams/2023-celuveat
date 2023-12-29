@@ -1,13 +1,10 @@
-/* eslint-disable react/no-unstable-nested-components */
 import React, { Suspense } from 'react';
+import Slider from 'react-slick';
 import styled from 'styled-components';
-import { QueryErrorResetBoundary } from '@tanstack/react-query';
+import MiniRestaurantCardSkeleton from '~/components/MiniRestaurantCard/MiniRestaurantCardSkeleton';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import { RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
 import CeluveatRecommendedRestaurantSlider from './components/CeluveatRecommendedRestaurantSlider';
-import CeluveatRecommendationSkeleton from './components/CeluveatRecommendationSkeleton';
-import CeluveatRecommendedRestaurants from './components/CeluveatRecommendedRestaurants';
-import ErrorBoundary from '~/components/@common/ErrorBoundary/ErrorBoundary';
-import TextButton from '~/components/@common/Button';
 
 function CeluveatRecommendSection() {
   const { isMobile } = useMediaQuery();
@@ -15,33 +12,36 @@ function CeluveatRecommendSection() {
   return (
     <section>
       <StyledTitle>셀럽잇 추천 맛집!</StyledTitle>
-      <QueryErrorResetBoundary>
-        {({ reset }) => (
-          <ErrorBoundary
-            fallbackRender={({ resetErrorBoundary }) => (
-              <div>
-                알수없는 에러가 발생했습니다
-                <TextButton text="재요청" onClick={() => resetErrorBoundary()} type="button" colorType="light" />
-              </div>
-            )}
-            reset={reset}
-          >
-            {isMobile && (
-              <Suspense fallback={<CeluveatRecommendationSkeleton />}>
-                <CeluveatRecommendedRestaurants />
-              </Suspense>
-            )}
 
-            {!isMobile && (
-              <StyledSliderContainer>
-                <Suspense fallback={<CeluveatRecommendationSkeleton />}>
-                  <CeluveatRecommendedRestaurantSlider />
-                </Suspense>
-              </StyledSliderContainer>
-            )}
-          </ErrorBoundary>
-        )}
-      </QueryErrorResetBoundary>
+      {isMobile && (
+        <Suspense
+          fallback={
+            <>
+              {new Array(5).fill(1).map(() => (
+                <MiniRestaurantCardSkeleton flexColumn />
+              ))}
+            </>
+          }
+        >
+          <CeluveatRecommendedRestaurantSlider />
+        </Suspense>
+      )}
+
+      {!isMobile && (
+        <StyledSliderContainer>
+          <Suspense
+            fallback={
+              <Slider {...RestaurantCardCarouselSettings}>
+                {new Array(5).fill(1).map(() => (
+                  <MiniRestaurantCardSkeleton flexColumn />
+                ))}
+              </Slider>
+            }
+          >
+            <CeluveatRecommendedRestaurantSlider />
+          </Suspense>
+        </StyledSliderContainer>
+      )}
     </section>
   );
 }

@@ -7,7 +7,7 @@ import { hideScrollBar } from '~/styles/common';
 
 import type { RestaurantData } from '~/@types/api.types';
 
-function CeluveatRecommendedRestaurants() {
+function CeluveatRecommendedRestaurantSlider() {
   const { data: recommendedRestaurantData } = useQuery<RestaurantData[]>({
     queryKey: ['recommendedRestaurants'],
     queryFn: getRecommendedRestaurants,
@@ -17,13 +17,13 @@ function CeluveatRecommendedRestaurants() {
   return (
     <StyledPopularRestaurantBox>
       {recommendedRestaurantData.map(({ celebs, ...restaurant }) => (
-        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating showLike />
+        <MiniRestaurantCard celebs={celebs} restaurant={restaurant} flexColumn showRating />
       ))}
     </StyledPopularRestaurantBox>
   );
 }
 
-export default CeluveatRecommendedRestaurants;
+export default CeluveatRecommendedRestaurantSlider;
 
 const StyledPopularRestaurantBox = styled.div`
   display: flex;

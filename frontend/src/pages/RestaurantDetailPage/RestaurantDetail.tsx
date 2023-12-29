@@ -15,6 +15,7 @@ import useMediaQuery from '~/hooks/useMediaQuery';
 import ReviewModalProvider from '~/hooks/context/ReviewModalProvider';
 
 import MapSection from './MapSection';
+import LinkContainer from './LinkContainer';
 
 function RestaurantDetail() {
   const layoutRef = useRef();
@@ -30,6 +31,7 @@ function RestaurantDetail() {
         <ImageViewer restaurantId={restaurantId} celebId={celebId} />
         <StyledDetailAndLink isMobile={isMobile}>
           <DetailInformation restaurantId={restaurantId} celebId={celebId} />
+          <LinkContainer isMobile={isMobile} restaurantId={restaurantId} celebId={celebId} />
         </StyledDetailAndLink>
         <RestaurantVideoList restaurantId={restaurantId} celebId={celebId} />
         <NearByRestaurantCardList restaurantId={restaurantId} />

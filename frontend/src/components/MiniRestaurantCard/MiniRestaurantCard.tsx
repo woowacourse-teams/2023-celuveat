@@ -7,7 +7,6 @@ import Star from '~/assets/icons/star.svg';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { Restaurant } from '~/@types/restaurant.types';
-import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import WaterMarkImage from '../@common/WaterMarkImage';
 import ProfileImageList from '../@common/ProfileImageList';
@@ -36,7 +35,7 @@ function MiniRestaurantCard({
   hideProfile = false,
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category, rating, distance } = restaurant;
-  const { isModalOpen, closeModal, toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
+  const { toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
 
   const navigate = useNavigate();
 
@@ -51,45 +50,41 @@ function MiniRestaurantCard({
   };
 
   return (
-    <>
-      <StyledContainer
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        data-cy="음식점 카드"
-        aria-label={`${name} 카드`}
-        tabIndex={0}
-        flexColumn={flexColumn}
-        isCarouselItem={isCarouselItem}
-      >
-        <StyledImageSection>
-          <WaterMarkImage imageUrl={images[0]?.name} type="list" sns={images[0]?.sns} />
-          {showLike && (
-            <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
-              <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
-            </StyledLikeButton>
+    <StyledContainer
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      data-cy="음식점 카드"
+      aria-label={`${name} 카드`}
+      tabIndex={0}
+      flexColumn={flexColumn}
+      isCarouselItem={isCarouselItem}
+    >
+      <StyledImageSection>
+        <WaterMarkImage imageUrl={images[0]?.name} type="list" sns={images[0]?.sns} />
+        {showLike && (
+          <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
+            <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+          </StyledLikeButton>
+        )}
+      </StyledImageSection>
+      <StyledInfoSection>
+        <StyledInfoTopSection>
+          <StyledName role="columnheader">{name}</StyledName>
+          {showRating && (
+            <StyledRating>
+              <Star /> {rating.toFixed(2)}
+            </StyledRating>
           )}
-        </StyledImageSection>
-        <StyledInfoSection>
-          <StyledInfoTopSection>
-            <StyledName role="columnheader">{name}</StyledName>
-            {showRating && (
-              <StyledRating>
-                <Star /> {rating.toFixed(2)}
-              </StyledRating>
-            )}
-          </StyledInfoTopSection>
-          <StyledCategory>{category}</StyledCategory>
-          <StyledAddress>{roadAddress}</StyledAddress>
-          {showDistance && <StyledAddress>{distance}m 이내</StyledAddress>}
-          {!hideProfile && (
-            <StyledProfileSection>{celebs && <ProfileImageList celebs={celebs} size="24px" />}</StyledProfileSection>
-          )}
-        </StyledInfoSection>
-      </StyledContainer>
-
-      <LoginModal isOpen={isModalOpen} close={closeModal} />
-    </>
+        </StyledInfoTopSection>
+        <StyledCategory>{category}</StyledCategory>
+        <StyledAddress>{roadAddress}</StyledAddress>
+        {showDistance && <StyledAddress>{distance}m 이내</StyledAddress>}
+        {!hideProfile && (
+          <StyledProfileSection>{celebs && <ProfileImageList celebs={celebs} size="24px" />}</StyledProfileSection>
+        )}
+      </StyledInfoSection>
+    </StyledContainer>
   );
 }
 

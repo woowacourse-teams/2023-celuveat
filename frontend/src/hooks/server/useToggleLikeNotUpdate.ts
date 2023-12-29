@@ -5,9 +5,11 @@ import { Restaurant } from '../../@types/restaurant.types';
 import useToastState from '~/hooks/store/useToastState';
 import useBooleanState from '~/hooks/useBooleanState';
 import { postRestaurantLike } from '~/api/user';
+import useCeluveatModal from '../useCeluveatModal';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
-  const { value: isModalOpen, setTrue: openModal, setFalse: closeModal } = useBooleanState(false);
+  const { openLoginModal } = useCeluveatModal();
+
   const { value: isLiked, toggle: toggleIsLiked } = useBooleanState(restaurant.isLiked ?? true);
   const { onSuccess, onFailure, close } = useToastState(
     state => ({
@@ -25,11 +27,8 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     onMutate: toggleIsLiked,
 
     onError: (error: AxiosError) => {
-      if (error.response.status === 429) {
-        toggleIsLiked();
-      }
-      if (error.response.status === 401) {
-        openModal();
+      if (error.response.status < 500) {
+        openLoginModal();
         toggleIsLiked();
       } else {
         onFailure(error.response.data as string);
@@ -54,7 +53,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
     close();
   };
 
-  return { isModalOpen, closeModal, openModal, isLiked, toggleRestaurantLike, toggleLike };
+  return { isLiked, toggleRestaurantLike };
 };
 
 export default useToggleLikeNotUpdate;
