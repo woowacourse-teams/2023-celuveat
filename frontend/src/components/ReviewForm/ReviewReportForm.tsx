@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { FONT_SIZE } from '~/styles/common';
 
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import TextButton from '~/components/@common/Button';
 
-function ReviewReportForm() {
-  const { reviewId } = useReviewModalContext();
+interface ReviewReportFormProps {
+  reviewId: number;
+}
+
+function ReviewReportForm({ reviewId }: ReviewReportFormProps) {
   const { postReviewReport, isSubmitRequesting } = useRestaurantReview();
 
   const [text, setText] = useState('');

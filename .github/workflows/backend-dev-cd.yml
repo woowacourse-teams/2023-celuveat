@@ -76,4 +76,5 @@ jobs:
         run: |
           export APP_VERSION_TAG=${{ secrets.APP_VERSION_TAG }}
           pwd
-          sh /home/ubuntu/deploy.sh
+          docker compose down
+          docker compose up -d

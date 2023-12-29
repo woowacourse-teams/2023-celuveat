@@ -6,7 +6,6 @@ import Love from '~/assets/icons/love.svg';
 import ProfileImageList from '../@common/ProfileImageList';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 
-import LoginModal from '~/components/LoginModal';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 
 import type { Celeb } from '~/@types/celeb.types';
@@ -19,7 +18,7 @@ interface RestaurantWishItemProps {
 
 function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   const { id, images, name, roadAddress, category, phoneNumber, likeCount } = restaurant;
-  const { isModalOpen, closeModal, isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
+  const { isLiked, toggleRestaurantLike } = useToggleLikeNotUpdate(restaurant);
   const navigate = useNavigate();
 
   const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
@@ -31,30 +30,26 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   };
 
   return (
-    <>
-      <StyledContainer onClick={onClick}>
-        <StyledImageViewer>
-          <ImageCarousel images={images} type="list" />
-          <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
-            <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
-          </LikeButton>
-        </StyledImageViewer>
-        <section>
-          <StyledInfo>
-            <StyledCategory>{category}</StyledCategory>
-            <StyledName role="columnheader">{name}</StyledName>
-            <StyledAddress>{roadAddress}</StyledAddress>
-            <StyledAddress>{phoneNumber}</StyledAddress>
-          </StyledInfo>
-          <StyledProfileImageSection>
-            <span>좋아요 {likeCount.toLocaleString()}개</span>
-            {celebs && <ProfileImageList celebs={celebs} size="42px" />}
-          </StyledProfileImageSection>
-        </section>
-      </StyledContainer>
-
-      <LoginModal close={closeModal} isOpen={isModalOpen} />
-    </>
+    <StyledContainer onClick={onClick}>
+      <StyledImageViewer>
+        <ImageCarousel images={images} type="list" />
+        <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
+          <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
+        </LikeButton>
+      </StyledImageViewer>
+      <section>
+        <StyledInfo>
+          <StyledCategory>{category}</StyledCategory>
+          <StyledName role="columnheader">{name}</StyledName>
+          <StyledAddress>{roadAddress}</StyledAddress>
+          <StyledAddress>{phoneNumber}</StyledAddress>
+        </StyledInfo>
+        <StyledProfileImageSection>
+          <span>좋아요 {likeCount.toLocaleString()}개</span>
+          {celebs && <ProfileImageList celebs={celebs} size="42px" />}
+        </StyledProfileImageSection>
+      </section>
+    </StyledContainer>
   );
 }
 

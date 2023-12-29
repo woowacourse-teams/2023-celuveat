@@ -1,27 +1,49 @@
 /* eslint-disable no-useless-return */
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 import View from '~/assets/icons/view.svg';
 import Love from '~/assets/icons/black-love.svg';
 import { FONT_SIZE } from '~/styles/common';
 import ShareIcon from '~/assets/icons/share.svg';
 import ShareButton from '~/components/@common/ShareButton';
 import { LinkProps } from '~/@types/meta.types';
+import { RestaurantData } from '~/@types/api.types';
+import { getRestaurantDetail } from '~/api/restaurant';
+import { getImgUrl } from '~/utils/image';
+import { getQueryString } from '~/utils/getQueryString';
 
 interface HeaderProps {
-  name: string;
-  viewCount: number;
-  likeCount: number;
-  meta: LinkProps;
+  restaurantId: string;
+  celebId: string;
 }
 
-function Header({ name, viewCount, likeCount, meta }: HeaderProps) {
+function Header({ restaurantId, celebId }: HeaderProps) {
+  const { pathname } = useLocation();
+
+  const {
+    data: { celebs, name, viewCount, likeCount, images },
+  } = useQuery<RestaurantData>({
+    queryKey: ['restaurantDetail', restaurantId, celebId],
+    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    suspense: true,
+  });
+  const detailPageUrl = `${pathname}${getQueryString(window.location.search)}`;
+
+  const meta: LinkProps = {
+    title: name,
+    description: `${celebs[0].name}이(가) 추천한 맛집, ${name}의 정보를 확인해보세요.`,
+    imageUrl: getImgUrl(images[0].name, 'webp'),
+    link: `${process.env.PUBLIC_URL}${detailPageUrl}`,
+  };
+
   const share = async () => {
     if (typeof navigator.share === 'undefined') {
-      await copyClipBoard(window.location.href);
+      await copyClipBoard(`https://celuveat.vercel.app/restaurant/${restaurantId}/${celebId}`);
       return;
     }
     try {
-      await navigator.share({ url: window.location.href });
+      await navigator.share({ url: `https://celuveat.vercel.app/restaurant/${restaurantId}/${celebId}` });
     } catch (e) {
       if (e.toString().includes('AbortError')) return;
     }

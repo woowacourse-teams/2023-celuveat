@@ -3,14 +3,16 @@ import { styled } from 'styled-components';
 import { FONT_SIZE } from '~/styles/common';
 
 import useRestaurantReview from '~/hooks/server/useRestaurantReview';
-import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
 
 import Alert from '~/assets/icons/alert.svg';
 
 import TextButton from '~/components/@common/Button';
 
-function ReviewDeleteForm() {
-  const { reviewId } = useReviewModalContext();
+interface ReviewDeleteFormProps {
+  reviewId: number;
+}
+
+function ReviewDeleteForm({ reviewId }: ReviewDeleteFormProps) {
   const { deleteReview, isSubmitRequesting } = useRestaurantReview();
 
   const onDeleteReview: React.MouseEventHandler<HTMLButtonElement> = e => {

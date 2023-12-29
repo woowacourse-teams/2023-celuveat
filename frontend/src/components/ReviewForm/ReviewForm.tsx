@@ -11,8 +11,6 @@ import StarRating from '~/components/@common/StarRating/StarRating';
 import ReviewImageForm from '~/components/ReviewImageForm';
 import TextButton from '~/components/@common/Button';
 
-import { useReviewModalContext } from '~/hooks/context/ReviewModalProvider';
-
 import { changeImgFileExtension } from '~/utils/image';
 
 import type { ReviewSubmitButtonType } from '~/@types/review.types';
@@ -21,6 +19,7 @@ import Spinner from '~/components/@common/Spinner';
 
 interface ReviewFormProps {
   type: ReviewSubmitButtonType;
+  reviewId?: number;
 }
 
 interface BlobType extends Blob {
@@ -38,9 +37,8 @@ const options = {
   useWebWorker: true,
 };
 
-function ReviewForm({ type }: ReviewFormProps) {
+function ReviewForm({ type, reviewId }: ReviewFormProps) {
   const { id: restaurantId } = useParams();
-  const { reviewId } = useReviewModalContext();
   const { restaurantReviewsData, createReview, updateReview, isSubmitRequesting } = useRestaurantReview();
 
   const [text, setText] = useState('');

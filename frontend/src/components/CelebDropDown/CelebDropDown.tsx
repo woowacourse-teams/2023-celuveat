@@ -1,65 +1,49 @@
 import { styled, css } from 'styled-components';
-import { MouseEvent, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { DropDown } from 'celuveat-ui-library';
 
-import CelebIcon from '~/assets/icons/celeb.svg';
-import ProfileImage from '~/components/@common/ProfileImage';
-import NavItem from '~/components/@common/NavItem/NavItem';
-import useBooleanState from '~/hooks/useBooleanState';
-
-import type { Celeb } from '~/@types/celeb.types';
+import { getCelebs } from '~/api/celeb';
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 import { OPTION_FOR_CELEB_ALL } from '~/constants/options';
+
+import CelebNavItem from '~/components/CelebDropDown/CelebNavItem';
+import CelebDropDownOption from '~/components/CelebDropDown/CelebDropDownOption';
+
 import useMediaQuery from '~/hooks/useMediaQuery';
+import { useCelebSelect } from '~/components/CelebDropDown/hooks/useCelebSelect';
 
-interface DropDownProps {
-  celebs: Celeb[];
-  isOpen?: boolean;
-  externalOnClick?: (e?: MouseEvent<HTMLLIElement>) => void;
-}
-
-function CelebDropDown({ celebs, externalOnClick, isOpen = false }: DropDownProps) {
+function CelebDropDown() {
   const { isMobile } = useMediaQuery();
-  const [selected, setSelected] = useState<Celeb>(OPTION_FOR_CELEB_ALL);
-  const { value: isShow, toggle: onToggleDropDown, setFalse: onCloseDropDown } = useBooleanState(isOpen);
 
-  const onSelection = (celebName: Celeb['name']) => (event?: MouseEvent<HTMLLIElement>) => {
-    setSelected(celebs.find(celeb => celebName === celeb.name));
+  const { selectedCeleb, selectCeleb } = useCelebSelect();
 
-    if (externalOnClick) externalOnClick(event);
-  };
+  const { data: celebOptions } = useQuery({
+    queryKey: ['celebOptions'],
+    queryFn: getCelebs,
+    suspense: true,
+  });
 
   return (
-    <StyledCelebDropDown aria-hidden>
-      <StyledNavItemWrapper type="button" onClick={onToggleDropDown} onBlur={onCloseDropDown}>
-        {selected.id === -1 ? (
-          <NavItem label="전체 셀럽" icon={<CelebIcon />} isShow={isShow} />
-        ) : (
-          <NavItem
-            label={selected.youtubeChannelName.replace('@', '')}
-            icon={<ProfileImage name={selected.name} imageUrl={selected.profileImageUrl} size="40px" />}
-            isShow={isShow}
-          />
-        )}
-      </StyledNavItemWrapper>
-
-      {isShow && (
+    <DropDown>
+      <DropDown.Trigger isCustom>
+        <StyledNavItemWrapper>
+          <CelebNavItem celeb={selectedCeleb} />
+        </StyledNavItemWrapper>
+      </DropDown.Trigger>
+      <DropDown.Options as="ul" isCustom>
         <StyledDropDownWrapper isMobile={isMobile}>
           <StyledSelectContainer>
-            {celebs.map(({ id, name, youtubeChannelName, profileImageUrl }) => (
-              <StyledDropDownOption data-id={id} onMouseDown={onSelection(name)}>
-                <div>
-                  {id === -1 ? <CelebIcon /> : <ProfileImage name={name} imageUrl={profileImageUrl} size="32px" />}
-                  <div>
-                    <StyledCelebName>{name}</StyledCelebName>
-                    <StyledChannelName>{youtubeChannelName}</StyledChannelName>
-                  </div>
-                </div>
-              </StyledDropDownOption>
+            {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(celeb => (
+              <DropDown.Option as="li" key={celeb.id} externalClick={selectCeleb(celeb)} isCustom>
+                <StyledDropDownOption>
+                  <CelebDropDownOption celeb={celeb} />
+                </StyledDropDownOption>
+              </DropDown.Option>
             ))}
           </StyledSelectContainer>
         </StyledDropDownWrapper>
-      )}
-    </StyledCelebDropDown>
+      </DropDown.Options>
+    </DropDown>
   );
 }
 
@@ -73,10 +57,6 @@ const StyledNavItemWrapper = styled.button`
   outline: none;
 `;
 
-const StyledCelebDropDown = styled.div`
-  position: relative;
-`;
-
 const StyledDropDownWrapper = styled.ul<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
@@ -84,20 +64,17 @@ const StyledDropDownWrapper = styled.ul<{ isMobile: boolean }>`
 
   position: absolute;
   top: calc(100% + 16px);
+  left: 0;
   z-index: 1;
 
   ${({ isMobile }) =>
     isMobile
       ? css`
-          left: 0;
-
           width: 90vw;
           height: 60vh;
           max-height: 440px;
         `
       : css`
-          left: 18px;
-
           width: 380px;
           height: 440px;
         `}
@@ -149,15 +126,4 @@ const StyledDropDownOption = styled.li`
   &:hover {
     background-color: var(--gray-1);
   }
-`;
-
-const StyledCelebName = styled.div`
-  font-family: SUIT-Medium;
-`;
-
-const StyledChannelName = styled.div`
-  padding-top: 0.4rem;
-
-  color: var(--gray-3);
-  font-size: ${FONT_SIZE.sm};
 `;
