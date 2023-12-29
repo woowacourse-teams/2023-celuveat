@@ -46,7 +46,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
           query.queryKey[0] === 'restaurants' && query.queryKey[1]?.type !== 'wish-list',
       });
     },
-  });
+   });
 
   const toggleRestaurantLike = () => {
     toggleLike.mutate(restaurant.id);
