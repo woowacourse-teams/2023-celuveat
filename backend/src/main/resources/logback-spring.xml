@@ -15,7 +15,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="dev, prod">
+    <springProfile name="dev, prod, own">
         <property name="infoLogPath" value="logs/backend/info"/>
         <property name="warnLogPath" value="logs/backend/warn"/>
         <property name="errorLogPath" value="logs/backend/error"/>
