@@ -68,9 +68,7 @@ module.exports = (env, args) => {
       new Dotenv({
         path: path.resolve(__dirname, `../.${TARGET_ENV}.env`),
       }),
-      new RefreshWebpackPlugin({
-        overlay: false,
-      }),
+      new RefreshWebpackPlugin({}),
     ],
   };
 };
