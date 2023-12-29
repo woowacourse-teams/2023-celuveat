@@ -5,6 +5,7 @@ import MiniRestaurantCardSkeleton from '~/components/MiniRestaurantCard/MiniRest
 import useMediaQuery from '~/hooks/useMediaQuery';
 import { RestaurantCardCarouselSettings } from '~/constants/carouselSettings';
 import CeluveatRecommendedRestaurantSlider from './components/CeluveatRecommendedRestaurantSlider';
+import CeluveatRecommendedRestaurants from './components/CeluveatRecommendedRestaurants';
 
 function CeluveatRecommendSection() {
   const { isMobile } = useMediaQuery();
@@ -23,7 +24,7 @@ function CeluveatRecommendSection() {
             </>
           }
         >
-          <CeluveatRecommendedRestaurantSlider />
+          <CeluveatRecommendedRestaurants />
         </Suspense>
       )}
 
