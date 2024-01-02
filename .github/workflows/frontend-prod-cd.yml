@@ -1,0 +1,52 @@
+name: ✨ Celuveat frontend CD ✨
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./frontend
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+
+    steps:
+      - name: ✨ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: ✨ Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: 환경변수 설정
+        run: |
+          echo "BASE_URL=$BASE_URL" >> .prod.env
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .prod.env
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .prod.env
+        env:
+          BASE_URL: ${{secrets.PROD_BASE_URL}}
+          GOOGLE_MAP_API_KEY: ${{secrets.GOOGLE_MAP_API_KEY}}
+          SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
+          
+      - name: ✨ 의존성 설치
+        run: yarn install
+
+      - name: ✨ 빌드
+        run: yarn build:prod
+
+      - name: ✨ 배포
+        env:
+          SOURCE_DIR: './dist'
+          AWS_REGION: 'ap-northeast-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
+        run: |
+          aws s3 rm $AWS_S3_BUCKET_URI —-recursive —-exclude 'images-data/*' —-exclude 'review/*' —-exclude "*.jpeg" --exclude "event/*"
+          aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
