@@ -3,7 +3,7 @@ name: ✨ Celuveat frontend CD ✨
 on:
   push:
     branches:
-      - main
+      - develop-frontend-cd-test*
 
 jobs:
   build:
