@@ -11,6 +11,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
+    "noEmitOnError": true,
     "typeRoots": ["node_modules/@types", "src/@types"],
     "removeComments": true,
     "declaration": true,
