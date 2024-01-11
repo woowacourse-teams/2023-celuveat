@@ -1,17 +1,56 @@
 const path = require('path');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: ['./src/index.tsx'],
+  entry: './src/index.tsx',
+
   output: {
-    path: path.resolve(__dirname, '../dist/'),
     publicPath: '/',
-    filename: '[name].[chunkhash:8].js',
+    path: path.join(__dirname, '../dist'),
+    filename: '[name].[chunkhash].js',
     clean: true,
   },
+
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        sideEffects: true,
+      },
+      {
+        test: /\.(jpg|jpeg|gif|png|ico)?$/,
+        type: 'asset',
+        generator: {
+          filename: 'images/[name][ext]',
+        },
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)?$/,
+        type: 'asset',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
+      },
+    ],
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'index.html',
+    }),
+    new MiniCssExtractPlugin(),
+  ],
 
   devServer: {
     static: {
@@ -21,10 +60,6 @@ module.exports = {
     open: true,
     historyApiFallback: true,
     allowedHosts: 'all',
-  },
-
-  optimization: {
-    minimizer: ['...', new CssMinimizerPlugin()],
   },
 
   performance: {
