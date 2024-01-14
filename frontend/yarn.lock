@@ -4681,10 +4681,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==
 
-celuveat-ui-library@^1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/celuveat-ui-library/-/celuveat-ui-library-1.4.8.tgz#b1222f75aed4334bb802a699f5ac12c28109ff8c"
-  integrity sha512-8ac5xnw+8qnzrctsRmfUP5arIhPZEB3JyN8YZEB37/vWyXso7l61usMc8hSNxIQIDHeZvkhslyVeob0AeKLklA==
+celuveat-ui-library@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/celuveat-ui-library/-/celuveat-ui-library-1.4.9.tgz#3a5ba0dc5e028505deab69f5af1b4dd18a735f21"
+  integrity sha512-yx2/QTlWdvZGzUD2gtBsI4GjHQCKjrEv0D1PhAkHNaAnbPByWzqapmxw3duVv03lrJcYcNHrVgEpejhI3+idbQ==
   dependencies:
     zustand "^4.4.7"
 
