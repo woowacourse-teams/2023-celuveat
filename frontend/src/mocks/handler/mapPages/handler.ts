@@ -130,8 +130,8 @@ export const MainPageSuccessHandler = [
     const restaurant = restaurants.find(restaurant => restaurant.id === Number(restaurantId));
     restaurant.isLiked ? (restaurant['isLiked'] = false) : (restaurant['isLiked'] = true);
 
-    const responses = [res(ctx.status(429)), res(ctx.status(429)), res(ctx.status(200))];
-    return responses[getRandomNumber()];
+    // const responses = [res(ctx.status(429)), res(ctx.status(429)), res(ctx.status(200))];
+    // return responses[getRandomNumber()];
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));
