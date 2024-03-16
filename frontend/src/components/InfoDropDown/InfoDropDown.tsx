@@ -1,15 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-import { DropDown } from 'celuveat-ui-library';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { getProfile } from '~/api/user';
-import InfoButton from '~/components/@common/InfoButton';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { DropDown, Modal } from 'celuveat-ui-library';
 
-import { ProfileData } from '~/@types/api.types';
-import useCeluveatModal from '~/hooks/useCeluveatModal';
+import InfoButton from '~/components/@common/InfoButton';
+import LoginModal from '~/components/LoginModal';
+
+import { getProfile } from '~/api/user';
+
+import type { ProfileData } from '~/@types/api.types';
 
 function InfoDropDown() {
-  const { openLoginModal } = useCeluveatModal();
   const { data, isSuccess: isLogin } = useQuery<ProfileData>({
     queryKey: ['profile'],
     queryFn: getProfile,
@@ -40,20 +41,22 @@ function InfoDropDown() {
         <StyledDropDownWrapper>
           {isLogin ? (
             <>
-              <DropDown.Option as="li" isCustom externalClick={goMyPage}>
+              <DropDown.Option as="li" isCustom onClick={goMyPage}>
                 <StyledDropDownOption>마이 페이지</StyledDropDownOption>
               </DropDown.Option>
-              <DropDown.Option as="li" isCustom externalClick={goWishList}>
+              <DropDown.Option as="li" isCustom onClick={goWishList}>
                 <StyledDropDownOption>위시리스트</StyledDropDownOption>
               </DropDown.Option>
-              <DropDown.Option as="li" isCustom externalClick={goWithdrawal}>
+              <DropDown.Option as="li" isCustom onClick={goWithdrawal}>
                 <StyledDropDownOption>회원 탈퇴</StyledDropDownOption>
               </DropDown.Option>
             </>
           ) : (
-            <DropDown.Option isCustom externalClick={openLoginModal}>
-              <StyledDropDownOption>로그인</StyledDropDownOption>
-            </DropDown.Option>
+            <Modal.OpenButton modalTitle="로그인 및 회원가입" isCustom modalContent={<LoginModal />}>
+              <DropDown.Option isCustom>
+                <StyledDropDownOption>로그인</StyledDropDownOption>
+              </DropDown.Option>
+            </Modal.OpenButton>
           )}
         </StyledDropDownWrapper>
       </DropDown.Options>
@@ -98,6 +101,8 @@ const StyledDropDownOption = styled.li`
   height: 44px;
 
   padding: 0 1rem;
+
+  border-radius: 10px;
 
   &:hover {
     background: var(--gray-1);
