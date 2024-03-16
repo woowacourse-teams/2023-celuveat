@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 
+import { Modal } from 'celuveat-ui-library';
 import Pencil from '~/assets/icons/pencil.svg';
 
 import RestaurantReviewList from '~/components/RestaurantReviewList';
@@ -8,34 +9,30 @@ import useRestaurantReview from '~/hooks/server/useRestaurantReview';
 
 import { FONT_SIZE } from '~/styles/common';
 import { REVIEW_SHOW_COUNT } from '~/constants/options';
-import { ReviewFormType } from '~/@types/review.types';
-import useCeluveatModal from '~/hooks/useCeluveatModal';
+
+import { ReviewForm } from '~/components/ReviewForm';
 
 function RestaurantReviewWrapper() {
   const { restaurantReviewsData } = useRestaurantReview();
-  const { openReviewFormModal } = useCeluveatModal();
 
   const { totalElementsCount: reviewCount } = restaurantReviewsData;
   const isMoreReviews = reviewCount > REVIEW_SHOW_COUNT;
-
-  const onClickOpenModal = (reviewFormType: ReviewFormType) => () => {
-    openReviewFormModal({ type: reviewFormType });
-  };
 
   return (
     <StyledRestaurantReviewWrapper>
       <StyledReviewCountText>리뷰 {reviewCount ? `${reviewCount}개` : '없음'}</StyledReviewCountText>
       <RestaurantReviewList isSummary />
       <StyledButtonContainer>
-        <StyledButton type="button" onClick={onClickOpenModal('create')}>
-          <Pencil width={20} />
-          리뷰 작성하기
-        </StyledButton>
+        <Modal.OpenButton isCustom modalTitle="리뷰 작성하기" modalContent={<ReviewForm type="create" />}>
+          <StyledButton type="button">
+            <Pencil width={20} />
+            리뷰 작성하기
+          </StyledButton>
+        </Modal.OpenButton>
         {isMoreReviews && (
-          <StyledButton
-            type="button"
-            onClick={onClickOpenModal('all')}
-          >{`리뷰 ${reviewCount}개 모두 보기`}</StyledButton>
+          <Modal.OpenButton isCustom modalTitle="리뷰 모두 보기" modalContent={<RestaurantReviewList />}>
+            <StyledButton type="button">{`리뷰 ${reviewCount}개 모두 보기`}</StyledButton>
+          </Modal.OpenButton>
         )}
       </StyledButtonContainer>
     </StyledRestaurantReviewWrapper>

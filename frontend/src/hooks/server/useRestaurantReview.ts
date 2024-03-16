@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { useState } from 'react';
+
+import { useModalStore } from 'celuveat-ui-library';
 import {
   deleteRestaurantReview,
   getRestaurantReview,
@@ -16,7 +18,6 @@ import {
 import useToastState from '~/hooks/store/useToastState';
 
 import type { RestaurantReviewData, RestaurantReviewPatchBody } from '~/@types/api.types';
-import useCeluveatModal from '../useCeluveatModal';
 
 const useRestaurantReview = () => {
   const queryClient = useQueryClient();
@@ -35,7 +36,7 @@ const useRestaurantReview = () => {
     shallow,
   );
 
-  const { closeModal } = useCeluveatModal();
+  const { closeModal } = useModalStore();
 
   const errorHandler = (error: AxiosError) => {
     switch (error.response.status) {
