@@ -34,7 +34,7 @@ function CelebDropDown() {
         <StyledDropDownWrapper isMobile={isMobile}>
           <StyledSelectContainer>
             {[OPTION_FOR_CELEB_ALL, ...celebOptions].map(celeb => (
-              <DropDown.Option as="li" key={celeb.id} externalClick={selectCeleb(celeb)} isCustom>
+              <DropDown.Option as="li" key={celeb.id} onClick={selectCeleb(celeb)} isCustom>
                 <StyledDropDownOption>
                   <CelebDropDownOption celeb={celeb} />
                 </StyledDropDownOption>

@@ -1,15 +1,15 @@
+import { Modal } from 'celuveat-ui-library';
 import { styled } from 'styled-components';
 import Pencil from '~/assets/icons/pencil.svg';
-import useCeluveatModal from '~/hooks/useCeluveatModal';
 
 function SuggestionButton() {
-  const { openSuggestionModal } = useCeluveatModal();
-
   return (
-    <StyledButton type="button" onClick={openSuggestionModal}>
-      <Pencil width={16} />
-      <div>정보 수정 제안하기</div>
-    </StyledButton>
+    <Modal.OpenButton isCustom modalTitle="정보 수정 제안하기" modalContent={<SuggestionButton />}>
+      <StyledButton type="button">
+        <Pencil width={16} />
+        <div>정보 수정 제안하기</div>
+      </StyledButton>
+    </Modal.OpenButton>
   );
 }
 
