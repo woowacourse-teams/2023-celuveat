@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { postRevisedInfo } from '~/api/restaurant';
 import TextButton from '~/components/@common/Button';
-import Dialog from '~/components/@common/Dialog';
+
 import { BORDER_RADIUS, FONT_SIZE } from '~/styles/common';
 
 const labels = [
@@ -37,28 +37,26 @@ function SuggestionForm() {
   };
 
   return (
-    <Dialog title="정보 수정 제안">
-      <StyledForm onSubmit={handleSubmit}>
-        <h5>수정 항목</h5>
-        <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
-        <StyledUnorderedList>
-          {labels.map(label => (
-            <StyledListItem>
-              <CheckBox value={label} onChange={clickCheckBox} />
-              <span>{label}</span>
-            </StyledListItem>
-          ))}
-          <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
-        </StyledUnorderedList>
-        <TextButton
-          type="submit"
-          text="등록하기"
-          onClick={handleSubmit}
-          colorType="light"
-          disabled={!checkedItems.length && !textareaValue}
-        />
-      </StyledForm>
-    </Dialog>
+    <StyledForm onSubmit={handleSubmit}>
+      <h5>수정 항목</h5>
+      <p>잘못되었거나 수정이 필요한 정보들을 모두 선택해주세요.</p>
+      <StyledUnorderedList>
+        {labels.map(label => (
+          <StyledListItem>
+            <CheckBox value={label} onChange={clickCheckBox} />
+            <span>{label}</span>
+          </StyledListItem>
+        ))}
+        <StyledTextarea placeholder="(선택) 내용을 입력해주세요." onChange={onChangeTextarea} />
+      </StyledUnorderedList>
+      <TextButton
+        type="submit"
+        text="등록하기"
+        onClick={handleSubmit}
+        colorType="light"
+        disabled={!checkedItems.length && !textareaValue}
+      />
+    </StyledForm>
   );
 }
 

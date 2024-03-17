@@ -1,14 +1,19 @@
-import { shallow } from 'zustand/shallow';
-import { Query, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { Restaurant } from '../../@types/restaurant.types';
-import useToastState from '~/hooks/store/useToastState';
-import useBooleanState from '~/hooks/useBooleanState';
+import { shallow } from 'zustand/shallow';
+import { useModalStore } from 'celuveat-ui-library';
+import { Query, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { postRestaurantLike } from '~/api/user';
-import useCeluveatModal from '../useCeluveatModal';
+
+import useBooleanState from '~/hooks/useBooleanState';
+import useToastState from '~/hooks/store/useToastState';
+
+import type { Restaurant } from '~/@types/restaurant.types';
+
+import LoginModal from '~/components/LoginModal';
 
 const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
-  const { openLoginModal } = useCeluveatModal();
+  const { openModal } = useModalStore();
 
   const { value: isLiked, toggle: toggleIsLiked } = useBooleanState(restaurant.isLiked ?? true);
   const { onSuccess, onFailure, close } = useToastState(
@@ -28,7 +33,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
 
     onError: (error: AxiosError) => {
       if (error.response.status < 500) {
-        openLoginModal();
+        openModal({ title: '로그인 하기', content: <LoginModal /> });
         toggleIsLiked();
       } else {
         onFailure(error.response.data as string);
@@ -46,7 +51,7 @@ const useToggleLikeNotUpdate = (restaurant: Restaurant) => {
           query.queryKey[0] === 'restaurants' && query.queryKey[1]?.type !== 'wish-list',
       });
     },
-   });
+  });
 
   const toggleRestaurantLike = () => {
     toggleLike.mutate(restaurant.id);

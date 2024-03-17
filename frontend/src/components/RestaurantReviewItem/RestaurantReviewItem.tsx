@@ -2,6 +2,7 @@
 import { styled, css } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 
+import { Modal } from 'celuveat-ui-library';
 import ThumpUpIcon from '~/assets/icons/etc/thumb-up.svg';
 import SpeakerphoneIcon from '~/assets/icons/etc/speakerphone.svg';
 
@@ -15,7 +16,7 @@ import { getProfile } from '~/api/user';
 import { getReviewImgUrl, lookImage } from '~/utils/image';
 
 import type { ProfileData, RestaurantReview } from '~/@types/api.types';
-import useCeluveatModal from '~/hooks/useCeluveatModal';
+import { ReviewDeleteForm, ReviewForm, ReviewReportForm } from '~/components/ReviewForm';
 
 interface RestaurantReviewItemProps {
   review: RestaurantReview;
@@ -28,8 +29,6 @@ function RestaurantReviewItem({ review }: RestaurantReviewItemProps) {
   });
 
   const { getReviewIsLiked, toggleRestaurantReviewLike } = useRestaurantReview();
-
-  const { openReviewFormModal } = useCeluveatModal();
 
   const isUsersReview = profileData?.memberId === review.memberId;
 
@@ -46,23 +45,21 @@ function RestaurantReviewItem({ review }: RestaurantReviewItemProps) {
 
         {isUsersReview && (
           <StyledButtonContainer>
-            <button
-              type="button"
-              onClick={() => {
-                openReviewFormModal({ type: 'update', reviewId: review.id });
-              }}
+            <Modal.OpenButton
+              isCustom
+              modalTitle="리뷰 수정하기"
+              modalContent={<ReviewForm type="update" reviewId={review.id} />}
             >
-              수정
-            </button>
+              <button type="button">수정</button>
+            </Modal.OpenButton>
             <StyledLine />
-            <button
-              type="button"
-              onClick={() => {
-                openReviewFormModal({ type: 'delete', reviewId: review.id });
-              }}
+            <Modal.OpenButton
+              isCustom
+              modalTitle="리뷰 삭제하기"
+              modalContent={<ReviewDeleteForm reviewId={review.id} />}
             >
-              삭제
-            </button>
+              <button type="button">삭제</button>
+            </Modal.OpenButton>
           </StyledButtonContainer>
         )}
       </StyledProfileAndButton>
@@ -92,14 +89,16 @@ function RestaurantReviewItem({ review }: RestaurantReviewItemProps) {
               <ThumpUpIcon stroke={getReviewIsLiked(review.id) ? '#ff7b54' : '#3a3b3c'} />
               <StyledReviewText isLiked={getReviewIsLiked(review.id)}>{review.likeCount}</StyledReviewText>
             </StyledReviewButton>
-            <StyledReviewButton
-              onClick={() => {
-                openReviewFormModal({ type: 'report', reviewId: review.id });
-              }}
+            <Modal.OpenButton
+              isCustom
+              modalTitle="리뷰 신고하기"
+              modalContent={<ReviewReportForm reviewId={review.id} />}
             >
-              <SpeakerphoneIcon stroke="#3a3b3c" />
-              <StyledReviewText>신고</StyledReviewText>
-            </StyledReviewButton>
+              <StyledReviewButton>
+                <SpeakerphoneIcon stroke="#3a3b3c" />
+                <StyledReviewText>신고</StyledReviewText>
+              </StyledReviewButton>
+            </Modal.OpenButton>
           </>
         )}
       </StyledReviewButtonsWrapper>
