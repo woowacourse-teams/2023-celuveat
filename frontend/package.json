@@ -107,6 +107,9 @@
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.9.0"
   },
+  "resolutions": {
+    "jackspeak": "2.1.1"
+  },
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
