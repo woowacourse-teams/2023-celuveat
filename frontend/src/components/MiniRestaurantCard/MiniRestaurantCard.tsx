@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { MouseEventHandler, memo } from 'react';
+import { MouseEventHandler, memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Love from '~/assets/icons/love.svg';
 import { FONT_SIZE, truncateText } from '~/styles/common';
@@ -10,6 +10,7 @@ import type { Restaurant } from '~/@types/restaurant.types';
 import useToggleLikeNotUpdate from '~/hooks/server/useToggleLikeNotUpdate';
 import WaterMarkImage from '../@common/WaterMarkImage';
 import ProfileImageList from '../@common/ProfileImageList';
+import useOnClickBlock from '~/hooks/useOnClickBlock';
 
 interface MiniRestaurantCardProps {
   restaurant: Restaurant;
@@ -36,14 +37,19 @@ function MiniRestaurantCard({
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category, rating, distance } = restaurant;
   const { toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
-
   const navigate = useNavigate();
 
-  const onMouseEnter = () => setHoveredId(restaurant.id);
-  const onMouseLeave = () => setHoveredId(null);
-  const onClick = () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`);
+  const register = useOnClickBlock({ callback: () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`) });
 
-  const toggle: MouseEventHandler<HTMLButtonElement> = e => {
+  const handleCardMouseEnter = useCallback(() => {
+    setHoveredId(restaurant.id);
+  }, []);
+
+  const handleCardMouseLeave = useCallback(() => {
+    setHoveredId(null);
+  }, []);
+
+  const handleToggleLike: MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
 
     toggleRestaurantLike();
@@ -51,9 +57,9 @@ function MiniRestaurantCard({
 
   return (
     <StyledContainer
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      {...register}
+      onMouseEnter={handleCardMouseEnter}
+      onMouseLeave={handleCardMouseLeave}
       data-cy="음식점 카드"
       aria-label={`${name} 카드`}
       tabIndex={0}
@@ -63,7 +69,7 @@ function MiniRestaurantCard({
       <StyledImageSection>
         <WaterMarkImage imageUrl={images[0]?.name} type="list" sns={images[0]?.sns} />
         {showLike && (
-          <StyledLikeButton aria-label="좋아요" type="button" onClick={toggle}>
+          <StyledLikeButton aria-label="좋아요" type="button" onClick={handleToggleLike}>
             <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
           </StyledLikeButton>
         )}
