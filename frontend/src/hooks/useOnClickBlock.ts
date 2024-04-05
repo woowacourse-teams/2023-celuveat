@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 
 interface UseOnClickBlockProps {
-  callback: () => void;
+  callback: (e?: MouseEvent) => void;
 }
 
 const useOnClickBlock = ({ callback }: UseOnClickBlockProps) => {
@@ -15,9 +15,9 @@ const useOnClickBlock = ({ callback }: UseOnClickBlockProps) => {
     setIsDragging(true);
   }, []);
 
-  const handleClick = () => {
+  const handleClick = (e: MouseEvent) => {
     if (isDragging) return;
-    callback();
+    callback(e);
   };
 
   return { onMouseDown: handleMouseDown, onMouseMove: handleMouseMove, onClick: handleClick };
