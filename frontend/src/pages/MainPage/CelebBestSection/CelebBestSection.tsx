@@ -1,48 +1,29 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import styled from 'styled-components';
-import ProfileImage from '~/components/@common/ProfileImage';
+import CelebProfile from '~/components/CelebProfile';
 import { CelebCarouselSettings } from '~/constants/carouselSettings';
 import { celebOptions } from '~/constants/celeb';
 import useMediaQuery from '~/hooks/useMediaQuery';
-import { FONT_SIZE } from '~/styles/common';
 
 function CelebBestSection() {
   const { isMobile } = useMediaQuery();
-  const navigate = useNavigate();
-
-  const clickCelebIcon = (id: number) => {
-    navigate(`/celeb/${id}`);
-  };
 
   return (
     <section>
       <StyledTitle>셀럽 BEST</StyledTitle>
       {isMobile ? (
         <StyledIconBox>
-          {celebOptions.map(celeb => {
-            const { name, profileImageUrl, id } = celeb;
-            return (
-              <StyledCeleb onClick={() => clickCelebIcon(id)}>
-                <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
-                <span>{name}</span>
-              </StyledCeleb>
-            );
-          })}
+          {celebOptions.map(celeb => (
+            <CelebProfile {...celeb} />
+          ))}
         </StyledIconBox>
       ) : (
         <StyledSliderContainer>
           <Slider {...CelebCarouselSettings}>
-            {celebOptions.map(celeb => {
-              const { name, profileImageUrl, id } = celeb;
-              return (
-                <StyledCeleb onClick={() => clickCelebIcon(id)}>
-                  <ProfileImage name={name} imageUrl={profileImageUrl} size="64px" boxShadow />
-                  <span>{name}</span>
-                </StyledCeleb>
-              );
-            })}
+            {celebOptions.map(celeb => (
+              <CelebProfile {...celeb} />
+            ))}
           </Slider>
         </StyledSliderContainer>
       )}
@@ -65,17 +46,6 @@ const StyledIconBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const StyledCeleb = styled.div`
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-
-  font-size: ${FONT_SIZE.sm};
-
-  cursor: pointer;
 `;
 
 const StyledTitle = styled.h5`
