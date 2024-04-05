@@ -6,7 +6,7 @@ import { profile } from '../../data/user';
 
 import type { Celeb } from '~/@types/celeb.types';
 import type { RestaurantData, RestaurantListData } from '~/@types/api.types';
-import { getRandomNumber } from '~/utils/getRandomNumber';
+import { getRandomResponse } from '~/utils/getRandomResponse';
 
 export const MainPageSuccessHandler = [
   rest.get('/restaurants', (req, res, ctx) => {
@@ -130,8 +130,8 @@ export const MainPageSuccessHandler = [
     const restaurant = restaurants.find(restaurant => restaurant.id === Number(restaurantId));
     restaurant.isLiked ? (restaurant['isLiked'] = false) : (restaurant['isLiked'] = true);
 
-    // const responses = [res(ctx.status(429)), res(ctx.status(429)), res(ctx.status(200))];
-    // return responses[getRandomNumber()];
+    /** 에러핸들링을 테스트하려면 이 주석을 해제해주세요 */
+    // return getRandomResponse(res(ctx.status(200)), res(ctx.status(429)))
 
     if (JSESSION === undefined) {
       return res(ctx.status(401), ctx.json({ message: '만료된 세션입니다.' }));

@@ -2,6 +2,7 @@
 
 declare module '*.png';
 declare module '*.woff2';
+declare module '*.webp';
 declare module '*.svg' {
   import * as React from 'react';
 
