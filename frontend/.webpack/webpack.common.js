@@ -24,7 +24,7 @@ module.exports = {
         sideEffects: true,
       },
       {
-        test: /\.(jpg|jpeg|gif|png|ico)?$/,
+        test: /\.(jpg|jpeg|gif|png|ico|webp)?$/,
         type: 'asset',
         generator: {
           filename: 'images/[name][ext]',

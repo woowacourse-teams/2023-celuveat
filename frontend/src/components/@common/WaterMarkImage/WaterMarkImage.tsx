@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { styled, css } from 'styled-components';
+import useOnClickBlock from '~/hooks/useOnClickBlock';
 import { BORDER_RADIUS, FONT_SIZE, paintSkeleton } from '~/styles/common';
 import { getImgUrl } from '~/utils/image';
 
@@ -12,13 +13,14 @@ interface WaterMarkImageProps {
 
 function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps) {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
+  const register = useOnClickBlock({
+    callback: e => {
+      e.stopPropagation();
 
-  const onClickWaterMark = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
-    if (sns === 'YOUTUBE') window.open(`https://www.youtube.com/${waterMark}`, '_blank');
-  };
+      if (sns === 'INSTAGRAM') window.open(`https://www.instagram.com/${waterMark.substring(1)}`, '_blank');
+      if (sns === 'YOUTUBE') window.open(`https://www.youtube.com/${waterMark}`, '_blank');
+    },
+  });
 
   return (
     <StyledWaterMarkImage type={type} isImageLoading={isImageLoading}>
@@ -33,7 +35,7 @@ function WaterMarkImage({ waterMark, imageUrl, type, sns }: WaterMarkImageProps)
         />
       </picture>
       {waterMark && (
-        <StyledWaterMark onClick={onClickWaterMark} aria-hidden="true">
+        <StyledWaterMark {...register} aria-hidden="true">
           {waterMark}
         </StyledWaterMark>
       )}
