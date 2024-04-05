@@ -1,6 +1,5 @@
 import { css, styled } from 'styled-components';
 import { MouseEventHandler, memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Love from '~/assets/icons/love.svg';
 import { FONT_SIZE, truncateText } from '~/styles/common';
 import Star from '~/assets/icons/star.svg';
@@ -37,9 +36,12 @@ function MiniRestaurantCard({
 }: MiniRestaurantCardProps) {
   const { id, images, name, roadAddress, category, rating, distance } = restaurant;
   const { toggleRestaurantLike, isLiked } = useToggleLikeNotUpdate(restaurant);
-  const navigate = useNavigate();
 
-  const register = useOnClickBlock({ callback: () => navigate(`/restaurants/${id}?celebId=${celebs[0].id}`) });
+  const register = useOnClickBlock({
+    callback: () => {
+      window.location.href = `/restaurants/${id}?celebId=${celebs[0].id}`;
+    },
+  });
 
   const handleCardMouseEnter = useCallback(() => {
     setHoveredId(restaurant.id);
