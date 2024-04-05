@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import restaurants from '~/mocks/data/restaurants';
 import { recommendation } from '~/mocks/data/recommendation';
 import { RECOMMENDED_REGION } from '~/constants/recommendedRegion';
-import { getRandomNumber } from '~/utils/getRandomNumber';
+import { getRandomResponse } from '~/utils/getRandomResponse';
 
 export const newMainPageHandler = [
   rest.get('/address', (req, res, ctx) => {
@@ -18,9 +18,12 @@ export const newMainPageHandler = [
   }),
 
   rest.get('/main-page/recommendation', (req, res, ctx) => {
-    const responses = [res(ctx.status(401)), res(ctx.status(401)), res(ctx.status(200), ctx.json(recommendation))];
-    return responses[getRandomNumber()];
-    // return res(ctx.status(400), ctx.json(recommendation));
-    // return res(ctx.status(200), ctx.json(recommendation));
+    /** 에러바운더리를 테스트하려면 이 주석을 해제해주세요 */
+    // return getRandomResponse(
+    //   res(ctx.status(200), ctx.json(recommendation)),
+    //   res(ctx.status(400)),
+    // );
+
+    return res(ctx.status(200), ctx.json(recommendation));
   }),
 ];
