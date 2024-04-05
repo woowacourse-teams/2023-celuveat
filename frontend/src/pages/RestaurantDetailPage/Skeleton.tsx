@@ -62,8 +62,6 @@ const StyledHeader = styled.div`
   flex-direction: column;
   gap: 0.8rem 0;
 
-  width: calc(100vw - 2.4rem);
-
   padding: 1.2rem 0 2.4rem;
 
   & > div:first-child {
@@ -85,7 +83,6 @@ const StyledHeader = styled.div`
 
 const StyledImageViewer = styled.div`
   ${paintSkeleton}
-  width: calc(100vw - 2.4rem);
   height: calc((100vw - 2.4rem) * 0.9);
 
   padding: 2.4rem 0;
@@ -97,8 +94,6 @@ const StyledDetailInformation = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
-
-  width: calc(100vw - 2.4rem);
 
   padding: 4.8rem 0;
 
@@ -114,7 +109,6 @@ const StyledDetailInformation = styled.div`
 
     & > div > div:first-child {
       ${paintSkeleton}
-      width: calc((100vw - 2.4rem) * 0.7);
       height: 24px;
 
       border-radius: ${BORDER_RADIUS.xs};
@@ -122,7 +116,6 @@ const StyledDetailInformation = styled.div`
 
     & > div > div:last-child {
       ${paintSkeleton}
-      width: calc((100vw - 2.4rem) * 0.5);
       height: 20px;
 
       border-radius: ${BORDER_RADIUS.xs};
@@ -135,8 +128,6 @@ const StyledLine = styled.div`
   flex-direction: column;
   gap: 1.2rem;
 
-  width: calc(100vw - 2.4rem);
-
   padding: 4.8rem 0;
 
   border-top: 1px solid var(--gray-2);
@@ -144,7 +135,6 @@ const StyledLine = styled.div`
 
   & > div {
     ${paintSkeleton}
-    width: calc((100vw - 2.4rem) * 0.6);
     height: 24px;
 
     border-radius: ${BORDER_RADIUS.xs};
@@ -153,7 +143,6 @@ const StyledLine = styled.div`
 
 const StyledBox = styled.div`
   ${paintSkeleton}
-  width: calc(100vw - 2.4rem);
   height: 120px;
 
   border-radius: ${BORDER_RADIUS.md};
