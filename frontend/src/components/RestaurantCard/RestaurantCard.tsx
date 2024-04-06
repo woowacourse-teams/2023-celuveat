@@ -44,7 +44,7 @@ function RestaurantCard({ restaurant, celebs, size, type = 'list', setHoveredId 
       tabIndex={0}
     >
       <StyledImageViewer>
-        <ImageCarousel images={images} type={type} />
+        <ImageCarousel images={images} />
         <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
           <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
         </LikeButton>
@@ -81,7 +81,6 @@ const StyledContainer = styled.li`
   gap: 0.8rem;
 
   width: 100%;
-  height: 100%;
 
   & > section {
     display: flex;
@@ -93,6 +92,8 @@ const StyledContainer = styled.li`
 
 const StyledImageViewer = styled.div`
   position: relative;
+
+  width: 100%;
 `;
 
 const StyledInfo = styled.div`

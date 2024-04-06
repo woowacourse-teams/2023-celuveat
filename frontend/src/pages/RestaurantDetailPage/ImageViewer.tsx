@@ -3,9 +3,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import { RestaurantData } from '~/@types/api.types';
 import { getRestaurantDetail } from '~/api/restaurant';
-import ImageCarousel from '~/components/@common/ImageCarousel';
 import WaterMarkImage from '~/components/@common/WaterMarkImage';
-import useMediaQuery from '~/hooks/useMediaQuery';
 import Next from '~/assets/icons/arrow/next.svg';
 import Prev from '~/assets/icons/arrow/prev.svg';
 import { BORDER_RADIUS } from '~/styles/common';
@@ -25,11 +23,18 @@ const sliderProps = {
   slidesToScroll: 2,
   nextArrow: <Next />,
   prevArrow: <Prev />,
+  responsive: [
+    {
+      breakpoint: 780,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
 };
 
 function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
-  const { isMobile } = useMediaQuery();
-
   const {
     data: { images },
   } = useQuery<RestaurantData>({
@@ -37,8 +42,6 @@ function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
     queryFn: async () => getRestaurantDetail(restaurantId, celebId),
     suspense: true,
   });
-
-  if (isMobile) return <ImageCarousel type="list" images={images} showWaterMark />;
 
   if (images.length === 1) {
     const { name: url, author, sns } = images[0];
