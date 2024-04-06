@@ -10,7 +10,6 @@ interface ImageCarouselProps {
 }
 
 const sliderProps = {
-  arrows: true,
   dots: true,
   infinite: true,
   speed: 300,

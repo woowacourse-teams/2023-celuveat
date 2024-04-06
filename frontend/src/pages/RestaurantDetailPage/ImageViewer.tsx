@@ -8,6 +8,7 @@ import Next from '~/assets/icons/arrow/next.svg';
 import Prev from '~/assets/icons/arrow/prev.svg';
 import { BORDER_RADIUS } from '~/styles/common';
 import noImageUrl from '~/assets/images/no-image.webp';
+import useMediaQuery from '~/hooks/useMediaQuery';
 
 interface ImageViewerProps {
   restaurantId: string;
@@ -18,7 +19,7 @@ const sliderProps = {
   arrows: true,
   dots: true,
   infinite: true,
-  speed: 1000,
+  speed: 500,
   slidesToShow: 2,
   slidesToScroll: 2,
   nextArrow: <Next />,
@@ -27,14 +28,18 @@ const sliderProps = {
     {
       breakpoint: 780,
       settings: {
+        arrows: false,
         slidesToShow: 1,
         slidesToScroll: 1,
+        speed: 300,
       },
     },
   ],
 };
 
 function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
+  const { isMobile } = useMediaQuery();
+
   const {
     data: { images },
   } = useQuery<RestaurantData>({
@@ -48,10 +53,10 @@ function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
 
     return (
       <Slider {...sliderProps}>
-        <SlideItem>
+        <SlideItem isMobile={isMobile}>
           <WaterMarkImage type="list" imageUrl={url} waterMark={author} sns={sns} />
         </SlideItem>
-        <SlideItem>
+        <SlideItem isMobile={isMobile}>
           <StyledNoImage src={noImageUrl} />
         </SlideItem>
       </Slider>
@@ -61,7 +66,7 @@ function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
   return (
     <Slider {...sliderProps}>
       {images.map(({ name: url, author, sns }) => (
-        <SlideItem key={url}>
+        <SlideItem key={url} isMobile={isMobile}>
           <WaterMarkImage type="list" imageUrl={url} waterMark={author} sns={sns} />
         </SlideItem>
       ))}
@@ -71,8 +76,8 @@ function ImageViewer({ restaurantId, celebId }: ImageViewerProps) {
 
 export default ImageViewer;
 
-const SlideItem = styled.li`
-  padding: 1.2rem;
+const SlideItem = styled.li<{ isMobile: boolean }>`
+  padding: ${({ isMobile }) => (isMobile ? '0' : '1.2rem')};
 `;
 
 const StyledNoImage = styled.img`
