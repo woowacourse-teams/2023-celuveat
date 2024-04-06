@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { styled, css } from 'styled-components';
+import { styled } from 'styled-components';
 import { shallow } from 'zustand/shallow';
 import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '../RestaurantCard';
@@ -72,7 +72,7 @@ function RestaurantCardList({ scrollTop }: { scrollTop: () => void }) {
               <FilterSelectBox />
             </StyledCardListHeader>
           )}
-          <StyledRestaurantCardList isMobile={isMobile}>
+          <StyledRestaurantCardList>
             {restaurantDataList.content?.map(({ celebs, ...restaurant }: RestaurantData) => (
               <RestaurantCard
                 key={`${restaurant.id}${celebs[0].id}`}
@@ -132,26 +132,11 @@ const StyledRestaurantCount = styled.span`
   font-weight: 700;
 `;
 
-const StyledRestaurantCardList = styled.div<{ isMobile: boolean }>`
+const StyledRestaurantCardList = styled.div`
   display: grid;
   gap: 4rem 2.4rem;
 
   height: 100%;
 
-  ${({ isMobile }) =>
-    isMobile
-      ? css`
-          grid-template-columns: 1fr;
-        `
-      : css`
-          grid-template-columns: 1fr 1fr 1fr;
-
-          @media screen and (width <= 1240px) {
-            grid-template-columns: 1fr 1fr;
-          }
-
-          @media screen and (width <= 743px) {
-            grid-template-columns: 1fr;
-          }
-        `}
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 `;

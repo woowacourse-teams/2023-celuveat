@@ -32,7 +32,7 @@ function RestaurantWishItem({ restaurant, celebs }: RestaurantWishItemProps) {
   return (
     <StyledContainer onClick={onClick}>
       <StyledImageViewer>
-        <ImageCarousel images={images} type="list" />
+        <ImageCarousel images={images} />
         <LikeButton aria-label="좋아요" type="button" onClick={toggle}>
           <Love width={20} fill={isLiked ? 'red' : '#000'} fillOpacity={0.8} aria-hidden="true" />
         </LikeButton>
