@@ -27,6 +27,7 @@ jobs:
 
       - name: 환경변수 설정
         run: |
+          cd /home/runner/work/2023-celuveat/2023-celuveat/frontend/
           echo "BASE_URL=$BASE_URL" >> .dev.env
           echo "PUBLIC_URL=$PUBLIC_URL" >> .dev.env
           echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .dev.env
