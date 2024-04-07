@@ -24,6 +24,18 @@ jobs:
         run: yarn install
         working-directory: ${{ env.working-directory }}
 
+      - name: 환경변수 설정
+        run: |
+          echo "BASE_URL=$BASE_URL" >> .dev.env
+          echo "PUBLIC_URL=$PUBLIC_URL" >> .dev.env
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .dev.env
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .dev.env
+        env:
+          BASE_URL: ${{ secrets.DEV_BASE_URL }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
+          SHARE_KAKAO_LINK_KEY: ${{ secrets.SHARE_KAKAO_LINK_KEY }}
+
       - name: 🍔 E2E 테스트
         uses: cypress-io/github-action@v6
         with:
@@ -34,11 +46,6 @@ jobs:
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
           browser: chrome
-        env:
-          BASE_URL: ${{ secrets.DEV_BASE_URL }}
-          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
-          GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
-          SHARE_KAKAO_LINK_KEY: ${{ secrets.SHARE_KAKAO_LINK_KEY }}
 
       - name: ✨ 생성된 비디오를 S3에서 저장
         env:
