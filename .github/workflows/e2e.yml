@@ -49,7 +49,7 @@ jobs:
           command: yarn cy:run
           browser: chrome
 
-      - name: ✨ 생성된 비디오를 S3에서 저장
+      - name: ✨ 테스트에 실패한 경우 생성된 비디오를 S3에서 저장
         if: always()
         env:
           SOURCE_DIR: '/home/runner/work/2023-celuveat/2023-celuveat/frontend/cypress/videos'

@@ -33,7 +33,7 @@ jobs:
           BASE_URL: ${{secrets.PROD_BASE_URL}}
           GOOGLE_MAP_API_KEY: ${{secrets.GOOGLE_MAP_API_KEY}}
           SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
-          
+
       - name: ✨ 의존성 설치
         run: yarn install
 
@@ -48,5 +48,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
         run: |
-          aws s3 rm $AWS_S3_BUCKET_URI --recursive --exclude 'images-data/*' --exclude 'review/*' --exclude "*.jpeg" --exclude "event/*"
+          aws s3 rm $AWS_S3_BUCKET_URI --recursive --exclude 'images-data/*' --exclude 'review/*' --exclude "*.jpeg" --exclude "event/*" --exclude "e2e/*"
           aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
