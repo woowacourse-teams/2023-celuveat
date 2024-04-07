@@ -5,7 +5,7 @@
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
-    "start:dev": "webpack serve --port 3000 --config .webpack/webpack.dev.js",
+    "start:dev": "webpack serve --port 3000 --config .webpack/webpack.dev.js --env DEV=true",
     "start:prod": "webpack serve --port 3000 --config .webpack/webpack.prod.js",
     "build:dev": "webpack --config .webpack/webpack.dev.js",
     "build:prod": "webpack --config .webpack/webpack.prod.js",
