@@ -34,3 +34,8 @@ jobs:
           parallel: true
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
+        env:
+          BASE_URL: ${{ secrets.DEV_BASE_URL }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
+          SHARE_KAKAO_LINK_KEY: ${{ secrets.SHARE_KAKAO_LINK_KEY }}
