@@ -32,9 +32,9 @@ Cypress.Commands.add('loginGoogle', () => {
 });
 
 Cypress.Commands.add('loginGoogleForDesktop', () => {
-  cy.get('button[type="google"]').click(); // 구글 로그인 하기 버튼을 누른다.
-
-  cy.loginGoogle();
+  cy.getByAriaLabel('프로필').click();
+  cy.getByAriaLabel('로그인').click();
+  cy.contains('구글로 로그인하기').click();
 });
 
 Cypress.Commands.add('loginGoogleForMobile', () => {
