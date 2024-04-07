@@ -28,8 +28,8 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ${{ env.working-directory }}
-          build: yarn build:msw
-          start: yarn start:msw
+          build: yarn build:dev
+          start: yarn start:dev
           install-command: yarn --frozen-lockfile
           parallel: true
           wait-on: 'http://localhost:3000'
