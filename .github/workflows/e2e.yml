@@ -18,24 +18,34 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🍔 yarn install
         run: yarn install
         working-directory: ${{ env.working-directory }}
 
       - name: 🍔 E2E 테스트
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ${{ env.working-directory }}
-          build: yarn build:dev
           start: yarn start:dev
           install-command: yarn --frozen-lockfile
           parallel: true
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
+          browser: chrome
         env:
           BASE_URL: ${{ secrets.DEV_BASE_URL }}
           PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
           GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
           SHARE_KAKAO_LINK_KEY: ${{ secrets.SHARE_KAKAO_LINK_KEY }}
+
+      - name: ✨ 생성된 비디오를 S3에서 저장
+        env:
+          SOURCE_DIR: './cypress/videos'
+          AWS_REGION: 'ap-northeast-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
+        run: |
+          aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
