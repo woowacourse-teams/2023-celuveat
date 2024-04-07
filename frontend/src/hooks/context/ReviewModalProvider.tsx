@@ -24,7 +24,7 @@ interface ReviewModalProviderProps {
 }
 
 function ReviewModalProvider({ children }: ReviewModalProviderProps) {
-  const { isLogin } = useCheckLogin();
+  const { isSuccess: isLogin } = useCheckLogin();
 
   const [formType, setFormType] = useState<ReviewFormType>(null);
   const [reviewId, setReviewId] = useState(null);

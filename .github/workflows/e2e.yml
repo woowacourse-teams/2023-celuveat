@@ -18,19 +18,44 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: 🍔 yarn install
-        run: yarn install
-        working-directory: ${{ env.working-directory }}
+      - name: ✨ Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: 환경변수 설정
+        run: |
+          cd /home/runner/work/2023-celuveat/2023-celuveat/frontend/
+          echo "BASE_URL=$BASE_URL" >> .dev.env
+          echo "PUBLIC_URL=$PUBLIC_URL" >> .dev.env
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .dev.env
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .dev.env
+        env:
+          BASE_URL: ${{ secrets.DEV_BASE_URL }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          GOOGLE_MAP_API_KEY: ${{ secrets.GOOGLE_MAP_API_KEY }}
+          SHARE_KAKAO_LINK_KEY: ${{ secrets.SHARE_KAKAO_LINK_KEY }}
 
       - name: 🍔 E2E 테스트
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ${{ env.working-directory }}
-          build: yarn build:msw
-          start: yarn start:msw
+          start: yarn start:dev
           install-command: yarn --frozen-lockfile
-          parallel: true
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
+          browser: chrome
+
+      - name: ✨ 테스트에 실패한 경우 생성된 비디오를 S3에서 저장
+        if: failure()
+        env:
+          SOURCE_DIR: '/home/runner/work/2023-celuveat/2023-celuveat/frontend/cypress/videos'
+          AWS_REGION: 'ap-northeast-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}/e2e
+        run: |
+          aws s3 rm $AWS_S3_BUCKET_URI
+          aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
