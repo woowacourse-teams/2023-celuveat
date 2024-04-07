@@ -15,4 +15,12 @@ describe('좋아요 관련 기능을 테스트 한다.', () => {
 
     cy.get('ul').should('contain.text', targetName);
   });
+
+  it('좋아요를 취소하면 위시리스트에서 제거된다.', () => {
+    cy.contains('위시리스트').click();
+    cy.getByAriaLabel('프로필').click();
+    cy.getByCy('dropdown').contains('위시리스트').click();
+
+    cy.get('ul').should('not.contain.text', targetName);
+  });
 });
