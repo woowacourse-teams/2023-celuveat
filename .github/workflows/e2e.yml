@@ -53,9 +53,9 @@ jobs:
           browser: chrome
 
       - name: ✨ 생성된 비디오를 S3에서 저장
-        if: always()
+        if: failure()
         env:
-          SOURCE_DIR: './cypress/videos'
+          SOURCE_DIR: '/home/runner/work/2023-celuveat/2023-celuveat/frontend/cypress/videos'
           AWS_REGION: 'ap-northeast-2'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
