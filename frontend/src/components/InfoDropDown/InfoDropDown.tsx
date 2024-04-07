@@ -54,7 +54,7 @@ function InfoDropDown() {
           ) : (
             <Modal.OpenButton modalTitle="로그인 및 회원가입" isCustom modalContent={<LoginModal />}>
               <DropDown.Option isCustom>
-                <StyledDropDownOption>로그인</StyledDropDownOption>
+                <StyledDropDownOption aria-label="로그인">로그인</StyledDropDownOption>
               </DropDown.Option>
             </Modal.OpenButton>
           )}
