@@ -46,13 +46,11 @@ jobs:
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
           browser: chrome
-
-      - name: ✨ 생성된 비디오를 S3에서 저장
+          run: |
+            aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
         env:
           SOURCE_DIR: './cypress/videos'
           AWS_REGION: 'ap-northeast-2'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
-        run: |
-          aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
