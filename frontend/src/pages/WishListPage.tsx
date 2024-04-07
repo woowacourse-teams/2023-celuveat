@@ -66,7 +66,7 @@ const StyledResultCount = styled.span`
   font-size: ${FONT_SIZE.md};
 `;
 
-const StyledResultSection = styled.div`
+const StyledResultSection = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;

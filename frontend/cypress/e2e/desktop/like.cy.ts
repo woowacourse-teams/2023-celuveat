@@ -1,19 +1,38 @@
 describe('좋아요 관련 기능을 테스트 한다.', () => {
+  const targetName = '소문난성수감자탕';
+
   beforeEach(() => {
-    cy.visit('/restaurants/311?celebId=7');
+    cy.visit('');
+
+    cy.loginGoogleForDesktop();
+    cy.getByAriaLabel(`${targetName} 카드`).first().click();
+    cy.contains('위시리스트').click();
   });
 
-  it('성시경 소문난성수감자탕 페이지에서 좋아요를 한 후 위시리스트에 잘 담겨 있는지 확인한다.', () => {
-    // 로그인이 되지 않은 상태에서 위시리스트 저장하기를 누른다.
-    // cy.contains('위시리스트에 저장하기').click();
-    // cy.contains('구글로 로그인하기').click();
-    // // cy.loginGoogleForDesktop();
-    // // 위시리스트 버튼을 다시 누른다.
-    // cy.contains('위시리스트에 저장하기').click();
-    // cy.get('button[aria-label="로그인"]').click(); // 프로필 아이콘을 누른다.
-    // cy.get('li[data-name="위시리스트"]').click(); // 위시리스트 버튼을 누른다.
-    // // 좋아요를 취소한다.
-    // cy.get('li[aria-label="소문난성수감자탕 카드"]').find('button').click();
-    // cy.shouldIsLiked('소문난성수감자탕 카드', false);
+  it('좋아요를 누른 음식점은 위시리스트에 저장된다.', () => {
+    cy.getByAriaLabel('프로필').click();
+    cy.getByCy('dropdown').contains('위시리스트').click();
+
+    cy.get('ul').should('contain.text', targetName);
+  });
+
+  it('좋아요를 취소하면 위시리스트에서 제거된다.', () => {
+    cy.contains('위시리스트').click();
+    cy.getByAriaLabel('프로필').click();
+    cy.getByCy('dropdown').contains('위시리스트').click();
+
+    cy.get('ul').should('not.contain.text', targetName);
+  });
+
+  it('좋아요를 누른 음식점을 위시리스트에서 좋아요를 해제해도 바로 제거되지 않는다. 즉 새로고침을 해야 제거된다.', () => {
+    cy.getByAriaLabel('프로필').click();
+    cy.getByCy('dropdown').contains('위시리스트').click();
+
+    cy.getByAriaLabel(`${targetName} 카드`).find('[aria-label="좋아요"]').click();
+    cy.get('ul').should('contain.text', targetName);
+
+    cy.reload();
+
+    cy.get('ul').should('not.contain.text', targetName);
   });
 });

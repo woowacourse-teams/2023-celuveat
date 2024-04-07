@@ -15,7 +15,7 @@ interface InfoButtonProps {
 
 function InfoButton({ isShow = false, isSuccess, profile }: InfoButtonProps) {
   return (
-    <StyledInfoButton isShow={isShow} aria-hidden>
+    <StyledInfoButton isShow={isShow} aria-label="프로필">
       <Menu />
       {isSuccess ? <ProfileImage name={profile.nickname} imageUrl={profile.profileImageUrl} size="30px" /> : <User />}
     </StyledInfoButton>

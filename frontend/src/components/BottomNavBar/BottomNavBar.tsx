@@ -2,16 +2,14 @@ import { useRef } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
-import { useQuery } from '@tanstack/react-query';
 import HomeIcon from '~/assets/icons/home.svg';
 import UserIcon from '~/assets/icons/user.svg';
 import MapIcon from '~/assets/icons/navmap.svg';
 import HeartIcon from '~/assets/icons/navbar-heart.svg';
 import useScrollBlock from '~/hooks/useScrollBlock';
 import useBottomNavBarState from '~/hooks/store/useBottomNavBarState';
-import { ProfileData } from '~/@types/api.types';
-import { getProfile } from '~/api/user';
 import useNavigateSignUp from '~/hooks/useNavigateSignUp';
+import useCheckLogin from '~/hooks/server/useCheckLogin';
 
 interface BottomNavBarProps {
   isHide: boolean;
@@ -32,10 +30,7 @@ function BottomNavBar({ isHide }: BottomNavBarProps) {
     shallow,
   );
 
-  const { isSuccess: isLogin } = useQuery<ProfileData>({
-    queryKey: ['profile'],
-    queryFn: () => getProfile(),
-  });
+  const { isSuccess: isLogin } = useCheckLogin();
 
   const clickHome = () => {
     setHomeSelected();
