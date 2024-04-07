@@ -24,6 +24,11 @@ jobs:
         run: yarn install
         working-directory: ${{ env.working-directory }}
 
+      - name: ✨ Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
       - name: 환경변수 설정
         run: |
           echo "BASE_URL=$BASE_URL" >> .dev.env
@@ -46,11 +51,14 @@ jobs:
           wait-on: 'http://localhost:3000'
           command: yarn cy:run
           browser: chrome
-          run: |
-            aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
+
+      - name: ✨ 생성된 비디오를 S3에서 저장
+        if: always()
         env:
           SOURCE_DIR: './cypress/videos'
           AWS_REGION: 'ap-northeast-2'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET_URI: ${{ secrets.AWS_S3_BUCKET_URI }}
+        run: |
+          aws s3 sync $SOURCE_DIR $AWS_S3_BUCKET_URI
