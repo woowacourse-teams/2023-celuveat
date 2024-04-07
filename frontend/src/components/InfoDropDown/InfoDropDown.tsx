@@ -38,7 +38,7 @@ function InfoDropDown() {
         </StyledTriggerWrapper>
       </DropDown.Trigger>
       <DropDown.Options as="ul" isCustom>
-        <StyledDropDownWrapper>
+        <StyledDropDownWrapper data-cy="dropdown">
           {isLogin ? (
             <>
               <DropDown.Option as="li" isCustom onClick={goMyPage}>
