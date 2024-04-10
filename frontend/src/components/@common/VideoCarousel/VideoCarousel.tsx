@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
 import Slider from 'react-slick';
-import { BORDER_RADIUS, hideScrollBar, paintSkeleton } from '~/styles/common';
+import { hideScrollBar } from '~/styles/common';
 import type { Video } from '~/@types/api.types';
 import { VideoCarouselSettings } from '~/constants/carouselSettings';
 import useMediaQuery from '~/hooks/useMediaQuery';
+import YoutubeEmbed from '~/components/YoutubeEmbed';
 
 interface VideoCarouselProps {
   title: string;
@@ -18,25 +19,15 @@ function VideoCarousel({ title, videos }: VideoCarouselProps) {
       {isMobile || videos.length <= 2 ? (
         <StyledVideoContainer>
           {videos.map(({ name, youtubeVideoKey }) => (
-            <StyledVideo
-              title={`${name}의 영상`}
-              src={`https://www.youtube.com/embed/${youtubeVideoKey}`}
-              allow="encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            <YoutubeEmbed pathParam={youtubeVideoKey} title={name} />
           ))}
         </StyledVideoContainer>
       ) : (
         <StyledSliderContainer>
           <Slider {...VideoCarouselSettings}>
             {videos.map(({ name, youtubeVideoKey }) => (
-              <StyledVideoWrapper>
-                <StyledVideo
-                  title={`${name}의 영상`}
-                  src={`https://www.youtube.com/embed/${youtubeVideoKey}`}
-                  allow="encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <StyledVideoWrapper key={youtubeVideoKey}>
+                <YoutubeEmbed pathParam={youtubeVideoKey} title={name} />
               </StyledVideoWrapper>
             ))}
           </Slider>
@@ -57,15 +48,6 @@ const StyledVideoWrapper = styled.div`
   justify-content: center;
 
   width: 100%;
-`;
-
-const StyledVideo = styled.iframe`
-  ${paintSkeleton}
-  width: 352px;
-  max-width: 352px;
-  height: 196px;
-
-  border-radius: ${BORDER_RADIUS.md};
 `;
 
 const StyledVideoContainer = styled.div`

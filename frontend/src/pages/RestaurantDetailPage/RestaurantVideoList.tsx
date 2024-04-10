@@ -50,4 +50,10 @@ const StyledVideoSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 3.2rem 0;
+
+  iframe {
+    width: 352px;
+    max-width: 352px;
+    height: 196px;
+  }
 `;

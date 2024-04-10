@@ -10,6 +10,7 @@ import { getRestaurantDetail, getRestaurantVideo } from '~/api/restaurant';
 import SuggestionButton from '~/components/SuggestionButton';
 
 import Naver from '~/assets/icons/naver-place.svg';
+import YoutubeEmbed from '~/components/YoutubeEmbed';
 
 interface DetailInformationProps {
   restaurantId: string;
@@ -23,13 +24,13 @@ function DetailInformation({ restaurantId, celebId }: DetailInformationProps) {
     data: { celebs, category, phoneNumber, roadAddress, naverMapUrl },
   } = useQuery<RestaurantData>({
     queryKey: ['restaurantDetail', restaurantId, celebId],
-    queryFn: async () => getRestaurantDetail(restaurantId, celebId),
+    queryFn: () => getRestaurantDetail(restaurantId, celebId),
     suspense: true,
   });
 
   const { data: restaurantVideo } = useQuery<VideoList>({
     queryKey: ['restaurantVideo', restaurantId],
-    queryFn: async () => getRestaurantVideo(restaurantId),
+    queryFn: () => getRestaurantVideo(restaurantId),
     suspense: true,
   });
 
@@ -93,12 +94,7 @@ function DetailInformation({ restaurantId, celebId }: DetailInformationProps) {
       </div>
       <StyledMainVideo>
         <h5>영상으로 보기</h5>
-        <iframe
-          title={`${restaurantVideo.content[0].name}의 영상`}
-          src={`https://www.youtube.com/embed/${restaurantVideo.content[0].youtubeVideoKey}`}
-          allow="encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        <YoutubeEmbed title={restaurantVideo.content[0].name} pathParam={restaurantVideo.content[0].youtubeVideoKey} />
       </StyledMainVideo>
     </StyledDetailInfo>
   );
