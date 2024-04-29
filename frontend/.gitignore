@@ -1,4 +1,20 @@
+# dependencies
 /node_modules
+.pnp.loader.mjs
+.pnp.cjs
+
+# yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# distribution
 /dist
+
+# local env files
 /*.env
 /cypress.env.json
