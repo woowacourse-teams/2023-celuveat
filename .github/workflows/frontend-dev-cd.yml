@@ -42,14 +42,14 @@ jobs:
 
       - name: 환경변수 설정
         run: |
-          echo "BASE_URL=$BASE_URL" >> .dev.env
-          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .dev.env
-          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .dev.env
+          echo "BASE_URL=$BASE_URL" >> .env.dev
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .env.dev
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .env.dev
         env:
           BASE_URL: ${{secrets.DEV_BASE_URL}}
           GOOGLE_MAP_API_KEY: ${{secrets.GOOGLE_MAP_API_KEY}}
           SHARE_KAKAO_LINK_KEY: ${{secrets.SHARE_KAKAO_LINK_KEY}}
-          
+
       - name: ✨ 의존성 설치
         run: rm -rf ./node_modules yarn.lock && yarn cache clean && yarn install
 
@@ -61,7 +61,7 @@ jobs:
         with:
           name: dev-dist
           path: frontend/dist
-        
+
   # deploy:
   #   needs: build
   #   runs-on: [self-hosted, dev]
