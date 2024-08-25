@@ -26,9 +26,9 @@ jobs:
 
       - name: 환경변수 설정
         run: |
-          echo "BASE_URL=$BASE_URL" >> .env.dev
-          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .env.dev
-          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .env.dev
+          echo "BASE_URL=$BASE_URL" >> .env.prod
+          echo "GOOGLE_MAP_API_KEY=$GOOGLE_MAP_API_KEY" >> .env.prod
+          echo "SHARE_KAKAO_LINK_KEY=$SHARE_KAKAO_LINK_KEY" >> .env.prod
         env:
           BASE_URL: ${{secrets.PROD_BASE_URL}}
           GOOGLE_MAP_API_KEY: ${{secrets.GOOGLE_MAP_API_KEY}}
