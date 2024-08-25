@@ -59,7 +59,7 @@ module.exports = merge(common, {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({
-      path: path.resolve(__dirname, `../.prod.env`),
+      path: path.resolve(__dirname, `../.env.prod`),
     }),
   ],
 });
