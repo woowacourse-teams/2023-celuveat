@@ -15,7 +15,8 @@ function ProfileImage({ name = '셀럽', imageUrl, size, boxShadow = false, ...p
 export default ProfileImage;
 
 const StyledProfile = styled.img<{ size: string; boxShadow: boolean }>`
-  ${paintSkeleton}
+  display: inline-block;
+
   width: ${({ size }) => size || 'auto'};
   height: ${({ size }) => size || 'auto'};
 
@@ -25,6 +26,10 @@ const StyledProfile = styled.img<{ size: string; boxShadow: boolean }>`
 
   object-fit: cover;
 
+  line-height: ${({ size }) => size || 'auto'};
+  text-align: center;
+
+  ${paintSkeleton}
   ${({ boxShadow }) =>
     boxShadow &&
     css`
