@@ -15,7 +15,7 @@
       "name": "맛집 지도"
     }
   ],
-  "icons": [{ "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }],
+  "icons": [{ "src": "/celuveat-logo.png", "sizes": "any", "type": "image/png" }],
   "id": "celuveat",
   "lang": "ko",
   "display_override": ["standalone", "window-controls-overlay"]
