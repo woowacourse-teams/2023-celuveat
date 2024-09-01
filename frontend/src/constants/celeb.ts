@@ -15,7 +15,7 @@ export const CELEB = {
     name: '맛객리우',
     youtubeChannelName: '@Liwoo_foodie',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/KhKylYQTqpR3QQ1RuiYZ5xiM2fNsOJ_0jLFYbBBhk9Gh-zjpGTMUUSyPVGOHq4VZHzl6DN6qXQ=s176-c-k-c0x00ffffff-no-rj',
+      'https://yt3.googleusercontent.com/CDluFKwVxooXKsEa9WhPkBk2FGOnI8_qKFsMhr6GkAQj3JSrc-OhnwxcTM6hUGoBzcGgqB2Tow=s160-c-k-c0x00ffffff-no-rj',
   },
   4: {
     name: '마리아주',
@@ -75,13 +75,13 @@ export const CELEB = {
     name: '또간집',
     youtubeChannelName: '@STUDIO_SUZE',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/ytc/APkrFKanwG55M-jYZzbjKPMHLjRMpgiPZRL9wtR0T7MDQQ=s176-c-k-c0x00ffffff-no-rj',
+      'https://i.namu.wiki/i/18eigZL7aFD35BDui3Qi396bp10abGknI-rI02n5YrBlDFM6M_JUECJb2XwjGhMvlZT91trme889s58jd9exWgxdXmrbu3vu7nDhuD4gjFhVO-SbRhbCzPOrb131XVnCdB_ay4TV4lejG5DSOhvyCpVX62U9R4crfnRa3VESf8k.webp',
   },
   15: {
     name: '최자로드',
     youtubeChannelName: '@thebobstudiooffcial',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/h2LcPbyx1Y8LowtWTKNKbc7a_4FV8i2baCP3YjCHp5S5UoBVF1wr4XX03DMn8EjfvtS5yUztuw=s176-c-k-c0x00ffffff-no-rj',
+      'https://i.namu.wiki/i/18eigZL7aFD35BDui3Qi31cfJQ5t_DgWKPzhRKJPzY6m0XH20LrZW6EREDhY4It4CV2pRmLKbOkD-TD5GRu6qBm6o-xU-gHxsUtdo3_6elbK4JR80Va-3Cfk8Ng-HlZ75eOHrbd57mlX3743lg5UQ3HTrxfGqY4dVLoJsvUByaI.webp',
   },
   16: {
     name: '여행ON',
@@ -111,7 +111,7 @@ export const celebOptions = [
     name: '또간집',
     youtubeChannelName: '@STUDIO_SUZE',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/ytc/APkrFKanwG55M-jYZzbjKPMHLjRMpgiPZRL9wtR0T7MDQQ=s176-c-k-c0x00ffffff-no-rj',
+      'https://i.namu.wiki/i/18eigZL7aFD35BDui3Qi396bp10abGknI-rI02n5YrBlDFM6M_JUECJb2XwjGhMvlZT91trme889s58jd9exWgxdXmrbu3vu7nDhuD4gjFhVO-SbRhbCzPOrb131XVnCdB_ay4TV4lejG5DSOhvyCpVX62U9R4crfnRa3VESf8k.webp',
   },
   {
     id: 1,
@@ -132,7 +132,7 @@ export const celebOptions = [
     name: '맛객리우',
     youtubeChannelName: '@Liwoo_foodie',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/KhKylYQTqpR3QQ1RuiYZ5xiM2fNsOJ_0jLFYbBBhk9Gh-zjpGTMUUSyPVGOHq4VZHzl6DN6qXQ=s176-c-k-c0x00ffffff-no-rj',
+      'https://yt3.googleusercontent.com/CDluFKwVxooXKsEa9WhPkBk2FGOnI8_qKFsMhr6GkAQj3JSrc-OhnwxcTM6hUGoBzcGgqB2Tow=s160-c-k-c0x00ffffff-no-rj',
   },
   {
     id: 4,
@@ -191,7 +191,7 @@ export const celebOptions = [
     name: '최자로드',
     youtubeChannelName: '@thebobstudiooffcial',
     profileImageUrl:
-      'https://yt3.googleusercontent.com/h2LcPbyx1Y8LowtWTKNKbc7a_4FV8i2baCP3YjCHp5S5UoBVF1wr4XX03DMn8EjfvtS5yUztuw=s176-c-k-c0x00ffffff-no-rj',
+      'https://i.namu.wiki/i/18eigZL7aFD35BDui3Qi31cfJQ5t_DgWKPzhRKJPzY6m0XH20LrZW6EREDhY4It4CV2pRmLKbOkD-TD5GRu6qBm6o-xU-gHxsUtdo3_6elbK4JR80Va-3Cfk8Ng-HlZ75eOHrbd57mlX3743lg5UQ3HTrxfGqY4dVLoJsvUByaI.webp',
   },
   {
     id: 16,
